@@ -19,7 +19,7 @@ local speed = 128
 
 function Object:__init(x, y, name, type)
 
-    local imageFile = ('res/%s.png'):format(type)
+    local imageFile = ('res/imgs/%s.png'):format(type)
 
 	Sprite.__init(self, x, y, imageFile)
     self.name = name

@@ -14,7 +14,7 @@ setmetatable(Player, {
 )
 
 local speed = 72
-local imageFile = 'res/player.png'
+local imageFile = 'res/imgs/player.png'
 
 function Player:__init(x, y)
 	Sprite.__init(self, x, y, imageFile)
