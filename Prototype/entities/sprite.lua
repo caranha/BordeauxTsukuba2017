@@ -29,7 +29,6 @@ function Sprite:update(dt)
 end
 
 function Sprite:draw()
-  love.graphics.setColor(0, 0, 0)
 	love.graphics.draw(
 		self.image,
 		math.floor(self.x),
