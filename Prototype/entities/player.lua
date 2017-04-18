@@ -26,21 +26,29 @@ end
 
 function Player:update(dt)
     Sprite.update(self, dt)
+    --local dx, dy = 0, 0
     local dx, dy = 0, 0
     if love.keyboard.isDown('right') then
-        dx = speed * dt
+        --dx = speed * dt
+        dx = 8
     elseif love.keyboard.isDown('left') then
-        dx = -speed * dt
+        --dx = -speed * dt
+        dx = -8
     end
         
     if love.keyboard.isDown('down') then
-        dy = speed * dt
+        --dy = speed * dt
+        dy = 8
     elseif love.keyboard.isDown('up') then
-        dy = -speed * dt
+        --dy = -speed * dt
+        dy = -8
     end
 
     if dx ~= 0 or dy ~= 0 then
+        local xBefore, yBefore = self.x, self.y
         self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
+        Animation(self, "x", xBefore, self.x, 0.1)
+        Animation(self, "y", yBefore, self.y, 0.1)
     end
     local actualX, actualY, cols, len = world:check(self, self.x, self.y)
     for i=1,len do
