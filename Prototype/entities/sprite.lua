@@ -10,7 +10,7 @@ setmetatable(Sprite, {
 	end,
 })
 
-function Sprite:__init(x, y, imageFile, world)
+function Sprite:__init(x, y, imageFile)
     self.x = x
     self.y = y
     self.image = love.graphics.newImage(imageFile)

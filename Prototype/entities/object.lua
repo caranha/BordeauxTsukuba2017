@@ -16,9 +16,30 @@ setmetatable(Object, {
 ) 
 
 local speed = 128
-local imageFile = 'res/npc.png'
 
-function Object:__init(x, y, world, name)
-	Sprite.__init(self, x, y, imageFile, world)
+function Object:__init(x, y, name, type)
+
+    local imageFile = ('res/imgs/%s.png'):format(type)
+
+	Sprite.__init(self, x, y, imageFile)
     self.name = name
+    self.type = type
+end
+
+function Object:disappear()
+    removeObject(self)
+    world:remove(self)
+end
+
+function Object:pickedBy(e)
+    e.inventory[#e.inventory] = self
+    self:disappear()
+end
+
+function Object:interactWith(e)
+    if self.type == 'npc' then
+        Sprite.interactWith(self, e)
+    elseif self.type == 'item' then
+        self:pickedBy(e)
+    end
 end

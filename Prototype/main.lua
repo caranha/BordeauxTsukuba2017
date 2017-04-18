@@ -17,11 +17,9 @@ require 'entities.object'
 require 'entities.interaction.answer'
 require 'entities.interaction.message'
 
-local world, map
 local camera = {zoom, x, y, width, height, marginHorizontal, marginVertical}
 local player
 local objects = {}
-local objects_count = 0
 local dialog
 
 
@@ -37,12 +35,9 @@ function love.load()
     -- Create the player at his spawn 
     for k, object in pairs(map.objects) do
         if object.name == 'spawn' then
-            player = Player(object.x, object.y, world)
-        end
-
-        if object.type == 'npc' then
-            objects_count = objects_count + 1
-            objects[objects_count] = Object(object.x, object.y, world, object.name)
+            player = Player(object.x, object.y)
+        elseif object.type and object.type ~= '' then
+            objects[#objects + 1] = Object(object.x, object.y, object.name, object.type)
         end
     end
 
@@ -54,8 +49,8 @@ function love.load()
     camera.marginHorizontal = camera.width / 4
     camera.marginVertical = camera.height / 4
 
-    map:addCustomLayer("Sprite Layer", 4)
-    local spriteLayer = map.layers["Sprite Layer"]
+    map:addCustomLayer("Sprites", 4)
+    local spriteLayer = map.layers["Sprites"]
     
     function spriteLayer:update(dt)
         player:update(dt)
@@ -72,7 +67,7 @@ function love.load()
     end
 
     -- Remove the object layer as it is not needed anymore
-    map:removeLayer('Character Objects')
+    map:removeLayer('Objects')
 end
 
 function love.update(dt)
@@ -98,7 +93,6 @@ function love.draw()
             correction = playerCamOffsetX - (camera.width/2 - camera.marginHorizontal)
         end 
         Animation(camera, "x", camera.x, camera.x - correction, 0.4) 
-        --camera.x = camera.x - correction  
     end
     
     if math.abs(playerCamOffsetY) > camera.height/2 - camera.marginVertical then
@@ -108,8 +102,7 @@ function love.draw()
         else
             correction = playerCamOffsetY - (camera.height/2 - camera.marginVertical)
         end 
-        Animation(camera, "y", camera.y, camera.y - correction, 0.4) 
-        --camera.y = camera.y - correction 
+        Animation(camera, "y", camera.y, camera.y - correction, 0.4)
     end
 
     love.graphics.scale(camera.zoom, camera.zoom)
@@ -120,10 +113,20 @@ function love.draw()
     love.graphics.translate(camera.x - camera.width/2, camera.y - camera.height/2)
     love.graphics.scale(1/camera.zoom)
     GUIDraw()
+
 end
 
 function love.keypressed(key)
     if key == 'escape' then love.event.quit()
     elseif key == 'space' then player:interact() 
+    end 
+end
+
+function removeObject(o)
+    for i, object in pairs(objects) do
+        if object == o then
+            objects[i] = nil
+            break
+        end
     end 
 end
