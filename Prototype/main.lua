@@ -4,12 +4,12 @@ local bump = require 'lib.bump'
 require 'lib.EGS.Class'
 require 'lib.EGS.GUIElements.GUIMain'
 
+require 'entities.animation'
 require 'entities.sprite'
 require 'entities.player'
 require 'entities.object'
 require 'entities.interaction.answer'
 require 'entities.interaction.message'
-require 'entities.animation'
 
 local world, map
 local camera = {zoom, x, y, width, height, marginHorizontal, marginVertical}
