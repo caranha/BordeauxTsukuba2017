@@ -18,7 +18,7 @@ return {
       tileheight = 8,
       spacing = 0,
       margin = 0,
-      image = "tileset.png",
+      image = "imgs/tileset.png",
       imagewidth = 512,
       imageheight = 512,
       tileoffset = {
