@@ -32,7 +32,7 @@ function Object:disappear()
 end
 
 function Object:pickedBy(e)
-    e.inventory[#e.inventory] = self
+    e:addToInventory(self)
     self:disappear()
 end
 
