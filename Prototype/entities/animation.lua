@@ -27,12 +27,13 @@ function Animation:__init(reference, property, firstValue, lastValue, duration)
 end
 
 function Animation:update(dt)
-    self.current = self.current + dt
-    if self.current > self.duration and not self.done then
-        self.current = self.duration
-        self.done = true
-    else
-        self.reference[self.property] = (self.current / self.duration) * (self.lastValue - self.firstValue) + self.firstValue    
+    if not self.done then
+      self.current = self.current + dt
+      if self.current > self.duration then
+          self.current = self.duration
+          self.done = true
+      end
+      self.reference[self.property] = (self.current / self.duration) * (self.lastValue - self.firstValue) + self.firstValue    
     end
 end
 

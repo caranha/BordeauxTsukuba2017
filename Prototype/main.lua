@@ -102,8 +102,8 @@ function love.draw()
         else
             correction = playerCamOffsetY - (camera.height/2 - camera.marginVertical)
         end 
-
-        camera.y = camera.y - correction 
+        Animation(camera, "y", camera.y, camera.y - correction, 0.5) 
+        --camera.y = camera.y - correction 
     end
 
     love.graphics.scale(camera.zoom, camera.zoom)
