@@ -2,17 +2,24 @@ local sti = require 'lib.sti'
 local bump = require 'lib.bump'
 local bump_debug = require 'lib.bump_debug'
 
+require("lib/EGS/Class")
+require("lib/EGS/GUIElements/GUIMain")
+
 require 'entities.sprite'
 require 'entities.player'
 require 'entities.npc'
+require 'entities.interaction.answer'
+require 'entities.interaction.message'
 
 local world, map
 local player
 local npcs = {}
 local npcs_count = 0
+local dialog
 
 function love.load()
-
+    love.window.setTitle("Prototype")
+    
     -- Load map file and bump world for collisions
     world = bump.newWorld(32)
     map = sti("res/map.lua", {"bump"})
@@ -35,25 +42,27 @@ function love.load()
 end
 
 function love.update(dt)
-	map:update(dt)
+    map:update(dt)
 
     player:update(dt)
 
     for i=1,npcs_count do
         npcs[i]:update(dt)
     end
-
+    
+    GUIUpdate(dt)
 end
 
 function love.draw()
+    love.graphics.setColor(255, 255, 255)
 	-- Scale world
     local scale = 2
     local screen_width = love.graphics.getWidth() / scale
     local screen_height = love.graphics.getHeight() / scale
 
     -- Translate world so that player is always centred
-    local tx = math.floor(player.x - screen_width / 2)
-    local ty = math.floor(player.y - screen_height / 2)
+    local tx = math.floor(player.x - (screen_width - player.width) / 2)
+    local ty = math.floor(player.y - (screen_height - player.width) / 2)
 
     -- Transform world
     love.graphics.scale(scale)
@@ -67,8 +76,10 @@ function love.draw()
     end
     
     -- Collision debug
-    bump_debug.draw(world)
-    love.graphics.setColor(255, 255, 255)
+    -- bump_debug.draw(world)
+    love.graphics.translate(tx, ty)
+    love.graphics.scale(1/scale)
+    GUIDraw()
 end
 
 function love.keypressed(key)
@@ -76,4 +87,3 @@ function love.keypressed(key)
     elseif key == 'space' then player:interact() 
     end 
 end
-

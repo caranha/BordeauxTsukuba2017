@@ -1,3 +1,5 @@
+require 'res.dialogs.welcome'
+
 NPC = {}
 NPC.__index = NPC
 
@@ -19,15 +21,4 @@ local imageFile = 'res/npc.png'
 function NPC:__init(x, y, world, name)
 	Sprite.__init(self, x, y, imageFile, world)
     self.name = name
-end
-
-function NPC:draw()
-    Sprite.draw(self)
-    love.graphics.printf(self.name, self.x, self.y - 16, self.width, 'center')
-end
-
-function NPC:interactWith(e)
-    if getmetatable(e) == Player then
-        print('Interacting with player !')
-    end
 end

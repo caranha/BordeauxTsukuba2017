@@ -61,5 +61,4 @@ function Player:interact()
         local item = items[1]
         item:interactWith(self)
     end
-
 end
