@@ -11,13 +11,17 @@ setmetatable(Player, {
         return self
         end,
     }
-) 
+)
 
-local speed = 96
+local speed = 72
 local imageFile = 'res/player.png'
 
-function Player:__init(x, y, world)
-	Sprite.__init(self, x, y, imageFile, world)
+function Player:__init(x, y)
+	Sprite.__init(self, x, y, imageFile)
+    self.inventory = {}
+    self.kindness = 0
+    self.intelligence = 0
+    self.stealth = 0
 end
 
 function Player:update(dt)
@@ -35,10 +39,10 @@ function Player:update(dt)
     end
 
     if dx ~= 0 or dy ~= 0 then
-        self.x, self.y, cols, cols_len = self.world:move(self, self.x + dx, self.y + dy)
+        self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
     end
 
-    local actualX, actualY, cols, len = self.world:check(self, self.x, self.y)
+    local actualX, actualY, cols, len = world:check(self, self.x, self.y)
     for i=1,len do
         print(cols[i].type)
     end
@@ -49,7 +53,7 @@ function Player:interact()
     local centerX, centerY = self:getCenter() 
 
     local items, len = 
-        self.world:queryRect(
+        world:queryRect(
             self.x - 1,
             self.y - 1,
             self.width + 2,
