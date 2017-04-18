@@ -71,6 +71,12 @@ function love.update(dt)
 end
 
 
+function drawPlayerInventory()
+    for _, obj in pairs(player.inventory) do
+        obj:draw()
+    end
+end
+
 function love.draw()
 
     local playerCenterX, playerCenterY = player:getCenter()
@@ -104,8 +110,11 @@ function love.draw()
 
     map:draw()
 
+
     love.graphics.translate(camera.x - camera.width/2, camera.y - camera.height/2)
+    drawPlayerInventory()
     love.graphics.scale(1/camera.zoom)
+    
     GUIDraw()
 
 end
