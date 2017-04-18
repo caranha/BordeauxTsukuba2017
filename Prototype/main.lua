@@ -9,6 +9,7 @@ require 'entities.player'
 require 'entities.object'
 require 'entities.interaction.answer'
 require 'entities.interaction.message'
+require 'entities.animation'
 
 local world, map
 local camera = {zoom, x, y, width, height, marginHorizontal, marginVertical}
@@ -44,8 +45,8 @@ function love.load()
     camera.y = player.y + player.height / 2 
     camera.width = love.graphics.getWidth() / camera.zoom
     camera.height = love.graphics.getHeight() / camera.zoom
-    camera.marginHorizontal = camera.width / 5
-    camera.marginVertical = camera.height / 5
+    camera.marginHorizontal = camera.width / 4
+    camera.marginVertical = camera.height / 4
 
     map:addCustomLayer("Sprite Layer", 4)
     local spriteLayer = map.layers["Sprite Layer"]
@@ -69,10 +70,11 @@ function love.load()
 end
 
 function love.update(dt)
-	map:update(dt)
-
+    map:update(dt)
     GUIUpdate(dt)
+    updateAnimations(dt)
 end
+
 
 function love.draw()
 
@@ -89,8 +91,8 @@ function love.draw()
         else
             correction = playerCamOffsetX - (camera.width/2 - camera.marginHorizontal)
         end 
-
-        camera.x = camera.x - correction  
+        Animation(camera, "x", camera.x, camera.x - correction, 0.5) 
+        --camera.x = camera.x - correction  
     end
     
     if math.abs(playerCamOffsetY) > camera.height/2 - camera.marginVertical then

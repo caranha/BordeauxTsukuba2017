@@ -21,7 +21,7 @@ function Message:update(dt)
     self.elapsed = self.elapsed + dt
     if self.elapsed > self.delay then
         self.progress = self.elapsed / (self.timeToAnswer + self.delay)
-        initAnswer({"a", "b", "c", "d"})
+        initAnswer({"a", "b", "c", "d", "e"})
     end
 end
 
