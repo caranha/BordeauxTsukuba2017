@@ -5,7 +5,7 @@ end
 Answer.__buttons = { answer1, answer2 }
 
 for i, button in ipairs(Answer.__buttons) do    
-    button.size = { 
+   button.size = { 
     love.graphics.getWidth() * (1 / #Answer.__buttons),
     love.graphics.getHeight() * 0.2
   }
@@ -17,10 +17,11 @@ for i, button in ipairs(Answer.__buttons) do
   button.position = { button.__hiddenPosition[1], button.__hiddenPosition[2] }
   button.mouseButtonLUp:connect(function()
       hideAnswers()
+      Answer.emitter.message = Message(button.text, 2, 2, Answer.receiver)
+      Answer.emitter.isTalking = Answer.receiver
   end)
   button.borderColor = { 255, 255, 255 }
 end
-
 
 function revealAnswers()
   for i, button in ipairs(Answer.__buttons) do
@@ -34,7 +35,12 @@ function hideAnswers()
   end
 end
 
-function setAnswers(answer1, answer2)
-  Answer.__buttons[1].text = answer1
-  Answer.__buttons[2].text = answer2
+function setAnswers(possibleAnswers, emitter, receiver)
+  if possibleAnswers ~= nil then
+    Answer.__buttons[1].text = possibleAnswers[1]
+    Answer.__buttons[2].text = possibleAnswers[2]
+    Answer.emitter = emitter
+    Answer.receiver = receiver
+    revealAnswers()
+  end
 end

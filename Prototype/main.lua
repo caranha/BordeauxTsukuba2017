@@ -1,3 +1,9 @@
+function analyse(table)
+  for k,v in pairs(table) do
+    print(k, v)
+  end
+end
+
 local sti = require 'lib.sti'
 local bump = require 'lib.bump'
 
@@ -91,7 +97,7 @@ function love.draw()
         else
             correction = playerCamOffsetX - (camera.width/2 - camera.marginHorizontal)
         end 
-        Animation(camera, "x", camera.x, camera.x - correction, 0.5) 
+        Animation(camera, "x", camera.x, camera.x - correction, 0.4) 
         --camera.x = camera.x - correction  
     end
     
@@ -102,7 +108,7 @@ function love.draw()
         else
             correction = playerCamOffsetY - (camera.height/2 - camera.marginVertical)
         end 
-        Animation(camera, "y", camera.y, camera.y - correction, 0.5) 
+        Animation(camera, "y", camera.y, camera.y - correction, 0.4) 
         --camera.y = camera.y - correction 
     end
 

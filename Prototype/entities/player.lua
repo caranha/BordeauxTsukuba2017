@@ -21,6 +21,7 @@ function Player:__init(x, y, world)
 end
 
 function Player:update(dt)
+    Sprite.update(self, dt)
     local dx, dy = 0, 0
     if love.keyboard.isDown('right') then
         dx = speed * dt
@@ -39,10 +40,6 @@ function Player:update(dt)
     end
 
     local actualX, actualY, cols, len = self.world:check(self, self.x, self.y)
-    for i=1,len do
-        print(cols[i].type)
-    end
-
 end
 
 function Player:interact()
