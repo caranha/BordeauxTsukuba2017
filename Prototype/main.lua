@@ -11,10 +11,12 @@ require 'entities.interaction.answer'
 require 'entities.interaction.message'
 
 local world, map
+local camera = {zoom, x, y, width, height, marginHorizontal, marginVertical}
 local player
 local objects = {}
 local objects_count = 0
 local dialog
+
 
 function love.load()
     love.graphics.setDefaultFilter( 'nearest', 'nearest' )
@@ -36,6 +38,14 @@ function love.load()
             objects[objects_count] = Object(object.x, object.y, world, object.name)
         end
     end
+
+    camera.zoom = 4
+    camera.x = player.x + player.width / 2 
+    camera.y = player.y + player.height / 2 
+    camera.width = love.graphics.getWidth() / camera.zoom
+    camera.height = love.graphics.getHeight() / camera.zoom
+    camera.marginHorizontal = camera.width / 5
+    camera.marginVertical = camera.height / 5
 
     map:addCustomLayer("Sprite Layer", 4)
     local spriteLayer = map.layers["Sprite Layer"]
@@ -65,24 +75,42 @@ function love.update(dt)
 end
 
 function love.draw()
-	-- Scale world
-    local scale = 4
-    local screen_width = love.graphics.getWidth() / scale
-    local screen_height = love.graphics.getHeight() / scale
 
-    -- Translate world so that player is always centred
-    local tx = math.floor(player.x - (screen_width - player.width) / 2)
-    local ty = math.floor(player.y - (screen_height - player.width) / 2)
+    local playerCenterX, playerCenterY = player:getCenter()
 
-    -- Transform world
-    love.graphics.scale(scale, scale)
-    love.graphics.translate(-tx, -ty)
+    local playerCamOffsetX, playerCamOffsetY = 
+        camera.x - playerCenterX,
+        camera.y - playerCenterY
 
-    -- Draw world
+    if math.abs(playerCamOffsetX) > camera.width/2 - camera.marginHorizontal then
+        local correction
+        if playerCenterX > camera.x then
+            correction = playerCamOffsetX + (camera.width/2 - camera.marginHorizontal)
+        else
+            correction = playerCamOffsetX - (camera.width/2 - camera.marginHorizontal)
+        end 
+
+        camera.x = camera.x - correction  
+    end
+    
+    if math.abs(playerCamOffsetY) > camera.height/2 - camera.marginVertical then
+        local correction
+        if playerCenterY > camera.y then
+            correction = playerCamOffsetY + (camera.height/2 - camera.marginVertical)
+        else
+            correction = playerCamOffsetY - (camera.height/2 - camera.marginVertical)
+        end 
+
+        camera.y = camera.y - correction 
+    end
+
+    love.graphics.scale(camera.zoom, camera.zoom)
+    love.graphics.translate(-camera.x + camera.width / 2, -camera.y + camera.height / 2)
+
     map:draw()
 
-    love.graphics.translate(tx, ty)
-    love.graphics.scale(1/scale)
+    love.graphics.translate(camera.x - camera.width/2, camera.y - camera.height/2)
+    love.graphics.scale(1/camera.zoom)
     GUIDraw()
 end
 
