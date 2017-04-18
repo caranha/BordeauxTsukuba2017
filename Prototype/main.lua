@@ -1,19 +1,25 @@
 local sti = require 'lib.sti'
 local bump = require 'lib.bump'
 
+require 'lib.EGS.Class'
+require 'lib.EGS.GUIElements.GUIMain'
+
 require 'entities.sprite'
 require 'entities.player'
 require 'entities.object'
+require 'entities.interaction.answer'
+require 'entities.interaction.message'
 
 local world, map
 local player
 local objects = {}
 local objects_count = 0
+local dialog
 
 function love.load()
-
     love.graphics.setDefaultFilter( 'nearest', 'nearest' )
-
+    love.window.setTitle("Prototype")
+    
     -- Load map file and bump world for collisions
     world = bump.newWorld(8)
     map = sti("res/map.lua", {"bump"})
@@ -54,6 +60,8 @@ end
 
 function love.update(dt)
 	map:update(dt)
+
+    GUIUpdate(dt)
 end
 
 function love.draw()
@@ -63,8 +71,8 @@ function love.draw()
     local screen_height = love.graphics.getHeight() / scale
 
     -- Translate world so that player is always centred
-    local tx = math.floor(player.x - screen_width / 2)
-    local ty = math.floor(player.y - screen_height / 2)
+    local tx = math.floor(player.x - (screen_width - player.width) / 2)
+    local ty = math.floor(player.y - (screen_height - player.width) / 2)
 
     -- Transform world
     love.graphics.scale(scale, scale)
@@ -72,7 +80,10 @@ function love.draw()
 
     -- Draw world
     map:draw()
-    
+
+    love.graphics.translate(tx, ty)
+    love.graphics.scale(1/scale)
+    GUIDraw()
 end
 
 function love.keypressed(key)
@@ -80,4 +91,3 @@ function love.keypressed(key)
     elseif key == 'space' then player:interact() 
     end 
 end
-
