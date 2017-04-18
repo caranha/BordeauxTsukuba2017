@@ -13,7 +13,7 @@ setmetatable(Player, {
     }
 ) 
 
-local speed = 128
+local speed = 96
 local imageFile = 'res/player.png'
 
 function Player:__init(x, y, world)
@@ -49,12 +49,12 @@ function Player:interact()
     local centerX, centerY = self:getCenter() 
 
     local items, len = 
-    self.world:queryRect(
-        self.x - 1,
-        self.y - 1,
-        self.width + 2,
-        self.height + 2,  
-        function(e) return e ~= self and e.interactWith end
+        self.world:queryRect(
+            self.x - 1,
+            self.y - 1,
+            self.width + 2,
+            self.height + 2,  
+            function(e) return e ~= self and e.interactWith end
         )
 
     if len > 0 then
