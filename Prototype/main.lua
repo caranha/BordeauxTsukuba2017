@@ -27,7 +27,7 @@ function love.load()
     
     -- Load map file and bump world for collisions
     world = bump.newWorld(8)
-    map = sti("res/map.lua", {"bump"})
+    map = sti("res/maps/start.lua", {"bump"})
     map:bump_init(world)
 
     -- Create the player at his spawn 
