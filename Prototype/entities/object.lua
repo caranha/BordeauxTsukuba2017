@@ -17,9 +17,9 @@ setmetatable(Object, {
 
 local speed = 128
 
-function Object:__init(x, y, name, type)
+function Object:__init(x, y, name, type, imagefile)
 
-    local imageFile = ('res/imgs/%s.png'):format(type)
+    local imageFile = ('res/imgs/%s'):format(imagefile)
 
 	Sprite.__init(self, x, y, imageFile)
     self.name = name

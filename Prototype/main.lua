@@ -35,7 +35,7 @@ function love.load()
         if object.name == 'spawn' then
             player = Player(object.x, object.y)
         elseif object.type and object.type ~= '' then
-            objects[#objects + 1] = Object(object.x, object.y, object.name, object.type)
+            objects[#objects + 1] = Object(object.x, object.y, object.name, object.type, object.properties.imagefile)
         end
     end
 

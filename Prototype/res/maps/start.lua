@@ -1907,20 +1907,9 @@ return {
           height = 16,
           rotation = 0,
           visible = true,
-          properties = {}
-        },
-        {
-          id = 4,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 408,
-          y = -34,
-          width = 0,
-          height = 0,
-          rotation = 0,
-          visible = true,
-          properties = {}
+          properties = {
+            ["imagefile"] = "npc.png"
+          }
         },
         {
           id = 5,
@@ -1933,7 +1922,9 @@ return {
           height = 16,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["imagefile"] = "item.png"
+          }
         }
       }
     }
