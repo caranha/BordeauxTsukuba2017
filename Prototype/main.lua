@@ -17,7 +17,7 @@ local dialog
 
 local currentNarration = Narration('res/narrs/controls.txt')
 local currentDialogue
-currentNarration:setOnFinished(function() currentDialogue = Dialogue('res/dialogs/welcome', {name = 'Pr. Noname'}) end)
+currentNarration:setOnFinished(function() setCurrentDialogue(Dialogue('res/dialogs/welcome', {name = 'Pr. Noname'})) end)
 
 
 function buildCamera()
