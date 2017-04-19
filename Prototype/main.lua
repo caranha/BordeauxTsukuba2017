@@ -10,14 +10,18 @@ require 'entities.player'
 require 'entities.object'
 require 'entities.interaction.answer'
 require 'entities.interaction.message'
+require 'narration'
 
 local camera = {zoom, x, y, width, height, marginHorizontal, marginVertical}
 local player
 local objects = {}
 local dialog
 
+local currentNarration = Narration('res/narrs/intro.txt')
 
 function love.load()
+
+
     love.graphics.setDefaultFilter( 'nearest', 'nearest' )
     love.window.setTitle("Prototype")
     
@@ -65,9 +69,11 @@ function love.load()
 end
 
 function love.update(dt)
-    map:update(dt)
-    GUIUpdate(dt)
-    updateAnimations(dt)
+    if currentNarration.isDone then
+        map:update(dt)
+        GUIUpdate(dt)
+        updateAnimations(dt)
+    end
 end
 
 
@@ -114,14 +120,16 @@ function love.draw()
     love.graphics.translate(camera.x - camera.width/2, camera.y - camera.height/2)
     drawPlayerInventory()
     love.graphics.scale(1/camera.zoom)
-    
     GUIDraw()
 
+    if not currentNarration.isStarted then currentNarration:nextLine() end
+    if not currentNarration.isDone then currentNarration:printLine() end
 end
 
 function love.keypressed(key)
     if key == 'escape' then love.event.quit()
-    elseif key == 'space' then player:interact() 
+    elseif key == 'space' then player:interact()
+    elseif key == 'return' and not currentNarration.isDone then currentNarration:nextLine()
     end 
 end
 
@@ -132,4 +140,8 @@ function removeObject(o)
             break
         end
     end 
+end
+
+function setCurrentNarration(filename)
+    currentNarration = Narration(filename)
 end
