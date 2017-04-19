@@ -34,8 +34,12 @@ function love.load()
     for k, object in pairs(map.objects) do
         if object.name == 'spawn' then
             player = Player(object.x, object.y)
-        elseif object.type and object.type ~= '' then
-            objects[#objects + 1] = Object(object.x, object.y, object.name, object.type, object.properties.imagefile)
+
+        elseif object.type then
+
+            if object.type == 'npc' or object.type == 'item' then
+                objects[#objects + 1] = Object(object.x, object.y, object.name, object.type, object.properties.imagefile)
+            end
         end
     end
 

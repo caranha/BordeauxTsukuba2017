@@ -8,7 +8,7 @@ return {
   height = 32,
   tilewidth = 8,
   tileheight = 8,
-  nextobjectid = 6,
+  nextobjectid = 14,
   properties = {},
   tilesets = {
     {
@@ -1916,14 +1916,59 @@ return {
           name = "key",
           type = "item",
           shape = "rectangle",
-          x = 72,
-          y = 40,
+          x = 64,
+          y = 176,
           width = 16,
           height = 16,
           rotation = 0,
           visible = true,
           properties = {
             ["imagefile"] = "item.png"
+          }
+        },
+        {
+          id = 8,
+          name = "home",
+          type = "mapchanger",
+          shape = "rectangle",
+          x = 208,
+          y = 96,
+          width = 16,
+          height = 8,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["mapfile"] = "home.lua"
+          }
+        },
+        {
+          id = 11,
+          name = "map1",
+          type = "mapchanger",
+          shape = "rectangle",
+          x = 264,
+          y = 0,
+          width = 48,
+          height = 8,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["mapfile"] = "map1.lua"
+          }
+        },
+        {
+          id = 13,
+          name = "map2",
+          type = "mapchanger",
+          shape = "rectangle",
+          x = 760,
+          y = 144,
+          width = 8,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["mapfile"] = "map2.lua"
           }
         }
       }
