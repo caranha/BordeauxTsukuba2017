@@ -9,32 +9,33 @@ setmetatable(Message, {
   end,
   })
 
-function Message:__init(content, delay, timeToAnswer)
+function Message:__init(content, delay, timeToAnswer, emitter, receiver, possibleAnswers)
   self.text = love.graphics.newText(love.graphics.getFont(), content)
   self.delay = delay
   self.timeToAnswer = timeToAnswer
   self.elapsed = 0
   self.progress = 0
   self.sent = false
-  self.done = false
+  self.emitter = emitter
+  self.receiver = receiver
+  self.possibleAnswers = possibleAnswers
 end
 
+-- return false if the message no longer needs to be updated
 function Message:update(dt)
-  if not self.done then
     self.elapsed = self.elapsed + dt
     if self.elapsed > self.delay then
       self.progress = self.elapsed / (self.timeToAnswer + self.delay)
       if not self.sent then
         self.sent = true
-        setAnswers("Hey", "Ho")
-        revealAnswers()
+        setAnswers(self.possibleAnswers, self.emitter, self.receiver)
       end
     end
     if self.elapsed > self.timeToAnswer + self.delay then
       hideAnswers()
-      self.done = true
+      return false
     end
-  end
+    return true
 end
 
 function Message:draw(x, y)

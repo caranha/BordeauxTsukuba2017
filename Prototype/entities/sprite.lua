@@ -16,19 +16,21 @@ function Sprite:__init(x, y, imageFile)
     self.image = love.graphics.newImage(imageFile)
     self.width = self.image:getWidth()
     self.height = self.image:getHeight()
-    self.message = Message("Hi", 2, 4)
+    self.world= world
+    self.world:add(self, x, y, self.width, self.height)
     self.isTalking = nil
-    
-    world:add(self, x, y , self.width, self.height)
 end
 
 function Sprite:update(dt)
     if self.isTalking then
-        self.message:update(dt)
+        if not self.message:update(dt) then
+          self.isTalking = nil
+        end
     end
 end
 
 function Sprite:draw()
+  love.graphics.setColor(255, 255, 255)
 	love.graphics.draw(
 		self.image,
 		math.floor(self.x),
@@ -51,5 +53,6 @@ function Sprite:drawMessage()
 end
 
 function Sprite:interactWith(e)
+    self.message = Message("Hi", 2, 4, e, self, { "yo", "hey" })
     self.isTalking = e
 end
