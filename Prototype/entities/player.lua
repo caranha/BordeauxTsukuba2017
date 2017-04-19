@@ -73,3 +73,23 @@ function Player:interact()
         item:interactWith(self)
     end
 end
+
+function Player:draw()
+    Sprite.draw(self)
+end
+
+function Player:addToInventory(o)
+
+    o.width = 16
+    o.height = 16
+    o.y = 4
+
+    if #self.inventory > 0 then
+        o.x = self.inventory[#self.inventory].x + 4
+    else
+        o.x = 4
+    end 
+
+    self.inventory[#self.inventory + 1] = o
+
+end
