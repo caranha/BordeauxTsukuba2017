@@ -38,6 +38,9 @@ function Narration:nextLine()
 
 	if self.currentLine > #self.lines then
 		self.isDone = true
+		if self.onFinished then
+			self.onFinished(self.args)
+		end
 		return
 	end
 	
@@ -45,15 +48,32 @@ function Narration:nextLine()
 end
 
 function Narration:printLine()
-
 	if self.isStarted and not self.isDone then
+
+		local str = self.lines[self.currentLine] .. ' [enter]' 
+
+		local text = love.graphics.newText(love.graphics.getFont(), str)
+		
+		love.graphics.setColor(255,255,255, 150)
+		love.graphics.rectangle(
+			"fill", 
+			(love.graphics.getWidth() - text:getWidth())/2 - 10, 
+			0, 
+			text:getWidth() + 20, 
+			text:getHeight() + 20)
+		
+		love.graphics.setColor(0,0,0)
 		love.graphics.printf(
-			self.lines[self.currentLine] .. ' [enter]', 
-			0 , 0 , 
+			str, 
+			0 , 10 , 
 			love.graphics.getWidth(), 
 			'center')
-	end
 
+	
+	end
 end
 
-
+function Narration:setOnFinished(func, args)
+	self.onFinished = func
+	self.args = args
+end

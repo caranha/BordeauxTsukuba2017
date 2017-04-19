@@ -15,8 +15,10 @@ local player
 local objects = {}
 local dialog
 
-local currentNarration = Narration('res/narrs/intro.txt')
+local currentNarration = Narration('res/narrs/controls.txt')
 local currentDialogue
+currentNarration:setOnFinished(function() currentDialogue = Dialogue('res/dialogs/welcome', {name = 'Pr. Noname'}) end)
+
 
 function buildCamera()
     camera.zoom = 4

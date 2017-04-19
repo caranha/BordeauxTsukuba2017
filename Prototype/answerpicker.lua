@@ -25,7 +25,7 @@ function AnswerPicker.setAnswers(dialog, answers)
       width = love.graphics.getWidth(),
       height = love.graphics.getHeight() * 0.2,
       text = '[finish conversation]',
-      func = function() dialog.isDone = true end
+      func = function() dialog:finish() end
     }
 
     AnswerPicker.buttons[1] = Button(flags)

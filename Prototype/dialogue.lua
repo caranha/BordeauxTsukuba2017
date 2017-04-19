@@ -22,6 +22,9 @@ function Dialogue:__init(file, e)
 	if not self.dialog or self.dialog == {} or not self.dialog then
 		self.isDone = true
 	end
+
+	self.onFinished = nil
+	self.args = nil
 end
 
 function Dialogue:start()
@@ -32,19 +35,46 @@ function Dialogue:start()
 end
 
 function Dialogue:drawMessage()
-	local text = self.interlocutor.name .. ' : ' .. self.currentExchange.text
+	if self.isStarted and not self.isDone then
 
-	love.graphics.printf(
-		text, 
-		0 , 0 , 
-		love.graphics.getWidth(), 
-		'center'
-	)
+		love.graphics.setColor(0,0,0)
 
+		local str = self.interlocutor.name .. ' : ' .. self.currentExchange.text
+
+		local text = love.graphics.newText(love.graphics.getFont(), str)
+
+		love.graphics.setColor(255,255,255, 150)
+		love.graphics.rectangle(
+			"fill", 
+			(love.graphics.getWidth() - text:getWidth())/2 - 10, 
+			0, 
+			text:getWidth() + 20, 
+			text:getHeight() + 20)
+
+		love.graphics.setColor(0,0,0)
+		love.graphics.printf(
+			str, 
+			0 , 10 , 
+			love.graphics.getWidth(), 
+			'center'
+		)
+	end
 end
 
 function Dialogue:setCurrentExchange(index)
 	self.currentExchange = self.dialog[index]
 
 	AnswerPicker.setAnswers(self, self.currentExchange.answers)
+end
+
+function Dialogue:setOnFinished(func, args)
+	self.onFinished = func
+	self.args = args
+end
+
+function Dialogue:finish()
+	self.isDone = true
+	if self.onFinished then
+		self.onFinished(self.args)
+	end
 end
