@@ -24,7 +24,7 @@ function Player:__init(x, y)
     self.stealth = 0
 end
 
-function Player:update(dt)
+function Player:update(dt, world)
     Sprite.update(self, dt)
     --local dx, dy = 0, 0
     local dx, dy = 0, 0 

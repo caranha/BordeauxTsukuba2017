@@ -18,31 +18,7 @@ local dialog
 local currentNarration = Narration('res/narrs/intro.txt')
 local currentDialogue
 
-function love.load()
-
-    love.graphics.setFont(love.graphics.newFont(20))
-
-    love.graphics.setDefaultFilter( 'nearest', 'nearest' )
-    love.window.setTitle("Prototype")
-    
-    -- Load map file and bump world for collisions
-    world = bump.newWorld(8)
-    map = sti("res/maps/start.lua", {"bump"})
-    map:bump_init(world)
-
-    -- Create the player at his spawn 
-    for k, object in pairs(map.objects) do
-        if object.name == 'spawn' then
-            player = Player(object.x, object.y)
-
-        elseif object.type then
-
-            if object.type == 'npc' or object.type == 'item' then
-                objects[#objects + 1] = Object(object.x, object.y, object.name, object.type, object.properties.imagefile)
-            end
-        end
-    end
-
+function buildCamera()
     camera.zoom = 4
     camera.x = player.x + player.width / 2 
     camera.y = player.y + player.height / 2 
@@ -50,14 +26,35 @@ function love.load()
     camera.height = love.graphics.getHeight() / camera.zoom
     camera.marginHorizontal = camera.width / 4
     camera.marginVertical = camera.height / 4
+end
+
+function loadMapAndWorld(mapfile)
+    world = bump.newWorld(8)
+    map = sti("res/maps/start.lua", {"bump"})
+    map:bump_init(world)
+
+    for k, object in pairs(map.objects) do
+        if object.name == 'spawn' then
+            player.x, player.y = object.x, object.y
+            world:add(player, player.x, player.y, player.width, player.height)
+
+        elseif object.type then
+
+            if object.type == 'npc' or object.type == 'item' then
+                local object = Object(object.x, object.y, object.name, object.type, object.properties.imagefile)
+                objects[#objects + 1] = object
+                world:add(object, object.x, object.y, object.width, object.height)
+            end
+        end
+    end
 
     map:addCustomLayer("Sprites", 4)
     local spriteLayer = map.layers["Sprites"]
     
     function spriteLayer:update(dt)
-        player:update(dt)
+        player:update(dt, world)
         for _, object in pairs(objects) do
-            object:update(dt)
+            object:update(dt, world)
         end
     end
 
@@ -67,9 +64,22 @@ function love.load()
             object:draw()
         end
     end
+end
 
-    -- Remove the object layer as it is not needed anymore
+function love.load()
+
+    love.graphics.setFont(love.graphics.newFont(20))
+    love.graphics.setDefaultFilter( 'nearest', 'nearest' )
+    love.window.setTitle("Prototype")
+    
+    player = Player(0,0)
+
+    loadMapAndWorld('res/maps/start.lua')
+
     map:removeLayer('Objects')
+
+    buildCamera()
+
 end
 
 function love.update(dt)
@@ -96,8 +106,7 @@ function drawPlayerInventory()
     end
 end
 
-function love.draw()
-    love.graphics.setColor(255, 255, 255)
+function followThePlayer()
     local playerCenterX, playerCenterY = player:getCenter()
 
     local playerCamOffsetX, playerCamOffsetY = 
@@ -123,6 +132,12 @@ function love.draw()
         end 
         Animation(camera, "y", camera.y, camera.y - correction, 0.4)
     end
+end
+
+function love.draw()
+    love.graphics.setColor(255, 255, 255)
+
+    followThePlayer()
 
     -- Draw the map
     love.graphics.push()
