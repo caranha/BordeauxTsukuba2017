@@ -1,3 +1,6 @@
+[ Move the player with the arrows ]
+[ Press 'space' to interact with objects or characters ]
+[ Now the story begins ]
 Your boss juste called you, he seems to be really panicked.
 He told you to come as fast as possible to the laboratory.
-You still a little sleepy but you have to go there.
+You are still a little sleepy but you have to go there.
