@@ -19,6 +19,7 @@ for i, button in ipairs(Answer.__buttons) do
       hideAnswers()
       Answer.emitter.message = Message(button.text, 2, 2, Answer.receiver)
       Answer.emitter.isTalking = Answer.receiver
+      Answer.emitter.isTalkingPosition = { x = Answer.receiver.x, y = Answer.receiver.y }
   end)
   button.borderColor = { 255, 255, 255 }
 end

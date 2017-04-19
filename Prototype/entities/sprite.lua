@@ -49,10 +49,11 @@ function Sprite:getCenter()
 end
 
 function Sprite:drawMessage()
-    self.message:draw(2 * self.x - self.isTalking.x , 2 * self.y - self.isTalking.y)
+    self.message:draw(2 * self.x - self.isTalkingPosition.x , 2 * self.y - self.isTalkingPosition.y)
 end
 
 function Sprite:interactWith(e)
     self.message = Message("Hi", 2, 4, e, self, { "yo", "hey" })
     self.isTalking = e
+    self.isTalkingPosition = { x = e.x, y = e.y }
 end

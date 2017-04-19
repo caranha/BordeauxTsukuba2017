@@ -113,7 +113,6 @@ function love.draw()
     love.graphics.translate(camera.x - camera.width/2, camera.y - camera.height/2)
     love.graphics.scale(1/camera.zoom)
     GUIDraw()
-
 end
 
 function love.keypressed(key)

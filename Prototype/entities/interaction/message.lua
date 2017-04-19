@@ -26,9 +26,10 @@ function Message:update(dt)
     self.elapsed = self.elapsed + dt
     if self.elapsed > self.delay then
       self.progress = self.elapsed / (self.timeToAnswer + self.delay)
-      if not self.sent then
+      if not self.sent and self.possibleAnswers ~= nil then
         self.sent = true
         setAnswers(self.possibleAnswers, self.emitter, self.receiver)
+        revealAnswers()
       end
     end
     if self.elapsed > self.timeToAnswer + self.delay then
