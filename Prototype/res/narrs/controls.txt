@@ -1,0 +1,3 @@
+[ Move the player with the arrows ]
+[ Press 'space' to interact with objects or characters ]
+[ Now the story begins ]
