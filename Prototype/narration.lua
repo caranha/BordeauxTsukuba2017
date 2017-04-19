@@ -45,9 +45,6 @@ function Narration:nextLine()
 end
 
 function Narration:printLine()
-	love.graphics.push()
-
-    love.graphics.setFont(love.graphics.newFont(20))
 
 	if self.isStarted and not self.isDone then
 		love.graphics.printf(
@@ -57,7 +54,6 @@ function Narration:printLine()
 			'center')
 	end
 
-	love.graphics.pop()
 end
 
 

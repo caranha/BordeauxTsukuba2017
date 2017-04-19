@@ -18,15 +18,10 @@ function Sprite:__init(x, y, imageFile)
     self.height = self.image:getHeight()
     self.world= world
     self.world:add(self, x, y, self.width, self.height)
-    self.isTalking = nil
+
 end
 
 function Sprite:update(dt)
-    if self.isTalking then
-        if not self.message:update(dt) then
-          self.isTalking = nil
-        end
-    end
 end
 
 function Sprite:draw()
@@ -39,21 +34,13 @@ function Sprite:draw()
 		1,
 		1
 	)
-  if self.isTalking then
-      self:drawMessage()
-  end
 end
 
 function Sprite:getCenter()
 	return self.x + self.width/2 , self.y + self.height/2
 end
 
-function Sprite:drawMessage()
-    self.message:draw(2 * self.x - self.isTalkingPosition.x , 2 * self.y - self.isTalkingPosition.y)
+function Sprite:interactWith(e)
+    setCurrentDialogue(Dialogue('res/dialogs/welcome', self, e))
 end
 
-function Sprite:interactWith(e)
-    self.message = Message("Hi", 2, 4, e, self, { "yo", "hey" })
-    self.isTalking = e
-    self.isTalkingPosition = { x = e.x, y = e.y }
-end

@@ -1,22 +1,14 @@
-function analyse(table)
-  for k,v in pairs(table) do
-    print(k, v)
-  end
-end
-
 local sti = require 'lib.sti'
 local bump = require 'lib.bump'
-
-require 'lib.EGS.Class'
-require 'lib.EGS.GUIElements.GUIMain'
 
 require 'entities.animation'
 require 'entities.sprite'
 require 'entities.player'
 require 'entities.object'
-require 'entities.interaction.answer'
-require 'entities.interaction.message'
+require 'dialogue'
 require 'narration'
+require 'gui.button'
+require 'answerpicker'
 
 local camera = {zoom, x, y, width, height, marginHorizontal, marginVertical}
 local player
@@ -24,9 +16,11 @@ local objects = {}
 local dialog
 
 local currentNarration = Narration('res/narrs/intro.txt')
+local currentDialogue
 
 function love.load()
 
+    love.graphics.setFont(love.graphics.newFont(20))
 
     love.graphics.setDefaultFilter( 'nearest', 'nearest' )
     love.window.setTitle("Prototype")
@@ -75,22 +69,31 @@ function love.load()
 end
 
 function love.update(dt)
-    if currentNarration.isDone then
+
+    if (not currentNarration or currentNarration.isDone)
+        and (not currentDialogue or currentDialogue.isDone) then
         map:update(dt)
-        GUIUpdate(dt)
         updateAnimations(dt)
     end
+
+    AnswerPicker.update()
 end
 
 
 function drawPlayerInventory()
     for _, obj in pairs(player.inventory) do
+        love.graphics.push()
+
+        love.graphics.scale(camera.zoom, camera.zoom)
+
         obj:draw()
+
+        love.graphics.pop()
     end
 end
 
 function love.draw()
-
+    love.graphics.setColor(255, 255, 255)
     local playerCenterX, playerCenterY = player:getCenter()
 
     local playerCamOffsetX, playerCamOffsetY = 
@@ -117,18 +120,30 @@ function love.draw()
         Animation(camera, "y", camera.y, camera.y - correction, 0.4)
     end
 
+    -- Draw the map
+    love.graphics.push()
     love.graphics.scale(camera.zoom, camera.zoom)
     love.graphics.translate(-camera.x + camera.width / 2, -camera.y + camera.height / 2)
-
     map:draw()
+    love.graphics.pop()
 
-
-    love.graphics.translate(camera.x - camera.width/2, camera.y - camera.height/2)
+    -- Draw the player's inventory
     drawPlayerInventory()
-    love.graphics.scale(1/camera.zoom)
-    GUIDraw()
-    if not currentNarration.isStarted then currentNarration:nextLine() end
-    if not currentNarration.isDone then currentNarration:printLine() end
+    
+    if currentNarration then
+        if not currentNarration.isStarted then currentNarration:nextLine() end
+        if not currentNarration.isDone then currentNarration:printLine() end
+    end
+
+    if currentDialogue then
+        if not currentDialogue.isStarted then currentDialogue:start() end
+        if not currentDialogue.isDone then 
+
+            currentDialogue:drawMessage()
+            AnswerPicker.draw() 
+        end
+    end
+
 end
 
 function love.keypressed(key)
@@ -136,6 +151,14 @@ function love.keypressed(key)
     elseif key == 'space' then player:interact()
     elseif key == 'return' and not currentNarration.isDone then currentNarration:nextLine()
     end 
+end
+
+function love.mousepressed(x, y, button, isTouch)
+    for _, btn in pairs(AnswerPicker.buttons) do
+        if btn:mousehover() and button == 1 then
+            btn.func(btn.args)
+        end
+    end
 end
 
 function removeObject(o)
@@ -149,4 +172,8 @@ end
 
 function setCurrentNarration(filename)
     currentNarration = Narration(filename)
+end
+
+function setCurrentDialogue(dialog)
+    currentDialogue = dialog
 end
