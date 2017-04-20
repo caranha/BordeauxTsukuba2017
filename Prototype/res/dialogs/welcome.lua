@@ -1,39 +1,35 @@
 local dialog = {
 	{
-		text = 'Hi !',
+		text = 'Well, we worked hard today !',
 		answers = {
 			{
 				nextIndex = 2,
-				text = 'Yo !'
-			},
-			{
-				nextIndex = 2,
-				text = 'Hey !'
+				text = '[ agree ]'
 			}
 		}
 	},
 	
 	{
-		text = 'How are you ?',
+		text = 'I think I can finish the serum tonight, you can go home. See you tomorrow !',
 		answers = {
+			{
+				text = 'See you !'
+			},
 			{
 				nextIndex = 3,
-				text = 'Pretty well !'
-			},
-			{
-				nextIndex = 4,
-				text = 'Not that good ...'
+				text = 'I would like to stay here to work with you.'
 			}
 		}
 	},
 	
 	{
-		text = 'Nice !'
+		text = 'Oh no I insist, your cat must be waiting for you !',
+		answers = {
+			{
+				text = 'Ok, see you tomorrow !'
+			}
+		}
 	},
-
-	{
-		text = 'Too bad ...'
-	}
 }
 
 return dialog
