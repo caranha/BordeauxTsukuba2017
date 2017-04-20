@@ -39,6 +39,6 @@ function Sprite:getCenter()
 end
 
 function Sprite:interactWith(e)
-    setCurrentDialogue(Dialogue('res/dialogs/welcome', self, e))
+    setCurrentDialogue(Dialogue('res/dials/welcome', self, e))
 end
 

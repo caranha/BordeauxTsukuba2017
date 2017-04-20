@@ -1,5 +1,3 @@
-require 'res.dialogs.welcome'
-
 Object = {}
 Object.__index = Object
 
