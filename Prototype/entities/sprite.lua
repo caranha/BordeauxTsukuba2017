@@ -38,7 +38,3 @@ function Sprite:getCenter()
 	return self.x + self.width/2 , self.y + self.height/2
 end
 
-function Sprite:interactWith(e)
-    setCurrentDialogue(Dialogue('res/dials/welcome', self, e))
-end
-

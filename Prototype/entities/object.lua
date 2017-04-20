@@ -36,7 +36,7 @@ end
 
 function Object:interactWith(e)
     if self.type == 'npc' then
-        Sprite.interactWith(self, e)
+        setCurrentDialogue(Dialogue('res/dials/welcome', self, e))
     elseif self.type == 'item' then
         self:pickedBy(e)
     end
