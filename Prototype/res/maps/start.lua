@@ -814,6 +814,18 @@ return {
           }
         },
         {
+          id = 1672,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1687,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
           id = 1712,
           properties = {
             ["collidable"] = true
@@ -839,6 +851,102 @@ return {
         },
         {
           id = 1716,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1736,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1737,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1738,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1739,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1740,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1741,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1742,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1743,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1744,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1745,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1746,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1747,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1748,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1749,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1750,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1751,
           properties = {
             ["collidable"] = true
           }
@@ -917,6 +1025,102 @@ return {
         },
         {
           id = 1799,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1800,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1801,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1802,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1803,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1804,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1805,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1806,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1807,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1808,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1809,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1810,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1811,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1812,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1813,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1814,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1815,
           properties = {
             ["collidable"] = true
           }
@@ -1073,6 +1277,30 @@ return {
         },
         {
           id = 1863,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1869,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1870,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1871,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1872,
           properties = {
             ["collidable"] = true
           }
@@ -1888,9 +2116,9 @@ return {
           name = "spawn",
           type = "",
           shape = "rectangle",
-          x = 528,
-          y = 112,
-          width = 16,
+          x = 530,
+          y = 104,
+          width = 12,
           height = 16,
           rotation = 0,
           visible = true,
@@ -1901,9 +2129,9 @@ return {
           name = "Pr. Noname",
           type = "npc",
           shape = "rectangle",
-          x = 544,
-          y = 112,
-          width = 16,
+          x = 546,
+          y = 104,
+          width = 12,
           height = 16,
           rotation = 0,
           visible = true,
