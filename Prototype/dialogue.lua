@@ -49,7 +49,7 @@ function Dialogue:drawMessage()
 			(love.graphics.getWidth() - text:getWidth())/2 - 10, 
 			0, 
 			text:getWidth() + 20, 
-			text:getHeight() + 20)
+			math.ceil(text:getWidth() / love.graphics.getWidth()) * text:getHeight() + 20)
 
 		love.graphics.setColor(0,0,0)
 		love.graphics.printf(
