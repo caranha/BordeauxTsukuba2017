@@ -12,7 +12,7 @@ setmetatable(Narration, {
 	end,
 })
 
-function Narration:__init(filename)
+function Narration:__init(filename, blockgame)
 
 	self.lines = {}
 
@@ -24,6 +24,7 @@ function Narration:__init(filename)
 	self.isDone = false
 	self.isStarted = false
 	self.currentLine = 0
+	self.isBlocking = blockgame
 
 	if #self.lines == 0 then
 		self.isDone = true

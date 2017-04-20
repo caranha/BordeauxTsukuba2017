@@ -10,15 +10,13 @@ require 'narration'
 require 'gui.button'
 require 'answerpicker'
 
-local camera = {zoom, x, y, width, height, marginHorizontal, marginVertical}
-local player
+local camera = {}
+local player = {} 
 local objects = {}
-local dialog
 
 local currentNarration = Narration('res/narrs/controls.txt')
 local currentDialogue
 currentNarration:setOnFinished(function() setCurrentDialogue(Dialogue('res/dials/welcome', {name = 'Pr. Noname'})) end)
-
 
 function buildCamera()
     camera.zoom = 4
@@ -43,8 +41,14 @@ function loadMapAndWorld(mapfile)
         elseif object.type then
 
             if object.type == 'npc' or object.type == 'item' then
-                local object = Object(object.x, object.y, object.name, object.type, object.properties.imagefile)
-                objects[#objects + 1] = object
+                local object = Object(
+                    object.x, object.y, 
+                    object.name, 
+                    object.type, 
+                    object.properties.imagefile)
+                
+                table.insert(objects, object)
+
                 world:add(object, object.x, object.y, object.width, object.height)
             end
         end
@@ -56,14 +60,17 @@ function loadMapAndWorld(mapfile)
     function spriteLayer:update(dt)
         player:update(dt, world)
         for _, object in pairs(objects) do
-            object:update(dt, world)
+            object:update(dt)
         end
     end
 
     function spriteLayer:draw()
         player:draw()
         for _, object in pairs(objects) do
-            object:draw()
+
+            if object.type ~= 'mapchanger' then
+                object:draw()
+            end
         end
     end
 end
@@ -74,7 +81,7 @@ function love.load()
     love.graphics.setDefaultFilter( 'nearest', 'nearest' )
     love.window.setTitle("Prototype")
     
-    player = Player(0,0)
+    player = Player(0,0)    
 
     loadMapAndWorld('res/maps/start.lua')
 
@@ -86,13 +93,13 @@ end
 
 function love.update(dt)
 
-    if (not currentNarration or currentNarration.isDone)
+    if (not currentNarration.isBlocking or currentNarration.isDone)
         and (not currentDialogue or currentDialogue.isDone) then
         map:update(dt)
         updateAnimations(dt)
-    end
 
-    AnswerPicker.update()
+    end
+        AnswerPicker.update()
 end
 
 
@@ -191,8 +198,8 @@ function removeObject(o)
     end 
 end
 
-function setCurrentNarration(filename)
-    currentNarration = Narration(filename)
+function setCurrentNarration(narration)
+    currentNarration = narration
 end
 
 function setCurrentDialogue(dialog)
