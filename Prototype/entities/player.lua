@@ -13,7 +13,7 @@ setmetatable(Player, {
     }
 )
 
-local speed = 72
+local speed = 128
 local imageFile = 'res/imgs/player.png'
 
 function Player:__init(x, y)
@@ -25,48 +25,41 @@ function Player:__init(x, y)
 end
 
 function Player:update(dt, world)
-    Sprite.update(self, dt)
-    --local dx, dy = 0, 0
+    Sprite.update(self, dt, world)
+
     local dx, dy = 0, 0 
     
     if love.keyboard.isDown('right') then
-        --dx = speed * dt
-        dx = 8
+        dx = speed * dt
     elseif love.keyboard.isDown('left') then
-        --dx = -speed * dt
-        dx = -8
+        dx = -speed * dt
     elseif love.keyboard.isDown('down') then
-        --dy = speed * dt
-        dy =  8
+        dy = speed * dt
     elseif love.keyboard.isDown('up') then
-        --dy = -speed * dt
-        dy = -8
+        dy = -speed * dt
         
     end
 
     if dx ~= 0 or dy ~= 0 then
         local xBefore, yBefore = self.x, self.y
         self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
-        Animation(self, "x", xBefore, self.x, 0.1, "walk")
-        Animation(self, "y", yBefore, self.y, 0.1, "walk")
     end
-    local actualX, actualY, cols, len = world:check(self, self.x, self.y)
-    for i=1,len do
-        print(cols[i].type)
+
+    local items, len = self:getObjectsInRange(1,1)
+
+    for _, item in pairs(items) do
+
+        if item.type == 'mapchanger' then
+            loadMapAndWorld('res/maps/' .. item.name .. '.lua')
+            break
+        end
     end
 end
 
 function Player:interact()
     local centerX, centerY = self:getCenter() 
 
-    local items, len = 
-        world:queryRect(
-            math.floor(self.x / 8) * 8 - 1,
-            self.y - 1,
-            math.ceil(self.width / 8) * 8 + 2,
-            self.height + 2,  
-            function(e) return e ~= self and e.interactWith end
-        )
+    local items, len = self:getObjectsInRange(1,1)
 
     if len > 0 then
         local item = items[1]
@@ -74,8 +67,26 @@ function Player:interact()
     end
 end
 
+function Player:getObjectsInRange(h , v)
+    return world:queryRect(
+            self.x - h,
+            self.y - v,
+            self.width + 2*h,
+            self.height + 2*v,  
+            function(e) return e ~= self and e.interactWith end
+        )
+end
+
 function Player:draw()
     Sprite.draw(self)
+
+    local items, len = self:getObjectsInRange(32,32)
+
+    for _, item in pairs(items) do
+        if item.type == 'mapchanger' then
+            item:draw()
+        end
+    end
 end
 
 function Player:addToInventory(o)
