@@ -1,5 +1,6 @@
 local sti = require 'lib.sti'
 local bump = require 'lib.bump'
+local gamera = require 'lib.gamera'
 
 require 'entities.animation'
 require 'entities.sprite'
@@ -14,65 +15,69 @@ local camera = {}
 local player = {} 
 local objects = {}
 
-local currentNarration = Narration('res/narrs/controls.txt')
-local currentDialogue
-currentNarration:setOnFinished(function() setCurrentDialogue(Dialogue('res/dials/welcome', {name = 'Pr. Noname'})) end)
+world, map = nil
+
+-- local currentNarration = Narration('res/narrs/controls.txt')
+-- local currentDialogue
+-- currentNarration:setOnFinished(function() setCurrentDialogue(Dialogue('res/dials/welcome', {name = 'Pr. Noname'})) end)
 
 function buildCamera()
-    camera.zoom = 4
-    camera.x = player.x + player.width / 2 
-    camera.y = player.y + player.height / 2 
-    camera.width = love.graphics.getWidth() / camera.zoom
-    camera.height = love.graphics.getHeight() / camera.zoom
-    camera.marginHorizontal = camera.width / 4
-    camera.marginVertical = camera.height / 4
+    camera = gamera.new(0,0, 20000, 20000)
+    camera:setScale(4.0)
+    camera:setPosition(player.x, player.y)
 end
 
 function loadMapAndWorld(mapfile)
+
+    sti:flush()
+    objects = {}
+    
     world = bump.newWorld(8)
-    map = sti("res/maps/start.lua", {"bump"})
+    map = sti(mapfile, {"bump"})
     map:bump_init(world)
-
-    for k, object in pairs(map.objects) do
-        if object.name == 'spawn' then
-            player.x, player.y = object.x, object.y
-            world:add(player, player.x, player.y, player.width, player.height)
-
-        elseif object.type then
-
-            if object.type == 'npc' or object.type == 'item' then
-                local object = Object(
-                    object.x, object.y, 
-                    object.name, 
-                    object.type, 
-                    object.properties.imagefile)
-                
-                table.insert(objects, object)
-
-                world:add(object, object.x, object.y, object.width, object.height)
-            end
-        end
-    end
 
     map:addCustomLayer("Sprites", 4)
     local spriteLayer = map.layers["Sprites"]
-    
+    spriteLayer.sprites = {}
+
+    for k, obj in pairs(map.objects) do
+        if obj.name == 'spawn' then
+            player.x, player.y = obj.x, obj.y
+            table.insert(spriteLayer.sprites, player)
+            world:add(player, player.x, player.y, player.width, player.height)
+
+        elseif obj.type then
+
+                local object = Object(
+                    obj.x, obj.y, 
+                    obj.name, 
+                    obj.type, 
+                    obj.properties.imagefile)
+                
+                table.insert(spriteLayer.sprites, object)
+                table.insert(objects, object)
+
+                world:add(object, object.x, object.y, object.width, object.height)
+        end
+    end
+
     function spriteLayer:update(dt)
-        player:update(dt, world)
-        for _, object in pairs(objects) do
-            object:update(dt)
+        for _, object in pairs(self.sprites) do
+            object:update(dt, world)
         end
     end
 
     function spriteLayer:draw()
-        player:draw()
-        for _, object in pairs(objects) do
+        for _, object in pairs(self.sprites) do
 
             if object.type ~= 'mapchanger' then
                 object:draw()
             end
         end
     end
+    
+    buildCamera()
+    map:removeLayer('Objects')
 end
 
 function love.load()
@@ -85,76 +90,37 @@ function love.load()
 
     loadMapAndWorld('res/maps/start.lua')
 
-    map:removeLayer('Objects')
-
-    buildCamera()
-
 end
 
 function love.update(dt)
 
-    if (not currentNarration.isBlocking or currentNarration.isDone)
+    if (not currentNarration or not currentNarration.isBlocking or currentNarration.isDone)
         and (not currentDialogue or currentDialogue.isDone) then
         map:update(dt)
         updateAnimations(dt)
 
     end
-        AnswerPicker.update()
+    AnswerPicker.update()
 end
 
 
 function drawPlayerInventory()
     for _, obj in pairs(player.inventory) do
-        love.graphics.push()
-
-        love.graphics.scale(camera.zoom, camera.zoom)
-
         obj:draw()
-
-        love.graphics.pop()
-    end
-end
-
-function followThePlayer()
-    local playerCenterX, playerCenterY = player:getCenter()
-
-    local playerCamOffsetX, playerCamOffsetY = 
-        camera.x - playerCenterX,
-        camera.y - playerCenterY
-
-    if math.abs(playerCamOffsetX) > camera.width/2 - camera.marginHorizontal then
-        local correction
-        if playerCenterX > camera.x then
-            correction = playerCamOffsetX + (camera.width/2 - camera.marginHorizontal)
-        else
-            correction = playerCamOffsetX - (camera.width/2 - camera.marginHorizontal)
-        end 
-        Animation(camera, "x", camera.x, camera.x - correction, 0.4) 
-    end
-    
-    if math.abs(playerCamOffsetY) > camera.height/2 - camera.marginVertical then
-        local correction
-        if playerCenterY > camera.y then
-            correction = playerCamOffsetY + (camera.height/2 - camera.marginVertical)
-        else
-            correction = playerCamOffsetY - (camera.height/2 - camera.marginVertical)
-        end 
-        Animation(camera, "y", camera.y, camera.y - correction, 0.4)
     end
 end
 
 function love.draw()
     love.graphics.setColor(255, 255, 255)
 
-    followThePlayer()
+    camera:setPosition(player.x, player.y)
 
     -- Draw the map
-    love.graphics.push()
-    love.graphics.scale(camera.zoom, camera.zoom)
-    love.graphics.translate(-camera.x + camera.width / 2, -camera.y + camera.height / 2)
-    map:draw()
-    love.graphics.pop()
-
+    camera:draw(
+        function(l,t,w,h)
+            map:draw()
+        end
+    )
     -- Draw the player's inventory
     drawPlayerInventory()
     
