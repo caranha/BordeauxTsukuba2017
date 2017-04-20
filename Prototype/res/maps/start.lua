@@ -2060,7 +2060,7 @@ return {
       y = 0,
       width = 96,
       height = 32,
-      visible = true,
+      visible = false,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
@@ -2136,7 +2136,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["imagefile"] = "npc.png"
+            ["imagefile"] = "noname.png"
           }
         },
         {
@@ -2144,14 +2144,14 @@ return {
           name = "key",
           type = "item",
           shape = "rectangle",
-          x = 64,
-          y = 176,
-          width = 16,
+          x = 82,
+          y = 186,
+          width = 12,
           height = 16,
           rotation = 0,
           visible = true,
           properties = {
-            ["imagefile"] = "item.png"
+            ["imagefile"] = "key.png"
           }
         },
         {
