@@ -61,9 +61,9 @@ function Player:interact()
 
     local items, len = 
         world:queryRect(
-            self.x - 1,
+            math.floor(self.x / 8) * 8 - 1,
             self.y - 1,
-            self.width + 2,
+            math.ceil(self.width / 8) * 8 + 2,
             self.height + 2,  
             function(e) return e ~= self and e.interactWith end
         )
