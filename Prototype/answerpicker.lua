@@ -13,7 +13,13 @@ function AnswerPicker.setAnswers(dialog, answers)
       height = love.graphics.getHeight() * 0.2,
       text = answer.text,
       args = answer.nextIndex,
-      func = function(id) dialog:setCurrentExchange(id) end
+      func = function(id) 
+          if id then
+            dialog:setCurrentExchange(id)
+          else
+            dialog:finish()
+          end
+        end
       }
 
       AnswerPicker.buttons[#AnswerPicker.buttons + 1] = Button(flags)
