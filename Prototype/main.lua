@@ -36,7 +36,6 @@ function loadMapAndWorld(mapfile)
     map = sti(mapfile, {"bump"})
     map:bump_init(world)
 
-    map:addCustomLayer("Sprites", 4)
     local spriteLayer = map.layers["Sprites"]
     spriteLayer.sprites = {}
 
@@ -44,7 +43,7 @@ function loadMapAndWorld(mapfile)
         if obj.name == 'spawn' then
             player.x, player.y = obj.x, obj.y
             table.insert(spriteLayer.sprites, player)
-            world:add(player, player.x, player.y, player.width, player.height)
+            world:add(player, player.x, player.y + player.height/2, player.width, player.height/2)
 
         elseif obj.type then
 
@@ -57,7 +56,7 @@ function loadMapAndWorld(mapfile)
                 table.insert(spriteLayer.sprites, object)
                 table.insert(objects, object)
 
-                world:add(object, object.x, object.y, object.width, object.height)
+                world:add(object, object.x, object.y + object.height/2, object.width, object.height/2)
         end
     end
 
@@ -68,6 +67,7 @@ function loadMapAndWorld(mapfile)
     end
 
     function spriteLayer:draw()
+        table.sort(self.sprites, function (a,b) return a.y < b.y end) 
         for _, object in pairs(self.sprites) do
 
             if object.type ~= 'mapchanger' then
@@ -75,7 +75,7 @@ function loadMapAndWorld(mapfile)
             end
         end
     end
-    
+
     buildCamera()
     map:removeLayer('Objects')
 end

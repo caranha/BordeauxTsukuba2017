@@ -42,7 +42,8 @@ function Player:update(dt, world)
 
     if dx ~= 0 or dy ~= 0 then
         local xBefore, yBefore = self.x, self.y
-        self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy)
+        self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy + self.height/2)
+        self.y = self.y - self.height/2
     end
 
     local items, len = self:getObjectsInRange(1,1)
