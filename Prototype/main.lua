@@ -52,12 +52,12 @@ function loadMapAndWorld(mapName, spawnName)
                     world:add(player, player.x, player.y + player.height/2, player.width, player.height/2)
                 end
             else
-                print(obj.name, obj.type)
                 local object = Object(
                     obj.x, obj.y, 
                     obj.name, 
                     obj.type, 
-                    obj.properties.imagefile)
+                    obj.properties.imagefile,
+                    obj.properties.dialogues)
                 
                 table.insert(spriteLayer.sprites, object)
                 table.insert(objects, object)
@@ -95,7 +95,7 @@ function love.load()
     
     player = Player(0,0)    
 
-    loadMapAndWorld('start', 'home')
+    loadMapAndWorld('home', 'home_upstairs')
 
 end
 
@@ -148,10 +148,14 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    if key == 'escape' then love.event.quit()
-    elseif key == 'space' then player:interact()
-    elseif key == 'return' and not currentNarration.isDone then currentNarration:nextLine()
-    end 
+
+    local scancode = love.keyboard.getScancodeFromKey(key)
+
+    if scancode == 'escape' then love.event.quit()
+    elseif scancode == 'space' then player:interact()
+    elseif scancode == 'return' and not currentNarration.isDone then currentNarration:nextLine()
+    end
+
 end
 
 function love.mousepressed(x, y, button, isTouch)

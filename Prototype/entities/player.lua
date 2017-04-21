@@ -18,6 +18,7 @@ local imageFile = 'res/imgs/player.png'
 
 function Player:__init(x, y)
 	Sprite.__init(self, x, y, imageFile)
+    self.name = 'Player'
     self.inventory = {}
     self.kindness = 0
 end
@@ -27,13 +28,13 @@ function Player:update(dt, world)
 
     local dx, dy = 0, 0 
     
-    if love.keyboard.isDown('right') then
+    if love.keyboard.isScancodeDown('d') then
         dx = speed * dt
-    elseif love.keyboard.isDown('left') then
+    elseif love.keyboard.isScancodeDown('a') then
         dx = -speed * dt
-    elseif love.keyboard.isDown('down') then
+    elseif love.keyboard.isScancodeDown('s') then
         dy = speed * dt
-    elseif love.keyboard.isDown('up') then
+    elseif love.keyboard.isScancodeDown('w') then
         dy = -speed * dt
         
     end
