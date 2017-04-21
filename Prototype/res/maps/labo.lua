@@ -628,6 +628,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
+            ["dialogues"] = "noname",
             ["imagefile"] = "noname.png"
           }
         }

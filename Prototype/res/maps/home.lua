@@ -8,7 +8,7 @@ return {
   height = 16,
   tilewidth = 8,
   tileheight = 8,
-  nextobjectid = 5,
+  nextobjectid = 12,
   properties = {},
   tilesets = {
     {
@@ -847,8 +847,8 @@ return {
         },
         {
           id = 4,
-          name = "cat",
-          type = "item",
+          name = "Cat",
+          type = "npc",
           shape = "rectangle",
           x = 112,
           y = 66,
@@ -857,7 +857,53 @@ return {
           rotation = 0,
           visible = true,
           properties = {
+            ["dialogues"] = "cat",
             ["imagefile"] = "cat.png"
+          }
+        },
+        {
+          id = 5,
+          name = "home_upstairs",
+          type = "spawn",
+          shape = "rectangle",
+          x = 122,
+          y = 32,
+          width = 12,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 6,
+          name = "tv",
+          type = "item",
+          shape = "rectangle",
+          x = 24,
+          y = 72,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["dialogues"] = "tv",
+            ["imagefile"] = "none16.png"
+          }
+        },
+        {
+          id = 10,
+          name = "coffee",
+          type = "item",
+          shape = "rectangle",
+          x = 40,
+          y = 34,
+          width = 14,
+          height = 14,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["dialogues"] = "coffee",
+            ["imagefile"] = "none14.png"
           }
         }
       }

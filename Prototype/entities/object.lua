@@ -15,13 +15,18 @@ setmetatable(Object, {
 
 local speed = 128
 
-function Object:__init(x, y, name, type, imagefile)
+function Object:__init(x, y, name, type, imagefile, dialogues)
 
     local imageFile = ('res/imgs/%s'):format(imagefile)
 
 	Sprite.__init(self, x, y, imageFile)
     self.name = name
     self.type = type
+    self.dialogues = dialogues
+
+    if self.dialogues then 
+        self.dialogue = dialogues .. '/default'
+    end
 end
 
 function Object:disappear()
@@ -35,9 +40,19 @@ function Object:pickedBy(e)
 end
 
 function Object:interactWith(e)
-    if self.type == 'npc' then
-        setCurrentDialogue(Dialogue('res/dials/welcome', self, e))
-    elseif self.type == 'item' then
+    if self.dialogue then
+        if self.type == 'npc' then
+            setCurrentDialogue(Dialogue('res/dials/' .. self.dialogue , self, e))
+        elseif self.type == 'item' then
+            setCurrentDialogue(Dialogue('res/dials/' .. self.dialogue , e, e))
+        end
+    else
         self:pickedBy(e)
+    end
+end
+
+function setDialogue(dialogName)
+    if self.dialogues then
+        self.dialogue = dialogues .. '/' .. dialogName
     end
 end
