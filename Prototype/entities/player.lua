@@ -67,7 +67,7 @@ function Player:interact()
     end
 end
 
-function Player:getObjectsInRange(h , v)
+function Player:getObjectsInRange(h, v)
     return world:queryRect(
             self.x - h,
             self.y - v,

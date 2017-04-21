@@ -112,9 +112,15 @@ end
 
 
 function drawPlayerInventory()
+
+    love.graphics.push()
+    love.graphics.scale(4)
+
     for _, obj in pairs(player.inventory) do
         obj:draw()
     end
+
+    love.graphics.pop()
 end
 
 function love.draw()

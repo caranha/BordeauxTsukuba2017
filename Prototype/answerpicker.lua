@@ -25,16 +25,26 @@ function AnswerPicker.setAnswers(dialog, answers)
       AnswerPicker.buttons[#AnswerPicker.buttons + 1] = Button(flags)
     end
   else
-    local flags = { 
-      x = 0,
-      y  = love.graphics.getHeight() * 0.8,
-      width = love.graphics.getWidth(),
-      height = love.graphics.getHeight() * 0.2,
-      text = '[finish conversation]',
-      func = function() dialog:finish() end
-    }
 
-    AnswerPicker.buttons[1] = Button(flags)
+    function AnswerPicker.update()
+      if love.keyboard.isScancodeDown('w')
+        or love.keyboard.isScancodeDown('a')
+        or love.keyboard.isScancodeDown('s')
+        or love.keyboard.isScancodeDown('d') then
+        dialog:finish()
+      end
+    end
+
+    -- local flags = { 
+      -- x = 0,
+      -- y  = love.graphics.getHeight() * 0.8,
+      -- width = love.graphics.getWidth(),
+      -- height = love.graphics.getHeight() * 0.2,
+      -- text = '[finish conversation]',
+      -- func = function() dialog:finish() end
+    -- }
+
+    -- AnswerPicker.buttons[1] = Button(flags)
   end
 end
 
