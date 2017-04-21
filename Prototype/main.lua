@@ -15,7 +15,7 @@ local camera = {}
 local player = {} 
 local objects = {}
 
-world, map = nil
+world, map, currentMap = nil, nil, nil
 
 -- local currentNarration = Narration('res/narrs/controls.txt')
 -- local currentDialogue
@@ -27,26 +27,32 @@ function buildCamera()
     camera:setPosition(player.x, player.y)
 end
 
-function loadMapAndWorld(mapfile)
+function loadMapAndWorld(mapName, spawnName)
+
+    currentMap = mapName
+    mapFile = ('res/maps/%s.lua'):format(mapName)
 
     sti:flush()
     objects = {}
     
     world = bump.newWorld(8)
-    map = sti(mapfile, {"bump"})
+    map = sti(mapFile, {"bump"})
     map:bump_init(world)
 
     local spriteLayer = map.layers["Sprites"]
     spriteLayer.sprites = {}
 
     for k, obj in pairs(map.objects) do
-        if obj.name == 'spawn' then
-            player.x, player.y = obj.x, obj.y
-            table.insert(spriteLayer.sprites, player)
-            world:add(player, player.x, player.y + player.height/2, player.width, player.height/2)
 
-        elseif obj.type then
-
+        if obj.type then
+            if obj.type == 'spawn' then 
+                if obj.name == spawnName then
+                    player.x, player.y = obj.x, obj.y
+                    table.insert(spriteLayer.sprites, player)
+                    world:add(player, player.x, player.y + player.height/2, player.width, player.height/2)
+                end
+            else
+                print(obj.name, obj.type)
                 local object = Object(
                     obj.x, obj.y, 
                     obj.name, 
@@ -57,6 +63,7 @@ function loadMapAndWorld(mapfile)
                 table.insert(objects, object)
 
                 world:add(object, object.x, object.y + object.height/2, object.width, object.height/2)
+            end
         end
     end
 
@@ -88,7 +95,7 @@ function love.load()
     
     player = Player(0,0)    
 
-    loadMapAndWorld('res/maps/start.lua')
+    loadMapAndWorld('start', 'home')
 
 end
 

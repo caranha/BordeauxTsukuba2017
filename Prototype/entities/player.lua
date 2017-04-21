@@ -20,8 +20,6 @@ function Player:__init(x, y)
 	Sprite.__init(self, x, y, imageFile)
     self.inventory = {}
     self.kindness = 0
-    self.intelligence = 0
-    self.stealth = 0
 end
 
 function Player:update(dt, world)
@@ -51,7 +49,7 @@ function Player:update(dt, world)
     for _, item in pairs(items) do
 
         if item.type == 'mapchanger' then
-            loadMapAndWorld('res/maps/' .. item.name .. '.lua')
+            loadMapAndWorld(item.name, currentMap)
             break
         end
     end
