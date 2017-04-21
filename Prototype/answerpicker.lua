@@ -22,7 +22,8 @@ function AnswerPicker.setAnswers(dialog, answers)
         end
       }
 
-      AnswerPicker.buttons[#AnswerPicker.buttons + 1] = Button(flags)
+      table.insert(AnswerPicker.buttons, Button(flags))
+
     end
   else
 
@@ -35,16 +36,6 @@ function AnswerPicker.setAnswers(dialog, answers)
       end
     end
 
-    -- local flags = { 
-      -- x = 0,
-      -- y  = love.graphics.getHeight() * 0.8,
-      -- width = love.graphics.getWidth(),
-      -- height = love.graphics.getHeight() * 0.2,
-      -- text = '[finish conversation]',
-      -- func = function() dialog:finish() end
-    -- }
-
-    -- AnswerPicker.buttons[1] = Button(flags)
   end
 end
 
