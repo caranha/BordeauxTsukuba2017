@@ -185,6 +185,7 @@ function setCurrentNarration(narration)
     currentNarration = narration
 end
 
-function setCurrentDialogue(dialog)
-    currentDialogue = dialog
+function setCurrentDialogue(e1, e2)
+
+    currentDialogue = Dialogue('res/dials/' .. e1.dialogues .. '/default', e2) 
 end

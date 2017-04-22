@@ -24,9 +24,6 @@ function Object:__init(x, y, name, type, imagefile, dialogues)
     self.type = type
     self.dialogues = dialogues
 
-    if self.dialogues then 
-        self.dialogue = dialogues .. '/default'
-    end
 end
 
 function Object:disappear()
@@ -40,19 +37,14 @@ function Object:pickedBy(e)
 end
 
 function Object:interactWith(e)
-    if self.dialogue then
+    if self.dialogues then
         if self.type == 'npc' then
-            setCurrentDialogue(Dialogue('res/dials/' .. self.dialogue , self, e))
+            setCurrentDialogue(self, self)
         elseif self.type == 'item' then
-            setCurrentDialogue(Dialogue('res/dials/' .. self.dialogue , e, e))
+            setCurrentDialogue(self, e)
         end
     else
         self:pickedBy(e)
     end
 end
 
-function setDialogue(dialogName)
-    if self.dialogues then
-        self.dialogue = dialogues .. '/' .. dialogName
-    end
-end

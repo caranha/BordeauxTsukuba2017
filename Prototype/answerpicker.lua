@@ -14,6 +14,7 @@ function AnswerPicker.setAnswers(dialog, answers)
       text = answer.text,
       args = answer.nextIndex,
       func = function(id) 
+          answer:response(dialog.interlocutor, player)
           if id then
             dialog:setCurrentExchange(id)
           else
