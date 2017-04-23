@@ -29,15 +29,26 @@ function analyse(object)
 end
 
 function updateCameraPosition(scene)
-    if math.abs(player.offsetX) > 8 * 4 then
-      Animation(camera, "__x", camera.__x, player.x + player.width / 2, 0.6)
-      player.offsetX = 0
+    if not isSmallScene(scene) then
+      if math.abs(player.offsetX) > 8 * 3 then
+        Animation(camera, "__x", camera.__x, player.x + player.width / 2, 1)
+        player.offsetX = 0
+      end
+      if math.abs(player.offsetY) > 8 * 3 then
+        Animation(camera, "__y", camera.__y, player.y + player.height / 2, 1)
+        player.offsetY = 0
+      end
+      camera:setPosition(camera.__x, camera.__y)
+    else
+      camera:setPosition(0, 0)
     end
-    if math.abs(player.offsetY) > 8 * 4 then
-      Animation(camera, "__y", camera.__y, player.y + player.height / 2, 0.6)
-      player.offsetY = 0
-    end
-    camera:setPosition(camera.__x, camera.__y)
+end
+
+function isSmallScene(scene)
+  local screenW, screenH, mode = love.window.getMode()
+  local sceneW = scene.currentMap.width * scene.currentMap.tilewidth * camera.scale
+  local sceneH = scene.currentMap.height * scene.currentMap.tileheight * camera.scale
+  return sceneW < screenW and sceneH < screenH
 end
 
 function loadMapAndWorld(mapName, spawnName, scene)
