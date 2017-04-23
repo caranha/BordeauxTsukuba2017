@@ -94,7 +94,7 @@ function love.keypressed(key)
 
     if scancode == 'escape' then love.event.quit()
     elseif scancode == 'space' then player:interact(currentScene)
-    elseif scancode == 'return' and not currentNarration.isDone then currentNarration:nextLine()
+    elseif scancode == 'return' and currentNarration and not currentNarration.isDone then currentNarration:nextLine()
     end
 
 end

@@ -16,6 +16,7 @@ setmetatable(Player, {
 )
 
 local speed = 128
+local deltaMovement = 16
 local imageFile = 'res/imgs/player.png'
 
 function Player:__init(x, y)
@@ -62,21 +63,21 @@ function Player:update(dt, scene)
 
     local dx, dy = 0, 0 
     
-    if love.keyboard.isScancodeDown('d') and not self:collisionAt(scene, 16, 0) then
+    if love.keyboard.isScancodeDown('d') and not self:collisionAt(scene, deltaMovement, 0) then
         self:pushMove(0)
-        dx = 16
+        dx = deltaMovement
     end
-    if love.keyboard.isScancodeDown('a') and not self:collisionAt(scene, -16, 0) then
+    if love.keyboard.isScancodeDown('a') and not self:collisionAt(scene, -deltaMovement, 0) then
         self:pushMove(1)
-        dx = -16
+        dx = -deltaMovement
     end
-    if love.keyboard.isScancodeDown('s') and not self:collisionAt(scene, 0, 16) then
+    if love.keyboard.isScancodeDown('s') and not self:collisionAt(scene, 0, deltaMovement) then
         self:pushMove(2)
-        dy = 16 
+        dy = deltaMovement 
     end
-    if love.keyboard.isScancodeDown('w') and not self:collisionAt(scene, 0, -16) then
+    if love.keyboard.isScancodeDown('w') and not self:collisionAt(scene, 0, -deltaMovement) then
         self:pushMove(3)
-        dy = -16       
+        dy = -deltaMovement       
     end
 
     if dx ~= 0 or dy ~= 0 then
@@ -86,13 +87,13 @@ function Player:update(dt, scene)
           player.isMoving = true
           local mouvement = self.mouvements:pop_left()
           if mouvement == 0 then
-            Animation(self, "x", self.x, self.x + 16, 0.2, self.endMove)
+            Animation(self, "x", self.x, self.x + deltaMovement, 0.2, self.endMove)
           elseif mouvement == 1 then
-            Animation(self, "x", self.x, self.x - 16, 0.2, self.endMove)
+            Animation(self, "x", self.x, self.x - deltaMovement, 0.2, self.endMove)
           elseif mouvement == 2 then
-            Animation(self, "y", self.y, self.y + 16, 0.2, self.endMove)
+            Animation(self, "y", self.y, self.y + deltaMovement, 0.2, self.endMove)
           elseif mouvement == 3 then
-            Animation(self, "y", self.y, self.y - 16, 0.2, self.endMove)
+            Animation(self, "y", self.y, self.y - deltaMovement, 0.2, self.endMove)
           end
         end
         self.offsetX = self.offsetX + dx
@@ -135,7 +136,6 @@ end
 function Player:collisionAt(scene, dx, dy)
   local xBefore, yBefore = self.x, self.y
   self:move(scene, dx, dy)
-  print(scene.currentMapName)
   local collision = xBefore + dx ~= self.x or yBefore + dy ~= self.y
   local items, len = self:getObjectsInRange(scene, 1,1)
   for _, item in pairs(items) do
@@ -161,8 +161,8 @@ end
 
 function Player:addToInventory(o)
 
-    o.width = 16
-    o.height = 16
+    o.width = deltaMovement
+    o.height = deltaMovement
     o.y = 4
 
     if #self.inventory > 0 then
@@ -172,5 +172,4 @@ function Player:addToInventory(o)
     end 
 
     self.inventory[#self.inventory + 1] = o
-
 end

@@ -17,7 +17,7 @@ function buildCamera()
     camera.__lastX = camera.__x
     camera.__lastY = camera.__y
     camera:setScale(4.0)
-    camera:setPosition(player.x, player.y)
+    camera:setPosition(player.x + player.width / 2, player.y + player.height / 2)
 
     return camera
 end
@@ -30,12 +30,12 @@ end
 
 function updateCameraPosition(scene)
     if not isSmallScene(scene) then
-      if math.abs(player.offsetX) > 8 * 3 then
-        Animation(camera, "__x", camera.__x, player.x + player.width / 2, 1)
+      if math.abs(player.offsetX) > 16 * 7 then
+        Animation(camera, "__x", camera.__x, player.x + player.width / 2, 0.5)
         player.offsetX = 0
       end
-      if math.abs(player.offsetY) > 8 * 3 then
-        Animation(camera, "__y", camera.__y, player.y + player.height / 2, 1)
+      if math.abs(player.offsetY) > 16 * 7 then
+        Animation(camera, "__y", camera.__y, player.y + player.height / 2, 0.5)
         player.offsetY = 0
       end
       camera:setPosition(camera.__x, camera.__y)
@@ -118,4 +118,5 @@ function changeMap(scene, newMap)
     scene.currentMap, scene.currentWorld = loadMapAndWorld(newMap, scene.currentMapName, scene)
     scene.currentMapName = newMap
     scene.camera = buildCamera()
+    player.offsetX, player.offsetY = 0, 0
 end
