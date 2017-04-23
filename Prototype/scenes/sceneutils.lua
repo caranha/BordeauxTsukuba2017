@@ -12,12 +12,33 @@ end
 
 function buildCamera()
     camera = gamera.new(0,0, 20000, 20000)
+    camera.__x = player.x
+    camera.__y = player.y
+    camera.__lastX = camera.__x
+    camera.__lastY = camera.__y
     camera:setScale(4.0)
     camera:setPosition(player.x, player.y)
 
     return camera
 end
 
+function analyse(object)
+  for k,v in pairs(object) do
+    print(k,v)
+  end
+end
+
+function updateCameraPosition(scene)
+    if math.abs(player.offsetX) > 8 * 4 then
+      Animation(camera, "__x", camera.__x, player.x + player.width / 2, 0.6)
+      player.offsetX = 0
+    end
+    if math.abs(player.offsetY) > 8 * 4 then
+      Animation(camera, "__y", camera.__y, player.y + player.height / 2, 0.6)
+      player.offsetY = 0
+    end
+    camera:setPosition(camera.__x, camera.__y)
+end
 
 function loadMapAndWorld(mapName, spawnName, scene)
 

@@ -46,6 +46,7 @@ function love.update(dt)
     end
 
     AnswerPicker.update()
+    updateAnimations(dt)
 end
 
 
@@ -63,9 +64,9 @@ end
 
 function love.draw()
     love.graphics.setColor(255, 255, 255)
-
-    camera:setPosition(player.x, player.y)
-
+    
+    updateCameraPosition(currentScene)
+    
     -- Draw the map
     currentScene.camera:draw( function(l,t,w,h) currentScene.currentMap:draw() end )
 

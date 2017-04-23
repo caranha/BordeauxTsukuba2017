@@ -21,6 +21,7 @@ function Player:__init(x, y)
     self.name = 'Player'
     self.inventory = {}
     self.kindness = 0
+    self.offsetX, self.offsetY = 0, 0
 end
 
 function Player:update(dt, scene)
@@ -43,6 +44,8 @@ function Player:update(dt, scene)
         local xBefore, yBefore = self.x, self.y
         self.x, self.y, cols, cols_len = scene.currentWorld:move(self, self.x + dx, self.y + dy + self.height/2)
         self.y = self.y - self.height/2
+        self.offsetX = self.offsetX + dx
+        self.offsetY = self.offsetY + dy
     end
 
     local items, len = self:getObjectsInRange(scene, 1,1)
