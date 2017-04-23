@@ -23,8 +23,8 @@ function Player:__init(x, y)
     self.kindness = 0
 end
 
-function Player:update(dt, world)
-    Sprite.update(self, dt, world)
+function Player:update(dt, scene)
+    Sprite.update(self, dt, scene.currentWorld)
 
     local dx, dy = 0, 0 
     
@@ -41,50 +41,52 @@ function Player:update(dt, world)
 
     if dx ~= 0 or dy ~= 0 then
         local xBefore, yBefore = self.x, self.y
-        self.x, self.y, cols, cols_len = world:move(self, self.x + dx, self.y + dy + self.height/2)
+        self.x, self.y, cols, cols_len = scene.currentWorld:move(self, self.x + dx, self.y + dy + self.height/2)
         self.y = self.y - self.height/2
     end
 
-    local items, len = self:getObjectsInRange(1,1)
+    local items, len = self:getObjectsInRange(scene, 1,1)
 
     for _, item in pairs(items) do
 
         if item.type == 'mapchanger' then
-            loadMapAndWorld(item.name, currentMap)
+            changeMap(scene, item.name)
             break
         end
     end
 end
 
-function Player:interact()
-    local centerX, centerY = self:getCenter() 
+function Player:interact(scene)
 
-    local items, len = self:getObjectsInRange(1,1)
+    local items, len = self:getObjectsInRange(scene, 1,1)
 
     if len > 0 then
         local item = items[1]
-        item:interactWith(self)
+
+        item:interactWithPlayer(scene, self)
+        
+        table.insert(scene.playerInteractions, item)
     end
 end
 
-function Player:getObjectsInRange(h, v)
-    return world:queryRect(
+function Player:getObjectsInRange(scene, h, v)
+    return scene.currentWorld:queryRect(
             self.x - h,
             self.y - v,
             self.width + 2*h,
             self.height + 2*v,  
-            function(e) return e ~= self and e.interactWith end
+            function(e) return e ~= self and e.interactWithPlayer end
         )
 end
 
-function Player:draw()
-    Sprite.draw(self)
+function Player:draw(scene)
+    Sprite.draw(self, scene)
 
-    local items, len = self:getObjectsInRange(32,32)
+    local items, len = self:getObjectsInRange(scene, 32,32)
 
     for _, item in pairs(items) do
         if item.type == 'mapchanger' then
-            item:draw()
+            item:draw(scene)
         end
     end
 end

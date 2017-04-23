@@ -19,10 +19,10 @@ function Sprite:__init(x, y, imageFile)
 
 end
 
-function Sprite:update(dt, world)
+function Sprite:update(dt, scene)
 end
 
-function Sprite:draw()
+function Sprite:draw(scene)
   love.graphics.setColor(255, 255, 255)
 	love.graphics.draw(
 		self.image,

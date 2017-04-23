@@ -10,9 +10,8 @@ setmetatable(Dialogue, {
 	end,
 })
 
-function Dialogue:__init(file, e)
+function Dialogue:__init(file)
 	self.dialog = require(file)
-	self.interlocutor = e
 
 	self.currentExchange = self.dialog[1]
 
@@ -39,9 +38,7 @@ function Dialogue:drawMessage()
 
 		love.graphics.setColor(0,0,0)
 
-		local str = self.interlocutor.name .. ' : ' .. self.currentExchange.text
-
-		local text = love.graphics.newText(love.graphics.getFont(), str)
+		local text = love.graphics.newText(love.graphics.getFont(), self.currentExchange.text)
 
 		love.graphics.setColor(255,255,255, 150)
 		love.graphics.rectangle(
@@ -53,7 +50,7 @@ function Dialogue:drawMessage()
 
 		love.graphics.setColor(0,0,0)
 		love.graphics.printf(
-			str, 
+			self.currentExchange.text, 
 			0 , 10 , 
 			love.graphics.getWidth(), 
 			'center'

@@ -13,8 +13,10 @@ function AnswerPicker.setAnswers(dialog, answers)
       height = love.graphics.getHeight() * 0.2,
       text = answer.text,
       args = answer.nextIndex,
-      func = function(id) 
-          answer:response(dialog.interlocutor, player)
+      func = function(id)
+          if answer.response then
+            answer:response(player)
+          end
           if id then
             dialog:setCurrentExchange(id)
           else

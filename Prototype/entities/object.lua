@@ -36,15 +36,11 @@ function Object:pickedBy(e)
     self:disappear()
 end
 
-function Object:interactWith(e)
+function Object:interactWithPlayer(scene, player)
     if self.dialogues then
-        if self.type == 'npc' then
-            setCurrentDialogue(self, self)
-        elseif self.type == 'item' then
-            setCurrentDialogue(self, e)
-        end
+        scene:pickDialogue(self)
     else
-        self:pickedBy(e)
+        self:pickedBy(player)
     end
 end
 

@@ -876,7 +876,7 @@ return {
         },
         {
           id = 6,
-          name = "tv",
+          name = "TV",
           type = "item",
           shape = "rectangle",
           x = 24,
@@ -892,7 +892,7 @@ return {
         },
         {
           id = 10,
-          name = "coffee",
+          name = "Coffee",
           type = "item",
           shape = "rectangle",
           x = 40,
