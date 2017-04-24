@@ -5,17 +5,15 @@ local dialog = {
 			{
 				text = 'Let\'s feed him !',
 				callback = function(player, scene)
-          player.kindness = player.kindness + 1 
-          player.isLate = true
-          player.__hasFedCat = true
-        end
+		          player.isLate = true
+        		  player.__hasFedCat = true
+        		end
 			},
 			{
 				text = 'Ignore him',
 				callback = function(player, scene)
-          player.kindness = player.kindness - 1
-          player.__hasFedCat = false
-        end
+          			player.__hasFedCat = false
+        		end
 			}
 		}
 	}
