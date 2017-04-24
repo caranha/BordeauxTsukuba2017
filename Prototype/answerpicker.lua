@@ -15,7 +15,8 @@ function AnswerPicker.setAnswers(dialog, answers)
       args = answer.nextIndex,
       func = function(id)
           if answer.response then
-            answer:response(player)
+            answer:response(player, currentScene)
+            print(player.isLate)
           end
           if id then
             dialog:setCurrentExchange(id)

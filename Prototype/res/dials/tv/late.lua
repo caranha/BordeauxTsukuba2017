@@ -7,7 +7,7 @@ local dialog = {
 			},
 			{
 				text = 'Okay just five minutes.',
-				response = function(player) player.isLate = true end
+				response = function(player, currentScene) player.isLate = true end
 			}
 		}
 	}
