@@ -88,9 +88,9 @@ function loadMapAndWorld(mapName, spawnName, scene)
                     or table.contains(scene.objects, object.name) then
                     table.insert(spriteLayer.sprites, object)
                 	table.insert(objects, object)
+                    world:add(object, object.x, object.y + object.height/2, object.width, object.height/2)
                 end
 
-                world:add(object, object.x, object.y + object.height/2, object.width, object.height/2)
             end
         end
     end
