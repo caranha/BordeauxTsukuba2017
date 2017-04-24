@@ -16,7 +16,7 @@ setmetatable(Player, {
 )
 
 local speed = 128
-local deltaMovement = 16
+local deltaMovement = 8
 local imageFile = 'res/imgs/player.png'
 
 function Player:__init(x, y)
@@ -87,13 +87,13 @@ function Player:update(dt, scene)
           player.isMoving = true
           local mouvement = self.mouvements:pop_left()
           if mouvement == 0 then
-            Animation(self, "x", self.x, self.x + deltaMovement, 0.2, self.endMove)
+            Animation(self, "x", self.x, self.x + deltaMovement, 0.1, self.endMove)
           elseif mouvement == 1 then
-            Animation(self, "x", self.x, self.x - deltaMovement, 0.2, self.endMove)
+            Animation(self, "x", self.x, self.x - deltaMovement, 0.1, self.endMove)
           elseif mouvement == 2 then
-            Animation(self, "y", self.y, self.y + deltaMovement, 0.2, self.endMove)
+            Animation(self, "y", self.y, self.y + deltaMovement, 0.1, self.endMove)
           elseif mouvement == 3 then
-            Animation(self, "y", self.y, self.y - deltaMovement, 0.2, self.endMove)
+            Animation(self, "y", self.y, self.y - deltaMovement, 0.1, self.endMove)
           end
         end
         self.offsetX = self.offsetX + dx

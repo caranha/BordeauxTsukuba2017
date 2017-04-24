@@ -15,7 +15,7 @@ setmetatable(Object, {
 
 local speed = 128
 
-function Object:__init(x, y, name, type, imagefile, dialogues)
+function Object:__init(x, y, name, type, imagefile, dialogues, pickable)
 
     local imageFile = ('res/imgs/%s'):format(imagefile)
 
@@ -23,7 +23,7 @@ function Object:__init(x, y, name, type, imagefile, dialogues)
     self.name = name
     self.type = type
     self.dialogues = dialogues
-
+    self.pickable = pickable
 end
 
 function Object:disappear()
@@ -39,7 +39,8 @@ end
 function Object:interactWithPlayer(scene, player)
     if self.dialogues then
         scene:pickDialogue(self)
-    else
+    end
+    if self.pickable then
         self:pickedBy(player)
     end
 end
