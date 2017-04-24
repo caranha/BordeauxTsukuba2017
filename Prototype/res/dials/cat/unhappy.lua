@@ -1,6 +1,6 @@
 local dialog = {
 	{
-		text = 'Meooooow... '
+		text = 'Grrrrrrr :('
 	}
 }
 

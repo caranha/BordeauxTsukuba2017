@@ -1,5 +1,5 @@
 local dialog = {
-	{
+  {
 		text = 'Why not watch what\'s new in Kardashians\' lives ?',
 		answers = {
 			{

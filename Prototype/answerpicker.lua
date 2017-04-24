@@ -15,7 +15,7 @@ function AnswerPicker.setAnswers(dialog, answers)
       args = answer.nextIndex,
       func = function(id)
           if answer.response then
-            answer:response(player)
+            answer.response(player)
           end
           if id then
             dialog:setCurrentExchange(id)
@@ -24,9 +24,7 @@ function AnswerPicker.setAnswers(dialog, answers)
           end
         end
       }
-
       table.insert(AnswerPicker.buttons, Button(flags))
-
     end
   else
 
