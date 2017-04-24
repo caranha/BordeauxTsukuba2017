@@ -119,7 +119,10 @@ function Player:interact(scene)
 
         item:interactWithPlayer(scene, self)
         
-        table.insert(scene.playerInteractions, item)
+        if not table.contains(scene.playerInteractions, item.name) then
+            table.insert(scene.playerInteractions, item.name)
+        end
+
     end
 end
 

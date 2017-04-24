@@ -30,19 +30,20 @@ function scene:pickDialogue(entity)
 
 		elseif entity.name == 'Cat' then
 
-			if table.contains(self.playerInteractions, entity) then
-        if player.__hasFedCat then
-          dialogueName = 'happy'
-        else
-          dialogueName = 'unhappy'
-        end
+			if table.contains(self.playerInteractions, entity.name) then
+        		if player.__hasFedCat then
+          			dialogueName = 'happy'
+        		else
+          			dialogueName = 'unhappy'
+        		end
+
 			else
 				dialogueName = 'feed'
 			end
       
 		elseif entity.name == 'Coffee' then
 
-			if table.contains(self.playerInteractions, entity) then
+			if table.contains(self.playerInteractions, entity.name) then
 				dialogueName = 'default'			
 			else
 				dialogueName = 'late'
@@ -50,7 +51,7 @@ function scene:pickDialogue(entity)
 
 		elseif entity.name == 'TV' then
 
-			if table.contains(self.playerInteractions, entity) then
+			if table.contains(self.playerInteractions, entity.name) then
 				dialogueName = 'default'
 			else
 				dialogueName = 'late'
