@@ -2216,6 +2216,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
+            ["dialogues"] = "machine",
             ["imagefile"] = "none16.png"
           }
         }
