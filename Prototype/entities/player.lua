@@ -23,7 +23,7 @@ function Player:__init(x, y)
 	Sprite.__init(self, x, y, imageFile)
     self.name = 'Player'
     self.inventory = {}
-    self.kindness = 0
+    self.naiveness = 0
     self.offsetX, self.offsetY = 0, 0
     self.mouvements = deque:new()
     self.isMoving = false
