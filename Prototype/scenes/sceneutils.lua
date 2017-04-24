@@ -111,7 +111,6 @@ function loadMapAndWorld(mapName, spawnName, scene)
             end
         end
     end
-
     map:removeLayer('Objects')
 
     return map, world
