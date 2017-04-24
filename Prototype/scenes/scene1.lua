@@ -62,7 +62,13 @@ function scene:pickDialogue(entity)
 			else
 				dialogueName = 'late'
 			end
-			
+		
+  elseif entity.name == 'machine' then
+      if table.contains(self.playerInteractions, "Pr. Noname") then 
+        dialogueName = 'interaction'
+      else
+        dialogueName = 'default'
+      end
 		end
 
 		if dialogueName then
