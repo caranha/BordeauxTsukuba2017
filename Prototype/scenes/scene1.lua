@@ -3,7 +3,6 @@ require 'scenes.sceneutils'
 local scene = {
 
 	camera = {},
-	player = {} ,
 	objects = {},
 
 	currentWorld, 
@@ -12,6 +11,7 @@ local scene = {
 	currentMapName = 'home',
 
 	maps = {'home', 'labo', 'start'},
+	objects = {'Cat', 'TV', 'Coffee', 'Magnet', 'Pr. Noname'},
 
 	playerInteractions = {} 
 }

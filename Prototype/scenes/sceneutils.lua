@@ -80,10 +80,13 @@ function loadMapAndWorld(mapName, spawnName, scene)
                     obj.name, 
                     obj.type, 
                     obj.properties.imagefile,
-                    obj.properties.dialogues)
+                    obj.properties.dialogues,
+                    obj.properties.pickable)
                 
-                if object.type ~= 'mapchanger' or table.contains(scene.maps, object.name) then
-                	table.insert(spriteLayer.sprites, object)
+                if (object.type == 'mapchanger' 
+                    and table.contains(scene.maps, object.name)) 
+                    or table.contains(scene.objects, object.name) then
+                    table.insert(spriteLayer.sprites, object)
                 	table.insert(objects, object)
                 end
 
