@@ -30,8 +30,16 @@ function scene:pickDialogue(entity)
 
 		elseif entity.name == 'Cat' then
 
-			dialogueName = 'default'
-
+			if table.contains(self.playerInteractions, entity) then
+        if player.__hasFedCat then
+          dialogueName = 'happy'
+        else
+          dialogueName = 'unhappy'
+        end
+			else
+				dialogueName = 'feed'
+			end
+      
 		elseif entity.name == 'Coffee' then
 
 			if table.contains(self.playerInteractions, entity) then

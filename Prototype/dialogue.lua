@@ -29,7 +29,6 @@ end
 function Dialogue:start()
 	self.isStarted = true
 	if self.isDone then return end
-
 	AnswerPicker.setAnswers(self, self.currentExchange.answers)
 end
 

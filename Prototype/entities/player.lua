@@ -140,7 +140,8 @@ function Player:collisionAt(scene, dx, dy)
   local items, len = self:getObjectsInRange(scene, 1,1)
   for _, item in pairs(items) do
       if item.type == 'mapchanger' then
-        collision = false
+        self:moveTo(scene, xBefore, yBefore)
+        return false
       end
   end    
   self:moveTo(scene, xBefore, yBefore)    

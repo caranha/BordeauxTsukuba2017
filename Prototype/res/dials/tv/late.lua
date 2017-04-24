@@ -1,5 +1,5 @@
 local dialog = {
-	{
+  {
 		text = 'Why not watch what\'s new in Kardashians\' lives ?',
 		answers = {
 			{
@@ -7,7 +7,7 @@ local dialog = {
 			},
 			{
 				text = 'Okay just five minutes.',
-				response = function(player, currentScene) player.isLate = true end
+				callback = function(player, currentScene) player.isLate = true end
 			}
 		}
 	}

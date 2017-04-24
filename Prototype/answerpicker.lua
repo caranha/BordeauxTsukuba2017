@@ -14,8 +14,8 @@ function AnswerPicker.setAnswers(dialog, answers)
       text = answer.text,
       args = answer.nextIndex,
       func = function(id)
-          if answer.response then
-            answer:response(player, currentScene)
+          if answer.callback then
+            answer.callback(player, currentScene)
             print(player.isLate)
           end
           if id then
@@ -25,9 +25,7 @@ function AnswerPicker.setAnswers(dialog, answers)
           end
         end
       }
-
       table.insert(AnswerPicker.buttons, Button(flags))
-
     end
   else
 

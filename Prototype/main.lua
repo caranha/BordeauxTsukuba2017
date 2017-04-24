@@ -8,7 +8,7 @@ require 'dialogue'
 require 'narration'
 require 'answerpicker'
 
-local currentNarration, currentDialogue, currentScene
+local currentNarration, currentDialogue 
 
 function setCurrentNarration(narration)
     currentNarration = narration

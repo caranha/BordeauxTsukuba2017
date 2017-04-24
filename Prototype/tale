@@ -1,0 +1,23 @@
+Introduction (prototype)
+
+--------------------
+
+>   narration
+i 	possible 
+n.  possible choice
+->  result
++-1 kindness
+
+--------------------
+
+> Congratulations !
+> You have been promoted as assistant searcher.
+> It's your first day.
+
+1. You decided to stay home and interact with some objects -> -1 you're late
+	1.1 Your cat is starving
+		1.1.1 You feed him -> +1 you are a good master
+		1.1.1 You ignore him -> -1 why are you having this cat ?
+	> You watch television
+	> You make some coffee
+2. Go straight to the laboratory -> +1 you arrived just in time, good job

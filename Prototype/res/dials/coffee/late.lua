@@ -4,7 +4,7 @@ local dialog = {
 		answers = {
 			{
 				text = 'Yes, coffee is mandatory !',
-				response = function(player) player.isLate = true end
+				callback = function(player, currentScene) player.isLate = true end
 			},
 			{
 				text = 'No, maybe later at the lab ...'
