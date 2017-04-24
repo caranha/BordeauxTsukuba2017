@@ -25,9 +25,7 @@ function scene:pickDialogue(entity)
 		local dialogueName
 
 		if entity.name == 'Pr. Noname' then
-
-			dialogueName = 'default'
-
+			dialogueName = 'playerLate'
 		elseif entity.name == 'Cat' then
 
 			if table.contains(self.playerInteractions, entity.name) then
