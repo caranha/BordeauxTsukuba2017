@@ -11,7 +11,7 @@ local scene = {
 	currentMapName = 'labo',
 
 	maps = {'home', 'labo', 'start'},
-	objects = {'Cat', 'TV', 'Coffee', 'magnet', 'Pr. Noname'},
+	objects = {'Cat', 'TV', 'Coffee', 'magnet', 'Pr. Noname', 'machine'},
 
 	playerInteractions = {} 
 }
