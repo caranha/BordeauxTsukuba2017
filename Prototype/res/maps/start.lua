@@ -2203,7 +2203,7 @@ return {
           type = "item",
           shape = "rectangle",
           x = 82,
-          y = 186,
+          y = 192,
           width = 12,
           height = 16,
           rotation = 0,
