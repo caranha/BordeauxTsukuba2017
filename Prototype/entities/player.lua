@@ -114,7 +114,10 @@ function Player:interact(scene)
 
     local items, len = self:getObjectsInRange(scene, 1,1)
 
-    if len > 0 then
+    if len > 0 
+        and (not currentDialogue or currentDialogue.isDone) 
+        and (not currentNarration or currentNarration.isDone) then
+        
         local item = items[1]
 
         item:interactWithPlayer(scene, self)
