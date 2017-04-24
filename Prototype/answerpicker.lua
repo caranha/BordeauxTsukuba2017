@@ -16,7 +16,6 @@ function AnswerPicker.setAnswers(dialog, answers)
       func = function(id)
           if answer.callback then
             answer.callback(player, currentScene)
-            print(player.isLate)
           end
           if id then
             dialog:setCurrentExchange(id)
