@@ -887,7 +887,8 @@ return {
           visible = true,
           properties = {
             ["dialogues"] = "tv",
-            ["imagefile"] = "none16.png"
+            ["imagefile"] = "none16.png",
+            ["pickable"] = false
           }
         },
         {
@@ -903,7 +904,8 @@ return {
           visible = true,
           properties = {
             ["dialogues"] = "coffee",
-            ["imagefile"] = "none14.png"
+            ["imagefile"] = "none14.png",
+            ["pickable"] = false
           }
         }
       }

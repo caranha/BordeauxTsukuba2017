@@ -8,7 +8,7 @@ return {
   height = 32,
   tilewidth = 8,
   tileheight = 8,
-  nextobjectid = 19,
+  nextobjectid = 23,
   properties = {},
   tilesets = {
     {
@@ -2199,7 +2199,7 @@ return {
         },
         {
           id = 5,
-          name = "key",
+          name = "magnet",
           type = "item",
           shape = "rectangle",
           x = 82,
@@ -2209,7 +2209,8 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["imagefile"] = "key.png"
+            ["imagefile"] = "magnet.png",
+            ["pickable"] = true
           }
         },
         {
@@ -2285,6 +2286,22 @@ return {
           visible = true,
           properties = {
             ["imagefile"] = "noname.png"
+          }
+        },
+        {
+          id = 21,
+          name = "Cab",
+          type = "item",
+          shape = "rectangle",
+          x = 560,
+          y = 132,
+          width = 32,
+          height = 20,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["imagefile"] = "cab.png",
+            ["pickable"] = false
           }
         }
       }
