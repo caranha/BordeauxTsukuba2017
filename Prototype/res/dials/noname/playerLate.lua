@@ -1,6 +1,6 @@
 local dialog = {
 	{
-		text = 'What were you doing ? This is your first day and you find a way to be late !',
+		text = 'Hey come here this is your first day and you find a way to be late !',
 		answers = {
 			{
 				text = 'Sumimasen...',
