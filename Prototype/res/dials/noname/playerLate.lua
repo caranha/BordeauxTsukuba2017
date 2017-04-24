@@ -7,48 +7,64 @@ local dialog = {
         nextIndex = 2
 			},
       {
-        text = "Quiproquo...",
-        nextIndex = 3
+        text = "The bus was late...",
+        nextIndex = 2
       }
 		}
 	},
   {
-    text = "I don't speak Japanese. Anyway. I see you dressed appropriately, great.",
+    text = "Very nice weather by the way. Tell me your name again ?",
     answers = {
       {
-        text = "This is my dressing gown actually."
-      },
-      {
-        text = "I meant : sorry for my late sir."
+        text = "I'm ...",
+        nextIndex = 3
       }
     }
   },
   {
-    text = "I don't speak Japanese. Anyway. I see you dressed appropriately, great.",
+    text = "It's really sunny today. You seem dressed for the work.",
     answers = {
       {
-        text = "This is my dressing gown actually.",
-        nextIndex = 6
+        text = "Actually this is my dressing gown.",
+        nextIndex = 4,
+        callback = function(player, scene) player.naiveness = player.naiveness + 1 end 
       },
       {
-        text = "It's French.",
-        nextIndex = 4
+        text = "Yes ! I bought it especially for this job.",
+        nextIndex = 5,
+        callback = function(player, scene) player.naiveness = player.naiveness - 1 end
       }
     }
   },
   {
-    text = "La Baguette ?",
+    text = "At least it looks comfortable.",
     answers = {
       {
-        text = "Yes sir, what have I to do ?",
+        text = "Yeah it's made of coton and ...",
         nextIndex = 5
       },
       {
-        text = "*acquiesce*",
-        nextIndex = 7
+        text = "Not really, I should have put something under ...",
+        nextIndex = 5
+      }
+    } 
+  },
+  {
+    text = "What year is it ? Anyway ... Maybe you could take care of this machine over there.",
+    answers = {
+      {
+        text = "Okay sure !"
+      },
+      {
+        text = "Which one, there are too many machines in here.",
+        nextIndex = 6
       }
     }
+  },
+  {
+    text = "The one with the buttons and which makes *bip* every 2 seconds"
   }
+
 }
 
 return dialog
