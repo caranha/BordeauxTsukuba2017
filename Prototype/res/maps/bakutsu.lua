@@ -8,7 +8,7 @@ return {
   height = 32,
   tilewidth = 8,
   tileheight = 8,
-  nextobjectid = 24,
+  nextobjectid = 29,
   properties = {},
   tilesets = {
     {
@@ -1627,18 +1627,6 @@ return {
           }
         },
         {
-          id = 1218,
-          properties = {
-            ["collidable"] = true
-          }
-        },
-        {
-          id = 1219,
-          properties = {
-            ["collidable"] = true
-          }
-        },
-        {
           id = 1220,
           properties = {
             ["collidable"] = true
@@ -1891,6 +1879,78 @@ return {
           }
         },
         {
+          id = 1736,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1737,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1738,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1739,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1740,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1745,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1746,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1747,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1748,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1749,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1750,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1751,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
           id = 1792,
           properties = {
             ["collidable"] = true
@@ -1939,6 +1999,90 @@ return {
           }
         },
         {
+          id = 1801,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1802,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1803,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1804,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1805,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1806,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1807,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1808,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1809,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1810,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1811,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1812,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1813,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1814,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
           id = 1856,
           properties = {
             ["collidable"] = true
@@ -1946,18 +2090,6 @@ return {
         },
         {
           id = 1857,
-          properties = {
-            ["collidable"] = true
-          }
-        },
-        {
-          id = 1858,
-          properties = {
-            ["collidable"] = true
-          }
-        },
-        {
-          id = 1859,
           properties = {
             ["collidable"] = true
           }
@@ -1982,6 +2114,432 @@ return {
         },
         {
           id = 1863,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1869,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1872,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1920,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1921,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1922,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1923,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1924,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1925,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1928,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1929,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1930,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1931,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1984,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1985,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1986,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1987,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1988,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1989,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1992,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1993,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1994,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1995,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2048,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2049,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2054,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2055,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2112,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2113,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2116,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2117,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2118,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2119,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2176,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2177,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2178,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2179,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2180,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2181,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2182,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2183,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2184,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2185,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2186,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2187,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2240,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2241,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2242,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2243,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2244,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2245,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2246,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2247,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2248,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2249,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2250,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2251,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2561,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2562,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2563,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2564,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2566,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2567,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2568,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2569,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2625,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2626,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2627,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2628,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2630,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2631,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2632,
           properties = {
             ["collidable"] = true
           }
@@ -3604,18 +4162,6 @@ return {
           }
         },
         {
-          id = 1218,
-          properties = {
-            ["collidable"] = true
-          }
-        },
-        {
-          id = 1219,
-          properties = {
-            ["collidable"] = true
-          }
-        },
-        {
           id = 1220,
           properties = {
             ["collidable"] = true
@@ -3868,6 +4414,78 @@ return {
           }
         },
         {
+          id = 1736,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1737,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1738,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1739,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1740,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1745,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1746,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1747,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1748,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1749,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1750,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1751,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
           id = 1792,
           properties = {
             ["collidable"] = true
@@ -3916,6 +4534,90 @@ return {
           }
         },
         {
+          id = 1801,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1802,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1803,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1804,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1805,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1806,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1807,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1808,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1809,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1810,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1811,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1812,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1813,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1814,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
           id = 1856,
           properties = {
             ["collidable"] = true
@@ -3923,18 +4625,6 @@ return {
         },
         {
           id = 1857,
-          properties = {
-            ["collidable"] = true
-          }
-        },
-        {
-          id = 1858,
-          properties = {
-            ["collidable"] = true
-          }
-        },
-        {
-          id = 1859,
           properties = {
             ["collidable"] = true
           }
@@ -3959,6 +4649,432 @@ return {
         },
         {
           id = 1863,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1869,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1872,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1920,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1921,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1922,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1923,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1924,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1925,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1928,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1929,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1930,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1931,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1984,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1985,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1986,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1987,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1988,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1989,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1992,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1993,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1994,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 1995,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2048,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2049,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2054,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2055,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2112,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2113,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2116,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2117,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2118,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2119,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2176,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2177,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2178,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2179,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2180,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2181,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2182,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2183,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2184,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2185,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2186,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2187,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2240,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2241,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2242,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2243,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2244,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2245,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2246,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2247,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2248,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2249,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2250,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2251,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2561,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2562,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2563,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2564,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2566,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2567,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2568,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2569,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2625,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2626,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2627,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2628,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2630,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2631,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 2632,
           properties = {
             ["collidable"] = true
           }
@@ -4366,9 +5482,9 @@ return {
           name = "home",
           type = "spawn",
           shape = "rectangle",
-          x = 210,
+          x = 208,
           y = 112,
-          width = 12,
+          width = 16,
           height = 16,
           rotation = 0,
           visible = true,
@@ -4396,7 +5512,7 @@ return {
           shape = "rectangle",
           x = 256,
           y = 0,
-          width = 64,
+          width = 16,
           height = 8,
           rotation = 0,
           visible = true,
@@ -4412,7 +5528,7 @@ return {
           x = 760,
           y = 136,
           width = 8,
-          height = 48,
+          height = 16,
           rotation = 0,
           visible = true,
           properties = {
@@ -4439,9 +5555,9 @@ return {
           name = "labo",
           type = "spawn",
           shape = "rectangle",
-          x = 546,
+          x = 544,
           y = 104,
-          width = 12,
+          width = 16,
           height = 16,
           rotation = 0,
           visible = true,
@@ -4455,9 +5571,9 @@ return {
           type = "item",
           shape = "rectangle",
           x = 560,
-          y = 132,
+          y = 128,
           width = 32,
-          height = 20,
+          height = 24,
           rotation = 0,
           visible = true,
           properties = {
@@ -4479,6 +5595,81 @@ return {
           properties = {
             ["imagefile"] = "magnet.png",
             ["pickable"] = true
+          }
+        },
+        {
+          id = 24,
+          name = "map1",
+          type = "mapchanger",
+          shape = "rectangle",
+          x = 272,
+          y = 0,
+          width = 16,
+          height = 8,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["imagefile"] = "up.png"
+          }
+        },
+        {
+          id = 25,
+          name = "map1",
+          type = "mapchanger",
+          shape = "rectangle",
+          x = 288,
+          y = 0,
+          width = 16,
+          height = 8,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["imagefile"] = "up.png"
+          }
+        },
+        {
+          id = 26,
+          name = "map1",
+          type = "mapchanger",
+          shape = "rectangle",
+          x = 304,
+          y = 0,
+          width = 16,
+          height = 8,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["imagefile"] = "up.png"
+          }
+        },
+        {
+          id = 27,
+          name = "map2",
+          type = "mapchanger",
+          shape = "rectangle",
+          x = 760,
+          y = 152,
+          width = 8,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["imagefile"] = "right.png"
+          }
+        },
+        {
+          id = 28,
+          name = "map2",
+          type = "mapchanger",
+          shape = "rectangle",
+          x = 760,
+          y = 168,
+          width = 8,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["imagefile"] = "right.png"
           }
         }
       }

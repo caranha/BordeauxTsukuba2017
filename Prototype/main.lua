@@ -66,7 +66,8 @@ function drawItemsName()
     local items, len = player:getObjectsInRange(currentScene, 32,32)
 
     for _, item in pairs(items) do
-        if item.type ~= 'mapchanger' then
+
+        if item.name and item.type ~= 'mapchanger' then
             love.graphics.push()
 
             local x, y = currentScene.camera:toScreen(item.x, item.y)
@@ -107,7 +108,6 @@ function love.draw()
     -- Draw the player's inventory
     drawPlayerInventory()
     drawItemsName()
-
 
     if currentNarration then
         if not currentNarration.isStarted then currentNarration:nextLine() end

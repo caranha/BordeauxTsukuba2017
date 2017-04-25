@@ -133,9 +133,9 @@ end
 function Player:getObjectsInRange(scene, h, v)
     return scene.currentWorld:queryRect(
             self.x - h,
-            self.y - v,
+            self.y + self.height/2 - v,
             self.width + 2*h,
-            self.height + 2*v,  
+            self.height/2 + 2*v,  
             function(e) return e ~= self and e.interactWithPlayer end
         )
 end
