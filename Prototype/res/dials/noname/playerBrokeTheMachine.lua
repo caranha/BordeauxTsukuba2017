@@ -6,6 +6,7 @@ local dialog = {
 		answers = {
 			{
 				text = "[ tell the truth]",
+				callback = function(player, scene ) player.kindness = player.kindness + 1 end,
 				nextIndex = 2
 			},
 			{
@@ -36,10 +37,12 @@ local dialog = {
 		answers = {
 			{
 				text = "Can't you go yourself ? I'm afraid of being lost.",
+				callback = function(player, scene ) player.kindness = player.kindness - 1 end,
 				nextIndex = 4
 			},
 			{
 				text = "Okay I'll go there",
+				callback = function(player, scene ) player.kindness = player.kindness + 1 end,
 				nextIndex = 5
 			}
 		}
@@ -88,6 +91,7 @@ local dialog = {
 		answers = {
 			{
 				text = "Maybe it wasn't that perfect.",
+				callback = function(player, scene) player.kindness = player.kindness - 1 end, 
 				nextIndex = 9 
 			},
 			{
@@ -102,10 +106,12 @@ local dialog = {
 		answers = {
 			{
 				text = "Ahahah a monkey",
+				callback = function(player, scene ) player.naiveness = player.naiveness - 1 end,
 				nextIndex = 10
 			},
 			{
 				text = "I'm really sorry sir.",
+				callback = function(player, scene) player.kindness = player.kindness + 1 end, 
 				nextIndex = 10
 			}
 		}
@@ -116,10 +122,12 @@ local dialog = {
 		answers = {
 			{
 				text = "Okay !",
+				callback = function(player, scene) player.kindness = player.kindness + 1 end, 
 				nextIndex = 7
 			},
 			{
 				text = "Okay ...",
+				callback = function(player, scene) player.kindness = player.kindness - 1 end, 
 				nextIndex = 7
 			}
 		}
@@ -130,6 +138,7 @@ local dialog = {
 		answers = {
 			{
 				text = "Ahahah and it disappeared itself !",
+				callback = function(player, scene) player.kindness = player.kindness - 1 end, 
 				nextIndex = 3
 			},
 			{

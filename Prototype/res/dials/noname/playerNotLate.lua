@@ -7,7 +7,8 @@ local dialog = {
 				nextIndex = 2
 			},
 			{
-				text = "Well, I would prefer some Peruvian tea with some milk and English biscuits",
+				text = "Well, I would prefer some Peruvian tea with some soy milk and English biscuits",
+       			callback = function(player, scene) player.naiveness = player.naiveness + 1 end
 				nextIndex = 3
 			}
 		}	

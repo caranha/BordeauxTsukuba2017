@@ -26,13 +26,13 @@ local dialog = {
     answers = {
       {
         text = "Actually this is my dressing gown.",
-        nextIndex = 4,
-        callback = function(player, scene) player.naiveness = player.naiveness + 1 end 
+        callback = function(player, scene) player.naiveness = player.naiveness + 1 end, 
+        nextIndex = 4
       },
       {
         text = "Yes ! I bought it especially for this job.",
-        nextIndex = 5,
-        callback = function(player, scene) player.naiveness = player.naiveness - 1 end
+        callback = function(player, scene) player.naiveness = player.naiveness - 1 end,
+        nextIndex = 5
       }
     }
   },
@@ -45,6 +45,7 @@ local dialog = {
       },
       {
         text = "Not really, I should have put something under ...",
+        callback = function(player, scene) player.naiveness = player.naiveness - 1 end,
         nextIndex = 5
       }
     } 
