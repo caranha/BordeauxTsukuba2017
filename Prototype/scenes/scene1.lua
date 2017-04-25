@@ -8,7 +8,7 @@ local scene = {
 	currentWorld, 
 	currentMap,
 
-	currentMapName = 'home',
+	currentMapName = 'labo',
 
 	maps = {'home', 'labo', 'start'},
 	objects = {'Cat', 'TV', 'Coffee', 'magnet', 'Pr. Noname', 'machine'},
@@ -19,7 +19,7 @@ local scene = {
 }
 
 function scene:init()
-	self.currentMap, self.currentWorld = loadMapAndWorld(self.currentMapName, 'home_upstairs', self)
+	self.currentMap, self.currentWorld = loadMapAndWorld(self.currentMapName, 'start', self)
 	self.camera = buildCamera() 
 end
 
