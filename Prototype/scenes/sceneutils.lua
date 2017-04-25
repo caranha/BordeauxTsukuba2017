@@ -3,39 +3,39 @@ local bump = require 'lib.bump'
 local gamera = require 'lib.gamera'
 
 function table.contains(table, value)
-	for _, val in pairs(table) do
-		if val == value then return true end
-	end
+  for _, val in pairs(table) do
+    if val == value then return true end
+  end
 
-	return false
+  return false
 end
 
 function buildCamera()
-    camera = gamera.new(0,0, 20000, 20000)
-    camera.__x = player.x
-    camera.__y = player.y
-    camera.__lastX = camera.__x
-    camera.__lastY = camera.__y
-    camera:setScale(4.0)
-    camera:setPosition(player.x + player.width / 2, player.y + player.height / 2)
+  camera = gamera.new(0,0, 20000, 20000)
+  camera.__x = player.x
+  camera.__y = player.y
+  camera.__lastX = camera.__x
+  camera.__lastY = camera.__y
+  camera:setScale(4.0)
+  camera:setPosition(player.x + player.width / 2, player.y + player.height / 2)
 
-    return camera
+  return camera
 end
 
 function updateCameraPosition(scene)
-    if not isSmallScene(scene) then
-      if math.abs(player.offsetX) > 16 * 7 then
-        Animation(camera, "__x", camera.__x, player.x + player.width / 2, 0.5)
-        player.offsetX = 0
-      end
-      if math.abs(player.offsetY) > 16 * 7 then
-        Animation(camera, "__y", camera.__y, player.y + player.height / 2, 0.5)
-        player.offsetY = 0
-      end
-      camera:setPosition(camera.__x, camera.__y)
-    else
-      camera:setPosition(0, 0)
+  if not isSmallScene(scene) then
+    if math.abs(player.offsetX) > 16 * 7 then
+      Animation(camera, "__x", camera.__x, player.x + player.width / 2, 0.5)
+      player.offsetX = 0
     end
+    if math.abs(player.offsetY) > 16 * 7 then
+      Animation(camera, "__y", camera.__y, player.y + player.height / 2, 0.5)
+      player.offsetY = 0
+    end
+    camera:setPosition(camera.__x, camera.__y)
+  else
+    camera:setPosition(0, 0)
+  end
 end
 
 function isSmallScene(scene)
@@ -47,79 +47,69 @@ end
 
 function loadMapAndWorld(mapName, spawnName, scene)
 
-    mapFile = ('res/maps/%s.lua'):format(mapName)
+  mapFile = ('res/maps/%s.lua'):format(mapName)
 
-    sti:flush()
-    objects = {}
-    
-    world = bump.newWorld(8)
-    map = sti(mapFile, {"bump"})
-    map:bump_init(world)
+  sti:flush()
+  objects = {}
 
-    local spriteLayer = map.layers["Sprites"]
-    spriteLayer.sprites = {}
+  world = bump.newWorld(8)
+  map = sti(mapFile, {"bump"})
+  map:bump_init(world)
 
-    for k, obj in pairs(map.objects) do
+  local spriteLayer = map.layers["Sprites"]
+  spriteLayer.sprites = {}
 
-        if obj.type then
-            if obj.type == 'spawn' then 
-                if obj.name == spawnName then
-                    player.x, player.y = obj.x, obj.y
-                    table.insert(spriteLayer.sprites, player)
-                    world:add(player, player.x, player.y + player.height/2, player.width, player.height/2)
-                end
-            else
-                local object = Object(
-                    obj.x, obj.y, 
-                    obj.name, 
-                    obj.type, 
-                    obj.properties.imagefile,
-                    obj.properties.dialogues,
-                    obj.properties.pickable)
-                if object.name == "machine" then
-                  print("found")
-                  player.machine = machine
-                end
-                if (object.type == 'mapchanger' 
-                    and table.contains(scene.maps, object.name)) 
-                    or table.contains(scene.objectsAccepted, object.name) then
-                    table.insert(spriteLayer.sprites, object)
-                	table.insert(scene.objects, object)
-                    world:add(object, object.x, object.y + object.height/2, object.width, object.height/2)
-                end
+  for k, obj in pairs(map.objects) do
 
-            end
+    if obj.type then
+      if obj.type == 'spawn' then 
+        if obj.name == spawnName then
+          player.x, player.y = obj.x, obj.y
+          table.insert(spriteLayer.sprites, player)
+          world:add(player, player.x, player.y + player.height/2, player.width, player.height/2)
         end
-    end
-
-    for k,v in pairs(scene.objects) do print(k,v) end
-
-    function spriteLayer:update(dt)
-        for _, object in pairs(self.sprites) do
-            object:update(dt, scene)
+      else
+        local object = Object(
+          obj.x, obj.y, 
+          obj.name, 
+          obj.type, 
+          obj.properties.imagefile,
+          obj.properties.dialogues,
+          obj.properties.pickable)
+        if (object.type == 'mapchanger' 
+          and table.contains(scene.maps, object.name)) 
+        or table.contains(scene.objectsAccepted, object.name) then
+          table.insert(spriteLayer.sprites, object)
+          table.insert(scene.objects, object)
+          world:add(object, object.x, object.y + object.height/2, object.width, object.height/2)
         end
+
+      end
     end
+  end
 
-    function spriteLayer:draw()
-        table.sort(self.sprites, function (a,b) return a.y < b.y end) 
-        
-        for _, object in pairs(self.sprites) do
-
-            if object.type ~= 'mapchanger' then
-                object:draw(scene)
-            end
-        end
+  function spriteLayer:update(dt)
+    for _, object in pairs(self.sprites) do
+      object:update(dt, scene)
     end
-    map:removeLayer('Objects')
+  end
 
-    return map, world
+  function spriteLayer:draw()
+    table.sort(self.sprites, function (a,b) return a.y < b.y end) 
+    for _, object in pairs(self.sprites) do
+      if object.type ~= 'mapchanger' then
+        object:draw(scene)
+      end
+    end
+  end
+  map:removeLayer('Objects')
+  return map, world
 end
 
 function changeMap(scene, newMap)
-    scene.currentMap, scene.currentWorld = loadMapAndWorld(newMap, scene.currentMapName, scene)
-    scene.currentMapName = newMap
-    scene.camera = buildCamera()
-    player.offsetX, player.offsetY = 0, 0
-
-    if scene.onMapChanged then scene:onMapChanged() end
+  scene.currentMap, scene.currentWorld = loadMapAndWorld(newMap, scene.currentMapName, scene)
+  scene.currentMapName = newMap
+  scene.camera = buildCamera()
+  player.offsetX, player.offsetY = 0, 0
+  if scene.onMapChanged then scene:onMapChanged() end
 end

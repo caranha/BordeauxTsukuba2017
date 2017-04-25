@@ -35,9 +35,7 @@ function Animation:update(dt)
           self.current = self.duration
           self.done = true
           if self.onfinished then
-            for i, o in ipairs(self.onfinished) do
-              o(self.args[i])
-            end
+            self.onfinished(self.args)
           end
       end
       self.reference[self.property] = (self.current / self.duration) * (self.lastValue - self.firstValue) + self.firstValue    

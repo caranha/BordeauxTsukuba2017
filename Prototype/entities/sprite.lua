@@ -21,7 +21,6 @@ function Sprite:__init(x, y, imageFile)
   self.mouvements = deque:new()
   self.mouvements.onfinished = nil
   self.isMoving = false
-  self.yolo = false
 end
 
 function endMove(sprite)
@@ -35,19 +34,25 @@ function Sprite:move(scene, dx, dy)
   self.y = self.y - self.height/2
 end
 
+function Sprite:resetMouvements()
+  while self.mouvements:length() ~= 0 do
+    self.mouvements:pop_right()
+  end
+end
+
 function Sprite:update(dt, scene)
   self:move(scene)
   if not self.isMoving and self.mouvements:length() ~= 0 then
     self.isMoving = true
     local mouvement = self.mouvements:pop_left()
     if mouvement == 0 and not self:collisionAt(scene, deltaMovement, 0) then
-      Animation(self, "x", self.x, self.x + deltaMovement, 0.1, { endMove, self.mouvements.onfinished }, { self, self.mouvements.onfinishedargs })
+      Animation(self, "x", self.x, self.x + deltaMovement, 0.1, endMove, self)
     elseif mouvement == 1 and not self:collisionAt(scene, -deltaMovement, 0)  then
-      Animation(self, "x", self.x, self.x - deltaMovement, 0.1, { endMove, self.mouvements.onfinished }, { self, self.mouvements.onfinishedargs })
+      Animation(self, "x", self.x, self.x - deltaMovement, 0.1, endMove, self)
     elseif mouvement == 2 and not self:collisionAt(scene, 0, deltaMovement)  then
-      Animation(self, "y", self.y, self.y + deltaMovement, 0.1, { endMove, self.mouvements.onfinished }, { self, self.mouvements.onfinishedargs })
+      Animation(self, "y", self.y, self.y + deltaMovement, 0.1, endMove, self)
     elseif mouvement == 3 and not self:collisionAt(scene, 0, -deltaMovement)  then
-      Animation(self, "y", self.y, self.y - deltaMovement, 0.1, { endMove, self.mouvements.onfinished }, { self, self.mouvements.onfinishedargs })
+      Animation(self, "y", self.y, self.y - deltaMovement, 0.1, endMove, self)
     elseif type(mouvement) == "function" then
       mouvement(currentScene, self.mouvements:pop_left())
       while type(self.mouvements:peek_left()) == "function" do
@@ -82,7 +87,7 @@ function Sprite:collisionAt(scene, dx, dy)
   local items, len = self:getObjectsInRange(scene, 1,1)
   for _, item in pairs(items) do
       if item.type == 'mapchanger' then
-        self:moveTo(scene, xBefore, yBefore)
+        self:moveTo(scene, xBefore, yBefore)          
         return false
       end
   end    
