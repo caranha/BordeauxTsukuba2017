@@ -9,7 +9,9 @@ local scene = {
   maps = {'home', 'labo', 'bakutsu'},
   objectsAccepted = {'Cat', 'TV', 'Coffee', 'magnet', 'Pr. Noname', 'machine'},
   playerInteractions = {},
-  machineBroken = false
+  machineBroken = false,
+  endOfInteractions = false,
+  finished = false
 }
 
 function scene:init()
@@ -26,7 +28,12 @@ function scene:pickDialogue(entity)
 
     if table.contains(self.playerInteractions, entity.name) then
 
-      dialogueName = 'default'
+      if self.machineBroken and not self.endOfInteractions then
+        dialogueName = 'playerBrokeTheMachine'
+        self.endOfInteractions = true
+      else
+        dialogueName = 'default'
+      end
 
     else
 
@@ -114,6 +121,16 @@ function scene:onMapChanged()
       pr.isMoving = false
     end
   end
+
+  if self.currentMapName == "bakutsu" then
+
+    if self.machineBroken then
+      self.finished = true
+      print(player.kindness, player.naiveness)
+    end
+
+  end
+
 end
 
 return scene
