@@ -1,3 +1,5 @@
 [ Move the player with the arrows ]
 [ Press 'space' to interact with objects or characters ]
 [ Now the story begins ]
+It's your first day of work today.
+Try to be on time !
