@@ -11,10 +11,11 @@ setmetatable(Animation, {
     }
 )
 
+deltaMovement = 8
 Animation.__animations = {}
 Animation.__queue = {}
 
-function Animation:__init(reference, property, firstValue, lastValue, duration, onfinished)
+function Animation:__init(reference, property, firstValue, lastValue, duration, onfinished, args)
     self.reference = reference
     self.property = property
     self.firstValue = firstValue
@@ -24,6 +25,7 @@ function Animation:__init(reference, property, firstValue, lastValue, duration, 
     self.done = false
     table.insert(Animation.__animations, self)
     self.onfinished = onfinished
+    self.args = args
 end
 
 function Animation:update(dt)
@@ -33,7 +35,9 @@ function Animation:update(dt)
           self.current = self.duration
           self.done = true
           if self.onfinished then
-            self.onfinished()
+            for i, o in ipairs(self.onfinished) do
+              o(self.args[i])
+            end
           end
       end
       self.reference[self.property] = (self.current / self.duration) * (self.lastValue - self.firstValue) + self.firstValue    

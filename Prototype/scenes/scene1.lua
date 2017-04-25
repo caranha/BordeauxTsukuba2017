@@ -1,20 +1,14 @@
 require 'scenes.sceneutils'
 
 local scene = {
-
 	camera = {},
 	objects = {},
-
 	currentWorld, 
 	currentMap,
-
 	currentMapName = 'labo',
-
 	maps = {'home', 'labo', 'start'},
 	objects = {'Cat', 'TV', 'Coffee', 'magnet', 'Pr. Noname', 'machine'},
-
 	playerInteractions = {},
-
 	machineBroken = false
 }
 
@@ -84,8 +78,6 @@ function scene:pickDialogue(entity)
 end
 
 function scene:onMapChanged()
-	print("Entering : " .. self.currentMapName)
-
 	if self.currentMapName == "labo" then
 
 		local playerHasMagnet = false

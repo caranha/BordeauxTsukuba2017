@@ -22,12 +22,6 @@ function buildCamera()
     return camera
 end
 
-function analyse(object)
-  for k,v in pairs(object) do
-    print(k,v)
-  end
-end
-
 function updateCameraPosition(scene)
     if not isSmallScene(scene) then
       if math.abs(player.offsetX) > 16 * 7 then
@@ -82,7 +76,10 @@ function loadMapAndWorld(mapName, spawnName, scene)
                     obj.properties.imagefile,
                     obj.properties.dialogues,
                     obj.properties.pickable)
-                
+                if object.name == "machine" then
+                  print("found")
+                  player.machine = machine
+                end
                 if (object.type == 'mapchanger' 
                     and table.contains(scene.maps, object.name)) 
                     or table.contains(scene.objects, object.name) then

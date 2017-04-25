@@ -526,6 +526,9 @@ end
 function World:getRect(item)
   local rect = self.rects[item]
   if not rect then
+    for k,v in pairs(item) do
+      print(k,v)
+    end
     error('Item ' .. tostring(item) .. ' must be added to the world before getting its rect. Use world:add(item, x,y,w,h) to add it first.')
   end
   return rect.x, rect.y, rect.w, rect.h

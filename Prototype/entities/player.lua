@@ -1,5 +1,3 @@
-local deque = require "lib.deque"
-
 Player = {}
 Player.__index = Player
 
@@ -26,8 +24,7 @@ function Player:__init(x, y)
     self.naiveness = 0
     self.kindness = 0
     self.offsetX, self.offsetY = 0, 0
-    self.mouvements = deque:new()
-    self.isMoving = false
+    self.animation = true
 end
 
 function Player:pushMove(direction)
@@ -40,29 +37,16 @@ function Player:pushMove(direction)
   end  
 end
 
-function Player:move(scene, dx, dy)
-    dx = dx or 0
-    dy = dy or 0
-    self.x, self.y, cols, cols_len = scene.currentWorld:move(self, self.x + dx, self.y + dy + self.height / 2)
-    self.y = self.y - self.height/2
-end
-
-function Player:moveTo(scene, x, y)
-    self.x, self.y, cols, cols_len = scene.currentWorld:move(self, x, y + self.height / 2)
-    self.y = self.y - self.height/2
-end
-
 function Player:endMove()
   player.isMoving = false
 end
 
 function Player:update(dt, scene)
-    Sprite.update(self, dt, scene.currentWorld)
-    if self.__x == nil or self.__y == nil then
-      self.__x, self.__y = self.x, self.y
-    end
-
     local dx, dy = 0, 0 
+    
+    if not self.animation then
+      return
+    end
     
     if love.keyboard.isScancodeDown('d') and not self:collisionAt(scene, deltaMovement, 0) then
         self:pushMove(0)
@@ -83,20 +67,8 @@ function Player:update(dt, scene)
 
     if dx ~= 0 or dy ~= 0 then
         local xBefore, yBefore = self.x, self.y
-        self:move(scene)
-        if not player.isMoving then
-          player.isMoving = true
-          local mouvement = self.mouvements:pop_left()
-          if mouvement == 0 then
-            Animation(self, "x", self.x, self.x + deltaMovement, 0.1, self.endMove)
-          elseif mouvement == 1 then
-            Animation(self, "x", self.x, self.x - deltaMovement, 0.1, self.endMove)
-          elseif mouvement == 2 then
-            Animation(self, "y", self.y, self.y + deltaMovement, 0.1, self.endMove)
-          elseif mouvement == 3 then
-            Animation(self, "y", self.y, self.y - deltaMovement, 0.1, self.endMove)
-          end
-        end
+        --Sprite.move(self, scene)
+        Sprite.update(self, dt, scene)
         self.offsetX = self.offsetX + dx
         self.offsetY = self.offsetY + dy
     end
@@ -128,31 +100,6 @@ function Player:interact(scene)
         end
 
     end
-end
-
-function Player:getObjectsInRange(scene, h, v)
-    return scene.currentWorld:queryRect(
-            self.x - h,
-            self.y - v,
-            self.width + 2*h,
-            self.height + 2*v,  
-            function(e) return e ~= self and e.interactWithPlayer end
-        )
-end
-
-function Player:collisionAt(scene, dx, dy)
-  local xBefore, yBefore = self.x, self.y
-  self:move(scene, dx, dy)
-  local collision = xBefore + dx ~= self.x or yBefore + dy ~= self.y
-  local items, len = self:getObjectsInRange(scene, 1,1)
-  for _, item in pairs(items) do
-      if item.type == 'mapchanger' then
-        self:moveTo(scene, xBefore, yBefore)
-        return false
-      end
-  end    
-  self:moveTo(scene, xBefore, yBefore)    
-  return collision
 end
 
 function Player:draw(scene)
