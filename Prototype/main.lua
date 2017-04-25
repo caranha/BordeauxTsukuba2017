@@ -69,7 +69,7 @@ function drawItemsName()
     if item.name and item.type ~= 'mapchanger' then
       love.graphics.push()
 
-      local x, y = currentScene.camera:toScreen(item.x, item.y)
+      local x, y = currentScene.camera:toScreen(item.x + currentScene.camera.x - xBefore, item.y + currentScene.camera.y - yBefore)
       local width, _ = currentScene.camera:toScreen(item.width, 0)
 
       local text = love.graphics.newText(love.graphics.getFont(), item.name)
