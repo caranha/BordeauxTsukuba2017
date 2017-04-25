@@ -41,7 +41,6 @@ function Object:disappear()
     self.removed = true
     removeObject(self)
     world:remove(self)
-    print("removed")
   end
 end
 

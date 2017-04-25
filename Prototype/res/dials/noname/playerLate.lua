@@ -65,7 +65,6 @@ local dialog = {
   {
     text = "The one with the buttons and which makes *bip* every 2 seconds"
   }
-
 }
 
 return dialog

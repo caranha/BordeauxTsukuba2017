@@ -40,7 +40,7 @@ function love.update(dt)
   if not currentScene.finished then
 
     if (not currentNarration or not currentNarration.isBlocking or currentNarration.isDone)
-      and (not currentDialogue or currentDialogue.isDone) then
+    and (not currentDialogue or currentDialogue.isDone) then
 
       currentScene.currentMap:update(dt)
 
@@ -48,9 +48,9 @@ function love.update(dt)
 
     AnswerPicker.update()
     updateAnimations(dt)
-  
+
   else
-  
+
   end
 
 end
@@ -106,31 +106,50 @@ end
 
 function love.draw()
   love.graphics.setColor(255, 255, 255)
+  updateCameraPosition(currentScene)
+  -- Draw the map
+  currentScene.camera:draw( function(l,t,w,h) currentScene.currentMap:draw() end )
 
-  if not currentScene.finished then
+  -- Draw the player's inventory
+  drawPlayerInventory()
+  drawItemsName()
+  if currentNarration then
+    if not currentNarration.isStarted then currentNarration:nextLine() end
+    if not currentNarration.isDone then currentNarration:printLine() end
+  end
 
-    updateCameraPosition(currentScene)
-    -- Draw the map
-    currentScene.camera:draw( function(l,t,w,h) currentScene.currentMap:draw() end )
-
-    -- Draw the player's inventory
-    drawPlayerInventory()
-    drawItemsName()
-    if currentNarration then
-      if not currentNarration.isStarted then currentNarration:nextLine() end
-      if not currentNarration.isDone then currentNarration:printLine() end
+  if currentDialogue then
+    if not currentDialogue.isStarted then currentDialogue:start() end
+    if not currentDialogue.isDone then 
+      currentDialogue:drawMessage()
+      AnswerPicker.draw() 
     end
-
-    if currentDialogue then
-      if not currentDialogue.isStarted then currentDialogue:start() end
-      if not currentDialogue.isDone then 
-        currentDialogue:drawMessage()
-        AnswerPicker.draw() 
-      end
-    end
-
-  else
-
+  end
+  
+  if currentScene.finished then
+    local w, h, _ = love.window.getMode()
+    love.graphics.setColor(255,255,255, 200)
+    love.graphics.rectangle("fill", 0, 0, w, h)
+    love.graphics.setColor(0,0,0)
+    love.graphics.setFont(love.graphics.newFont(40))
+    love.graphics.printf("End of scene 1", 0, h / 5, w, "center")
+    love.graphics.setFont(love.graphics.newFont(20))
+    local kind, naive = "", ""
+    if player.kindness <= -2 then
+      kind = "uncaring"
+    elseif player.kindness <= O then
+      kind = "indifferent"
+    elseif player.kindness <= 2 then
+      kind = "kind"
+    else kind = "very kind" end    
+    if player.naiveness <= -2 then
+      kind = "skeptical"
+    elseif player.naiveness <= O then
+      kind = "sophisticated"
+    elseif player.naiveness <= 2 then
+      kind = "naive"
+    else kind = "very naive" end
+    love.graphics.printf("Congratulations and thank you for having finished this first scene.\n\nYour career does not look promising at first. According to your behavior, you look " .. kind .. " and " .. naive .. ". Beware, the continuation of the adventure will change depending on your personality.\n Please don't hesitate to relive the experience again to discover all its possibilities.\n\n\nStay tuned for more!", w * 0.1, h * 0.4, w * 0.8, "center")
   end
 end
 
@@ -142,7 +161,6 @@ function love.keypressed(key)
   elseif scancode == 'space' then player:interact(currentScene)
   elseif scancode == 'return' and currentNarration and not currentNarration.isDone then currentNarration:nextLine()
   end
-
 end
 
 function love.mousepressed(x, y, button, isTouch)
