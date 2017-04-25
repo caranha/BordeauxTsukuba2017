@@ -62,6 +62,40 @@ function drawPlayerInventory()
     love.graphics.pop()
 end
 
+function drawItemsName()
+    local items, len = player:getObjectsInRange(currentScene, 32,32)
+
+    for _, item in pairs(items) do
+        if item.type ~= 'mapchanger' then
+            love.graphics.push()
+
+            local x, y = currentScene.camera:toScreen(item.x, item.y)
+            local width, _ = currentScene.camera:toScreen(item.width, 0)
+
+            local text = love.graphics.newText(love.graphics.getFont(), item.name)
+
+            love.graphics.setColor(255,255,255, 150)
+            love.graphics.rectangle(
+                "fill", 
+                x + width/2 - text:getWidth()/2 - 10, 
+                y - 40, 
+                text:getWidth() + 20, 
+                math.ceil(text:getWidth() / love.graphics.getWidth()) * text:getHeight() )
+
+            love.graphics.setColor(0,0,0)
+
+            love.graphics.printf(
+                item.name, 
+                x + width/2 - text:getWidth()/2, y - 40, 
+                text:getWidth(), 
+                'center'
+            )
+
+            love.graphics.pop()
+        end
+    end
+end
+
 function love.draw()
     love.graphics.setColor(255, 255, 255)
     
@@ -72,7 +106,9 @@ function love.draw()
 
     -- Draw the player's inventory
     drawPlayerInventory()
-    
+    drawItemsName()
+
+
     if currentNarration then
         if not currentNarration.isStarted then currentNarration:nextLine() end
         if not currentNarration.isDone then currentNarration:printLine() end
