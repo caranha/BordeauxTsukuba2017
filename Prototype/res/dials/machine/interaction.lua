@@ -4,11 +4,11 @@ return {
         answers =  {
           {
             text = "Let's push the left button.",
-            callback = function(player, scene) player.brokeTheMachine = true end
+            callback = function(player, scene) scene.machineBroken = true end
           },
           {
             text = "He said the 'right' one, let's push right button.",
-            callback = function(player, scene) player.brokeTheMachine = true end
+            callback = function(player, scene) scene.machineBroken = true end
           }
         }
     }

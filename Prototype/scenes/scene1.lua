@@ -8,16 +8,18 @@ local scene = {
 	currentWorld, 
 	currentMap,
 
-	currentMapName = 'labo',
+	currentMapName = 'home',
 
 	maps = {'home', 'labo', 'start'},
 	objects = {'Cat', 'TV', 'Coffee', 'magnet', 'Pr. Noname', 'machine'},
 
-	playerInteractions = {} 
+	playerInteractions = {},
+
+	machineBroken = false
 }
 
 function scene:init()
-	self.currentMap, self.currentWorld = loadMapAndWorld(self.currentMapName, 'start', self)
+	self.currentMap, self.currentWorld = loadMapAndWorld(self.currentMapName, 'home_upstairs', self)
 	self.camera = buildCamera() 
 end
 
@@ -25,13 +27,18 @@ function scene:pickDialogue(entity)
 		local dialogueName
 
 		if entity.name == 'Pr. Noname' then
+			if self.machineBroken then
+
+				dialogueName = 'playerBrokeTheMachine'
 			
-			if table.contains(self.playerInteractions, entity.name) then
-				dialogueName = 'default'
-			elseif player.isLate then
-				dialogueName = 'playerLate'
 			else
-				dialogueName = 'playerNotLate'
+			if table.contains(self.playerInteractions, entity.name) then
+					dialogueName = 'default'
+				elseif player.isLate then
+					dialogueName = 'playerLate'
+				else
+					dialogueName = 'playerNotLate'
+				end
 			end
 
 		elseif entity.name == 'Cat' then
@@ -63,17 +70,38 @@ function scene:pickDialogue(entity)
 				dialogueName = 'late'
 			end
 		
-  elseif entity.name == 'machine' then
-      if table.contains(self.playerInteractions, "Pr. Noname") then 
-        dialogueName = 'interaction'
-      else
-        dialogueName = 'default'
-      end
+  		elseif entity.name == 'machine' then
+      		if table.contains(self.playerInteractions, "Pr. Noname") then 
+        		dialogueName = 'interaction'
+      		else
+        		dialogueName = 'default'
+      		end
 		end
 
 		if dialogueName then
 			setCurrentDialogue(Dialogue('res/dials/' .. entity.dialogues .. '/' .. dialogueName))
 		end
+end
+
+function scene:onMapChanged()
+	print("Entering : " .. self.currentMapName)
+
+	if self.currentMapName == "labo" then
+
+		local playerHasMagnet = false
+
+		for _, item in pairs(player.inventory) do
+			if item.name == "magnet" then
+				playerHasMagnet = true
+				break
+			end
+		end
+
+		if self.machineBroken and playerHasMagnet then
+			-- TODO : triggers the diialogue with the angry professor
+		end
+
+	end
 end
 
 return scene
