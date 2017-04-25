@@ -30,8 +30,8 @@ local dialog = {
 		text = "Oh I see, and you make the work of my life disappear on your first day of work. Fortunately, I have a backup in ... oh can't remember the name of the city. I have your first task : you will go to the neighbouring city and ask the laboratory the location of the backup, they use the same service for theirs.",
 		answers = {
 			{
-				text = "That was pretty clear !"
-				callback = function (player, scene ) player.naiveness = player.naiveness - 1 end,
+				text = "That was pretty clear !",
+				callback = function (player, scene ) player.naiveness = player.naiveness - 1 end
 			},
 			{
 				text = "I drop my pen while you were speaking, can you repeat ?",
