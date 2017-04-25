@@ -24,6 +24,7 @@ function Player:__init(x, y)
     self.name = 'Player'
     self.inventory = {}
     self.naiveness = 0
+    self.kindness = 0
     self.offsetX, self.offsetY = 0, 0
     self.mouvements = deque:new()
     self.isMoving = false
