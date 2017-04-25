@@ -93,7 +93,7 @@ function scene:onMapChanged()
         break
       end
     end
-    if true or self.machineBroken and playerHasMagnet then
+    if not self.machineBroken and playerHasMagnet then
       self.machineBroken = true
       local pr = currentScene["Pr. Noname"]
       local machine = currentScene["machine"]

@@ -18,7 +18,6 @@ local speed = 128
 function Object:__init(x, y, name, type, imagefile, dialogues, pickable)
 
   local imageFile = ('res/imgs/%s'):format(imagefile)
-
   Sprite.__init(self, x, y, imageFile)
   self.name = name
   self.type = type

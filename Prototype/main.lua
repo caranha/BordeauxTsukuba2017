@@ -105,8 +105,8 @@ function love.draw()
   currentScene.camera:draw( function(l,t,w,h) currentScene.currentMap:draw() end )
 
   -- Draw the player's inventory
-  drawPlayerInventory()
   drawItemsName()
+  drawPlayerInventory()
   if currentNarration then
     if not currentNarration.isStarted then currentNarration:nextLine() end
     if not currentNarration.isDone then currentNarration:printLine() end
