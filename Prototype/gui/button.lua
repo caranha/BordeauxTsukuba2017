@@ -13,7 +13,7 @@ setmetatable(Button,{
 
 function Button:__init(o)
 	self.text = o.text or ''
-	self.color = o.color or {150,150,150}
+	self.color = {150,150,150}
 	self.hovercolor = o.hovercolor or {self.color[1] + 50, self.color[2] + 50, self.color[3] + 50}
 	self.currentcolor = self.color
 	self.x = o.x or 0
@@ -51,7 +51,7 @@ function Button:draw()
 	love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 	love.graphics.setColor(0, 0, 0)
 	love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
-	love.graphics.printf(self.text, self.x, self.y + self.height / 4, self.width, 'center')
+	love.graphics.printf(self.text, self.x + self.width * 0.15, self.y + self.height / 4, self.width * 0.7, 'center')
 
 	love.graphics.pop()
 end
