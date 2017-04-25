@@ -31,7 +31,10 @@ local dialog = {
 		answers = {
 			{
 				text = "That was pretty clear !",
-				callback = function (player, scene ) player.naiveness = player.naiveness - 1 end
+				callback = function (player, scene ) 
+					player.naiveness = player.naiveness - 1
+					player.animation = true
+				end
 			},
 			{
 				text = "I drop my pen while you were speaking, can you repeat ?",
@@ -51,7 +54,10 @@ local dialog = {
 			},
 			{
 				text = "Okay I think that's normal to repair my mistakes !",
-				callback = function (player, scene ) player.kindness = player.kindness + 1 end,
+				callback = function (player, scene ) 
+					player.kindness = player.kindness + 1 
+					player.animation = true
+				end
 			}
 		}
 	},
