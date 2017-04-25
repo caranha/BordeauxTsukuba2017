@@ -21,19 +21,23 @@ function scene:pickDialogue(entity)
   local dialogueName
 
   if entity.name == 'Pr. Noname' then
-    if self.machineBroken then
 
-      dialogueName = 'playerBrokeTheMachine'
+
+    if table.contains(self.playerInteractions, entity.name) then
+
+      dialogueName = 'default'
 
     else
-      if table.contains(self.playerInteractions, entity.name) then
-        dialogueName = 'default'
+
+      if self.machineBroken then
+        dialogueName = 'magnetBrokeTheMachine'
       elseif player.isLate then
         dialogueName = 'playerLate'
       else
         dialogueName = 'playerNotLate'
       end
-    end
+
+    end 
 
   elseif entity.name == 'Cat' then
 
@@ -82,9 +86,10 @@ function scene:onMapChanged()
 
     local playerHasMagnet = false
     
-    for _, item in pairs(player.inventory) do
+    for i, item in pairs(player.inventory) do
       if item.name == "magnet" then
         playerHasMagnet = true
+        player.inventory[i] = nil
         break
       end
     end
