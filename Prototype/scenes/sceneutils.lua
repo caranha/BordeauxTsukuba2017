@@ -82,15 +82,17 @@ function loadMapAndWorld(mapName, spawnName, scene)
                 end
                 if (object.type == 'mapchanger' 
                     and table.contains(scene.maps, object.name)) 
-                    or table.contains(scene.objects, object.name) then
+                    or table.contains(scene.objectsAccepted, object.name) then
                     table.insert(spriteLayer.sprites, object)
-                	table.insert(objects, object)
+                	table.insert(scene.objects, object)
                     world:add(object, object.x, object.y + object.height/2, object.width, object.height/2)
                 end
 
             end
         end
     end
+
+    for k,v in pairs(scene.objects) do print(k,v) end
 
     function spriteLayer:update(dt)
         for _, object in pairs(self.sprites) do

@@ -63,51 +63,50 @@ function drawPlayerInventory()
 end
 
 function drawItemsName()
-  local items, len = player:getObjectsInRange(currentScene, 32,32)
+    local items, len = player:getObjectsInRange(currentScene, 32,32)
 
-  for _, item in pairs(items) do
-    if item.type ~= 'mapchanger' then
-      love.graphics.push()
+    for _, item in pairs(items) do
 
-      local x, y = currentScene.camera:toScreen(item.x, item.y)
-      local width, _ = currentScene.camera:toScreen(item.width, 0)
+        if item.name and item.type ~= 'mapchanger' then
+            love.graphics.push()
 
-      local text = love.graphics.newText(love.graphics.getFont(), item.name)
+            local x, y = currentScene.camera:toScreen(item.x, item.y)
+            local width, _ = currentScene.camera:toScreen(item.width, 0)
 
-      love.graphics.setColor(255,255,255, 150)
-      love.graphics.rectangle(
-        "fill", 
-        x + width/2 - text:getWidth()/2 - 10 + currentScene.camera.x, 
-        y - 40 + currentScene.camera.y, 
-        text:getWidth() + 20, 
-        math.ceil(text:getWidth() / love.graphics.getWidth()) * text:getHeight())
-      love.graphics.setColor(0,0,0)
-      love.graphics.printf(
-        item.name, 
-        x + width/2 - text:getWidth()/2 + currentScene.camera.x,
-        y - 40 + currentScene.camera.y, 
-        text:getWidth(), 
-        'center'
-      )
+            local text = love.graphics.newText(love.graphics.getFont(), item.name)
 
-      love.graphics.pop()
+            love.graphics.setColor(255,255,255, 150)
+            love.graphics.rectangle(
+                "fill", 
+                x + width/2 - text:getWidth()/2 - 10, 
+                y - 40, 
+                text:getWidth() + 20, 
+                math.ceil(text:getWidth() / love.graphics.getWidth()) * text:getHeight() )
+
+            love.graphics.setColor(0,0,0)
+
+            love.graphics.printf(
+                item.name, 
+                x + width/2 - text:getWidth()/2, y - 40, 
+                text:getWidth(), 
+                'center'
+            )
+
+            love.graphics.pop()
+        end
     end
-  end
 end
 
 function love.draw()
   love.graphics.setColor(255, 255, 255)
 
   updateCameraPosition(currentScene)
-
   -- Draw the map
   currentScene.camera:draw( function(l,t,w,h) currentScene.currentMap:draw() end )
 
   -- Draw the player's inventory
   drawPlayerInventory()
   drawItemsName()
-
-
   if currentNarration then
     if not currentNarration.isStarted then currentNarration:nextLine() end
     if not currentNarration.isDone then currentNarration:printLine() end
@@ -120,7 +119,6 @@ function love.draw()
       AnswerPicker.draw() 
     end
   end
-
 end
 
 function love.keypressed(key)

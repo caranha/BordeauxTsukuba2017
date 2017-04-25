@@ -6,14 +6,14 @@ local scene = {
 	currentWorld, 
 	currentMap,
 	currentMapName = 'labo',
-	maps = {'home', 'labo', 'start'},
-	objects = {'Cat', 'TV', 'Coffee', 'magnet', 'Pr. Noname', 'machine'},
+	maps = {'home', 'labo', 'bakutsu'},
+	objectsAccepted = {'Cat', 'TV', 'Coffee', 'magnet', 'Pr. Noname', 'machine'},
 	playerInteractions = {},
 	machineBroken = false
 }
 
 function scene:init()
-	self.currentMap, self.currentWorld = loadMapAndWorld(self.currentMapName, 'start', self)
+	self.currentMap, self.currentWorld = loadMapAndWorld(self.currentMapName, 'bakutsu', self)
 	self.camera = buildCamera() 
 end
 
