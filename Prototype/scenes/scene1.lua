@@ -97,7 +97,8 @@ function scene:onMapChanged()
 			end
 		end
 
-		if self.machineBroken and playerHasMagnet then
+		if not self.machineBroken and playerHasMagnet then
+			self.machineBroken = true
 			-- TODO : triggers the diialogue with the angry professor
 		end
 

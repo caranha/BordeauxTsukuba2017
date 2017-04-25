@@ -121,4 +121,6 @@ function changeMap(scene, newMap)
     scene.currentMapName = newMap
     scene.camera = buildCamera()
     player.offsetX, player.offsetY = 0, 0
+
+    if scene.onMapChanged then scene:onMapChanged() end
 end
