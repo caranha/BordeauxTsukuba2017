@@ -107,7 +107,6 @@ end
 function love.draw()
   love.graphics.setColor(255, 255, 255)
 
-
   if not currentScene.finished then
 
     updateCameraPosition(currentScene)
