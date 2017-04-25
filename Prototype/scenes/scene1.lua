@@ -93,10 +93,7 @@ function scene:onMapChanged()
         break
       end
     end
-
-
-
-    if self.machineBroken and playerHasMagnet then
+    if true or self.machineBroken and playerHasMagnet then
       self.machineBroken = true
       local pr = currentScene["Pr. Noname"]
       local machine = currentScene["machine"]
@@ -106,8 +103,10 @@ function scene:onMapChanged()
       Animation(player, "z", 1, 2, 2.2, 
         function()
           for i = 1, 5 do
-            pr.mouvements:push_left(2)
+            pr.mouvements:push_right(2)
           end
+          pr.mouvements:push_right(self.pickDialogue)
+          pr.mouvements:push_right(pr)
         end
       )
       player.animation = false      

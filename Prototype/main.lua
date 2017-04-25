@@ -3,7 +3,6 @@ require 'entities.sprite'
 require 'entities.player'
 require 'entities.object'
 require 'gui.button'
-
 require 'dialogue'
 require 'narration'
 require 'answerpicker'
@@ -63,38 +62,39 @@ function drawPlayerInventory()
 end
 
 function drawItemsName()
-    local items, len = player:getObjectsInRange(currentScene, 32,32)
+  local items, len = player:getObjectsInRange(currentScene, 32,32)
+  local xBefore, yBefore = currentScene.camera.x, currentScene.camera.y
+  currentScene.camera:setPosition(0, 0)
+  for _, item in pairs(items) do
+    if item.name and item.type ~= 'mapchanger' then
+      love.graphics.push()
 
-    for _, item in pairs(items) do
+      local x, y = currentScene.camera:toScreen(item.x, item.y)
+      local width, _ = currentScene.camera:toScreen(item.width, 0)
 
-        if item.name and item.type ~= 'mapchanger' then
-            love.graphics.push()
+      local text = love.graphics.newText(love.graphics.getFont(), item.name)
 
-            local x, y = currentScene.camera:toScreen(item.x, item.y)
-            local width, _ = currentScene.camera:toScreen(item.width, 0)
+      love.graphics.setColor(255,255,255, 150)
+      love.graphics.rectangle(
+        "fill", 
+        x + width/2 - text:getWidth()/2 - 10, 
+        y - 40, 
+        text:getWidth() + 20, 
+        math.ceil(text:getWidth() / love.graphics.getWidth()) * text:getHeight() )
 
-            local text = love.graphics.newText(love.graphics.getFont(), item.name)
+      love.graphics.setColor(0,0,0)
 
-            love.graphics.setColor(255,255,255, 150)
-            love.graphics.rectangle(
-                "fill", 
-                x + width/2 - text:getWidth()/2 - 10, 
-                y - 40, 
-                text:getWidth() + 20, 
-                math.ceil(text:getWidth() / love.graphics.getWidth()) * text:getHeight() )
-
-            love.graphics.setColor(0,0,0)
-
-            love.graphics.printf(
-                item.name, 
-                x + width/2 - text:getWidth()/2, y - 40, 
-                text:getWidth(), 
-                'center'
-            )
-
-            love.graphics.pop()
-        end
+      love.graphics.printf(
+        item.name, 
+        x + width/2 - text:getWidth()/2, y - 40, 
+        text:getWidth(), 
+        'center'
+      )
+      love.graphics.pop()
     end
+  end
+
+  currentScene.camera:setPosition(xBefore, yBefore)
 end
 
 function love.draw()
