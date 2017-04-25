@@ -37,15 +37,22 @@ end
 
 function love.update(dt)
 
-  if (not currentNarration or not currentNarration.isBlocking or currentNarration.isDone)
-  and (not currentDialogue or currentDialogue.isDone) then
+  if not currentScene.finished then
 
-    currentScene.currentMap:update(dt)
+    if (not currentNarration or not currentNarration.isBlocking or currentNarration.isDone)
+      and (not currentDialogue or currentDialogue.isDone) then
 
+      currentScene.currentMap:update(dt)
+
+    end
+
+    AnswerPicker.update()
+    updateAnimations(dt)
+  
+  else
+  
   end
 
-  AnswerPicker.update()
-  updateAnimations(dt)
 end
 
 
@@ -100,24 +107,30 @@ end
 function love.draw()
   love.graphics.setColor(255, 255, 255)
 
-  updateCameraPosition(currentScene)
-  -- Draw the map
-  currentScene.camera:draw( function(l,t,w,h) currentScene.currentMap:draw() end )
+  if not currentScene.finished then
 
-  -- Draw the player's inventory
-  drawItemsName()
-  drawPlayerInventory()
-  if currentNarration then
-    if not currentNarration.isStarted then currentNarration:nextLine() end
-    if not currentNarration.isDone then currentNarration:printLine() end
-  end
+    updateCameraPosition(currentScene)
+    -- Draw the map
+    currentScene.camera:draw( function(l,t,w,h) currentScene.currentMap:draw() end )
 
-  if currentDialogue then
-    if not currentDialogue.isStarted then currentDialogue:start() end
-    if not currentDialogue.isDone then 
-      currentDialogue:drawMessage()
-      AnswerPicker.draw() 
+    -- Draw the player's inventory
+    drawPlayerInventory()
+    drawItemsName()
+    if currentNarration then
+      if not currentNarration.isStarted then currentNarration:nextLine() end
+      if not currentNarration.isDone then currentNarration:printLine() end
     end
+
+    if currentDialogue then
+      if not currentDialogue.isStarted then currentDialogue:start() end
+      if not currentDialogue.isDone then 
+        currentDialogue:drawMessage()
+        AnswerPicker.draw() 
+      end
+    end
+
+  else
+
   end
 end
 
