@@ -107,7 +107,7 @@ function scene:onMapChanged()
       local machine = currentScene["machine"]
       pr:resetMouvements()
       player.z = 1
-      Animation(player, "z", 1, 2, 1.5, machine.disappear, machine)
+      Animation(player, "z", 1, 2, 1.5, self.makeMachineDisappear, self)
       Animation(player, "z", 1, 2, 2.2, 
         function()
           for i = 1, 5 do
@@ -131,6 +131,11 @@ function scene:onMapChanged()
 
   end
 
+end
+
+function scene:makeMachineDisappear()
+  local machine = currentScene["machine"]
+  machine:disappear(self)
 end
 
 return scene

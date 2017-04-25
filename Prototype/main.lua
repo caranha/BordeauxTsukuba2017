@@ -137,18 +137,18 @@ function love.draw()
     local kind, naive = "", ""
     if player.kindness <= -2 then
       kind = "uncaring"
-    elseif player.kindness <= O then
+    elseif player.kindness <= 0 then
       kind = "indifferent"
     elseif player.kindness <= 2 then
       kind = "kind"
     else kind = "very kind" end    
     if player.naiveness <= -2 then
-      kind = "skeptical"
-    elseif player.naiveness <= O then
-      kind = "sophisticated"
+      naive = "skeptical"
+    elseif player.naiveness <= 0 then
+      naive = "sophisticated"
     elseif player.naiveness <= 2 then
-      kind = "naive"
-    else kind = "very naive" end
+      naive = "naive"
+    else naive = "very naive" end
     love.graphics.printf("Congratulations and thank you for having finished this first scene.\n\nYour career does not look promising at first. According to your behavior, you look " .. kind .. " and " .. naive .. ". Beware, the continuation of the adventure will change depending on your personality.\n Please don't hesitate to relive the experience again to discover all its possibilities.\n\n\nStay tuned for more!", w * 0.1, h * 0.4, w * 0.8, "center")
   end
 end
@@ -171,11 +171,3 @@ function love.mousepressed(x, y, button, isTouch)
   end
 end
 
-function removeObject(o)
-  for i, object in pairs(objects) do
-    if object == o then
-      objects[i] = nil
-      break
-    end
-  end 
-end

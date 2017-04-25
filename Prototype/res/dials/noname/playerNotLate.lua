@@ -14,7 +14,7 @@ local dialog = {
 		}	
 	},
 	{
-		text = "Well, I just remembered that the coffee machine disappeared during my experiences, sorry. What time sis it ?",
+		text = "Well, I just remembered that the coffee machine disappeared during my experiences, sorry. What time is it ?",
 		answers = {
 			{
 				text = "I have a watch but I don't know how to read the time on it.",
