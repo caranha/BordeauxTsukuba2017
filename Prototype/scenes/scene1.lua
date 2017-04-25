@@ -5,7 +5,7 @@ local scene = {
   objects = {},
   currentWorld, 
   currentMap,
-  currentMapName = 'labo',
+  currentMapName = 'home',
   maps = {'home', 'labo', 'bakutsu'},
   objectsAccepted = {'Cat', 'TV', 'Coffee', 'magnet', 'Pr. Noname', 'machine'},
   playerInteractions = {},
@@ -13,8 +13,9 @@ local scene = {
 }
 
 function scene:init()
-  self.currentMap, self.currentWorld = loadMapAndWorld(self.currentMapName, 'bakutsu', self)
-  self.camera = buildCamera() 
+  self.currentMap, self.currentWorld = loadMapAndWorld(self.currentMapName, 'home_upstairs', self)
+  self.camera = buildCamera()
+  setCurrentNarration(Narration('res/narrs/controls.txt', true))
 end
 
 function scene:pickDialogue(entity)

@@ -5,10 +5,12 @@ local dialog = {
 		answers = {
 			{
 				text = "[ tell him about the magnet in your pocket ]",
+				callback = function (player, scene ) player.naiveness = player.naiveness - 1 end,
 				nextIndex = 2
 			},
 			{
 				text = "[ tell him you don't understand ]",
+				callback = function (player, scene ) player.naiveness = player.naiveness + 1 end,
 				nextIndex = 6
 			}
 		}
@@ -28,10 +30,12 @@ local dialog = {
 		text = "Oh I see, and you make the work of my life disappear on your first day of work. Fortunately, I have a backup in ... oh can't remember the name of the city. I have your first task : you will go to the neighbouring city and ask the laboratory the location of the backup, they use the same service for theirs.",
 		answers = {
 			{
-				text = "That was pretty clear !"
+				text = "That was pretty clear !",
+				callback = function (player, scene ) player.naiveness = player.naiveness - 1 end
 			},
 			{
 				text = "I drop my pen while you were speaking, can you repeat ?",
+				callback = function (player, scene ) player.naiveness = player.naiveness + 1 end,
 				nextIndex = 4
 			}
 		}
@@ -42,10 +46,12 @@ local dialog = {
 		answers = {
 			{
 				text = "Can't you go by yourself ? That's your problem ...",
+				callback = function (player, scene ) player.kindness = player.kindness - 1 end,
 				nextIndex = 5
 			},
 			{
-				text = "Okay I think that's normal to repair my mistakes !"
+				text = "Okay I think that's normal to repair my mistakes !",
+				callback = function (player, scene ) player.kindness = player.kindness + 1 end,
 			}
 		}
 	},
@@ -54,7 +60,8 @@ local dialog = {
 		text = "If you care about your job you better do it ! And once knew a man who refused to... ",
 		answers = {
 			{
-				text = "Okay I'm leaving now !"
+				text = "Okay I'm leaving now !",
+				callback = function(player, scene) player.animation = true end
 			}
 		}
 	},
@@ -64,10 +71,12 @@ local dialog = {
 		answers = {
 			{
 				text = "Well, it happens when you're getting old...",
+				callback = function (player, scene ) player.kindness = player.kindness - 1 end,
 				nextIndex = 8
 			},
 			{
 				text = "Oh maybe that's because of the magnet I have in my right pocket",
+				callback = function (player, scene ) player.kindness = player.kindness + 1 end,
 				nextIndex = 2
 			}
 		}
@@ -78,6 +87,7 @@ local dialog = {
 		answers = {
 			{
 				text = "And what this serum supposed to do ? Cure the sunburns ?",
+				callback = function (player, scene ) player.naiveness = player.naiveness + 1 end,
 				nextIndex = 9
 			},
 			{
