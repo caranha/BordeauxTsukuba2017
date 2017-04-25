@@ -8,7 +8,7 @@ return {
               player.animation = false
               scene.machineBroken = true
               scene["Pr. Noname"].isMoving = false
-              scene["machine"]:disappear()
+              scene["machine"]:disappear(scene)
             end
           },
           {
@@ -17,7 +17,7 @@ return {
               scene.machineBroken = true 
               player.animation = false
               scene["Pr. Noname"].isMoving = false
-              scene["machine"]:disappear()
+              scene["machine"]:disappear(scene)
             end
           }
         }

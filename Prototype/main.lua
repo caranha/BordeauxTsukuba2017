@@ -153,11 +153,3 @@ function love.mousepressed(x, y, button, isTouch)
   end
 end
 
-function removeObject(o)
-  for i, object in pairs(objects) do
-    if object == o then
-      objects[i] = nil
-      break
-    end
-  end 
-end

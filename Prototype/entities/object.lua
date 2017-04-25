@@ -36,18 +36,21 @@ function Object:__init(x, y, name, type, imagefile, dialogues, pickable)
   self.isMoving = true
 end
 
-function Object:disappear()
-  if not self.removed then
-    self.removed = true
-    removeObject(self)
-    world:remove(self)
-    print("removed")
+function Object:disappear(scene)
+
+  for i,sprite in pairs(scene.currentMap.layers["Sprites"].sprites) do
+    if sprite == self then
+      table.remove(scene.currentMap.layers["Sprites"].sprites, i)
+      break
+    end
   end
+
+  scene.currentWorld:remove(self)
 end
 
-function Object:pickedBy(e)
+function Object:pickedBy(e, scene)
   e:addToInventory(self)
-  self:disappear()
+  self:disappear(scene)
 end
 
 function Object:interactWithPlayer(scene, player)
@@ -55,7 +58,7 @@ function Object:interactWithPlayer(scene, player)
     scene:pickDialogue(self)
   end
   if self.pickable then
-    self:pickedBy(player)
+    self:pickedBy(player,scene)
   end
 end
 
@@ -66,7 +69,5 @@ function Object:update(dt, scene)
 end
 
 function Object:draw()
-  if not self.removed then
-    Sprite.draw(self)
-  end
+  Sprite.draw(self)
 end
