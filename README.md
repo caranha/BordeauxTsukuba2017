@@ -10,7 +10,7 @@ Supervising teacher from University of Tsukuba, Japan :
 
 ## Organization of the repository
 This repository will be organized in 3 parts :
-* Prototype/ : contains the Prototype of the game, written in Lua using LÖVE framework. [More here.](https://caranha.github.io/BordeauxTsukuba2017/Docs/)
+* Prototype/ : contains the Prototype of the game, written in Lua using LÖVE framework. [More here.](https://caranha.github.io/BordeauxTsukuba2017/Docs/Prototype/index.html)
 * _Game/_ : contains the _real_ Game, written in Java using LibGDX framework.  
 * _Docs/_ : contains all the documentation of the Game's code and the Github page's related docs.
 
