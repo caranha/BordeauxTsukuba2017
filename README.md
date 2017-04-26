@@ -8,7 +8,7 @@ French students from IUT of Bordeaux, France :
 Supervising teacher from University of Tsukuba, Japan :
 * Claus Aranha
 
-##Organization of the repository
+## Organization of the repository
 This repository will be organized in 3 parts :
 * Prototype/ : contains the Prototype of the game, written in Lua using LÖVE framework. [More here.](https://caranha.github.io/BordeauxTsukuba2017/Docs/)
 * _Game/_ : contains the _real_ Game, written in Java using LibGDX framework.  
