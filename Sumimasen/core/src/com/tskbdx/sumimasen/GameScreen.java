@@ -24,7 +24,6 @@ public class GameScreen implements Screen {
 
         this.camera.setToOrtho(false, 800, 480);
 
-        Gdx.input.setInputProcessor(new GameInputProcessor(this));
     }
 
     @Override

@@ -1,16 +1,17 @@
-package com.tskbdx.sumimasen;
+package com.tskbdx.sumimasen.scenes.inputprocessors;
 
 import com.badlogic.gdx.InputProcessor;
+import com.tskbdx.sumimasen.scenes.Scene;
 
 /**
  * Created by Sydpy on 4/27/17.
  */
-public class MenuInputProcessor implements InputProcessor {
+public class NarrationInputProcessor implements InputProcessor{
 
-    private MenuScreen menuScreen;
+    private Scene scene;
 
-    public MenuInputProcessor(MenuScreen menuScreen) {
-        this.menuScreen = menuScreen;
+    public NarrationInputProcessor(Scene scene) {
+        this.scene = scene;
     }
 
     @Override

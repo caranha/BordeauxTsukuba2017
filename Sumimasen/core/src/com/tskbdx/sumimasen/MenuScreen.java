@@ -1,6 +1,5 @@
 package com.tskbdx.sumimasen;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
 /**
@@ -12,7 +11,6 @@ public class MenuScreen implements Screen {
 
     public MenuScreen(Sumimasen game) {
         this.game = game;
-        Gdx.input.setInputProcessor(new MenuInputProcessor(this));
     }
 
     @Override

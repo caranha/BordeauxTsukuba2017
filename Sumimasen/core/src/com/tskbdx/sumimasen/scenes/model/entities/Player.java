@@ -5,11 +5,9 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by Sydpy on 4/27/17.
  */
-public abstract class Entity {
+public class Player {
 
-    protected Vector2 pos, size;
-    protected Vector2 hitBoxPos, hitBoxSize;
-
-
-
+    private Vector2 pos, size;
+    private Vector2 hitBoxPos, hitBoxSize;
+    
 }

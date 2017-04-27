@@ -1,7 +1,9 @@
 package com.tskbdx.sumimasen.scenes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.tskbdx.sumimasen.scenes.inputprocessors.BasicInputProcessor;
 
 /**
  * Created by Sydpy on 4/27/17.
@@ -14,7 +16,7 @@ public class IntroScene implements Scene {
 
     @Override
     public void init() {
-
+        Gdx.input.setInputProcessor(new BasicInputProcessor(this));
     }
 
     @Override
