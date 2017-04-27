@@ -16,7 +16,6 @@ public class GameScreen implements Screen {
 
     private OrthographicCamera camera = new OrthographicCamera();
 
-
     private Scene currentScene = new IntroScene();
 
     public GameScreen(final Sumimasen game) {
@@ -24,6 +23,8 @@ public class GameScreen implements Screen {
         this.game = game;
 
         this.camera.setToOrtho(false, 800, 480);
+
+        Gdx.input.setInputProcessor(new GameInputProcessor(this));
     }
 
     @Override
