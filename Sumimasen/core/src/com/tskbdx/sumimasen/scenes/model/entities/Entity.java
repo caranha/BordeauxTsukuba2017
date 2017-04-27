@@ -1,6 +1,6 @@
 package com.tskbdx.sumimasen.scenes.model.entities;
 
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.mouvements.Mouvement;
 
@@ -9,8 +9,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.mouvements.Mouvement;
  */
 public abstract class Entity {
 
-    private Vector2 pos, size;
-    private Vector2 hitBoxPos, hitBoxSize;
+    private Rectangle rectangle;
 
     private Interaction interaction;
     private Mouvement mouvement;
