@@ -1,9 +1,10 @@
 package com.tskbdx.sumimasen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Sumimasen extends com.badlogic.gdx.Game {
+public class Sumimasen extends Game {
 
 	private SpriteBatch batch;
 	private BitmapFont font;
