@@ -1,17 +1,17 @@
 package com.tskbdx.sumimasen.scenes.model.entities;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
-import com.tskbdx.sumimasen.scenes.model.entities.mouvements.Mouvement;
+
+import java.util.Observable;
 
 /**
- * Created by Sydpy on 4/27/17.
+ * Created by Sydpy on 4/28/17.
  */
-public abstract class Entity {
+public abstract class Entity extends Observable {
 
     private Rectangle rectangle;
 
-    private Interaction interaction;
-    private Mouvement mouvement;
-
+    public Rectangle getRectangle() {
+        return rectangle;
+    }
 }
