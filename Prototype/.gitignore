@@ -1,3 +1,6 @@
 *.piskel
 *.tmx
 *.tsx
+releases/Prototype-multiplatform/
+releases/Prototype-win32/
+releases/Prototype-win64/
