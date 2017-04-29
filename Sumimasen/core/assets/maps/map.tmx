@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="8" tileheight="8" nextobjectid="8">
+ <tileset firstgid="1" name="tileset" tilewidth="8" tileheight="8" tilecount="3" columns="3">
+  <image source="tileset.png" width="24" height="8"/>
+ </tileset>
+ <layer name="Ground" width="16" height="16">
+  <data encoding="csv">
+1,1,1,1,1,1,1,1,1,2,1,1,2,1,1,1,
+1,1,1,2,2,2,2,2,2,2,1,1,2,1,1,1,
+1,1,1,2,1,1,1,1,1,2,1,1,2,1,1,1,
+1,1,1,2,1,1,1,1,1,2,1,1,2,1,1,1,
+1,1,1,2,1,1,1,1,1,2,1,1,2,1,1,1,
+1,1,1,2,1,1,1,1,1,2,1,1,2,1,1,1,
+2,2,2,2,1,1,2,2,2,2,1,1,2,2,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,
+2,2,2,2,2,2,1,1,2,2,1,1,1,2,1,1,
+1,1,1,2,1,1,1,1,1,2,1,1,1,2,1,1,
+1,1,1,2,1,1,1,1,1,2,1,1,1,2,1,1,
+1,1,1,2,1,1,1,1,1,2,1,1,1,2,1,1,
+1,1,1,2,2,2,2,2,2,2,1,1,1,2,1,1,
+1,1,1,1,1,1,1,1,1,2,1,1,1,2,1,1,
+1,1,1,1,1,1,1,1,1,2,1,1,1,2,1,1
+</data>
+ </layer>
+ <layer name="Collision" width="16" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,3,3,3,3,0,0,0,
+0,0,0,3,3,3,3,3,3,3,0,0,3,0,0,0,
+0,0,0,3,0,0,0,0,0,3,0,0,3,0,0,0,
+0,0,0,3,0,0,0,0,0,3,0,0,3,0,0,0,
+0,0,0,3,0,0,0,0,0,3,0,0,3,0,0,0,
+0,0,0,3,0,0,0,0,0,3,0,0,3,0,0,0,
+3,3,3,3,0,0,3,3,3,3,0,0,3,3,0,0,
+3,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,
+3,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,
+3,3,3,3,3,3,0,0,3,3,0,0,0,3,0,0,
+0,0,0,3,0,0,0,0,0,3,0,0,0,3,0,0,
+0,0,0,3,0,0,0,0,0,3,0,0,0,3,0,0,
+0,0,0,3,0,0,0,0,0,3,0,0,0,3,0,0,
+0,0,0,3,3,3,3,3,3,3,0,0,0,3,0,0,
+0,0,0,0,0,0,0,0,0,3,0,0,0,3,0,0,
+0,0,0,0,0,0,0,0,0,3,3,3,3,3,0,0
+</data>
+ </layer>
+ <objectgroup name="Entities">
+  <object id="1" name="player" x="16" y="64" width="16" height="8">
+   <properties>
+    <property name="imagefile" value="player.png"/>
+   </properties>
+  </object>
+  <object id="2" name="entity1" x="56" y="16" width="16" height="8">
+   <properties>
+    <property name="imagefile" value="entity.png"/>
+   </properties>
+  </object>
+  <object id="5" name="entity3" x="80" y="8" width="16" height="8">
+   <properties>
+    <property name="imagefile" value="entity.png"/>
+   </properties>
+  </object>
+  <object id="6" name="entity2" x="40" y="96" width="16" height="8">
+   <properties>
+    <property name="imagefile" value="entity.png"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

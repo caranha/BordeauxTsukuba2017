@@ -3,7 +3,6 @@ package com.tskbdx.sumimasen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.tskbdx.sumimasen.scenes.IntroScene;
 import com.tskbdx.sumimasen.scenes.Scene;
 
@@ -14,7 +13,6 @@ public class GameScreen implements Screen {
 
     private final Sumimasen game;
 
-    private OrthographicCamera camera = new OrthographicCamera();
 
     private Scene currentScene = new IntroScene();
 
@@ -22,8 +20,8 @@ public class GameScreen implements Screen {
 
         this.game = game;
 
-        this.camera.setToOrtho(false, 800, 480);
 
+        currentScene.init();
     }
 
     @Override
@@ -36,10 +34,8 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(1,1,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        camera.update();
         currentScene.update(delta);
 
-        game.getBatch().setProjectionMatrix(camera.combined);
 
         game.getBatch().begin();
         currentScene.render(game.getBatch());

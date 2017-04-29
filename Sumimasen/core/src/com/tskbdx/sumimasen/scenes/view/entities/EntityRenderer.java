@@ -11,12 +11,12 @@ import java.util.Observer;
 /**
  * Created by Sydpy on 4/28/17.
  */
-public class EntityObserver implements Observer {
+public class EntityRenderer implements Observer {
 
     private Entity entity;
     private Texture image;
 
-    public EntityObserver(Entity entity, String imagefile) {
+    public EntityRenderer(Entity entity, String imagefile) {
         this.entity = entity;
     }
 
@@ -25,12 +25,16 @@ public class EntityObserver implements Observer {
 
     }
 
-    public void draw(Batch batch) {
+    public void render(Batch batch) {
 
         Rectangle rectangle = entity.getRectangle();
 
         batch.draw(image,
                 rectangle.getX(), rectangle.getY(),
                 rectangle.getWidth(), rectangle.getHeight() );
+    }
+
+    public Entity getEntity() {
+        return entity;
     }
 }
