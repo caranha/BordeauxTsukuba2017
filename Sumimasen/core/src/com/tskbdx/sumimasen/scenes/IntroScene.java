@@ -4,17 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.inputprocessors.BasicInputProcessor;
+import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
 import com.tskbdx.sumimasen.scenes.model.entities.SceneObject;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
-
-import java.util.ArrayList;
 
 /**
  * Created by Sydpy on 4/27/17.
@@ -25,9 +25,8 @@ public class IntroScene implements Scene {
 
     private OrthographicCamera camera = new OrthographicCamera();
 
+    private World world;
     private WorldRenderer worldRenderer;
-
-    private ArrayList<Entity> entities = new ArrayList<Entity>();
 
     private Player player;
 
@@ -36,9 +35,29 @@ public class IntroScene implements Scene {
 
         //Load tiled map
         TiledMap tiledMap = new TmxMapLoader().load("maps/map.tmx");
+        world = new World();
+        worldRenderer = new WorldRenderer(tiledMap);
 
-        ArrayList<EntityRenderer> entityRenderers = new ArrayList<EntityRenderer>();
+        loadEntities(tiledMap);
 
+        loadWalls(tiledMap);
+
+        Gdx.input.setInputProcessor(new BasicInputProcessor(this.player));
+        camera.setToOrtho(false, 800, 480);
+        camera.zoom = 1.f/SCALE_FACTOR;
+        camera.translate(-400, -240);
+
+    }
+
+    private void loadWalls(TiledMap tiledMap) {
+        for (MapObject wall : tiledMap.getLayers().get("Walls").getObjects()) {
+            if (wall instanceof PolygonMapObject) {
+               world.addWall((PolygonMapObject) wall);
+            }
+        }
+    }
+
+    private void loadEntities(TiledMap tiledMap) {
         for (MapObject object : tiledMap.getLayers().get("Entities").getObjects()) {
 
             Entity entity;
@@ -58,27 +77,17 @@ public class IntroScene implements Scene {
                     (Float) object.getProperties().get("width"),
                     (Float) object.getProperties().get("height")));
 
-            entities.add(entity);
-            entityRenderers.add(entityRenderer);
-
+            world.addEntity(entity);
+            worldRenderer.addEntityRenderer(entityRenderer);
         }
-
-        worldRenderer = new WorldRenderer(tiledMap, entityRenderers);
-
-        Gdx.input.setInputProcessor(new BasicInputProcessor(this.player));
-        camera.setToOrtho(false, 800, 480);
-        camera.zoom = 1.f/SCALE_FACTOR;
-        camera.translate(-400, -240);
-
     }
 
     @Override
     public void update(float dt) {
 
-        for (Entity entity : entities) {
-            entity.update(dt);
-        }
+        world.update(dt);
 
+        camera.translate(player.getRectangle().x - camera.position.x, player.getRectangle().y - camera.position.y);
     }
 
     @Override

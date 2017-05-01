@@ -15,12 +15,18 @@ import java.util.Collections;
  */
 public class WorldRenderer extends OrthogonalTiledMapRenderer {
 
-    private ArrayList<EntityRenderer> entityRenderers;
+    private ArrayList<EntityRenderer> entityRenderers = new ArrayList<EntityRenderer>();
 
-    public WorldRenderer(TiledMap map, ArrayList<EntityRenderer> entityRenderers) {
+    public WorldRenderer(TiledMap map) {
         super(map);
+    }
 
-        this.entityRenderers = entityRenderers;
+    public void addEntityRenderer(EntityRenderer entityRenderer) {
+        entityRenderers.add(entityRenderer);
+    }
+
+    public void removeEntityRenderer(EntityRenderer entityRenderer) {
+        entityRenderers.remove(entityRenderer);
     }
 
     @Override
@@ -35,7 +41,7 @@ public class WorldRenderer extends OrthogonalTiledMapRenderer {
                     renderTileLayer((TiledMapTileLayer) layer);
                     currentLayer++;
 
-                    if (currentLayer == 2) {
+                    if (currentLayer == 1) {
 
                         Collections.sort(entityRenderers, new EntityRendererDrawOrderer());
 
