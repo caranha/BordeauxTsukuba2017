@@ -13,21 +13,27 @@ import java.util.Observer;
  */
 public class EntityRenderer implements Observer {
 
+    private static String IMAGES_RES_FOLDER = "images/";
+
     private Entity entity;
     private Texture image;
 
+    private Rectangle rectangle;
+
     public EntityRenderer(Entity entity, String imagefile) {
         this.entity = entity;
+        this.rectangle = entity.getRectangle();
+        this.image = new Texture(IMAGES_RES_FOLDER + imagefile);
+
+        entity.addObserver(this);
     }
 
     @Override
     public void update(Observable observable, Object o) {
-
+        this.rectangle = entity.getRectangle();
     }
 
     public void render(Batch batch) {
-
-        Rectangle rectangle = entity.getRectangle();
 
         batch.draw(image,
                 rectangle.getX(), rectangle.getY(),

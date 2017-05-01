@@ -35,7 +35,7 @@ public class WorldRenderer extends OrthogonalTiledMapRenderer {
                     renderTileLayer((TiledMapTileLayer) layer);
                     currentLayer++;
 
-                    if (currentLayer == 1) {
+                    if (currentLayer == 2) {
 
                         Collections.sort(entityRenderers, new EntityRendererDrawOrderer());
 

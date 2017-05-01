@@ -14,4 +14,10 @@ public abstract class Entity extends Observable {
     public Rectangle getRectangle() {
         return rectangle;
     }
+
+    public void setRectangle(Rectangle rectangle) {
+        this.rectangle = rectangle;
+        setChanged();
+        notifyObservers();
+    }
 }

@@ -1,4 +1,4 @@
-package com.tskbdx.sumimasen.scenes.model.entities;
+package com.tskbdx.sumimasen.scenes.model;
 
 /**
  * Created by Sydpy on 4/27/17.
