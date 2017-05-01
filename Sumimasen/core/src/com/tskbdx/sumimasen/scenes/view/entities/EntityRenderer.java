@@ -22,25 +22,31 @@ public class EntityRenderer implements Observer {
 
     public EntityRenderer(Entity entity, String imagefile) {
         this.entity = entity;
-        this.rectangle = entity.getRectangle();
         this.image = new Texture(IMAGES_RES_FOLDER + imagefile);
+        this.rectangle = new Rectangle();
 
         entity.addObserver(this);
     }
 
     @Override
     public void update(Observable observable, Object o) {
-        this.rectangle = entity.getRectangle();
+        rectangle.x         = entity.getX();
+        rectangle.y         = entity.getY();
+        rectangle.width     = entity.getWidth();
+
+        float scale_factor = rectangle.width / image.getWidth();
+
+        rectangle.height    = image.getHeight() * scale_factor;
     }
 
     public void render(Batch batch) {
 
         batch.draw(image,
-                rectangle.getX(), rectangle.getY(),
-                rectangle.getWidth(), rectangle.getHeight() );
+                rectangle.getX(),       rectangle.getY(),
+                rectangle.getWidth(),   rectangle.getHeight() );
     }
 
-    public Entity getEntity() {
-        return entity;
+    public Rectangle getRectangle() {
+        return rectangle;
     }
 }

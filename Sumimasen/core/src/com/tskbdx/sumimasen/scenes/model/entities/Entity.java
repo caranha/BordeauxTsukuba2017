@@ -22,4 +22,20 @@ public abstract class Entity extends Observable {
         setChanged();
         notifyObservers();
     }
+
+    public float getX() {
+        return rectangle.getX();
+    }
+
+    public float getY() {
+        return rectangle.getY();
+    }
+
+    public float getWidth() {
+        return rectangle.getWidth();
+    }
+
+    public float getHeight() {
+        return rectangle.getHeight();
+    }
 }

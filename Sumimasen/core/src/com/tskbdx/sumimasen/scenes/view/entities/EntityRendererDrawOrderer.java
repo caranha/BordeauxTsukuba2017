@@ -8,6 +8,6 @@ import java.util.Comparator;
 public class EntityRendererDrawOrderer implements Comparator<EntityRenderer> {
     @Override
     public int compare(EntityRenderer t1, EntityRenderer t2) {
-        return (int) (t2.getEntity().getRectangle().getY() - t1.getEntity().getRectangle().getY());
+        return (int) (t2.getRectangle().getY() - t1.getRectangle().getY());
     }
 }

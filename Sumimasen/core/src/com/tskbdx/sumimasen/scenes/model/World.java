@@ -36,8 +36,8 @@ public class World {
         for (Entity entity : entities) {
 
             Rectangle previousRect = new Rectangle(
-                    entity.getRectangle().x, entity.getRectangle().y,
-                    entity.getRectangle().width, entity.getRectangle().height);
+                    entity.getX(), entity.getY(),
+                    entity.getWidth(), entity.getHeight());
 
             entity.update(dt);
 
@@ -57,12 +57,11 @@ public class World {
 
     private boolean checkEntityWallCollision(Entity entity, PolygonMapObject wall) {
         Polygon polygon = wall.getPolygon();
-        Rectangle rectangle = entity.getRectangle();
 
-        return polygon.contains(rectangle.x, rectangle.y)
-                || polygon.contains(rectangle.x, rectangle.y + rectangle.height)
-                || polygon.contains(rectangle.x + rectangle.width, rectangle.y)
-                || polygon.contains(rectangle.x + rectangle.width, rectangle.y + rectangle.height);
+        return polygon.contains(entity.getX(), entity.getY())
+                || polygon.contains(entity.getX(), entity.getY() + entity.getHeight())
+                || polygon.contains(entity.getX() + entity.getWidth(), entity.getY())
+                || polygon.contains(entity.getX()+ entity.getWidth(), entity.getY() + entity.getHeight());
     }
 
     private boolean checkEntityEntityCollision(Entity e1, Entity e2) {
