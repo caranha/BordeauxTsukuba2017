@@ -10,6 +10,9 @@ public class SceneObject extends Entity {
 
     private Interaction interaction;
     private Mouvement mouvement;
-    
 
+    @Override
+    public void update(float dt) {
+
+    }
 }

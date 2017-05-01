@@ -11,6 +11,8 @@ public abstract class Entity extends Observable {
 
     private Rectangle rectangle;
 
+    public abstract void update(float dt);
+
     public Rectangle getRectangle() {
         return rectangle;
     }

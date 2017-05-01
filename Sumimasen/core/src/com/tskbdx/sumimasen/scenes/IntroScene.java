@@ -27,6 +27,8 @@ public class IntroScene implements Scene {
 
     private WorldRenderer worldRenderer;
 
+    private ArrayList<Entity> entities = new ArrayList<Entity>();
+
     private Player player;
 
     @Override
@@ -35,8 +37,7 @@ public class IntroScene implements Scene {
         //Load tiled map
         TiledMap tiledMap = new TmxMapLoader().load("maps/map.tmx");
 
-        ArrayList<Entity> entities = new ArrayList<Entity>();
-        ArrayList<EntityRenderer>   entityRenderers = new ArrayList<EntityRenderer>();
+        ArrayList<EntityRenderer> entityRenderers = new ArrayList<EntityRenderer>();
 
         for (MapObject object : tiledMap.getLayers().get("Entities").getObjects()) {
 
@@ -73,6 +74,10 @@ public class IntroScene implements Scene {
 
     @Override
     public void update(float dt) {
+
+        for (Entity entity : entities) {
+            entity.update(dt);
+        }
 
     }
 
