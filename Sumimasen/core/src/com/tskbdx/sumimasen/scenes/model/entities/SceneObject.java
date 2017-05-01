@@ -1,7 +1,7 @@
 package com.tskbdx.sumimasen.scenes.model.entities;
 
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
-import com.tskbdx.sumimasen.scenes.model.entities.mouvements.Mouvement;
+import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 
 /**
  * Created by Sydpy on 4/27/17.
@@ -9,7 +9,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.mouvements.Mouvement;
 public class SceneObject extends Entity {
 
     private Interaction interaction;
-    private Mouvement mouvement;
+    private Movement movement;
 
     @Override
     public void update(float dt) {
