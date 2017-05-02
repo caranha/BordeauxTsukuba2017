@@ -47,7 +47,7 @@ public class IntroScene implements Scene {
 
         loadWalls(tiledMap);
 
-        Gdx.input.setInputProcessor(new BasicInputProcessor(this.player));
+        Gdx.input.setInputProcessor(new BasicInputProcessor());
         camera.setToOrtho(false, 800, 480);
         camera.zoom = 1.f/SCALE_FACTOR;
         camera.translate(-400, -240);
