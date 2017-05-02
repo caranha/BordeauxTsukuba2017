@@ -3,6 +3,7 @@ package com.tskbdx.sumimasen.scenes.inputprocessors;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
+import com.tskbdx.sumimasen.scenes.model.entities.movements.Direction;
 
 /**
  * Created by Sydpy on 4/27/17.
@@ -20,19 +21,19 @@ public class BasicInputProcessor implements InputProcessor{
 
         switch (keycode) {
             case Input.Keys.W:
-                player.setUpMove(true);
+                player.setVDirection(Direction.Vertical.UP);
                 break;
 
             case Input.Keys.S:
-                player.setDownMove(true);
+                player.setVDirection(Direction.Vertical.DOWN);
                 break;
 
             case Input.Keys.D:
-                player.setRightMove(true);
+                player.setHDirection(Direction.Horizontal.RIGHT);
                 break;
 
             case Input.Keys.A:
-                player.setLeftMove(true);
+                player.setHDirection(Direction.Horizontal.LEFT);
                 break;
         }
 
@@ -44,19 +45,19 @@ public class BasicInputProcessor implements InputProcessor{
 
         switch (keycode) {
             case Input.Keys.W:
-                player.setUpMove(false);
+                player.setVDirection(Direction.Vertical.NONE);
                 break;
 
             case Input.Keys.S:
-                player.setDownMove(false);
+                player.setVDirection(Direction.Vertical.NONE);
                 break;
 
             case Input.Keys.D:
-                player.setRightMove(false);
+                player.setHDirection(Direction.Horizontal.NONE);
                 break;
 
             case Input.Keys.A:
-                player.setLeftMove(false);
+                player.setHDirection(Direction.Horizontal.NONE);
                 break;
         }
 

@@ -1,6 +1,8 @@
 package com.tskbdx.sumimasen.scenes.model.entities;
 
-import com.badlogic.gdx.math.Rectangle;
+import com.tskbdx.sumimasen.scenes.model.World;
+import com.tskbdx.sumimasen.scenes.model.entities.movements.Direction;
+import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 
 import java.util.Observable;
 
@@ -9,33 +11,109 @@ import java.util.Observable;
  */
 public abstract class Entity extends Observable {
 
-    private Rectangle rectangle;
+    private World world;
 
-    public abstract void update(float dt);
+    private Movement movement;
 
-    public Rectangle getRectangle() {
-        return rectangle;
+    private int x, y;
+    private int width, height;
+
+    private Direction.Horizontal hDirection;
+    private Direction.Vertical vDirection;
+
+    //Number of cell per sec
+    private int speed = 2;
+
+    public Entity(int x, int y, int width, int height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+
+        this.hDirection = Direction.Horizontal.NONE;
+        this.vDirection = Direction.Vertical.NONE;
     }
 
-    public void setRectangle(Rectangle rectangle) {
-        this.rectangle = rectangle;
+    public void update(float dt) {
+        if (movement != null) {
+            movement.move(this, dt);
+        }
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
         setChanged();
         notifyObservers();
     }
 
-    public float getX() {
-        return rectangle.getX();
+    public int getY() {
+        return y;
     }
 
-    public float getY() {
-        return rectangle.getY();
+    public void setY(int y) {
+        this.y = y;
+        setChanged();
+        notifyObservers();
     }
 
-    public float getWidth() {
-        return rectangle.getWidth();
+    public int getWidth() {
+        return width;
     }
 
-    public float getHeight() {
-        return rectangle.getHeight();
+    public void setWidth(int width) {
+        this.width = width;
     }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setWorld(World world) {
+        this.world = world;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public Movement getMovement() {
+        return movement;
+    }
+
+    public void setMovement(Movement movement) {
+        this.movement = movement;
+    }
+
+    public Direction.Horizontal getHDirection() {
+        return hDirection;
+    }
+
+    public void setHDirection(Direction.Horizontal hDirection) {
+        this.hDirection = hDirection;
+    }
+
+    public Direction.Vertical getVDirection() {
+        return vDirection;
+    }
+
+    public void setVDirection(Direction.Vertical vDirection) {
+        this.vDirection = vDirection;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
 }

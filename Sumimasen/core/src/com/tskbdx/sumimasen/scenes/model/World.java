@@ -1,8 +1,5 @@
 package com.tskbdx.sumimasen.scenes.model;
 
-import com.badlogic.gdx.maps.objects.PolygonMapObject;
-import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 
 import java.util.ArrayList;
@@ -12,60 +9,48 @@ import java.util.ArrayList;
  */
 public class World {
 
-    private ArrayList<PolygonMapObject> walls = new ArrayList<PolygonMapObject>();
+    private boolean walls[][];
+
     private ArrayList<Entity> entities = new ArrayList<Entity>();
 
-    public void addWall(PolygonMapObject wall) {
-        walls.add(wall);
-    }
+    public World(int width, int height) {
 
-    public void removeWall(PolygonMapObject wall) {
-        walls.remove(wall);
-    }
+        walls = new boolean[width][height];
 
-    public void addEntity(Entity entity) {
-        entities.add(entity);
-    }
-
-    public void removeEntity(Entity entity) {
-        entities.remove(entity);
-    }
-
-    public void update(float dt) {
-
-        for (Entity entity : entities) {
-
-            Rectangle previousRect = new Rectangle(
-                    entity.getX(), entity.getY(),
-                    entity.getWidth(), entity.getHeight());
-
-            entity.update(dt);
-
-            for (PolygonMapObject wall : walls) {
-                if(checkEntityWallCollision(entity, wall)) {
-                    entity.setRectangle(previousRect);
-                }
-            }
-
-            for (Entity e : entities) {
-                if(e != entity && checkEntityEntityCollision(entity, e)) {
-                    entity.setRectangle(previousRect);
-                }
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                walls[i][j] = false;
             }
         }
     }
 
-    private boolean checkEntityWallCollision(Entity entity, PolygonMapObject wall) {
-        Polygon polygon = wall.getPolygon();
-
-        return polygon.contains(entity.getX(), entity.getY())
-                || polygon.contains(entity.getX(), entity.getY() + entity.getHeight())
-                || polygon.contains(entity.getX() + entity.getWidth(), entity.getY())
-                || polygon.contains(entity.getX()+ entity.getWidth(), entity.getY() + entity.getHeight());
+    public void update(float dt) {
+        for (Entity entity : entities) {
+            entity.update(dt);
+        }
     }
 
-    private boolean checkEntityEntityCollision(Entity e1, Entity e2) {
-        return e1.getRectangle().overlaps(e2.getRectangle());
+    public void addEntity(Entity entity) {
+        entity.setWorld(this);
+        entities.add(entity);
     }
+
+    public void removeEntity(Entity entity) {
+        entity.setWorld(null);
+        entities.remove(entity);
+    }
+
+    public void setWall(int x, int y) {
+        walls[x][y] = true;
+    }
+
+    public void setVoid(int x, int y) {
+        walls[x][y] = false;
+    }
+
+    public boolean isWall(int x, int y) {
+        return walls[x][y];
+    }
+
 
 }

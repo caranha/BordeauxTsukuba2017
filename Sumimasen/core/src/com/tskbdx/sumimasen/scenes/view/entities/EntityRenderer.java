@@ -15,6 +15,8 @@ public class EntityRenderer implements Observer {
 
     private static String IMAGES_RES_FOLDER = "images/";
 
+    private static int TILE_SIZE = 8;
+
     private Entity entity;
     private Texture image;
 
@@ -26,13 +28,14 @@ public class EntityRenderer implements Observer {
         this.rectangle = new Rectangle();
 
         entity.addObserver(this);
+        update(null, null);
     }
 
     @Override
     public void update(Observable observable, Object o) {
-        rectangle.x         = entity.getX();
-        rectangle.y         = entity.getY();
-        rectangle.width     = entity.getWidth();
+        rectangle.x         = entity.getX() * TILE_SIZE;
+        rectangle.y         = entity.getY() * TILE_SIZE;
+        rectangle.width     = entity.getWidth() * TILE_SIZE;
 
         float scale_factor = rectangle.width / image.getWidth();
 

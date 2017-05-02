@@ -4,10 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.PolygonMapObject;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.inputprocessors.BasicInputProcessor;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
@@ -35,7 +35,9 @@ public class IntroScene implements Scene {
 
         //Load tiled map
         TiledMap tiledMap = new TmxMapLoader().load("maps/map.tmx");
-        world = new World();
+        int width = tiledMap.getProperties().get("width", Integer.class);
+        int height = tiledMap.getProperties().get("height", Integer.class);
+        world = new World(width, height);
         worldRenderer = new WorldRenderer(tiledMap);
 
         loadEntities(tiledMap);
@@ -50,44 +52,56 @@ public class IntroScene implements Scene {
     }
 
     private void loadWalls(TiledMap tiledMap) {
-        for (MapObject wall : tiledMap.getLayers().get("Walls").getObjects()) {
-            if (wall instanceof PolygonMapObject) {
-               world.addWall((PolygonMapObject) wall);
+
+        TiledMapTileLayer collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Collision");
+
+        for(int i = 0; i < collisionLayer.getWidth(); i++) {
+            for (int j = 0; j < collisionLayer.getHeight(); j++) {
+                if (collisionLayer.getCell(i,j) != null) {
+                    world.setWall(i,j);
+                }
             }
         }
     }
 
     private void loadEntities(TiledMap tiledMap) {
-        for (MapObject object : tiledMap.getLayers().get("Entities").getObjects()) {
+
+        MapObjects objects = tiledMap.getLayers().get("Entities").getObjects();
+
+        for (MapObject object : objects) {
+
+            int x       = (int) Math.ceil(object.getProperties().get("x" , Float.class) / 8);
+            int y       = (int) Math.ceil(object.getProperties().get("y" , Float.class) / 8);
+            int width   = (int) Math.ceil(object.getProperties().get("width" , Float.class) / 8);
+            int height  = (int) Math.ceil(object.getProperties().get("height" , Float.class) / 8);
+            String imagefile = object.getProperties().get("imagefile", String.class);
 
             Entity entity;
 
             if (object.getName().equals("player")) {
-                this.player = new Player();
-                entity = this.player;
+                player = new Player(x, y, width, height);
+                entity = player;
             } else {
-                entity = new SceneObject();
+                entity = new SceneObject(x, y, width, height);
             }
 
-            EntityRenderer entityRenderer = new EntityRenderer(entity, (String) object.getProperties().get("imagefile"));
-
-            entity.setRectangle(new Rectangle(
-                    (Float) object.getProperties().get("x"),
-                    (Float) object.getProperties().get("y"),
-                    (Float) object.getProperties().get("width"),
-                    (Float) object.getProperties().get("height")));
+            EntityRenderer entityRenderer = new EntityRenderer(entity, imagefile);
 
             world.addEntity(entity);
             worldRenderer.addEntityRenderer(entityRenderer);
         }
+
+
     }
 
     @Override
     public void update(float dt) {
 
+        System.out.println(player.getX() + " ; " + player.getY());
+
         world.update(dt);
 
-        camera.translate(player.getRectangle().x - camera.position.x, player.getRectangle().y - camera.position.y);
+        camera.translate(player.getX()*8 - camera.position.x, player.getY()*8 - camera.position.y);
     }
 
     @Override

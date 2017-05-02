@@ -31,6 +31,8 @@ public class WorldRenderer extends OrthogonalTiledMapRenderer {
 
     @Override
     public void render() {
+        Collections.sort(entityRenderers, new EntityRendererDrawOrderer());
+
         beginRender();
 
         int currentLayer = 0;
@@ -42,8 +44,6 @@ public class WorldRenderer extends OrthogonalTiledMapRenderer {
                     currentLayer++;
 
                     if (currentLayer == 1) {
-
-                        Collections.sort(entityRenderers, new EntityRendererDrawOrderer());
 
                         for (EntityRenderer entityRenderer: entityRenderers) {
                             entityRenderer.render( getBatch() );
