@@ -22,13 +22,16 @@ import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 public class IntroScene implements Scene {
 
     private static float SCALE_FACTOR = 4.0f;
+    private final Player player;
 
     private OrthographicCamera camera = new OrthographicCamera();
 
     private World world;
     private WorldRenderer worldRenderer;
 
-    private Player player;
+    public IntroScene(Player player) {
+        this.player = player;
+    }
 
     @Override
     public void init() {
@@ -79,7 +82,10 @@ public class IntroScene implements Scene {
             Entity entity;
 
             if (object.getName().equals("player")) {
-                player = new Player(x, y, width, height);
+                player.setX(x);
+                player.setY(y);
+                player.setWidth(width);
+                player.setHeight(height);
                 entity = player;
             } else {
                 entity = new SceneObject(x, y, width, height);

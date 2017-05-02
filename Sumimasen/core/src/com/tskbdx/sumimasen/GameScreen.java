@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.tskbdx.sumimasen.scenes.IntroScene;
 import com.tskbdx.sumimasen.scenes.Scene;
+import com.tskbdx.sumimasen.scenes.model.entities.Player;
 
 /**
  * Created by Sydpy on 4/27/17.
@@ -13,8 +14,10 @@ public class GameScreen implements Screen {
 
     private final Sumimasen game;
 
+    public static Player player = new Player(0, 0 ,0, 0);
 
-    private Scene currentScene = new IntroScene();
+
+    private Scene currentScene = new IntroScene(player);
 
     public GameScreen(final Sumimasen game) {
 

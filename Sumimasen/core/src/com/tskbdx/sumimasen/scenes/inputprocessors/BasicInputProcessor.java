@@ -2,66 +2,41 @@ package com.tskbdx.sumimasen.scenes.inputprocessors;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Direction;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Sydpy on 4/27/17.
  */
+
 public class BasicInputProcessor implements InputProcessor{
 
-    private Player player;
+    /**
+     * Commands identified by an Integer keycode.
+     */
+    private final Map<Integer, Command> keyDownCommands = new HashMap<>();
+    private final Map<Integer, Command> keyUpCommands = new HashMap<>();
 
-    public BasicInputProcessor(Player player) {
-        this.player = player;
+    /**
+     * Constructor : set association between keycode and commands
+     */
+    public BasicInputProcessor() {
+        initKeyUp();
+        initKeyDown();
     }
 
     @Override
     public boolean keyDown(int keycode) {
-
-        switch (keycode) {
-            case Input.Keys.W:
-                player.setVDirection(Direction.Vertical.UP);
-                break;
-
-            case Input.Keys.S:
-                player.setVDirection(Direction.Vertical.DOWN);
-                break;
-
-            case Input.Keys.D:
-                player.setHDirection(Direction.Horizontal.RIGHT);
-                break;
-
-            case Input.Keys.A:
-                player.setHDirection(Direction.Horizontal.LEFT);
-                break;
-        }
-
-        return false;
+        return execute(keyDownCommands, keycode);
     }
 
     @Override
     public boolean keyUp(int keycode) {
-
-        switch (keycode) {
-            case Input.Keys.W:
-                player.setVDirection(Direction.Vertical.NONE);
-                break;
-
-            case Input.Keys.S:
-                player.setVDirection(Direction.Vertical.NONE);
-                break;
-
-            case Input.Keys.D:
-                player.setHDirection(Direction.Horizontal.NONE);
-                break;
-
-            case Input.Keys.A:
-                player.setHDirection(Direction.Horizontal.NONE);
-                break;
-        }
-
-        return false;
+        return execute(keyUpCommands, keycode);
     }
 
     @Override
@@ -92,5 +67,28 @@ public class BasicInputProcessor implements InputProcessor{
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    private void initKeyDown() {
+        keyDownCommands.put(Input.Keys.W, () -> GameScreen.player.setVDirection(Direction.Vertical.UP));
+        keyDownCommands.put(Input.Keys.S, () -> GameScreen.player.setVDirection(Direction.Vertical.DOWN));
+        keyDownCommands.put(Input.Keys.D, () -> GameScreen.player.setHDirection(Direction.Horizontal.RIGHT));
+        keyDownCommands.put(Input.Keys.A, () -> GameScreen.player.setHDirection(Direction.Horizontal.LEFT));
+    }
+
+    private void initKeyUp() {
+        keyUpCommands.put(Input.Keys.W, () -> GameScreen.player.setVDirection(Direction.Vertical.NONE));
+        keyUpCommands.put(Input.Keys.S, () -> GameScreen.player.setVDirection(Direction.Vertical.NONE));
+        keyUpCommands.put(Input.Keys.D, () -> GameScreen.player.setHDirection(Direction.Horizontal.NONE));
+        keyUpCommands.put(Input.Keys.A, () -> GameScreen.player.setHDirection(Direction.Horizontal.NONE));
+    }
+
+    private boolean execute(Map<Integer, Command> commands, int keycode) {
+        try {
+            commands.get(keycode).apply();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
