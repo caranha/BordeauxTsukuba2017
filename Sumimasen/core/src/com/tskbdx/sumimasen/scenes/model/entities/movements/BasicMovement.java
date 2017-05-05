@@ -22,12 +22,69 @@ public class BasicMovement implements Movement {
         Direction.Horizontal direction = entity.getHDirection();
 
         if (direction != Direction.Horizontal.NONE) {
-            entity.setX(entity.getX() + 1);
-        }
 
+            if (horizontalClock == 0.f) {
+
+                int newX;
+
+                if (direction == Direction.Horizontal.RIGHT) {
+                    newX = entity.getX() + 1;
+                } else {
+                    newX = entity.getX() - 1;
+                }
+
+                if(!entity.getWorld().isWallOnBox(
+                        newX,
+                        entity.getY(),
+                        entity.getWidth(),
+                        entity.getHeight())) {
+                    entity.setX(newX);
+                }
+            }
+
+            horizontalClock += dt;
+            if (horizontalClock > 1.f /speed) {
+                horizontalClock = 0.f;
+            }
+
+        } else {
+            horizontalClock = 0.f;
+        }
     }
 
     private void moveVertical(Entity entity, float dt) {
 
+        int speed = entity.getSpeed();
+        Direction.Vertical direction = entity.getVDirection();
+
+        if (direction != Direction.Vertical.NONE) {
+
+            if (verticalClock == 0.f) {
+
+                int newY;
+
+                if (direction == Direction.Vertical.UP) {
+                    newY = entity.getY() + 1;
+                } else {
+                    newY = entity.getY() - 1;
+                }
+
+                if(!entity.getWorld().isWallOnBox(
+                        entity.getX(),
+                        newY,
+                        entity.getWidth(),
+                        entity.getHeight())) {
+                    entity.setY(newY);
+                }
+            }
+
+            verticalClock += dt;
+            if (verticalClock > 1.f /speed) {
+                verticalClock = 0.f;
+            }
+
+        } else {
+            verticalClock = 0.f;
+        }
     }
 }

@@ -65,6 +65,8 @@ public class IntroScene implements Scene {
                 }
             }
         }
+
+        tiledMap.getLayers().remove(collisionLayer);
     }
 
     private void loadEntities(TiledMap tiledMap) {
@@ -102,8 +104,6 @@ public class IntroScene implements Scene {
 
     @Override
     public void update(float dt) {
-
-        System.out.println(player.getX() + " ; " + player.getY());
 
         world.update(dt);
 

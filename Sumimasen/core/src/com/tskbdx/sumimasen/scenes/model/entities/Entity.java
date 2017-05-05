@@ -22,7 +22,7 @@ public abstract class Entity extends Observable {
     private Direction.Vertical vDirection;
 
     //Number of cell per sec
-    private int speed = 2;
+    private int speed = 4;
 
     public Entity(int x, int y, int width, int height) {
         this.x = x;
@@ -66,6 +66,8 @@ public abstract class Entity extends Observable {
 
     public void setWidth(int width) {
         this.width = width;
+        setChanged();
+        notifyObservers();
     }
 
     public int getHeight() {
@@ -74,10 +76,14 @@ public abstract class Entity extends Observable {
 
     public void setHeight(int height) {
         this.height = height;
+        setChanged();
+        notifyObservers();
     }
 
     public void setWorld(World world) {
         this.world = world;
+        setChanged();
+        notifyObservers();
     }
 
     public World getWorld() {
@@ -90,6 +96,8 @@ public abstract class Entity extends Observable {
 
     public void setMovement(Movement movement) {
         this.movement = movement;
+        setChanged();
+        notifyObservers();
     }
 
     public Direction.Horizontal getHDirection() {
@@ -98,6 +106,8 @@ public abstract class Entity extends Observable {
 
     public void setHDirection(Direction.Horizontal hDirection) {
         this.hDirection = hDirection;
+        setChanged();
+        notifyObservers();
     }
 
     public Direction.Vertical getVDirection() {
@@ -106,6 +116,8 @@ public abstract class Entity extends Observable {
 
     public void setVDirection(Direction.Vertical vDirection) {
         this.vDirection = vDirection;
+        setChanged();
+        notifyObservers();
     }
 
     public int getSpeed() {
@@ -114,6 +126,8 @@ public abstract class Entity extends Observable {
 
     public void setSpeed(int speed) {
         this.speed = speed;
+        setChanged();
+        notifyObservers();
     }
 
 }

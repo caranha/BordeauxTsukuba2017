@@ -52,5 +52,16 @@ public class World {
         return walls[x][y];
     }
 
+    public boolean isWallOnBox(int x, int y, int width, int height) {
+
+        for(int i = x; i < x + width; i++) {
+            for(int j = y; j < y + height; j++) {
+                if (isWall(i,j))
+                    return true;
+            }
+        }
+
+        return false;
+    }
 
 }
