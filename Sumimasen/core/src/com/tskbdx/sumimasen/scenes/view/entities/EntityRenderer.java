@@ -1,13 +1,19 @@
 package com.tskbdx.sumimasen.scenes.view.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.view.Tween;
 
+import javax.xml.soap.Text;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -26,17 +32,11 @@ public class EntityRenderer extends Sprite implements Observer {
             animationY = new Tween(Interpolation.linear);
 
     public EntityRenderer(Entity entity, String imagefile) {
-        super(new Texture(IMAGES_RES_FOLDER + imagefile),
+        super(new Texture(Gdx.files.internal(IMAGES_RES_FOLDER + imagefile)),
                 0, 0, 16, 16);
         setPosition(entity.getX() * TILE_SIZE, entity.getY() * TILE_SIZE);
         this.entity = entity;
         entity.addObserver(this);
-    }
-
-    private void initSize() {
-        float width = entity.getWidth() * TILE_SIZE;
-        float height = getTexture().getHeight() * (width / getTexture().getWidth());
-        setSize(width, height);
     }
 
     /**

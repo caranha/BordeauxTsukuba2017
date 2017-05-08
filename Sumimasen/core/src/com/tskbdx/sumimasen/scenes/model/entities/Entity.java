@@ -1,12 +1,11 @@
 package com.tskbdx.sumimasen.scenes.model.entities;
 
 import com.tskbdx.sumimasen.scenes.model.World;
-import com.tskbdx.sumimasen.scenes.model.entities.movements.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 
 import java.util.Observable;
 
-import static com.tskbdx.sumimasen.scenes.model.entities.movements.Direction.*;
+import static com.tskbdx.sumimasen.scenes.model.entities.Direction.*;
 
 /**
  * Created by Sydpy on 4/28/17.
@@ -20,7 +19,12 @@ public abstract class Entity extends Observable {
     private int x, y;
     private int width, height;
 
+    /**
+     * direction is the current direction movement state
+     * lastDirection is like the static direction state
+     */
     private Direction direction;
+    private Direction lastDirection = SOUTH; // by default
 
     //Number of cell per sec
     private int speed = 4;
@@ -36,7 +40,7 @@ public abstract class Entity extends Observable {
 
     public void update(float dt) {
         if (movement != null) {
-            movement.move(this, dt);
+            movement.run();
         }
     }
 
@@ -50,8 +54,8 @@ public abstract class Entity extends Observable {
     }
 
     public void setXY(int x, int y) {
-        this.x = x;
-        this.y = y;
+        setX(x);
+        setY(y);
         setChanged();
     }
 
@@ -60,9 +64,7 @@ public abstract class Entity extends Observable {
     }
 
     public void setY(int y) {
-      //  if (world != null) world.setEntityLocation(this, null);
         this.y = y;
-     //   if (world != null) world.setEntityLocation(this, this);
         setChanged();
     }
 
@@ -97,12 +99,15 @@ public abstract class Entity extends Observable {
         return movement;
     }
 
-    public void setMovement(Movement movement) {
+    void setMovement(Movement movement) {
         this.movement = movement;
         setChanged();
     }
 
     public void setDirection(Direction direction) {
+        if (direction != NONE) {
+            lastDirection = direction;
+        }
         this.direction = direction;
         setChanged();
     }
@@ -120,16 +125,35 @@ public abstract class Entity extends Observable {
         setChanged();
     }
 
-    @Override
-    public int hashCode() {
-        int result = world != null ? world.hashCode() : 0;
-        result = 31 * result + (movement != null ? movement.hashCode() : 0);
-        result = 31 * result + x;
-        result = 31 * result + y;
-        result = 31 * result + width;
-        result = 31 * result + height;
-        result = 31 * result + (direction != null ? direction.hashCode() : 0);
-        result = 31 * result + speed;
-        return result;
+    /**
+     * Can only interact if there is a SceneObject
+     * in front of the entity
+     */
+    public void tryInteract() {
+        int targetX = getX(), targetY = getY(); // target position = in front of the entity
+        switch (getLastDirection()) {
+            case NORTH:
+                targetY += getHeight() + 1; // Gdx seems to be from bot to top
+                break;
+            case SOUTH:
+                --targetY; // Gdx seems to be from bot to top
+                break;
+            case WEST:
+                --targetX;
+                break;
+            case EAST:
+                targetX += getWidth() + 1;
+                break;
+        }
+        SceneObject interactive = (SceneObject) world.get(targetX, targetY);
+        if (interactive != null) { // && interactive.isInteractable()) {
+            System.out.println("Interaction !");// when it will be implemented -> interactive.interactWith(this);
+        } else {
+            System.out.println(targetX + " : " + targetY + " Nobody to interact with !");
+        }
+    }
+
+    private Direction getLastDirection() {
+        return lastDirection;
     }
 }

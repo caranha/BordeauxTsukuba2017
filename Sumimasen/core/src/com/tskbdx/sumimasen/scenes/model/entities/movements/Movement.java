@@ -3,8 +3,19 @@ package com.tskbdx.sumimasen.scenes.model.entities.movements;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 
 /**
- * Created by Sydpy on 4/27/17.
+ * Created by viet khang on 08/05/2017.
  */
-public interface Movement {
-    void move(Entity entity, float dt);
+
+/**
+ * Movement is a callback linked always linked
+ * with an entity
+ * Dynamically changing this entity movement
+ * behavior can be very useful
+ */
+public abstract class Movement implements Runnable {
+    final protected Entity entity;
+
+    Movement(Entity entity) {
+        this.entity = entity;
+    }
 }

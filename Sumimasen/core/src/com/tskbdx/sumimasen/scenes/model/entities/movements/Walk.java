@@ -13,32 +13,37 @@ import java.util.concurrent.TimeUnit;
 /**
  * More precise with a scheduled executor than
  * incrementing a clock with elapsed time
+ * (no more lag on old computers)
+ * (IMO it's ok for other platforms)
  */
-public class BasicMovement implements Movement, Runnable {
+public class Walk extends Movement {
+
+    public Walk(Entity entity) {
+        super(entity);
+    }
 
     private boolean ready = true;
     private ScheduledExecutorService executorService
             = Executors.newSingleThreadScheduledExecutor();
+    private Runnable resetClock = () -> ready = true;
 
     @Override
-    public void move(Entity entity, float dt) {
-        int speed = entity.getSpeed();
-
+    public void run() {
         if (ready) {
             int newX = entity.getX(), newY = entity.getY();
-            boolean collision = false;
+
             switch (entity.getDirection()) {
-                case RIGHT:
+                case EAST:
                     ++newX;
                     break;
-                case LEFT:
+                case WEST:
                     --newX;
                     break;
-                case UP:
-                    --newY;
+                case NORTH: /// Gdx landmark seems to be from bottom to top
+                    ++newY; //--newY;
                     break;
-                case DOWN:
-                    ++newY;
+                case SOUTH:
+                    --newY; //++newY;
                     break;
                 case NONE:
                     return;
@@ -49,14 +54,9 @@ public class BasicMovement implements Movement, Runnable {
                 entity.setXY(newX, newY);
                 entity.notifyObservers();
                 ready = false;
-                executorService.schedule(this,
-                        (long) ((1.f / speed) * 1000), TimeUnit.MILLISECONDS);
+                executorService.schedule(resetClock,
+                        (long) ((1.f / entity.getSpeed()) * 1000), TimeUnit.MILLISECONDS);
             }
         }
-    }
-
-    @Override
-    public void run() {
-        ready = true;
     }
 }

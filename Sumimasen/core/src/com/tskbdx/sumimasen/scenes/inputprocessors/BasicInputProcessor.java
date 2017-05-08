@@ -1,15 +1,18 @@
 package com.tskbdx.sumimasen.scenes.inputprocessors;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.tskbdx.sumimasen.GameScreen;
-import com.tskbdx.sumimasen.scenes.model.entities.movements.Direction;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.tskbdx.sumimasen.scenes.model.entities.movements.Direction.*;
+import static com.badlogic.gdx.Input.Keys.*;
+import static com.tskbdx.sumimasen.GameScreen.player;
+import static com.tskbdx.sumimasen.scenes.model.entities.Direction.SOUTH;
+import static com.tskbdx.sumimasen.scenes.model.entities.Direction.WEST;
+import static com.tskbdx.sumimasen.scenes.model.entities.Direction.EAST;
+import static com.tskbdx.sumimasen.scenes.model.entities.Direction.NORTH;
+import static com.tskbdx.sumimasen.scenes.model.entities.Direction.NONE;
 
 /**
  * Created by Sydpy on 4/27/17.
@@ -30,6 +33,43 @@ public class BasicInputProcessor implements InputProcessor{
         initKeyUp();
         initKeyDown();
     }
+
+    private void initKeyDown() {
+        associate(keyDownCommands, () -> player.setDirection(NORTH),
+                W, UP);
+        associate(keyDownCommands, () -> player.setDirection(SOUTH),
+                S, DOWN);
+        associate(keyDownCommands, () -> player.setDirection(EAST),
+                D, RIGHT);
+        associate(keyDownCommands, () -> player.setDirection(WEST),
+                A, LEFT);
+        associate(keyDownCommands, () -> player.tryInteract(),
+                ENTER, SPACE);
+    }
+
+    private void initKeyUp() {
+        associate(keyUpCommands, () -> player.setDirection(NONE),
+                W, S, D, A, UP, DOWN, RIGHT, LEFT);
+    }
+
+    private void associate(Map<Integer, Runnable> map, Runnable command, int... keys) {
+        for (int key : keys) {
+            map.put(key, command);
+        }
+    }
+
+    private boolean execute(Map<Integer, Runnable> commands, int keycode) {
+        try {
+            commands.get(keycode).run();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Unused methods
+     */
 
     @Override
     public boolean keyDown(int keycode) {
@@ -69,28 +109,5 @@ public class BasicInputProcessor implements InputProcessor{
     @Override
     public boolean scrolled(int amount) {
         return false;
-    }
-
-    private void initKeyDown() {
-        keyDownCommands.put(Input.Keys.W, () -> GameScreen.player.setDirection(UP));
-        keyDownCommands.put(Input.Keys.S, () -> GameScreen.player.setDirection(DOWN));
-        keyDownCommands.put(Input.Keys.D, () -> GameScreen.player.setDirection(RIGHT));
-        keyDownCommands.put(Input.Keys.A, () -> GameScreen.player.setDirection(LEFT));
-    }
-
-    private void initKeyUp() {
-        keyUpCommands.put(Input.Keys.W, () -> GameScreen.player.setDirection(NONE));
-        keyUpCommands.put(Input.Keys.S, () -> GameScreen.player.setDirection(NONE));
-        keyUpCommands.put(Input.Keys.D, () -> GameScreen.player.setDirection(NONE));
-        keyUpCommands.put(Input.Keys.A, () -> GameScreen.player.setDirection(NONE));
-    }
-
-    private boolean execute(Map<Integer, Runnable> commands, int keycode) {
-        try {
-            commands.get(keycode).run();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 }

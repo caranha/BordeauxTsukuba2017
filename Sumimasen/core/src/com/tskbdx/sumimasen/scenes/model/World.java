@@ -5,25 +5,42 @@ import com.tskbdx.sumimasen.scenes.model.entities.Player;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
  * Created by Sydpy on 4/27/17.
  */
+
+/**
+ * World represented in a matrix.
+ * Collisionable :
+ * - Walls stored as booleans
+ * - Entities
+ * Else :
+ * - Empty location are filled by null value.
+ */
 public class World {
 
     private Object objects[][]; // For the moment
 
-    private Set<Entity> entities = new HashSet<>();
+    private List<Entity> entities = new ArrayList<>();
 
     public World(int width, int height) {
-
         objects = new Object[width][height];
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 setVoid(i, j);
             }
+        }
+    }
+
+    public final Object get(int x, int y) {
+        try {
+            return objects[x][y];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return null;
         }
     }
 

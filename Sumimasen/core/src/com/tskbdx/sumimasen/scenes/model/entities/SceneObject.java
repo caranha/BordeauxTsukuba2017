@@ -24,4 +24,8 @@ public class SceneObject extends Entity {
     public void setInteraction(Interaction interaction) {
         this.interaction = interaction;
     }
+
+    public void interactWith(Entity entity) {
+        interaction.run();
+    }
 }
