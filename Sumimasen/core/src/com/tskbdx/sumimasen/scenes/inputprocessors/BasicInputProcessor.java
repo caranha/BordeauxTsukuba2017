@@ -59,12 +59,11 @@ public class BasicInputProcessor implements InputProcessor{
     }
 
     private boolean execute(Map<Integer, Runnable> commands, int keycode) {
-        try {
+        if (commands.containsKey(keycode)) {
             commands.get(keycode).run();
             return true;
-        } catch (Exception e) {
-            return false;
         }
+        return false;
     }
 
     /**

@@ -15,6 +15,7 @@ import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
 import com.tskbdx.sumimasen.scenes.model.entities.SceneObject;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.HelloTest;
 import com.tskbdx.sumimasen.scenes.view.SmoothCamera;
 import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
@@ -96,11 +97,12 @@ public class IntroScene implements Scene {
                 player.setHeight(height);
                 entity = player;
             } else {
-                entity = new SceneObject(x, y, width, height);
+                SceneObject sceneObject = new SceneObject(x, y, width, height);
+                sceneObject.setInteraction(new HelloTest(sceneObject, player));
+                entity = sceneObject;
             }
-
+            entity.setName(object.getName());
             EntityRenderer entityRenderer = new EntityRenderer(entity, imagefile);
-
             world.addEntity(entity);
             worldRenderer.addEntityRenderer(entityRenderer);
         }

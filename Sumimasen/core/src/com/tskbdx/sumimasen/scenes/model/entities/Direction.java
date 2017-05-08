@@ -5,7 +5,7 @@ package com.tskbdx.sumimasen.scenes.model.entities;
  */
 
 /**
- * Changed to S W N E (because of collision with keyboard keys)
+ * Changed to S W N E (because of collisions with keyboard keys)
  */
 public enum Direction {
     WEST,

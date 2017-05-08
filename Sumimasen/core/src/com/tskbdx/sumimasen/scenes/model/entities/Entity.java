@@ -3,6 +3,7 @@ package com.tskbdx.sumimasen.scenes.model.entities;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 
+import java.util.List;
 import java.util.Observable;
 
 import static com.tskbdx.sumimasen.scenes.model.entities.Direction.*;
@@ -18,6 +19,7 @@ public abstract class Entity extends Observable {
 
     private int x, y;
     private int width, height;
+    private String name = " ";
 
     /**
      * direction is the current direction movement state
@@ -145,15 +147,22 @@ public abstract class Entity extends Observable {
                 targetX += getWidth() + 1;
                 break;
         }
-        SceneObject interactive = (SceneObject) world.get(targetX, targetY);
-        if (interactive != null) { // && interactive.isInteractable()) {
-            System.out.println("Interaction !");// when it will be implemented -> interactive.interactWith(this);
-        } else {
-            System.out.println(targetX + " : " + targetY + " Nobody to interact with !");
+        try {
+            ((SceneObject) world.get(targetX, targetY)).interactWith(this);
+        } catch (Exception e) {
+            System.out.println("Nobody to interact with !");
         }
     }
 
     private Direction getLastDirection() {
         return lastDirection;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 }
