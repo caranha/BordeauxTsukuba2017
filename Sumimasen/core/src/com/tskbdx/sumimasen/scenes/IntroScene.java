@@ -13,6 +13,7 @@ import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
 import com.tskbdx.sumimasen.scenes.model.entities.SceneObject;
+import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 
@@ -51,7 +52,6 @@ public class IntroScene implements Scene {
         camera.setToOrtho(false, 800, 480);
         camera.zoom = 1.f/SCALE_FACTOR;
         camera.translate(-400, -240);
-
     }
 
     private void loadWalls(TiledMap tiledMap) {
@@ -104,6 +104,7 @@ public class IntroScene implements Scene {
 
     @Override
     public void update(float dt) {
+        Tween.updateAll(dt);
 
         world.update(dt);
 

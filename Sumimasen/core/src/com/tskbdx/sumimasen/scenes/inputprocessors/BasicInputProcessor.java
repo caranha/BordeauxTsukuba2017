@@ -1,9 +1,9 @@
 package com.tskbdx.sumimasen.scenes.inputprocessors;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.tskbdx.sumimasen.GameScreen;
-import com.tskbdx.sumimasen.scenes.model.entities.Player;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Direction;
 
 import java.util.HashMap;
@@ -18,8 +18,8 @@ public class BasicInputProcessor implements InputProcessor{
     /**
      * Commands identified by an Integer keycode.
      */
-    private final Map<Integer, Command> keyDownCommands = new HashMap<>();
-    private final Map<Integer, Command> keyUpCommands = new HashMap<>();
+    private final Map<Integer, Runnable> keyDownCommands = new HashMap<>();
+    private final Map<Integer, Runnable> keyUpCommands = new HashMap<>();
 
     /**
      * Constructor : set association between keycode and commands
@@ -83,9 +83,9 @@ public class BasicInputProcessor implements InputProcessor{
         keyUpCommands.put(Input.Keys.A, () -> GameScreen.player.setHDirection(Direction.Horizontal.NONE));
     }
 
-    private boolean execute(Map<Integer, Command> commands, int keycode) {
+    private boolean execute(Map<Integer, Runnable> commands, int keycode) {
         try {
-            commands.get(keycode).apply();
+            commands.get(keycode).run();
             return true;
         } catch (Exception e) {
             return false;

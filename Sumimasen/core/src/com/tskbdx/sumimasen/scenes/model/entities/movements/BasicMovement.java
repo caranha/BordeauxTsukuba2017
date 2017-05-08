@@ -11,9 +11,11 @@ public class BasicMovement implements Movement {
 
     @Override
     public void move(Entity entity, float dt) {
-
         moveHorizontal(entity, dt);
         moveVertical(entity, dt);
+        if (horizontalClock != 0 || verticalClock != 0) {
+            entity.notifyObservers();
+        }
     }
 
     private void moveHorizontal(Entity entity, float dt) {
