@@ -23,7 +23,7 @@ public abstract class Entity extends Observable {
     private Direction direction;
 
     //Number of cell per sec
-    private int speed = 10;
+    private int speed = 4;
 
     public Entity(int x, int y, int width, int height) {
         this.x = x;
