@@ -42,12 +42,12 @@ public class EntityRenderer implements Observer {
         int targetX = entity.getX() * TILE_SIZE;
         int targetY = entity.getY() * TILE_SIZE;
         if (rectangle.x != targetX) {
-            mouvementX = new Tween(Interpolation.smooth, rectangle.x, targetX, 0.25f);
-            mouvementX.play();
+            mouvementX = new Tween(Interpolation.smooth, rectangle.x,
+                    targetX, 0.25f);
         }
         else if (rectangle.y != targetY) {
-            mouvementY = new Tween(Interpolation.smooth, rectangle.y, targetY, 0.25f);
-            mouvementY.play();
+            mouvementY = new Tween(Interpolation.smooth, rectangle.y,
+                    targetY, 0.25f);
         }
     }
 
@@ -55,7 +55,7 @@ public class EntityRenderer implements Observer {
         if (mouvementX != null && mouvementX.isPlaying()) {
             rectangle.x = mouvementX.getInterpolation();
         }
-        if (mouvementY != null && mouvementY.isPlaying()) {
+        else if (mouvementY != null && mouvementY.isPlaying()) {
             rectangle.y = mouvementY.getInterpolation();
         }
         batch.draw(image,

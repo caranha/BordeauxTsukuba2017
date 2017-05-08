@@ -1,6 +1,7 @@
 package com.tskbdx.sumimasen.scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
@@ -8,11 +9,13 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.math.Interpolation;
 import com.tskbdx.sumimasen.scenes.inputprocessors.BasicInputProcessor;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
 import com.tskbdx.sumimasen.scenes.model.entities.SceneObject;
+import com.tskbdx.sumimasen.scenes.view.SmoothCamera;
 import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
@@ -25,7 +28,7 @@ public class IntroScene implements Scene {
     private static float SCALE_FACTOR = 4.0f;
     private final Player player;
 
-    private OrthographicCamera camera = new OrthographicCamera();
+    private SmoothCamera camera;
 
     private World world;
     private WorldRenderer worldRenderer;
@@ -49,6 +52,7 @@ public class IntroScene implements Scene {
         loadWalls(tiledMap);
 
         Gdx.input.setInputProcessor(new BasicInputProcessor());
+        camera = new SmoothCamera(Interpolation.smooth, 0.25f);
         camera.setToOrtho(false, 800, 480);
         camera.zoom = 1.f/SCALE_FACTOR;
         camera.translate(-400, -240);
@@ -109,11 +113,11 @@ public class IntroScene implements Scene {
         world.update(dt);
 
         camera.translate(player.getX()*8 - camera.position.x, player.getY()*8 - camera.position.y);
+        camera.update();
     }
 
     @Override
     public void render(Batch batch) {
-        camera.update();
 
         batch.setProjectionMatrix(camera.combined);
 

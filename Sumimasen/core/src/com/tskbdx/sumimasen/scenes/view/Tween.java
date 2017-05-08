@@ -23,6 +23,7 @@ public class Tween {
         this.interpolation = interpolation;
         this.start = start;
         this.end = end;
+        play();
     }
 
     /**
@@ -90,6 +91,7 @@ public class Tween {
     private static List<Tween> tweens = new ArrayList<>();
 
     /**
+     * Update the tween according to elapsed time.
      * @param dt
      */
     private void update(float dt) {
