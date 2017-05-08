@@ -34,6 +34,15 @@ public abstract class Entity extends Observable {
         this.direction = NONE;
     }
 
+    public void removeFromWorld() {
+        for (int i = x ; i != x + width ; ++i) {
+            for (int j = y ; j != y + height ; ++j) {
+                world.setVoid(i, j);
+            }
+        }
+        world = null;
+    }
+
     public void update(float dt) {
         if (movement != null) {
             movement.move(this, dt);

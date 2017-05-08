@@ -10,6 +10,10 @@ import java.util.concurrent.TimeUnit;
  * Created by Sydpy on 5/2/17.
  */
 
+/**
+ * More precise with a scheduled executor than
+ * incrementing a clock with elapsed time
+ */
 public class BasicMovement implements Movement, Runnable {
 
     private boolean ready = true;
@@ -40,7 +44,7 @@ public class BasicMovement implements Movement, Runnable {
                     return;
             }
 
-            if (!entity.getWorld().isWallOnBox(newX, newY, entity.getWidth(),
+            if (!entity.getWorld().isCollisionOnBox(newX, newY, entity.getWidth(),
                     entity.getHeight())) {
                 entity.setX(newX);
                 entity.setY(newY);
