@@ -8,7 +8,8 @@ import com.badlogic.gdx.math.Interpolation;
  */
 
 /**
- * Camera with transitions.
+ * Camera with smooth transitions.
+ * Can be set with the transition duration on instanciation.
  */
 public class SmoothCamera extends OrthographicCamera {
     private final Interpolation interpolation = Interpolation.linear;
@@ -21,6 +22,9 @@ public class SmoothCamera extends OrthographicCamera {
         duration = transitionInSec;
     }
 
+    /**
+     * Update position according to current tweens state.
+     */
     @Override
     public void update() {
         if (tweenX.isPlaying()) {

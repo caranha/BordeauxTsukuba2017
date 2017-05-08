@@ -13,9 +13,6 @@ public class BasicMovement implements Movement {
     public void move(Entity entity, float dt) {
         moveHorizontal(entity, dt);
         moveVertical(entity, dt);
-        if (horizontalClock != 0 || verticalClock != 0) {
-            entity.notifyObservers();
-        }
     }
 
     private void moveHorizontal(Entity entity, float dt) {
@@ -41,6 +38,8 @@ public class BasicMovement implements Movement {
                         entity.getWidth(),
                         entity.getHeight())) {
                     entity.setX(newX);
+                    entity.notifyObservers();
+                    entity.setVDirection(Direction.Vertical.NONE);
                 }
             }
 
@@ -77,6 +76,8 @@ public class BasicMovement implements Movement {
                         entity.getWidth(),
                         entity.getHeight())) {
                     entity.setY(newY);
+                    entity.notifyObservers();
+                    entity.setHDirection(Direction.Horizontal.NONE);
                 }
             }
 

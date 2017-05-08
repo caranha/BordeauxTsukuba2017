@@ -55,7 +55,9 @@ public class IntroScene implements Scene {
         camera = new SmoothCamera(0.33f);
         camera.setToOrtho(false, 800, 480);
         camera.zoom = 1.f/SCALE_FACTOR;
-        camera.translate(-400, -240);
+        camera.position.x -= 400;
+        camera.position.y -= 240;
+        camera.update();
     }
 
     private void loadWalls(TiledMap tiledMap) {
