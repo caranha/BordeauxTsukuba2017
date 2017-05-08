@@ -6,6 +6,8 @@ import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 
 import java.util.Observable;
 
+import static com.tskbdx.sumimasen.scenes.model.entities.movements.Direction.*;
+
 /**
  * Created by Sydpy on 4/28/17.
  */
@@ -18,11 +20,10 @@ public abstract class Entity extends Observable {
     private int x, y;
     private int width, height;
 
-    private Direction.Horizontal hDirection;
-    private Direction.Vertical vDirection;
+    private Direction direction;
 
     //Number of cell per sec
-    private int speed = 4;
+    private int speed = 10;
 
     public Entity(int x, int y, int width, int height) {
         this.x = x;
@@ -30,8 +31,7 @@ public abstract class Entity extends Observable {
         this.width = width;
         this.height = height;
 
-        this.hDirection = Direction.Horizontal.NONE;
-        this.vDirection = Direction.Vertical.NONE;
+        this.direction = NONE;
     }
 
     public void update(float dt) {
@@ -94,22 +94,13 @@ public abstract class Entity extends Observable {
         setChanged();
     }
 
-    public Direction.Horizontal getHDirection() {
-        return hDirection;
-    }
-
-    public void setHDirection(Direction.Horizontal hDirection) {
-        this.hDirection = hDirection;
+    public void setDirection(Direction direction) {
+        this.direction = direction;
         setChanged();
     }
 
-    public Direction.Vertical getVDirection() {
-        return vDirection;
-    }
-
-    public void setVDirection(Direction.Vertical vDirection) {
-        this.vDirection = vDirection;
-        setChanged();
+    public final Direction getDirection() {
+        return direction;
     }
 
     public int getSpeed() {

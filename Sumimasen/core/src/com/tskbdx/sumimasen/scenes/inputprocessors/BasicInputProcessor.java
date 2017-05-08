@@ -9,6 +9,8 @@ import com.tskbdx.sumimasen.scenes.model.entities.movements.Direction;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.tskbdx.sumimasen.scenes.model.entities.movements.Direction.*;
+
 /**
  * Created by Sydpy on 4/27/17.
  */
@@ -70,17 +72,17 @@ public class BasicInputProcessor implements InputProcessor{
     }
 
     private void initKeyDown() {
-        keyDownCommands.put(Input.Keys.W, () -> GameScreen.player.setVDirection(Direction.Vertical.UP));
-        keyDownCommands.put(Input.Keys.S, () -> GameScreen.player.setVDirection(Direction.Vertical.DOWN));
-        keyDownCommands.put(Input.Keys.D, () -> GameScreen.player.setHDirection(Direction.Horizontal.RIGHT));
-        keyDownCommands.put(Input.Keys.A, () -> GameScreen.player.setHDirection(Direction.Horizontal.LEFT));
+        keyDownCommands.put(Input.Keys.W, () -> GameScreen.player.setDirection(UP));
+        keyDownCommands.put(Input.Keys.S, () -> GameScreen.player.setDirection(DOWN));
+        keyDownCommands.put(Input.Keys.D, () -> GameScreen.player.setDirection(RIGHT));
+        keyDownCommands.put(Input.Keys.A, () -> GameScreen.player.setDirection(LEFT));
     }
 
     private void initKeyUp() {
-        keyUpCommands.put(Input.Keys.W, () -> GameScreen.player.setVDirection(Direction.Vertical.NONE));
-        keyUpCommands.put(Input.Keys.S, () -> GameScreen.player.setVDirection(Direction.Vertical.NONE));
-        keyUpCommands.put(Input.Keys.D, () -> GameScreen.player.setHDirection(Direction.Horizontal.NONE));
-        keyUpCommands.put(Input.Keys.A, () -> GameScreen.player.setHDirection(Direction.Horizontal.NONE));
+        keyUpCommands.put(Input.Keys.W, () -> GameScreen.player.setDirection(NONE));
+        keyUpCommands.put(Input.Keys.S, () -> GameScreen.player.setDirection(NONE));
+        keyUpCommands.put(Input.Keys.D, () -> GameScreen.player.setDirection(NONE));
+        keyUpCommands.put(Input.Keys.A, () -> GameScreen.player.setDirection(NONE));
     }
 
     private boolean execute(Map<Integer, Runnable> commands, int keycode) {

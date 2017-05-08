@@ -54,11 +54,11 @@ public class EntityRenderer implements Observer {
         int targetY = entity.getY() * TILE_SIZE;
         if (rectangle.x != targetX) {
             animationX.playWith(rectangle.x,
-                    targetX, 0.25f);
+                    targetX, 1.f / entity.getSpeed());
         }
         if (rectangle.y != targetY) {
             animationY.playWith(rectangle.y,
-                    targetY, 0.25f);
+                    targetY, 1.f / entity.getSpeed());
         }
     }
 
