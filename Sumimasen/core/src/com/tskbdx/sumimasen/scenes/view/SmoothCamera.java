@@ -11,38 +11,37 @@ import com.badlogic.gdx.math.Interpolation;
  * Camera with transitions.
  */
 public class SmoothCamera extends OrthographicCamera {
-    private final Interpolation interpolation;
+    private final Interpolation interpolation = Interpolation.linear;
     private final float duration;
     private float targetX, targetY;
-    private Tween tweenX, tweenY;
+    private final Tween tweenX = new Tween(interpolation),
+            tweenY = new Tween(interpolation);
 
-    public SmoothCamera(Interpolation interpolation, float transitionInSec) {
-        this.interpolation = interpolation;
+    public SmoothCamera(float transitionInSec) {
         duration = transitionInSec;
     }
 
     @Override
     public void update() {
-        if (tweenX != null && tweenX.isPlaying()) {
+        if (tweenX.isPlaying()) {
             position.x = tweenX.getInterpolation();
         }
-        if (tweenY != null && tweenY.isPlaying()) {
+        if (tweenY.isPlaying()) {
             position.y = tweenY.getInterpolation();
         }
         super.update();
-        System.out.println("pdate");
     }
 
     @Override
     public void translate(float dx, float dy) {
-        if (dx != 0 && dy != 0 &&
-                targetX != position.x + dx &&
-                targetY != position.y + dy) {
+        if (dx != 0 && targetX != position.x + dx) {
             targetX = position.x + dx;
-            targetY = position.y + dy;
-            tweenX = new Tween(interpolation, position.x,
+            tweenX.playWith(position.x,
                     targetX, duration);
-            tweenY = new Tween(interpolation, position.y,
+        }
+        if (dy != 0 && targetY != position.y + dy) {
+            targetY = position.y + dy;
+            tweenY.playWith(position.y,
                     targetY, duration);
         }
     }

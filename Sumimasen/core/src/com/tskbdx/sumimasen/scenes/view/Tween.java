@@ -17,10 +17,14 @@ import java.util.List;
  * You'd want to call updateAll in main loop to update all tweens.
  */
 public class Tween {
-    public Tween(Interpolation interpolation, float start, float end, float durationInSec) {
+    public Tween(Interpolation interpolation) {
         Tween.tweens.add(this);
-        duration = durationInSec;
         this.interpolation = interpolation;
+    }
+
+    public void playWith(float start, float end, float durationInSec) {
+        currentPosition = 0;
+        duration = durationInSec;
         this.start = start;
         this.end = end;
         play();
@@ -83,7 +87,7 @@ public class Tween {
     private float currentPosition = 0;
     private boolean playing = false;
     private final Interpolation interpolation;
-    private final float start, end, duration;
+    private float start, end, duration;
 
     /**
      * All the tweens gathered in the class.

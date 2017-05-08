@@ -52,7 +52,7 @@ public class IntroScene implements Scene {
         loadWalls(tiledMap);
 
         Gdx.input.setInputProcessor(new BasicInputProcessor());
-        camera = new SmoothCamera(Interpolation.smooth, 0.25f);
+        camera = new SmoothCamera(0.33f);
         camera.setToOrtho(false, 800, 480);
         camera.zoom = 1.f/SCALE_FACTOR;
         camera.translate(-400, -240);

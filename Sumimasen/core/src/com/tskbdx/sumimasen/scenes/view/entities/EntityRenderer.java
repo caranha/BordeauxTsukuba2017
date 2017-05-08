@@ -23,7 +23,8 @@ public class EntityRenderer implements Observer {
     private Texture image;
 
     private Rectangle rectangle;
-    private Tween mouvementX, mouvementY;
+    private final Tween mouvementX = new Tween(Interpolation.linear),
+            mouvementY = new Tween(Interpolation.linear);
 
     public EntityRenderer(Entity entity, String imagefile) {
         this.entity = entity;
@@ -42,11 +43,11 @@ public class EntityRenderer implements Observer {
         int targetX = entity.getX() * TILE_SIZE;
         int targetY = entity.getY() * TILE_SIZE;
         if (rectangle.x != targetX) {
-            mouvementX = new Tween(Interpolation.smooth, rectangle.x,
+            mouvementX.playWith(rectangle.x,
                     targetX, 0.25f);
         }
         else if (rectangle.y != targetY) {
-            mouvementY = new Tween(Interpolation.smooth, rectangle.y,
+            mouvementY.playWith(rectangle.y,
                     targetY, 0.25f);
         }
     }
