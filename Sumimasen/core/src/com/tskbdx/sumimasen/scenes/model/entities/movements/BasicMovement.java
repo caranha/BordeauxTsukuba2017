@@ -26,7 +26,7 @@ public class BasicMovement implements Movement, Runnable {
 
         if (ready) {
             int newX = entity.getX(), newY = entity.getY();
-
+            boolean collision = false;
             switch (entity.getDirection()) {
                 case RIGHT:
                     ++newX;
@@ -46,8 +46,7 @@ public class BasicMovement implements Movement, Runnable {
 
             if (!entity.getWorld().isCollisionOnBox(newX, newY, entity.getWidth(),
                     entity.getHeight())) {
-                entity.setX(newX);
-                entity.setY(newY);
+                entity.setXY(newX, newY);
                 entity.notifyObservers();
                 ready = false;
                 executorService.schedule(this,

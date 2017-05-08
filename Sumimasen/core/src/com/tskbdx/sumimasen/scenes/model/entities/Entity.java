@@ -34,15 +34,6 @@ public abstract class Entity extends Observable {
         this.direction = NONE;
     }
 
-    public void removeFromWorld() {
-        for (int i = x ; i != x + width ; ++i) {
-            for (int j = y ; j != y + height ; ++j) {
-                world.setVoid(i, j);
-            }
-        }
-        world = null;
-    }
-
     public void update(float dt) {
         if (movement != null) {
             movement.move(this, dt);
@@ -58,12 +49,20 @@ public abstract class Entity extends Observable {
         setChanged();
     }
 
+    public void setXY(int x, int y) {
+        this.x = x;
+        this.y = y;
+        setChanged();
+    }
+
     public int getY() {
         return y;
     }
 
     public void setY(int y) {
+      //  if (world != null) world.setEntityLocation(this, null);
         this.y = y;
+     //   if (world != null) world.setEntityLocation(this, this);
         setChanged();
     }
 
@@ -121,4 +120,16 @@ public abstract class Entity extends Observable {
         setChanged();
     }
 
+    @Override
+    public int hashCode() {
+        int result = world != null ? world.hashCode() : 0;
+        result = 31 * result + (movement != null ? movement.hashCode() : 0);
+        result = 31 * result + x;
+        result = 31 * result + y;
+        result = 31 * result + width;
+        result = 31 * result + height;
+        result = 31 * result + (direction != null ? direction.hashCode() : 0);
+        result = 31 * result + speed;
+        return result;
+    }
 }

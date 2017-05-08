@@ -2,6 +2,7 @@ package com.tskbdx.sumimasen.scenes.view.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
@@ -17,34 +18,30 @@ import java.util.Observer;
 /**
  * Sprite class
  */
-public class EntityRenderer implements Observer {
-
+public class EntityRenderer extends Sprite implements Observer {
     private static String IMAGES_RES_FOLDER = "images/";
-
     private static int TILE_SIZE = 8;
-
     private Entity entity;
-    private Texture image;
-
-    private Rectangle rectangle;
     private final Tween animationX = new Tween(Interpolation.linear),
             animationY = new Tween(Interpolation.linear);
 
     public EntityRenderer(Entity entity, String imagefile) {
+        super(new Texture(IMAGES_RES_FOLDER + imagefile),
+                0, 0, 16, 16);
+        setPosition(entity.getX() * TILE_SIZE, entity.getY() * TILE_SIZE);
         this.entity = entity;
-        this.image = new Texture(IMAGES_RES_FOLDER + imagefile);
-        float width = entity.getWidth() * TILE_SIZE;
-        float height = image.getHeight() * (width / image.getWidth());
-        this.rectangle = new Rectangle(
-                entity.getX() * TILE_SIZE,
-                entity.getY() * TILE_SIZE,
-                width, height);
         entity.addObserver(this);
+    }
+
+    private void initSize() {
+        float width = entity.getWidth() * TILE_SIZE;
+        float height = getTexture().getHeight() * (width / getTexture().getWidth());
+        setSize(width, height);
     }
 
     /**
      * On update, calculate observable location and
-     * prepare animation to reach it
+     * prepare the animation to reach it
      * @param observable
      * @param o
      */
@@ -52,25 +49,19 @@ public class EntityRenderer implements Observer {
     public void update(Observable observable, Object o) {
         int targetX = entity.getX() * TILE_SIZE;
         int targetY = entity.getY() * TILE_SIZE;
-        if (rectangle.x != targetX) {
-            animationX.playWith(rectangle.x,
+        if (getX() != targetX) {
+            animationX.playWith(getX(),
                     targetX, 1.f / entity.getSpeed());
         }
-        if (rectangle.y != targetY) {
-            animationY.playWith(rectangle.y,
+        if (getY() != targetY) {
+            animationY.playWith(getY(),
                     targetY, 1.f / entity.getSpeed());
         }
     }
 
     public void render(Batch batch) {
         move();
-        batch.draw(image,
-                rectangle.getX(),       rectangle.getY(),
-                rectangle.getWidth(),   rectangle.getHeight() );
-    }
-
-    public Rectangle getRectangle() {
-        return rectangle;
+        draw(batch);
     }
 
     /**
@@ -78,10 +69,10 @@ public class EntityRenderer implements Observer {
      */
     private void move() {
         if (animationX.isPlaying()) {
-            rectangle.x = animationX.getInterpolation();
+            setX(animationX.getInterpolation());
         }
         if (animationY.isPlaying()) {
-            rectangle.y = animationY.getInterpolation();
+            setY(animationY.getInterpolation());
         }
     }
 }
