@@ -3,6 +3,8 @@ package com.tskbdx.sumimasen.scenes.model.entities;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 
+import javax.xml.soap.SOAPMessage;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
@@ -132,26 +134,37 @@ public abstract class Entity extends Observable {
      * in front of the entity
      */
     public void tryInteract() {
-        int targetX = getX(), targetY = getY(); // target position = in front of the entity
+        List<Object> neighbors = getInFrontOfNeighbors();
+        for (Object neighbour : neighbors) {
+            if (neighbour instanceof SceneObject) {
+                ((SceneObject) neighbour).doInteraction();
+                return;
+            }
+        }
+        System.out.println("Nobody to interact with !");
+    }
+
+    private List<Object> getInFrontOfNeighbors() {
+        List<Object> neighbors = new ArrayList<>();
         switch (getLastDirection()) {
-            case NORTH:
-                targetY += getHeight() + 1; // Gdx seems to be from bot to top
-                break;
-            case SOUTH:
-                --targetY; // Gdx seems to be from bot to top
-                break;
             case WEST:
-                --targetX;
+                for (int j = getY() ; j != getY() + getHeight() ; ++j)
+                    neighbors.add(world.get(getX() - 1, j));
                 break;
             case EAST:
-                targetX += getWidth() + 1;
+                for (int j = getY() ; j != getY() + getHeight() ; ++j)
+                    neighbors.add(world.get(getX() + getWidth() + 1, j));
+                break;
+            case NORTH:
+                for (int i = getX() ; i != getX() + getWidth() ; ++i)
+                    neighbors.add(world.get(i, getY() + getHeight()));
+                break;
+            case SOUTH:
+                for (int i = getX() ; i != getX() + getWidth() ; ++i)
+                    neighbors.add(world.get(i, getY() - 1));
                 break;
         }
-        try {
-            ((SceneObject) world.get(targetX, targetY)).interactWith(this);
-        } catch (Exception e) {
-            System.out.println("Nobody to interact with !");
-        }
+        return neighbors;
     }
 
     private Direction getLastDirection() {
