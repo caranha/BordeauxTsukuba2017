@@ -44,7 +44,7 @@ public abstract class Entity extends Observable {
 
     public void update(float dt) {
         if (movement != null) {
-            movement.run();
+            movement.move(dt);
         }
     }
 

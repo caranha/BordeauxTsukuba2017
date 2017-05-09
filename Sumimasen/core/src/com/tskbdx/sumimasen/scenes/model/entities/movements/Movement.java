@@ -12,10 +12,12 @@ import com.tskbdx.sumimasen.scenes.model.entities.Entity;
  * Dynamically changing this entity movement
  * behavior can be very useful
  */
-public abstract class Movement implements Runnable {
+public abstract class Movement {
     final protected Entity entity;
 
     Movement(Entity entity) {
         this.entity = entity;
     }
+
+    public abstract void move(float dt);
 }

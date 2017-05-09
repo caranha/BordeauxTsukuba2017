@@ -39,7 +39,6 @@ public class GameScreen implements Screen {
 
         currentScene.update(delta);
 
-
         game.getBatch().begin();
         currentScene.render(game.getBatch());
         game.getBatch().end();

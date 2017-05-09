@@ -19,12 +19,12 @@ import java.util.Observer;
 public class EntityRenderer implements Observer {
     private static String IMAGES_RES_FOLDER = "images/";
     private static int TILE_SIZE = 8;
+    protected Texture image;
     private Entity entity;
-    private Texture image;
-
     private Animation animation;
 
     private Rectangle rectangle;
+
     public EntityRenderer(Entity entity, String imagefile) {
         this.entity = entity;
         this.image = new Texture(IMAGES_RES_FOLDER + imagefile);
@@ -34,36 +34,43 @@ public class EntityRenderer implements Observer {
                 entity.getWidth() * TILE_SIZE,
                 entity.getHeight() * TILE_SIZE);
         entity.addObserver(this);
+        update(null, null);
     }
 
     /**
      * On update, calculate observable location and
      * prepare the animation to reach it
+     *
      * @param observable
      * @param o
      */
     @Override
     public void update(Observable observable, Object o) {
-        if ( rectangle.x != entity.getX() * TILE_SIZE
+        if (rectangle.x != entity.getX() * TILE_SIZE
                 || rectangle.y != entity.getY() * TILE_SIZE) {
-
             Vector2 target = new Vector2(entity.getX() * TILE_SIZE, entity.getY() * TILE_SIZE);
             int speed = entity.getSpeed();
-            animation = new PositionInterpolationAnimation(rectangle, target, 1.f/speed);
+            animation = new PositionInterpolationAnimation(rectangle, target, 1.f / speed);
             animation.start();
         }
 
-        rectangle.width     = entity.getWidth() * TILE_SIZE;
-        float scale_factor  = rectangle.width / image.getWidth();
-        rectangle.height    = image.getHeight() * scale_factor;
+        rectangle.width = entity.getWidth() * TILE_SIZE;
+        float scale_factor = rectangle.width / image.getWidth();
+        rectangle.height = image.getHeight() * scale_factor;
+    }
+
+    boolean isAnimating() {
+        return animation != null && !animation.isFinished();
+    }
+
+    void updateAnimation() {
+        if (isAnimating()) {
+            animation.update();
+        }
     }
 
     public void render(Batch batch) {
-
-        if (animation != null && !animation.isFinished()) {
-            animation.update();
-        }
-
+        updateAnimation();
         batch.draw(image,
                 rectangle.getX(), rectangle.getY(),
                 rectangle.getWidth(), rectangle.getHeight());

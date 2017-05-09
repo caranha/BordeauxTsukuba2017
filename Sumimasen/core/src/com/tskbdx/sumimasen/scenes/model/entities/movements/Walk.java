@@ -1,10 +1,8 @@
 package com.tskbdx.sumimasen.scenes.model.entities.movements;
 
-import com.tskbdx.sumimasen.scenes.model.entities.Direction;
+import com.badlogic.gdx.Gdx;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -25,14 +23,15 @@ public class Walk extends Movement {
         super(entity);
     }
 
-    private boolean ready = true;
-    private ScheduledExecutorService executorService
-            = Executors.newSingleThreadScheduledExecutor();
-    private Runnable resetClock = () -> ready = true;
+    private boolean canMove = true;
+    private float clock = 0.f;
 
     @Override
-    public void run() {
-        if (ready) {
+    public void move(float dt) {
+
+        int speed = entity.getSpeed();
+
+        if (canMove) {
             int newX = entity.getX(), newY = entity.getY();
 
             switch (entity.getDirection()) {
@@ -52,13 +51,18 @@ public class Walk extends Movement {
                     return;
             }
 
+            canMove = false;
+
             if (!entity.getWorld().isCollisionOnBox(newX, newY, entity.getWidth(),
                     entity.getHeight())) {
                 entity.setXY(newX, newY);
                 entity.notifyObservers();
-                ready = false;
-                executorService.schedule(resetClock,
-                        (long) ((1.f / entity.getSpeed()) * 1000), TimeUnit.MILLISECONDS);
+            }
+        } else {
+            clock += dt;
+            if(clock >= 1.f/speed) {
+                canMove = true;
+                clock %= 1.f/speed;
             }
         }
     }

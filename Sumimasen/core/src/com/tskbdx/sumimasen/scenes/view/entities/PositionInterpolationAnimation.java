@@ -21,7 +21,6 @@ public class PositionInterpolationAnimation implements Animation {
     private float clock = 0.f;
 
     public PositionInterpolationAnimation(Rectangle rectangle, Vector2 target, float duration) {
-
         this.start      = new Vector2(rectangle.x, rectangle.y);
         this.target     = target;
         this.duration   = duration;
@@ -38,16 +37,12 @@ public class PositionInterpolationAnimation implements Animation {
     @Override
     public void update() {
         if(started && running) {
-
             float dt = Gdx.graphics.getDeltaTime();
             clock += dt;
 
             float progress = Math.min(1.f, clock/duration);
-
-            rectangle.setPosition(
-                    start.interpolate(target, progress, Interpolation.linear)
-            );
-
+            rectangle.x = Interpolation.linear.apply(start.x, target.x, progress);
+            rectangle.y = Interpolation.linear.apply(start.y, target.y, progress);
             if (progress == 1.f) {
                 running = false;
             }
