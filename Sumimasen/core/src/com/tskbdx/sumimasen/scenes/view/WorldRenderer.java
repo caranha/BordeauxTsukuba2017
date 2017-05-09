@@ -1,5 +1,6 @@
 package com.tskbdx.sumimasen.scenes.view;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -9,6 +10,8 @@ import com.tskbdx.sumimasen.scenes.view.entities.EntityRendererDrawOrderer;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import static sun.dc.pr.Rasterizer.TILE_SIZE;
 
 /**
  * Created by Sydpy on 4/28/17.
@@ -52,7 +55,6 @@ public class WorldRenderer extends OrthogonalTiledMapRenderer {
                 }
             }
         }
-
         endRender();
     }
 }

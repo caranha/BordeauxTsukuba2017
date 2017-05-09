@@ -2,6 +2,7 @@ package com.tskbdx.sumimasen.scenes.view.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
@@ -74,8 +75,10 @@ public class EntityRenderer implements Observer {
     }
 
     void renderMessage(Batch batch) {
-        messageRenderer.render(batch);
+        messageRenderer.render(batch, getX(), getY());
     }
+
+    private BitmapFont font = new BitmapFont();
 
     public float getX() {
         return rectangle.getX();
