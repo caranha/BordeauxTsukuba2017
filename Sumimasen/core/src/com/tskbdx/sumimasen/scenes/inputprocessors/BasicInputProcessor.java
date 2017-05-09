@@ -1,18 +1,14 @@
 package com.tskbdx.sumimasen.scenes.inputprocessors;
 
 import com.badlogic.gdx.InputProcessor;
-import com.tskbdx.sumimasen.GameScreen;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.badlogic.gdx.Input.Keys.*;
 import static com.tskbdx.sumimasen.GameScreen.player;
-import static com.tskbdx.sumimasen.scenes.model.entities.Direction.SOUTH;
-import static com.tskbdx.sumimasen.scenes.model.entities.Direction.WEST;
-import static com.tskbdx.sumimasen.scenes.model.entities.Direction.EAST;
-import static com.tskbdx.sumimasen.scenes.model.entities.Direction.NORTH;
-import static com.tskbdx.sumimasen.scenes.model.entities.Direction.NONE;
+import static com.tskbdx.sumimasen.scenes.model.entities.Direction.*;
 
 /**
  * Created by Sydpy on 4/27/17.
@@ -45,6 +41,18 @@ public class BasicInputProcessor implements InputProcessor{
                 A, LEFT);
         associate(keyDownCommands, () -> player.tryInteract(),
                 ENTER, SPACE);
+
+        //Just for test
+        for(int i = 0; i < 10; i++) {
+            int finalI = i;
+            associate(keyDownCommands, () -> {
+                if (player.isInteracting()) {
+                    if (player.getInteractingWith().getInteraction() instanceof Dialogue) {
+                        ((Dialogue) player.getInteractingWith().getInteraction()).pickAnswer(finalI);
+                    }
+                }
+            }, i + 8);
+        }
     }
 
     private void initKeyUp() {

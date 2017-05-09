@@ -11,7 +11,7 @@ public class HelloTest extends Interaction {
     }
 
     @Override
-    public void run() {
+    public void update() {
         System.out.println("- Hello I'm " + active.getName());
         System.out.println("- I'm " + passive.getName());
     }
