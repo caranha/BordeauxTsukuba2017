@@ -21,6 +21,7 @@ public class BasicInputProcessor implements InputProcessor{
      */
     private final Map<Integer, Runnable> keyDownCommands = new HashMap<>();
     private final Map<Integer, Runnable> keyUpCommands = new HashMap<>();
+    private int currentKey;
 
     /**
      * Constructor : set association between keycode and commands
@@ -57,7 +58,8 @@ public class BasicInputProcessor implements InputProcessor{
 
     private void initKeyUp() {
         associate(keyUpCommands, () -> player.setDirection(NONE),
-                W, S, D, A, UP, DOWN, RIGHT, LEFT);
+                    W, S, D, A, UP, DOWN, RIGHT, LEFT
+        );
     }
 
     private void associate(Map<Integer, Runnable> map, Runnable command, int... keys) {
@@ -80,11 +82,18 @@ public class BasicInputProcessor implements InputProcessor{
 
     @Override
     public boolean keyDown(int keycode) {
-        return execute(keyDownCommands, keycode);
+        if (execute(keyDownCommands, keycode)) {
+            currentKey = keycode;
+            return true;
+        }
+        return  false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
+        if (keycode != currentKey) {
+            return false;
+        }
         return execute(keyUpCommands, keycode);
     }
 

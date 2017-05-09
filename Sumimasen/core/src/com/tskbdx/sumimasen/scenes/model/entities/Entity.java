@@ -163,7 +163,7 @@ public abstract class Entity extends Observable {
         return movement;
     }
 
-    void setMovement(Movement movement) {
+    public void setMovement(Movement movement) {
         this.movement = movement;
         setChanged();
     }

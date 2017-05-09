@@ -38,7 +38,7 @@ public class Walk extends Movement {
                 case WEST:
                     --newX;
                     break;
-                case NORTH: /// Gdx landmark seems to be from bottom to top
+                case NORTH:
                     ++newY; //--newY;
                     break;
                 case SOUTH:
