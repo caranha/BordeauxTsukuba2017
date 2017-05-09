@@ -43,23 +43,39 @@ public class Dialogue extends Interaction {
         exchanges.put(3, exchange3);
 
         currentExchange = exchange1;
+
+    }
+
+    @Override
+    public void start() {
+        super.start();
+        printCurrentState();
     }
 
     @Override
     public void update() {
+        if (currentExchange.getAnswers().isEmpty()) {
+            end();
+        }
+    }
 
+    public void pickAnswer(int index) {
+
+        DialogueAnswer dialogueAnswer = currentExchange.getAnswers().get(index);
+        if (dialogueAnswer.getNextExchange() != null) {
+            currentExchange = exchanges.get(dialogueAnswer.getNextExchange());
+        }
+
+        printCurrentState();
+    }
+
+    private void printCurrentState() {
         System.out.println(currentExchange.getText());
 
         List<DialogueAnswer> answers = currentExchange.getAnswers();
         for (int i = 0; i < answers.size(); i++) {
             System.out.println( (i + 1 ) + "\t" + answers.get(i).getText() );
         }
-    }
 
-    public void pickAnswer(int index) {
-        DialogueAnswer dialogueAnswer = currentExchange.getAnswers().get(index);
-        if (dialogueAnswer.getNextExchange() != null) {
-            currentExchange = exchanges.get(dialogueAnswer.getNextExchange());
-        }
     }
 }

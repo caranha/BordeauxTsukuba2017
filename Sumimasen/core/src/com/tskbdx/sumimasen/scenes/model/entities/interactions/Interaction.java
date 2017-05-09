@@ -32,6 +32,8 @@ public abstract class Interaction {
         passive.setInteractingWith(active);
 
         started = true;
+
+        System.out.println("Start of interaction");
     }
 
     public abstract void update();
@@ -44,6 +46,8 @@ public abstract class Interaction {
         passive.setInteractingWith(null);
 
         finished = true;
+
+        System.out.println("End of interaction");
     }
 
     public boolean isStarted() {
