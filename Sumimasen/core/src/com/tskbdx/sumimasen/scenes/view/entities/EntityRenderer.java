@@ -1,19 +1,11 @@
 package com.tskbdx.sumimasen.scenes.view.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
-import com.tskbdx.sumimasen.scenes.view.Tween;
 
-import javax.xml.soap.Text;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -24,18 +16,23 @@ import java.util.Observer;
 /**
  * Sprite class
  */
-public class EntityRenderer extends Sprite implements Observer {
+public class EntityRenderer implements Observer {
     private static String IMAGES_RES_FOLDER = "images/";
     private static int TILE_SIZE = 8;
     private Entity entity;
-    private final Tween animationX = new Tween(Interpolation.linear),
-            animationY = new Tween(Interpolation.linear);
+    private Texture image;
 
+    private Animation animation;
+
+    private Rectangle rectangle;
     public EntityRenderer(Entity entity, String imagefile) {
-        super(new Texture(Gdx.files.internal(IMAGES_RES_FOLDER + imagefile)),
-                0, 0, 16, 16);
-        setPosition(entity.getX() * TILE_SIZE, entity.getY() * TILE_SIZE);
         this.entity = entity;
+        this.image = new Texture(IMAGES_RES_FOLDER + imagefile);
+        this.rectangle = new Rectangle(
+                entity.getX() * TILE_SIZE,
+                entity.getY() * TILE_SIZE,
+                entity.getWidth() * TILE_SIZE,
+                entity.getHeight() * TILE_SIZE);
         entity.addObserver(this);
     }
 
@@ -47,32 +44,44 @@ public class EntityRenderer extends Sprite implements Observer {
      */
     @Override
     public void update(Observable observable, Object o) {
-        int targetX = entity.getX() * TILE_SIZE;
-        int targetY = entity.getY() * TILE_SIZE;
-        if (getX() != targetX) {
-            animationX.playWith(getX(),
-                    targetX, 1.f / entity.getSpeed());
+        if ( rectangle.x != entity.getX() * TILE_SIZE
+                || rectangle.y != entity.getY() * TILE_SIZE) {
+
+            Vector2 target = new Vector2(entity.getX() * TILE_SIZE, entity.getY() * TILE_SIZE);
+            int speed = entity.getSpeed();
+            animation = new PositionInterpolationAnimation(rectangle, target, 1.f/speed);
+            animation.start();
         }
-        if (getY() != targetY) {
-            animationY.playWith(getY(),
-                    targetY, 1.f / entity.getSpeed());
-        }
+
+        rectangle.width     = entity.getWidth() * TILE_SIZE;
+        float scale_factor  = rectangle.width / image.getWidth();
+        rectangle.height    = image.getHeight() * scale_factor;
     }
 
     public void render(Batch batch) {
-        move();
-        draw(batch);
+
+        if (animation != null && !animation.isFinished()) {
+            animation.update();
+        }
+
+        batch.draw(image,
+                rectangle.getX(), rectangle.getY(),
+                rectangle.getWidth(), rectangle.getHeight());
     }
 
-    /**
-     * Animate the player movements.
-     */
-    private void move() {
-        if (animationX.isPlaying()) {
-            setX(animationX.getInterpolation());
-        }
-        if (animationY.isPlaying()) {
-            setY(animationY.getInterpolation());
-        }
+    public float getX() {
+        return rectangle.getX();
+    }
+
+    public float getY() {
+        return rectangle.getY();
+    }
+
+    public float getWidth() {
+        return rectangle.getWidth();
+    }
+
+    public float getHeight() {
+        return rectangle.getHeight();
     }
 }
