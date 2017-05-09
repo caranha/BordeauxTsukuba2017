@@ -1,0 +1,10 @@
+<dialogue>
+    <exchange id="1" text="Du bist ein couscous">
+        <answers>
+            <answer nextExchange="2" text="Yes !"/>
+            <answer nextExchange="3" text="No !"/>
+        </answers>
+    </exchange>
+    <exchange id="2" text="Ok" />
+    <exchange id="3" text="Maybe not" />
+</dialogue>
