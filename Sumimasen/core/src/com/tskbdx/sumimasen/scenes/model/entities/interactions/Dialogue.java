@@ -33,6 +33,8 @@ public class Dialogue extends Interaction {
     public void start() {
         super.start();
         printCurrentState();
+        active.setMessage(currentExchange.getText(), 5.f, passive);
+        active.notifyObservers();
     }
 
     @Override

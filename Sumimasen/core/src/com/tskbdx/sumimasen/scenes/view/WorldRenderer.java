@@ -52,7 +52,6 @@ public class WorldRenderer extends OrthogonalTiledMapRenderer {
                 }
             }
         }
-
         endRender();
     }
 }

@@ -8,8 +8,8 @@ import java.util.List;
  * Created by Sydpy on 5/6/17.
  */
 interface Animation {
-    abstract void start();
-    abstract void update();
+    void start();
+    void update();
 
-    abstract boolean isFinished();
+    boolean isFinished();
 }

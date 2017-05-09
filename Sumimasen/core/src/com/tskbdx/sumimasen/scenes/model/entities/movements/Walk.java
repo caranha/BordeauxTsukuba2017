@@ -12,10 +12,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 /**
- * More precise with a scheduled executor than
- * incrementing a clock with elapsed time
- * (no more lag on old computers)
- * (IMO it's ok for other platforms)
+ * Walk
  */
 public class Walk extends Movement {
 

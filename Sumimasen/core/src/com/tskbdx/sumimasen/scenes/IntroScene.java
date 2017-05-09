@@ -27,7 +27,7 @@ public class IntroScene implements Scene {
     private static float SCALE_FACTOR = 4.0f;
     private final Player player;
 
-    private SmoothCamera camera;
+    public static SmoothCamera camera;
 
     private World world;
     private WorldRenderer worldRenderer;
