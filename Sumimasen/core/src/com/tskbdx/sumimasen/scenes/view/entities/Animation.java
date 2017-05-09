@@ -1,12 +1,15 @@
 package com.tskbdx.sumimasen.scenes.view.entities;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by Sydpy on 5/6/17.
  */
-public interface Animation {
+interface Animation {
+    abstract void start();
+    abstract void update();
 
-    void start();
-    void update();
-
-    boolean isFinished();
+    abstract boolean isFinished();
 }

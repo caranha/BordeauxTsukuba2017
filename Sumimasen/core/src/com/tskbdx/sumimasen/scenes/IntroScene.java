@@ -16,6 +16,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.view.SmoothCamera;
 import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
+import com.tskbdx.sumimasen.scenes.view.entities.AnimatedEntityRendered;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 
 /**
@@ -50,7 +51,7 @@ public class IntroScene implements Scene {
         loadWalls(tiledMap);
 
         Gdx.input.setInputProcessor(new BasicInputProcessor());
-        camera = new SmoothCamera(0.33f);
+        camera = new SmoothCamera(1.f);
         camera.setToOrtho(false, 800, 480);
         camera.zoom = 1.f/SCALE_FACTOR;
         camera.position.x -= 400;
@@ -86,6 +87,7 @@ public class IntroScene implements Scene {
             String imagefile = object.getProperties().get("imagefile", String.class);
 
             Entity entity;
+            EntityRenderer entityRenderer;
 
             if (object.getName().equals("player")) {
                 player.setX(x);
@@ -93,13 +95,14 @@ public class IntroScene implements Scene {
                 player.setWidth(width);
                 player.setHeight(height);
                 entity = player;
+                entityRenderer = new AnimatedEntityRendered(entity, imagefile, 3, 4);
             } else {
                 SceneObject sceneObject = new SceneObject(x, y, width, height);
                 sceneObject.setInteraction(new Dialogue(sceneObject, player));
                 entity = sceneObject;
+                entityRenderer = new EntityRenderer(entity, imagefile);
             }
             entity.setName(object.getName());
-            EntityRenderer entityRenderer = new EntityRenderer(entity, imagefile);
             world.addEntity(entity);
             worldRenderer.addEntityRenderer(entityRenderer);
         }
@@ -112,7 +115,6 @@ public class IntroScene implements Scene {
         Tween.updateAll(dt);
 
         world.update(dt);
-
         camera.translate(player.getX()*8 - camera.position.x, player.getY()*8 - camera.position.y);
         camera.update();
     }
