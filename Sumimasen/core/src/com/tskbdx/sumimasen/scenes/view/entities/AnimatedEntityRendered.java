@@ -39,12 +39,15 @@ public class AnimatedEntityRendered extends EntityRenderer {
 
     @Override
     public void render(Batch batch) {
+        stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
+
         if (isAnimating()) {
             updateAnimation();
-            stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
             batch.draw(animation.getKeyFrame(stateTime, true), getX(), getY());
         } else {
             batch.draw(defaultTexture, getX(), getY());
         }
+
+        renderMessage(batch);
     }
 }

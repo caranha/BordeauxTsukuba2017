@@ -20,21 +20,21 @@ public class EntityRenderer implements Observer {
     private static String IMAGES_RES_FOLDER = "images/";
     private static int TILE_SIZE = 8;
     protected Texture image;
+    private MessageRenderer messageRenderer;
     private Entity entity;
     private Animation animation;
 
-    private Rectangle rectangle;
+    private Rectangle rectangle = new Rectangle();
 
     public EntityRenderer(Entity entity, String imagefile) {
         this.entity = entity;
         this.image = new Texture(IMAGES_RES_FOLDER + imagefile);
-        this.rectangle = new Rectangle(
-                entity.getX() * TILE_SIZE,
-                entity.getY() * TILE_SIZE,
-                entity.getWidth() * TILE_SIZE,
-                entity.getHeight() * TILE_SIZE);
+        rectangle.x = entity.getX() * TILE_SIZE;
+        rectangle.y = entity.getY() * TILE_SIZE;
+        rectangle.width = entity.getWidth() * TILE_SIZE;
+        rectangle.height = image.getHeight() * (rectangle.width / image.getWidth());
         entity.addObserver(this);
-        update(null, null);
+        messageRenderer = new MessageRenderer(entity);
     }
 
     /**
@@ -53,10 +53,6 @@ public class EntityRenderer implements Observer {
             animation = new PositionInterpolationAnimation(rectangle, target, 1.f / speed);
             animation.start();
         }
-
-        rectangle.width = entity.getWidth() * TILE_SIZE;
-        float scale_factor = rectangle.width / image.getWidth();
-        rectangle.height = image.getHeight() * scale_factor;
     }
 
     boolean isAnimating() {
@@ -74,6 +70,11 @@ public class EntityRenderer implements Observer {
         batch.draw(image,
                 rectangle.getX(), rectangle.getY(),
                 rectangle.getWidth(), rectangle.getHeight());
+        renderMessage(batch);
+    }
+
+    void renderMessage(Batch batch) {
+        messageRenderer.render(batch);
     }
 
     public float getX() {

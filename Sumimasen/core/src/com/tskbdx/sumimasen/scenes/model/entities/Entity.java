@@ -3,12 +3,12 @@ package com.tskbdx.sumimasen.scenes.model.entities;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 
-import javax.xml.soap.SOAPMessage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
-import static com.tskbdx.sumimasen.scenes.model.entities.Direction.*;
+import static com.tskbdx.sumimasen.scenes.model.entities.Direction.NONE;
+import static com.tskbdx.sumimasen.scenes.model.entities.Direction.SOUTH;
 
 /**
  * Created by Sydpy on 4/28/17.
@@ -21,8 +21,14 @@ public abstract class Entity extends Observable {
 
     private int x, y;
     private int width, height;
-    private String name = " ";
+    private String name;
 
+    /**
+     * Message
+     */
+    private String message;
+    private float messageDuration = 0.f;
+    private Entity messageReceiver; // if == null then is talking alone
     /**
      * direction is the current direction movement state
      * lastDirection is like the static direction state
@@ -177,5 +183,24 @@ public abstract class Entity extends Observable {
 
     public String getName() {
         return name;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public float getMessageDuration() {
+        return messageDuration;
+    }
+
+    public Entity getMessageReceiver() {
+        return messageReceiver;
+    }
+
+    public void setMessage(String content, float duration, Entity receiver) {
+        message = content;
+        messageDuration = duration;
+        messageReceiver = receiver;
+        setChanged();
     }
 }
