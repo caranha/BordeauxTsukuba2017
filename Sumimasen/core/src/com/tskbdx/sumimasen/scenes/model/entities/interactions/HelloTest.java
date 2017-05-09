@@ -11,6 +11,10 @@ public class HelloTest extends Interaction {
     }
 
     @Override
+    public void update() {
+
+    }
+
     public void run() {
         System.out.println("message");
         active.setMessage("Hello " + passive.getName(), 3.f, passive);

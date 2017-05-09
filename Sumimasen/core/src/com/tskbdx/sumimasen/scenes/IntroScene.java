@@ -1,21 +1,18 @@
 package com.tskbdx.sumimasen.scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.Interpolation;
 import com.tskbdx.sumimasen.scenes.inputprocessors.BasicInputProcessor;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
 import com.tskbdx.sumimasen.scenes.model.entities.SceneObject;
-import com.tskbdx.sumimasen.scenes.model.entities.interactions.HelloTest;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialog;
 import com.tskbdx.sumimasen.scenes.view.SmoothCamera;
 import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
@@ -101,7 +98,7 @@ public class IntroScene implements Scene {
                 entityRenderer = new AnimatedEntityRendered(entity, imagefile, 3, 4);
             } else {
                 SceneObject sceneObject = new SceneObject(x, y, width, height);
-                sceneObject.setInteraction(new HelloTest(sceneObject, player));
+                sceneObject.setInteraction(new Dialog(sceneObject, player));
                 entity = sceneObject;
                 entityRenderer = new EntityRenderer(entity, imagefile);
             }

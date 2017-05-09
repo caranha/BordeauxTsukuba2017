@@ -12,12 +12,49 @@ import com.tskbdx.sumimasen.scenes.model.entities.Entity;
  * passive.
  * -> This dynamic behavior should be stored in the active.
  */
-public abstract class Interaction implements Runnable {
+public abstract class Interaction {
     final protected Entity active;
     final protected Entity passive;
+
+    private boolean started = false;
+    private boolean finished = false;
 
     Interaction(Entity producer, Entity consumer) {
         this.active = producer;
         this.passive = consumer;
+    }
+
+    public void start() {
+        active.setInteracting(true);
+        passive.setInteracting(true);
+
+        active.setInteractingWith(passive);
+        passive.setInteractingWith(active);
+
+        started = true;
+
+        System.out.println("Start of interaction");
+    }
+
+    public abstract void update();
+
+    public void end() {
+        active.setInteracting(false);
+        passive.setInteracting(false);
+
+        active.setInteractingWith(null);
+        passive.setInteractingWith(null);
+
+        finished = true;
+
+        System.out.println("End of interaction");
+    }
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    public boolean isFinished() {
+        return finished;
     }
 }
