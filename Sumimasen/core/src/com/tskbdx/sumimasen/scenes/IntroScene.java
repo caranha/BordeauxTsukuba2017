@@ -98,7 +98,7 @@ public class IntroScene implements Scene {
                 entityRenderer = new AnimatedEntityRendered(entity, imagefile, 3, 4);
             } else {
                 SceneObject sceneObject = new SceneObject(x, y, width, height);
-                sceneObject.setInteraction(new Dialogue(sceneObject, player));
+                sceneObject.setInteraction(new Dialogue(sceneObject, player, "dialogues/test.xml"));
                 entity = sceneObject;
                 entityRenderer = new EntityRenderer(entity, imagefile);
             }

@@ -1,7 +1,15 @@
 package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,38 +20,13 @@ import java.util.Map;
 public class Dialogue extends Interaction {
 
     private Map<Integer, DialogueExchange> exchanges = new HashMap<>();
-
     private DialogueExchange currentExchange = new DialogueExchange();
 
-    public Dialogue(Entity producer, Entity consumer) {
+    public Dialogue(Entity producer, Entity consumer, String xmlFile) {
         super(producer, consumer);
 
-        DialogueExchange exchange1 = new DialogueExchange();
-        exchange1.setText("How are you doing ?");
-
-            DialogueAnswer answer11 = new DialogueAnswer();
-            answer11.setText("Well !");
-            answer11.setNextExchange(2);
-
-            DialogueAnswer answer12 = new DialogueAnswer();
-            answer12.setText("Bof !");
-            answer12.setNextExchange(3);
-
-        exchange1.addAnswer(answer11);
-        exchange1.addAnswer(answer12);
-
-        DialogueExchange exchange2 = new DialogueExchange();
-        exchange2.setText("Nice");
-
-        DialogueExchange exchange3 = new DialogueExchange();
-        exchange3.setText("Too bad");
-
-        exchanges.put(1, exchange1);
-        exchanges.put(2, exchange2);
-        exchanges.put(3, exchange3);
-
-        currentExchange = exchange1;
-
+        buildDialogue(xmlFile);
+        currentExchange = exchanges.get(1);
     }
 
     @Override
@@ -61,12 +44,15 @@ public class Dialogue extends Interaction {
 
     public void pickAnswer(int index) {
 
-        DialogueAnswer dialogueAnswer = currentExchange.getAnswers().get(index);
-        if (dialogueAnswer.getNextExchange() != null) {
-            currentExchange = exchanges.get(dialogueAnswer.getNextExchange());
+        try {
+            DialogueAnswer dialogueAnswer = currentExchange.getAnswers().get(index);
+            if (dialogueAnswer.getNextExchange() != null) {
+                currentExchange = exchanges.get(dialogueAnswer.getNextExchange());
+            }
+            printCurrentState();
+        } catch(IndexOutOfBoundsException ignored) {
         }
 
-        printCurrentState();
     }
 
     private void printCurrentState() {
@@ -77,5 +63,65 @@ public class Dialogue extends Interaction {
             System.out.println( (i + 1 ) + "\t" + answers.get(i).getText() );
         }
 
+    }
+
+    private void buildDialogue(String xmlFile) {
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+        try {
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document dom = db.parse(xmlFile);
+            Element docEle = dom.getDocumentElement();
+            buildExchanges(docEle);
+
+        }catch(ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void buildExchanges(Element docEle) {
+        NodeList exchangesNodes = docEle.getElementsByTagName("exchange");
+        if(exchangesNodes != null && exchangesNodes.getLength() > 0) {
+            for(int i = 0 ; i < exchangesNodes.getLength();i++) {
+
+                Element exchangeNode = (Element)exchangesNodes.item(i);
+
+                Integer id = Integer.valueOf(exchangeNode.getAttribute("id"));
+                String text = exchangeNode.getAttribute("text");
+
+                DialogueExchange exchange = new DialogueExchange();
+                exchange.setText(text);
+
+                buildAnswers(exchangeNode, exchange);
+
+                exchanges.put(id, exchange);
+            }
+        }
+    }
+
+    private void buildAnswers(Element exchangeNode, DialogueExchange exchange) {
+        NodeList answersNodes = exchangeNode.getElementsByTagName("answers");
+        if (answersNodes != null && answersNodes.getLength() > 0) {
+            Element answersNode = (Element) answersNodes.item(0);
+
+            NodeList answerNodes = answersNode.getElementsByTagName("answer");
+            if (answerNodes != null && answerNodes.getLength() > 0) {
+                for (int j = 0; j < answerNodes.getLength(); j++) {
+                    Element answerNode = (Element) answerNodes.item(j);
+
+                    Integer nextExchange = Integer.valueOf(answerNode.getAttribute("nextExchange"));
+                    String answerText = answerNode.getAttribute("text");
+
+                    DialogueAnswer answer = new DialogueAnswer();
+                    answer.setText(answerText);
+                    answer.setNextExchange(nextExchange);
+
+                    exchange.addAnswer(answer);
+                }
+            }
+        }
     }
 }
