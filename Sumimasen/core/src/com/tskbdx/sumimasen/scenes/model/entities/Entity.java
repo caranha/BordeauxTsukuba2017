@@ -3,13 +3,14 @@ package com.tskbdx.sumimasen.scenes.model.entities;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
+import com.tskbdx.sumimasen.scenes.model.entities.movements.Path;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import java.util.Random;
 
-import static com.tskbdx.sumimasen.scenes.model.entities.Direction.NONE;
-import static com.tskbdx.sumimasen.scenes.model.entities.Direction.SOUTH;
+import static com.tskbdx.sumimasen.scenes.model.entities.Direction.*;
 
 /**
  * Created by Sydpy on 4/28/17.
@@ -51,6 +52,8 @@ public abstract class Entity extends Observable {
         this.height = height;
 
         this.direction = NONE;
+        this.movement = new Path(this, true, // collisions working
+                 WEST, NONE, NONE, NONE, EAST, NONE, NONE, NONE);
     }
 
     public void update(float dt) {
@@ -76,6 +79,7 @@ public abstract class Entity extends Observable {
             if (neighbour instanceof Entity) {
 
                 if (((Entity) neighbour).getInteraction() != null) {
+                    // to do but not vital now : change target direction to face this
                     ((Entity) neighbour).getInteraction().start();
                 }
 
@@ -117,10 +121,11 @@ public abstract class Entity extends Observable {
         setChanged();
     }
 
-    public void setXY(int x, int y) {
+    public void moveTo(int x, int y) {
+        world.setEntityLocation(this, null);
         setX(x);
         setY(y);
-        setChanged();
+        world.setEntityLocation(this, this);
     }
 
     public int getY() {
@@ -189,7 +194,7 @@ public abstract class Entity extends Observable {
         setChanged();
     }
 
-    private Direction getLastDirection() {
+    public Direction getLastDirection() {
         return lastDirection;
     }
 

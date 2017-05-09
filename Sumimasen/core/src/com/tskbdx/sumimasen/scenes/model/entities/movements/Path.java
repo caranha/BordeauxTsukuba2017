@@ -19,9 +19,11 @@ public class Path extends Movement {
     private final Queue<Direction> directionQueue = new LinkedList<>();
     private float clock = 0.f;
     private boolean ready = true;
+    private final boolean loop;
 
-    public Path(Entity entity, Direction... directions) {
+    public Path(Entity entity, boolean loop, Direction... directions) {
         super(entity);
+        this.loop = loop;
         Collections.addAll(directionQueue, directions);
     }
 
@@ -39,6 +41,9 @@ public class Path extends Movement {
 
     private void process(Direction direction) {
         entity.setDirection(direction);
+        if (loop) {
+            directionQueue.add(direction);
+        }
         int newX = entity.getX(), newY = entity.getY();
         switch (direction) {
             case EAST:
@@ -53,11 +58,14 @@ public class Path extends Movement {
             case SOUTH:
                 --newY; //++newY;
                 break;
+            case NONE:
+                ready = false;
+                break;
         }
 
-        if (!entity.getWorld().isCollisionOnBox(newX, newY, entity.getWidth(),
+        if (!entity.getWorld().isCollisionOnBox(entity, newX, newY, entity.getWidth(),
                 entity.getHeight())) {
-            entity.setXY(newX, newY);
+            entity.moveTo(newX, newY);
             entity.notifyObservers();
         }
     }

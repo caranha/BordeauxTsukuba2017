@@ -46,17 +46,17 @@
  <objectgroup name="Entities">
   <object id="2" name="entity1" x="56" y="16" width="16" height="8">
    <properties>
-    <property name="imagefile" value="entity.png"/>
+    <property name="imagefile" value="player.png"/>
    </properties>
   </object>
   <object id="5" name="entity3" x="80" y="8" width="16" height="8">
    <properties>
-    <property name="imagefile" value="entity.png"/>
+    <property name="imagefile" value="player.png"/>
    </properties>
   </object>
   <object id="6" name="entity2" x="40" y="96" width="16" height="8">
    <properties>
-    <property name="imagefile" value="entity.png"/>
+    <property name="imagefile" value="player.png"/>
    </properties>
   </object>
   <object id="21" name="player" x="16" y="64" width="16" height="8">

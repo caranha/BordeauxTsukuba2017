@@ -19,7 +19,7 @@ import java.util.Observer;
  */
 public class EntityRenderer implements Observer {
     private static String IMAGES_RES_FOLDER = "images/";
-    private static int TILE_SIZE = 8;
+    static int TILE_SIZE = 8;
     protected Texture image;
     private MessageRenderer messageRenderer;
     private Entity entity;
@@ -75,7 +75,7 @@ public class EntityRenderer implements Observer {
     }
 
     void renderMessage(Batch batch) {
-        messageRenderer.render(batch, getX(), getY());
+        messageRenderer.render(batch);
     }
 
     private BitmapFont font = new BitmapFont();

@@ -3,12 +3,18 @@ package com.tskbdx.sumimasen.scenes.inputprocessors;
 import com.badlogic.gdx.InputProcessor;
 import com.tskbdx.sumimasen.scenes.Scene;
 
+import javax.smartcardio.CommandAPDU;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Sydpy on 4/27/17.
  */
+
 public class DialogueInputProcessor implements InputProcessor {
 
     private Scene scene;
+    private Map<Integer, Runnable> commands = new HashMap<>();
 
     public DialogueInputProcessor(Scene scene) {
         this.scene = scene;
