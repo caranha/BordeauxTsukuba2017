@@ -76,10 +76,13 @@ public abstract class Entity extends Observable {
         for (Object neighbour : neighbors) {
             if (neighbour instanceof Entity) {
 
-                if (((Entity) neighbour).getInteraction() != null) {
+                Entity entity = (Entity) neighbour;
+
+                if (entity.getInteraction() != null) {
                     // change target direction to face this
-                    ((Entity) neighbour).setDirection(getOpposite(getLastDirection()));
-                    ((Entity) neighbour).getInteraction().start();
+                    entity.setDirection(getOpposite(getLastDirection()));
+                    entity.notifyObservers();
+                    entity.getInteraction().start();
                 }
 
                 return;
