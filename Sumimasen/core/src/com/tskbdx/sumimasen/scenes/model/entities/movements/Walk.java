@@ -24,6 +24,14 @@ public class Walk extends Movement {
         int speed = entity.getSpeed();
 
         if (canMove) {
+
+            /*
+             * Menage the case where the entity tried to move
+             * but hasn't succeeded
+             * In that cas, the direction has actually changed
+             */
+            entity.notifyObservers();
+
             int newX = entity.getX(), newY = entity.getY();
 
             switch (entity.getDirection()) {

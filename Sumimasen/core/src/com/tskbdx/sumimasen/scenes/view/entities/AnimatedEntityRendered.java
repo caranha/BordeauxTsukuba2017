@@ -63,7 +63,19 @@ public class AnimatedEntityRendered extends EntityRenderer {
     @Override
     public void update(Observable observable, Object o) {
         super.update(observable, o);
-        processingDirection = entity.getLastDirection();
+            /*
+             * Menage the case where the entity tried to move
+             * but hasn't succeeded
+             * In that cas, the direction has actually changed
+             */
+        updateDirection();
+    }
+
+    private void updateDirection() {
+        Direction direction = entity.getDirection();
+        if (!direction.equals(NONE)) {
+            processingDirection = direction;
+        }
     }
 
     @Override

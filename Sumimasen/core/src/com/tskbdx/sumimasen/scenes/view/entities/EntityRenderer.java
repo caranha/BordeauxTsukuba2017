@@ -47,13 +47,20 @@ public class EntityRenderer implements Observer {
      */
     @Override
     public void update(Observable observable, Object o) {
-        if (rectangle.x != entity.getX() * TILE_SIZE
-                || rectangle.y != entity.getY() * TILE_SIZE) {
+        if (entityChangedPosition()) {
             Vector2 target = new Vector2(entity.getX() * TILE_SIZE, entity.getY() * TILE_SIZE);
             int speed = entity.getSpeed();
             animation = new PositionInterpolationAnimation(rectangle, target, 1.f / speed);
             animation.start();
         }
+    }
+
+    /**
+     * @return true if this is the entity has succeeded to move
+     */
+    protected boolean entityChangedPosition() {
+        return rectangle.x != entity.getX() * TILE_SIZE
+                || rectangle.y != entity.getY() * TILE_SIZE;
     }
 
     boolean isAnimating() {

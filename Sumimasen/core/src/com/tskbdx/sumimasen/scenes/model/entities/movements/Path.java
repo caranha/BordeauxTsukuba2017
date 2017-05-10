@@ -33,6 +33,12 @@ public class Path extends Movement {
             entity.setMovement(null);
         } else if (ready) {
             ready = false;
+            /*
+             * Menage the case where the entity tried to move
+             * but hasn't succeeded
+             * In that cas, the direction has actually changed
+             */
+            entity.notifyObservers();
             process(directionQueue.poll());
         } else {
             updateClock(dt);
