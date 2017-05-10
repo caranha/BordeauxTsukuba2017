@@ -40,9 +40,12 @@ public class IntroScene implements Scene {
 
     @Override
     public void init() {
+        for(int i = 0 ; i != 20 ; ++i) {
+            System.out.println(i * 8);
+        }
 
         //Load tiled map
-        TiledMap tiledMap = new TmxMapLoader().load("maps/map.tmx");
+        TiledMap tiledMap = new TmxMapLoader().load("maps/home.tmx");
         int width = tiledMap.getProperties().get("width", Integer.class);
         int height = tiledMap.getProperties().get("height", Integer.class);
         world = new World(width, height);
@@ -64,7 +67,8 @@ public class IntroScene implements Scene {
 
     private void loadWalls(TiledMap tiledMap) {
 
-        TiledMapTileLayer collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Collision");
+        TiledMapTileLayer collisionLayer =
+                (TiledMapTileLayer) tiledMap.getLayers().get("Collidable");
 
         for(int i = 0; i < collisionLayer.getWidth(); i++) {
             for (int j = 0; j < collisionLayer.getHeight(); j++) {
@@ -73,8 +77,6 @@ public class IntroScene implements Scene {
                 }
             }
         }
-
-        tiledMap.getLayers().remove(collisionLayer);
     }
 
     private void loadEntities(TiledMap tiledMap) {
@@ -88,26 +90,23 @@ public class IntroScene implements Scene {
             int width   = (int) Math.ceil(object.getProperties().get("width" , Float.class) / 8);
             int height  = (int) Math.ceil(object.getProperties().get("height" , Float.class) / 8);
             String imagefile = object.getProperties().get("imagefile", String.class);
-
             Entity entity;
             EntityRenderer entityRenderer;
-
+            System.out.println(object.getName());
             if (object.getName().equals("player")) {
                 player.setX(x);
                 player.setY(y);
                 player.setWidth(width);
                 player.setHeight(height);
                 entity = player;
-        //        entityRenderer = new AnimatedEntityRendered(entity, imagefile, 3, 4);
+                entityRenderer = new AnimatedEntityRendered(entity, imagefile, 2, 8, 1.f / 0.25f);
             } else {
+                System.out.println(object.getName() + " " + x + " " + y + " " + width + " " + height);
                 SceneObject sceneObject = new SceneObject(x, y, width, height);
                 sceneObject.setInteraction(new Dialogue(sceneObject, player, "dialogues/test.xml"));
                 entity = sceneObject;
-         //       entityRenderer = new EntityRenderer(entity, imagefile);
+                entityRenderer = new EntityRenderer(entity, imagefile);
             }
-            /*** PLAYER CLONAGE JUSTU !!! ***/
-            entityRenderer = new AnimatedEntityRendered(entity, imagefile, 2, 8, 2 );
-
             entity.setName(object.getName());
             world.addEntity(entity);
             worldRenderer.addEntityRenderer(entityRenderer);

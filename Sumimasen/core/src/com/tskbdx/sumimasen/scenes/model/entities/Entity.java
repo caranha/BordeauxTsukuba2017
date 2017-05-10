@@ -50,8 +50,7 @@ public abstract class Entity extends Observable {
         this.height = height;
 
         this.direction = NONE;
-        this.movement = new Path(this, true, // collisions working
-                 WEST, WEST, WEST, NONE, NONE, NONE, EAST, EAST, EAST, NONE);
+        this.movement = null;
     }
 
     public void update(float dt) {

@@ -24,8 +24,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(final Sumimasen game) {
         this.game = game;
-
-
+        Gdx.gl20.glClearColor(0,0,0,1);
         currentScene.init();
     }
 
@@ -36,8 +35,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.5f,0.5f,0.5f,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         currentScene.update(delta);
 

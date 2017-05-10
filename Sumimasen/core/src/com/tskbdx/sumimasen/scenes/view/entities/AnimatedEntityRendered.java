@@ -29,13 +29,13 @@ public class AnimatedEntityRendered extends EntityRenderer {
     private Direction processingDirection; // to avoid changing duration during animation
 
     public AnimatedEntityRendered(Entity entity, String imagefile,
-                                  int cols, int rows, int fps) {
+                                  int cols, int rows, float fps) {
         super(entity, imagefile);
         initFrames(cols, rows, fps);
         processingDirection = entity.getLastDirection();
     }
 
-    private void initFrames(int cols, int rows, int fps) {
+    private void initFrames(int cols, int rows, float fps) {
         TextureRegion[][] tmp = TextureRegion.split(image,
                 image.getWidth() / cols,
                 image.getHeight() / rows);

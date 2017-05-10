@@ -42,6 +42,18 @@ public class BasicInputProcessor implements InputProcessor{
                 A, LEFT);
         associate(keyDownCommands, () -> player.tryInteract(),
                 ENTER, SPACE);
+
+        //Just for test
+        for(int i = 0; i < 10; i++) {
+            int finalI = i;
+            associate(keyDownCommands, () -> {
+                if (player.isInteracting()) {
+                    if (player.getInteractingWith().getInteraction() instanceof Dialogue) {
+                        ((Dialogue) player.getInteractingWith().getInteraction()).pickAnswer(finalI);
+                    }
+                }
+            }, i + 8);
+        }
     }
 
     private void initKeyUp() {
