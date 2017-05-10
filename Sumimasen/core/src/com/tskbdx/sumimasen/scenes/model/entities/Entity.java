@@ -209,10 +209,11 @@ public abstract class Entity extends Observable {
         return message;
     }
 
-    public void setMessage(String content, float duration, float delay, Entity receiver) {
+    public void setMessage(String content, float timeToUnderstand,
+                           float timeToAnswer, Entity receiver) {
         message.setContent(content);
-        message.setDuration(duration);
-        message.setDelay(delay);
+        message.setTimeToAnswer(timeToAnswer);
+        message.setTimeToUnderstand(timeToUnderstand);
         message.setReceiver(receiver);
         setChanged();
     }

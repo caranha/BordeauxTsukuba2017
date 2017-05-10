@@ -1,6 +1,8 @@
 package com.tskbdx.sumimasen.scenes.inputprocessors;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -25,7 +27,7 @@ public class DialogueInputProcessor extends Stage {
     private List<TextButton> buttons = new ArrayList<>();
     private TextButtonStyle style = new TextButtonStyle();
     private final Dialogue dialogue;
-    private boolean stopped = false;
+    private boolean stopped = true;
 
     public DialogueInputProcessor(Dialogue dialogue) {
         this.dialogue = dialogue;
@@ -45,7 +47,6 @@ public class DialogueInputProcessor extends Stage {
 
             button.setSize(Gdx.graphics.getWidth() / answers.size(), Gdx.graphics.getHeight() * 0.3f);
             button.setPosition(i * button.getWidth(),0);
-
             buttons.add(button);
             addActor(button);
         }
@@ -56,7 +57,7 @@ public class DialogueInputProcessor extends Stage {
 
     private void configureStyle() {
         style.fontColor = BLACK;
-        style.font = getFont(30, "OpenSans");
+        style.font = getFont(20, "OpenSans");
     }
 
     @Override

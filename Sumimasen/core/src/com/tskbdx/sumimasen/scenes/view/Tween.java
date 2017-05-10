@@ -30,6 +30,8 @@ public class Tween {
     private boolean playing = false;
     private float start, end, duration;
     private Runnable onFinished;
+    private float delay = 0.f;
+    private float delayTimer = 0.f;
 
     public Tween(Interpolation interpolation) {
         Tween.tweens.add(this);
@@ -52,7 +54,13 @@ public class Tween {
         duration = durationInSec;
         this.start = start;
         this.end = end;
+        delayTimer = 0.f;
         play();
+    }
+
+    public void playWith(float start, float end, float durationInSec, float delay) {
+        playWith(start, end, durationInSec);
+        this.delay = delay;
     }
 
     /**
@@ -103,13 +111,17 @@ public class Tween {
      */
     private void update(float dt) {
         if (playing) {
-            currentPosition += dt;
-            if (currentPosition > duration) {
-                currentPosition = duration;
-                playing = false;
-                if (onFinished != null) {
-                    onFinished.run();
+            if (delayTimer <= delay) {
+                currentPosition += dt;
+                if (currentPosition > duration) {
+                    currentPosition = duration;
+                    playing = false;
+                    if (onFinished != null) {
+                        onFinished.run();
+                    }
                 }
+            } else {
+                delayTimer += dt;
             }
         }
     }
