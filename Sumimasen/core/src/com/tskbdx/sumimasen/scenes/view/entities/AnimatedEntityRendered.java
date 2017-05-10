@@ -9,6 +9,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
 
 import static com.tskbdx.sumimasen.scenes.model.entities.Direction.*;
 
@@ -25,11 +26,13 @@ public class AnimatedEntityRendered extends EntityRenderer {
 
     private Map<Direction, TextureRegion> defaultTextures = new HashMap<>();
     private Map<Direction, Animation<TextureRegion>> animations = new HashMap<>();
+    private Direction processingDirection; // to avoid changing duration during animation
 
     public AnimatedEntityRendered(Entity entity, String imagefile,
                                   int cols, int rows, int fps) {
         super(entity, imagefile);
         initFrames(cols, rows, fps);
+        processingDirection = entity.getLastDirection();
     }
 
     private void initFrames(int cols, int rows, int fps) {
@@ -58,15 +61,21 @@ public class AnimatedEntityRendered extends EntityRenderer {
     }
 
     @Override
+    public void update(Observable observable, Object o) {
+        super.update(observable, o);
+        processingDirection = entity.getLastDirection();
+    }
+
+    @Override
     public void render(Batch batch) {
 
         if (isAnimating()) {
             stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
             updateAnimation();
-            batch.draw(animations.get(entity.getLastDirection()).
+            batch.draw(animations.get(processingDirection).
                     getKeyFrame(stateTime, true), getX() + 2, getY());
         } else {
-            batch.draw(defaultTextures.get(entity.getLastDirection()), getX() + 2, getY());
+            batch.draw(defaultTextures.get(processingDirection), getX() + 2, getY());
         }
 
         renderMessage(batch);

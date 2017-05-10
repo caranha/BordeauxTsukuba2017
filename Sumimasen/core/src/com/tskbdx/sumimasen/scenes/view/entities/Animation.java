@@ -12,4 +12,6 @@ interface Animation {
     void update();
 
     boolean isFinished();
+
+    void setOnFinished(Runnable runnable);
 }

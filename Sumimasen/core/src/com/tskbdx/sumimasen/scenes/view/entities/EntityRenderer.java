@@ -23,7 +23,7 @@ public class EntityRenderer implements Observer {
     protected Texture image;
     private MessageRenderer messageRenderer;
     Entity entity;
-    private Animation animation;
+    protected Animation animation;
 
     private Rectangle rectangle = new Rectangle();
 
