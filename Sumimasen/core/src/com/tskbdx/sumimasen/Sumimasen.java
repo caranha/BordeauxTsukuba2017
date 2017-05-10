@@ -6,13 +6,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.tskbdx.sumimasen.scenes.inputprocessors.DialogueInputProcessor;
 
 import java.util.HashSet;
 import java.util.Map;
 
 public class Sumimasen extends Game {
 
-	private SpriteBatch batch;
+    private SpriteBatch batch;
 	private BitmapFont font;
 	
 	@Override
@@ -37,5 +39,20 @@ public class Sumimasen extends Game {
 
 	public SpriteBatch getBatch() {
 		return batch;
+	}
+
+
+	/**
+	 * @param size
+	 * @param name
+	 * @return a generated quality font at a certain size (no scaling)
+	 */
+	public static BitmapFont getFont(int size, String name) {
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/" + name + ".ttf"));
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.size = size;
+		BitmapFont font = generator.generateFont(parameter);
+		generator.dispose();
+		return font;
 	}
 }

@@ -3,8 +3,10 @@ package com.tskbdx.sumimasen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.tskbdx.sumimasen.scenes.IntroScene;
 import com.tskbdx.sumimasen.scenes.Scene;
+import com.tskbdx.sumimasen.scenes.inputprocessors.DialogueInputProcessor;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
 
 /**
@@ -12,15 +14,15 @@ import com.tskbdx.sumimasen.scenes.model.entities.Player;
  */
 public class GameScreen implements Screen {
 
+    public static Stage gui;
     private final Sumimasen game;
 
     public static Player player = new Player(0, 0 ,0, 0);
 
 
-    public static Scene currentScene = new IntroScene(player);
+    private Scene currentScene = new IntroScene(player);
 
     public GameScreen(final Sumimasen game) {
-
         this.game = game;
 
 
@@ -42,6 +44,11 @@ public class GameScreen implements Screen {
         game.getBatch().begin();
         currentScene.render(game.getBatch());
         game.getBatch().end();
+
+        if (gui != null) {
+            gui.act(delta);
+            gui.draw();
+        }
 
         if (currentScene.isFinished()) {
             Scene nextScene = currentScene.getNextScene();
@@ -76,6 +83,7 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         currentScene.dispose();
+        gui.dispose();
     }
 
 

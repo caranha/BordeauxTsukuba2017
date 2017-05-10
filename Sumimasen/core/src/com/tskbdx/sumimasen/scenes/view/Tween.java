@@ -17,9 +17,34 @@ import java.util.List;
  * You'd want to call updateAll in main loop to update all tweens.
  */
 public class Tween {
+    /**
+     * All the tweens gathered in the class.
+     */
+    private static List<Tween> tweens = new ArrayList<>();
+
+    /**
+     * Properties
+     */
+    private final Interpolation interpolation;
+    private float currentPosition = 0;
+    private boolean playing = false;
+    private float start, end, duration;
+    private Runnable onFinished;
+
     public Tween(Interpolation interpolation) {
         Tween.tweens.add(this);
         this.interpolation = interpolation;
+    }
+
+    /**
+     * Update all tweens
+     *
+     * @param dt delta time from GDX loop
+     */
+    public static void updateAll(float dt) {
+        for (Tween tween : tweens) {
+            tween.update(dt);
+        }
     }
 
     public void playWith(float start, float end, float durationInSec) {
@@ -72,30 +97,8 @@ public class Tween {
     }
 
     /**
-     * Update all tweens
-     * @param dt delta time from GDX loop
-     */
-    public static void updateAll(float dt) {
-        for (Tween tween : tweens) {
-            tween.update(dt);
-        }
-    }
-
-    /**
-     * Properties
-     */
-    private float currentPosition = 0;
-    private boolean playing = false;
-    private final Interpolation interpolation;
-    private float start, end, duration;
-
-    /**
-     * All the tweens gathered in the class.
-     */
-    private static List<Tween> tweens = new ArrayList<>();
-
-    /**
      * Update the tween according to elapsed time.
+     *
      * @param dt
      */
     private void update(float dt) {
@@ -104,7 +107,14 @@ public class Tween {
             if (currentPosition > duration) {
                 currentPosition = duration;
                 playing = false;
+                if (onFinished != null) {
+                    onFinished.run();
+                }
             }
         }
+    }
+
+    public void setOnFinished(Runnable onFinished) {
+        this.onFinished = onFinished;
     }
 }

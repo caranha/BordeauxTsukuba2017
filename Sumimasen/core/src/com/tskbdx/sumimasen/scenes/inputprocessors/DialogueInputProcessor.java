@@ -1,62 +1,83 @@
 package com.tskbdx.sumimasen.scenes.inputprocessors;
 
-import com.badlogic.gdx.InputProcessor;
-import com.tskbdx.sumimasen.scenes.Scene;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.tskbdx.sumimasen.GameScreen;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.DialogueAnswer;
 
-import javax.smartcardio.CommandAPDU;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
+
+import static com.badlogic.gdx.graphics.Color.BLACK;
+import static com.tskbdx.sumimasen.Sumimasen.getFont;
 
 /**
  * Created by Sydpy on 4/27/17.
  */
 
-public class DialogueInputProcessor implements InputProcessor {
+public class DialogueInputProcessor extends Stage {
 
-    private Scene scene;
-    private Map<Integer, Runnable> commands = new HashMap<>();
+    private List<TextButton> buttons = new ArrayList<>();
+    private TextButtonStyle style = new TextButtonStyle();
+    private final Dialogue dialogue;
+    private boolean stopped = false;
 
-    public DialogueInputProcessor(Scene scene) {
-        this.scene = scene;
+    public DialogueInputProcessor(Dialogue dialogue) {
+        this.dialogue = dialogue;
+        configureStyle();
+
+        // Create buttons
+        List<DialogueAnswer> answers = dialogue.getCurrentExchange().getAnswers();
+        for (int i = 0 ; i != answers.size() ; ++i) {
+            TextButton button = new TextButton(answers.get(i).getText(), style);
+            // Add a listener to the button.
+            int finalI = i;
+            button.addListener(new ChangeListener() {
+                public void changed (ChangeEvent event, Actor actor) {
+                    dialogue.pickAnswer(finalI);
+                }
+            });
+
+            button.setSize(Gdx.graphics.getWidth() / answers.size(), Gdx.graphics.getHeight() * 0.3f);
+            button.setPosition(i * button.getWidth(),0);
+
+            buttons.add(button);
+            addActor(button);
+        }
+
+        // Specify that the current gui is this to get drawn
+        GameScreen.gui = this;
+    }
+
+    private void configureStyle() {
+        style.fontColor = BLACK;
+        style.font = getFont(30, "OpenSans");
     }
 
     @Override
-    public boolean keyDown(int keycode) {
-        return false;
+    public void draw() {
+        if (!stopped) {
+            super.draw();
+        }
     }
 
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
+    public void update() {
+        List<DialogueAnswer> answers = dialogue.getCurrentExchange().getAnswers();
+        for (int i = 0 ; i != answers.size() ; ++i) {
+            buttons.get(i).setText(answers.get(i).getText());
+        }
     }
 
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
+    public void stop() {
+        stopped = true;
     }
 
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
+    public void start() {
+        stopped = false;
     }
 }

@@ -2,6 +2,7 @@ package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 /**
  * Created by Sydpy on 5/9/17.

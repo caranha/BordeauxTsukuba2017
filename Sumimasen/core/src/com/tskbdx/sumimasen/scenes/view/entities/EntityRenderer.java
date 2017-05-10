@@ -35,7 +35,7 @@ public class EntityRenderer implements Observer {
         rectangle.width = entity.getWidth() * TILE_SIZE;
         rectangle.height = image.getHeight() * (rectangle.width / image.getWidth());
         entity.addObserver(this);
-        messageRenderer = new MessageRenderer(entity);
+        messageRenderer = new MessageRenderer(entity.getMessage());
     }
 
     /**

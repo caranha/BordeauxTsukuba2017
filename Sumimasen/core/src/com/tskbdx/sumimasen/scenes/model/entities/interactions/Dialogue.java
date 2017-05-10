@@ -1,7 +1,6 @@
 package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
 import com.badlogic.gdx.Gdx;
-import com.tskbdx.sumimasen.scenes.inputprocessors.BasicInputProcessor;
 import com.tskbdx.sumimasen.scenes.inputprocessors.DialogueInputProcessor;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import org.w3c.dom.Document;
@@ -16,8 +15,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.tskbdx.sumimasen.GameScreen.currentScene;
 
 /**
  * Created by viet khang on 08/05/2017.
@@ -37,14 +34,11 @@ public class Dialogue extends Interaction {
     @Override
     public void start() {
         super.start();
-      //  Gdx.input.setInputProcessor(new DialogueInputProcessor(currentScene));
-        System.out.println("to do here imho");
-      //  active.setMovement(null);
-      //  passive.setMovement(null);
+        active.setMovement(null);
+        passive.setMovement(null);
 
+        Gdx.input.setInputProcessor(new DialogueInputProcessor(this));
         printCurrentState();
-        active.setMessage(currentExchange.getText(), 5.f, passive);
-        active.notifyObservers();
     }
 
     @Override
@@ -58,24 +52,31 @@ public class Dialogue extends Interaction {
 
         try {
             DialogueAnswer dialogueAnswer = currentExchange.getAnswers().get(index);
+            passive.setMessage(dialogueAnswer.getText(), 5.f, 2.f, active);
+            passive.getMessage().notifyObservers();
+            ((DialogueInputProcessor) Gdx.input.getInputProcessor()).update();
             if (dialogueAnswer.getNextExchange() != null) {
                 currentExchange = exchanges.get(dialogueAnswer.getNextExchange());
             }
             printCurrentState();
-        } catch(IndexOutOfBoundsException ignored) {
+        } catch (IndexOutOfBoundsException ignored) {
+            System.out.println("ignored : " + ignored.getMessage());
         }
 
     }
 
     private void printCurrentState() {
-        System.out.println(currentExchange.getText());
+        active.setMessage(currentExchange.getText(), 5.f, 2.f, passive);
+        active.getMessage().notifyObservers();
 
         List<DialogueAnswer> answers = currentExchange.getAnswers();
-        for (int i = 0; i < answers.size(); i++) {
-            System.out.println( (i + 1 ) + "\t" + answers.get(i).getText() );
-        }
 
+        System.out.println(currentExchange.getText());
+        for (int i = 0; i < answers.size(); i++) {
+            System.out.println((i + 1) + "\t" + answers.get(i).getText());
+        }
     }
+
 
     private void buildDialogue(String xmlFile) {
 
@@ -87,7 +88,7 @@ public class Dialogue extends Interaction {
             Element docEle = dom.getDocumentElement();
             buildExchanges(docEle);
 
-        }catch(ParserConfigurationException | SAXException | IOException e) {
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
 
@@ -96,10 +97,10 @@ public class Dialogue extends Interaction {
 
     private void buildExchanges(Element docEle) {
         NodeList exchangesNodes = docEle.getElementsByTagName("exchange");
-        if(exchangesNodes != null && exchangesNodes.getLength() > 0) {
-            for(int i = 0 ; i < exchangesNodes.getLength();i++) {
+        if (exchangesNodes != null && exchangesNodes.getLength() > 0) {
+            for (int i = 0; i < exchangesNodes.getLength(); i++) {
 
-                Element exchangeNode = (Element)exchangesNodes.item(i);
+                Element exchangeNode = (Element) exchangesNodes.item(i);
 
                 Integer id = Integer.valueOf(exchangeNode.getAttribute("id"));
                 String text = exchangeNode.getAttribute("text");
@@ -135,5 +136,13 @@ public class Dialogue extends Interaction {
                 }
             }
         }
+    }
+
+    public final Map<Integer, DialogueExchange> getExchanges() {
+        return exchanges;
+    }
+
+    public final DialogueExchange getCurrentExchange() {
+        return currentExchange;
     }
 }
