@@ -101,10 +101,20 @@ public class World {
         }
     }
 
-    public boolean isCollisionOnBox(int x, int y, int width, int height) {
+    /**
+     * Since we want to move an entity in the world,
+     * we are facing a problem :
+     * if an 2x1 entity go left (or right), he won't be able
+     * because his left location will be free, certainly,
+     * but not for its right part.
+     * So we'll ignore if the entity is colling with itself.
+     */
+
+    public boolean isCollisionOnBox(Entity entity, int x, int y, int width, int height) {
         for(int i = x; i < x + width; i++) {
             for(int j = y; j < y + height; j++) {
-                if (isWall(i, j) || isEntity(i, j))
+                if (isWall(i, j) ||
+                        (isEntity(i, j) && ! entity.equals(objects[i][j])))
                     return true;
             }
         }

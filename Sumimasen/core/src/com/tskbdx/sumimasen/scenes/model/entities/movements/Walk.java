@@ -1,11 +1,6 @@
 package com.tskbdx.sumimasen.scenes.model.entities.movements;
 
-import com.badlogic.gdx.Gdx;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Sydpy on 5/2/17.
@@ -38,7 +33,7 @@ public class Walk extends Movement {
                 case WEST:
                     --newX;
                     break;
-                case NORTH: /// Gdx landmark seems to be from bottom to top
+                case NORTH:
                     ++newY; //--newY;
                     break;
                 case SOUTH:
@@ -50,9 +45,9 @@ public class Walk extends Movement {
 
             canMove = false;
 
-            if (!entity.getWorld().isCollisionOnBox(newX, newY, entity.getWidth(),
+            if (!entity.getWorld().isCollisionOnBox(entity, newX, newY, entity.getWidth(),
                     entity.getHeight())) {
-                entity.setXY(newX, newY);
+                entity.moveTo(newX, newY);
                 entity.notifyObservers();
             }
         } else {

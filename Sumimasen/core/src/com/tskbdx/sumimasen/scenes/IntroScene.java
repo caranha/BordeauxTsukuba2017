@@ -53,7 +53,7 @@ public class IntroScene implements Scene {
         Gdx.input.setInputProcessor(new BasicInputProcessor());
         camera = new SmoothCamera(1.f);
         camera.setToOrtho(false, 800, 480);
-        camera.zoom = 1.f/SCALE_FACTOR;
+        camera.zoom = 1.f / SCALE_FACTOR;
         camera.position.x -= 400;
         camera.position.y -= 240;
         camera.update();
@@ -95,13 +95,16 @@ public class IntroScene implements Scene {
                 player.setWidth(width);
                 player.setHeight(height);
                 entity = player;
-                entityRenderer = new AnimatedEntityRendered(entity, imagefile, 3, 4);
+        //        entityRenderer = new AnimatedEntityRendered(entity, imagefile, 3, 4);
             } else {
                 SceneObject sceneObject = new SceneObject(x, y, width, height);
                 sceneObject.setInteraction(new Dialogue(sceneObject, player, "dialogues/test.xml"));
                 entity = sceneObject;
-                entityRenderer = new EntityRenderer(entity, imagefile);
+         //       entityRenderer = new EntityRenderer(entity, imagefile);
             }
+            /*** PLAYER CLONAGE JUSTU !!! ***/
+            entityRenderer = new AnimatedEntityRendered(entity, imagefile, 3, 4);
+
             entity.setName(object.getName());
             world.addEntity(entity);
             worldRenderer.addEntityRenderer(entityRenderer);

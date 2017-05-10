@@ -1,5 +1,8 @@
 package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
+import com.badlogic.gdx.Gdx;
+import com.tskbdx.sumimasen.scenes.inputprocessors.BasicInputProcessor;
+import com.tskbdx.sumimasen.scenes.inputprocessors.DialogueInputProcessor;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -13,6 +16,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.tskbdx.sumimasen.GameScreen.currentScene;
 
 /**
  * Created by viet khang on 08/05/2017.
@@ -32,6 +37,11 @@ public class Dialogue extends Interaction {
     @Override
     public void start() {
         super.start();
+      //  Gdx.input.setInputProcessor(new DialogueInputProcessor(currentScene));
+        System.out.println("to do here imho");
+      //  active.setMovement(null);
+      //  passive.setMovement(null);
+
         printCurrentState();
         active.setMessage(currentExchange.getText(), 5.f, passive);
         active.notifyObservers();

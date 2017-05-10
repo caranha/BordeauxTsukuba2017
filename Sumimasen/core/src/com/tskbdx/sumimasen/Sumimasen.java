@@ -1,8 +1,14 @@
 package com.tskbdx.sumimasen;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+
+import java.util.HashSet;
+import java.util.Map;
 
 public class Sumimasen extends Game {
 
@@ -31,9 +37,5 @@ public class Sumimasen extends Game {
 
 	public SpriteBatch getBatch() {
 		return batch;
-	}
-
-	public BitmapFont getFont() {
-		return font;
 	}
 }

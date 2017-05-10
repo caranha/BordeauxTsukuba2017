@@ -17,7 +17,7 @@ public class GameScreen implements Screen {
     public static Player player = new Player(0, 0 ,0, 0);
 
 
-    private Scene currentScene = new IntroScene(player);
+    public static Scene currentScene = new IntroScene(player);
 
     public GameScreen(final Sumimasen game) {
 

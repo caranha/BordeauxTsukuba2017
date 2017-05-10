@@ -7,6 +7,7 @@ import com.tskbdx.sumimasen.Sumimasen;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.title = "Sumimimasen";
 		new LwjglApplication(new Sumimasen(), config);
 	}
 }
