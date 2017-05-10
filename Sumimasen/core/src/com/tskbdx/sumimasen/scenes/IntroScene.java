@@ -19,6 +19,8 @@ import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.AnimatedEntityRendered;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 
+import static com.tskbdx.sumimasen.GameScreen.gui;
+
 /**
  * Created by Sydpy on 4/27/17.
  */
@@ -51,11 +53,12 @@ public class IntroScene implements Scene {
         loadWalls(tiledMap);
 
         Gdx.input.setInputProcessor(new BasicInputProcessor());
+
         camera = new SmoothCamera(1.f);
         camera.setToOrtho(false, 800, 480);
         camera.zoom = 1.f / SCALE_FACTOR;
         camera.position.x -= 400;
-        camera.position.y -= 240;
+          camera.position.y -= 240;
         camera.update();
     }
 

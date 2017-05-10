@@ -32,9 +32,7 @@ public abstract class Entity extends Observable {
     /**
      * Message
      */
-    private String message;
-    private float messageDuration = 0.f;
-    private Entity messageReceiver; // if == null then is talking alone
+    private Message message = new Message(this);
     /**
      * direction is the current direction movement state
      * lastDirection is like the static direction state
@@ -79,7 +77,8 @@ public abstract class Entity extends Observable {
             if (neighbour instanceof Entity) {
 
                 if (((Entity) neighbour).getInteraction() != null) {
-                    // to do but not vital now : change target direction to face this
+                    // change target direction to face this
+                    ((Entity) neighbour).setDirection(getOpposite(getLastDirection()));
                     ((Entity) neighbour).getInteraction().start();
                 }
 
@@ -206,22 +205,15 @@ public abstract class Entity extends Observable {
         return name;
     }
 
-    public String getMessage() {
+    public Message getMessage() {
         return message;
     }
 
-    public float getMessageDuration() {
-        return messageDuration;
-    }
-
-    public Entity getMessageReceiver() {
-        return messageReceiver;
-    }
-
-    public void setMessage(String content, float duration, Entity receiver) {
-        message = content;
-        messageDuration = duration;
-        messageReceiver = receiver;
+    public void setMessage(String content, float duration, float delay, Entity receiver) {
+        message.setContent(content);
+        message.setDuration(duration);
+        message.setDelay(delay);
+        message.setReceiver(receiver);
         setChanged();
     }
 
@@ -251,5 +243,9 @@ public abstract class Entity extends Observable {
 
     public void setInteractingWith(Entity interactingWith) {
         this.interactingWith = interactingWith;
+    }
+
+    public void nextInteraction() {
+        interaction = null; // for the moment
     }
 }

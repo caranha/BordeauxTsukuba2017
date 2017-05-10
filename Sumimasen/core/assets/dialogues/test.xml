@@ -1,10 +1,16 @@
 <dialogue>
-    <exchange id="1" text="Du bist ein couscous">
+    <exchange id="1" text="Hello">
         <answers>
-            <answer nextExchange="2" text="Yes !"/>
-            <answer nextExchange="3" text="No !"/>
+            <answer nextExchange="2" text="Let's talk"/>
+            <answer nextExchange="3" text="You're ugly I'll leave"/>
         </answers>
     </exchange>
-    <exchange id="2" text="Ok" />
-    <exchange id="3" text="Maybe not" />
+    <exchange id="2" text="What is it that you want ?">
+        <answers>
+            <answer nextExchange="1" text="Loop !"/>
+            <answer nextExchange="3" text="Exit"/>
+        </answers>
+    </exchange>
+    <exchange id="3" text="Bye">
+    </exchange>
 </dialogue>
