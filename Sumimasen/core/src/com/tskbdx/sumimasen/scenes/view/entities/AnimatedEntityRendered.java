@@ -4,7 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.tskbdx.sumimasen.scenes.model.entities.Direction.*;
 
 /**
  * Created by viet khang on 09/05/2017.
@@ -16,36 +22,51 @@ import com.tskbdx.sumimasen.scenes.model.entities.Entity;
  */
 public class AnimatedEntityRendered extends EntityRenderer {
     private float stateTime;
-    private TextureRegion defaultTexture;
-    private com.badlogic.gdx.graphics.g2d.Animation<TextureRegion> animation;
 
-    public AnimatedEntityRendered(Entity entity, String imagefile, int frameCount, int fps) {
+    private Map<Direction, TextureRegion> defaultTextures = new HashMap<>();
+    private Map<Direction, Animation<TextureRegion>> animations = new HashMap<>();
+
+    public AnimatedEntityRendered(Entity entity, String imagefile,
+                                  int cols, int rows, int fps) {
         super(entity, imagefile);
-        TextureRegion[] frames = initFrames(frameCount);
-        animation = new Animation<>(1.f / fps, frames);
+        initFrames(cols, rows, fps);
     }
 
-    private TextureRegion[] initFrames(int frameCount) {
+    private void initFrames(int cols, int rows, int fps) {
         TextureRegion[][] tmp = TextureRegion.split(image,
-                image.getWidth(),
-                image.getHeight() / frameCount);
-        TextureRegion[] frames = new TextureRegion[frameCount - 1];
-        for (int i = 0 ; i < frameCount - 1; i++) {
-            frames[i] = tmp[i][0];
+                image.getWidth() / cols,
+                image.getHeight() / rows);
+
+        // Set default textures
+        defaultTextures.put(NORTH, tmp[0][0]);
+        defaultTextures.put(SOUTH, tmp[1][0]);
+        defaultTextures.put(WEST, tmp[2][0]);
+        defaultTextures.put(EAST, tmp[3][0]);
+
+        // Set animation textures for each direction
+        int index = 4; // offset in the sprite sheet
+        for (Direction direction : Direction.values()) {
+            if (!direction.equals(NONE)) {
+                TextureRegion[] frames = new TextureRegion[cols];
+                for (int i = 0; i != cols; ++i) {
+                    frames[i] = tmp[index][i];
+                }
+                animations.put(direction, new Animation<>(1.f / fps, frames));
+                ++index;
+            }
         }
-        defaultTexture = tmp[frameCount - 1][0];
-        return frames;
     }
 
     @Override
     public void render(Batch batch) {
-        stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
 
         if (isAnimating()) {
+            stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
             updateAnimation();
-            batch.draw(animation.getKeyFrame(stateTime, true), getX(), getY());
+            batch.draw(animations.get(entity.getLastDirection()).
+                    getKeyFrame(stateTime, true), getX() + 2, getY());
         } else {
-            batch.draw(defaultTexture, getX(), getY());
+            batch.draw(defaultTextures.get(entity.getLastDirection()), getX() + 2, getY());
         }
 
         renderMessage(batch);

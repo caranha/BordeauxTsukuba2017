@@ -106,7 +106,7 @@ public class IntroScene implements Scene {
          //       entityRenderer = new EntityRenderer(entity, imagefile);
             }
             /*** PLAYER CLONAGE JUSTU !!! ***/
-            entityRenderer = new AnimatedEntityRendered(entity, imagefile, 3, 4);
+            entityRenderer = new AnimatedEntityRendered(entity, imagefile, 2, 8, 2 );
 
             entity.setName(object.getName());
             world.addEntity(entity);

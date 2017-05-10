@@ -11,10 +11,10 @@ import java.util.Map;
  * Changed to S W N E (because of collisions with keyboard keys)
  */
 public enum Direction {
-    WEST,
-    EAST,
     NORTH,
     SOUTH,
+    WEST,
+    EAST,
     NONE;
 
     private static Map<Direction, Direction> opposites = new HashMap<>();

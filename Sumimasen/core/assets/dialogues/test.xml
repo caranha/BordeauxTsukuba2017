@@ -29,6 +29,9 @@
             <answer text="Which one there are too many machines in here." nextExchange="6"></answer>
         </answers>
     </exchange>
-    <exchange id="6" text="The one with the buttons and which makes *bip* every 2 seconds"></exchange>
+    <exchange id="6" text="The one with the buttons and which makes *bip* every 2 seconds">
+        <answers>
+        </answers>
+    </exchange>
     <exchange id="7" text="Thanks"></exchange>
 </dialogue>
