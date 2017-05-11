@@ -25,7 +25,7 @@ public class GameScreen implements Screen {
     public GameScreen(final Sumimasen game) {
         this.game = game;
         Gdx.gl20.glClearColor(0,0,0,1);
-        currentScene.init();
+        currentScene.init(game.getAssetManager());
     }
 
     @Override
@@ -53,7 +53,7 @@ public class GameScreen implements Screen {
 
             if (nextScene != null) {
                 currentScene = nextScene;
-                currentScene.init();
+                currentScene.init(game.getAssetManager());
             }
         }
     }

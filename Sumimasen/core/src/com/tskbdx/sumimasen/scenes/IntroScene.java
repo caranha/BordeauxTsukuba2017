@@ -1,6 +1,7 @@
 package com.tskbdx.sumimasen.scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
@@ -39,11 +40,7 @@ public class IntroScene implements Scene {
     }
 
     @Override
-    public void init() {
-        for(int i = 0 ; i != 20 ; ++i) {
-            System.out.println(i * 8);
-        }
-
+    public void init(AssetManager assetManager) {
         //Load tiled map
         TiledMap tiledMap = new TmxMapLoader().load("maps/home.tmx");
         int width = tiledMap.getProperties().get("width", Integer.class);
@@ -51,7 +48,7 @@ public class IntroScene implements Scene {
         world = new World(width, height);
         worldRenderer = new WorldRenderer(tiledMap);
 
-        loadEntities(tiledMap);
+        loadEntities(tiledMap, assetManager);
 
         loadWalls(tiledMap);
 
@@ -79,7 +76,7 @@ public class IntroScene implements Scene {
         }
     }
 
-    private void loadEntities(TiledMap tiledMap) {
+    private void loadEntities(TiledMap tiledMap, AssetManager assetManager) {
 
         MapObjects objects = tiledMap.getLayers().get("Entities").getObjects();
 
@@ -92,20 +89,19 @@ public class IntroScene implements Scene {
             String imagefile = object.getProperties().get("imagefile", String.class);
             Entity entity;
             EntityRenderer entityRenderer;
-            System.out.println(object.getName());
+
             if (object.getName().equals("player")) {
                 player.setX(x);
                 player.setY(y);
                 player.setWidth(width);
                 player.setHeight(height);
                 entity = player;
-                entityRenderer = new AnimatedEntityRendered(entity, imagefile, 2, 8, 1.f / 0.25f);
+                entityRenderer = new AnimatedEntityRendered(entity, imagefile, 2, 8, 1.f / 0.25f, assetManager);
             } else {
-                System.out.println(object.getName() + " " + x + " " + y + " " + width + " " + height);
                 SceneObject sceneObject = new SceneObject(x, y, width, height);
                 sceneObject.setInteraction(new Dialogue(sceneObject, player, "dialogues/test.xml"));
                 entity = sceneObject;
-                entityRenderer = new EntityRenderer(entity, imagefile);
+                entityRenderer = new EntityRenderer(entity, imagefile, assetManager);
             }
             entity.setName(object.getName());
             world.addEntity(entity);

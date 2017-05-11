@@ -1,6 +1,7 @@
 package com.tskbdx.sumimasen.scenes.view.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,8 +19,6 @@ import static com.tskbdx.sumimasen.scenes.model.entities.Direction.*;
  */
 
 /**
- * Convention : sprite sheet taken are 1 col and many rows
- * Last frame is default (when not animating)
  */
 public class AnimatedEntityRendered extends EntityRenderer {
     private float stateTime;
@@ -29,8 +28,8 @@ public class AnimatedEntityRendered extends EntityRenderer {
     private Direction processingDirection; // to avoid changing duration during animation
 
     public AnimatedEntityRendered(Entity entity, String imagefile,
-                                  int cols, int rows, float fps) {
-        super(entity, imagefile);
+                                  int cols, int rows, float fps, AssetManager assetManager) {
+        super(entity, imagefile, assetManager);
         initFrames(cols, rows, fps);
         processingDirection = entity.getLastDirection();
     }

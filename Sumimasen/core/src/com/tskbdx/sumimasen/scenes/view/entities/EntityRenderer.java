@@ -1,5 +1,7 @@
 package com.tskbdx.sumimasen.scenes.view.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -27,9 +29,9 @@ public class EntityRenderer implements Observer {
 
     private Rectangle rectangle = new Rectangle();
 
-    public EntityRenderer(Entity entity, String imagefile) {
+    public EntityRenderer(Entity entity, String imagefile, AssetManager assetManager) {
         this.entity = entity;
-        this.image = new Texture(IMAGES_RES_FOLDER + imagefile);
+        this.image = assetManager.get(IMAGES_RES_FOLDER + imagefile, Texture.class);
         rectangle.x = entity.getX() * TILE_SIZE;
         rectangle.y = entity.getY() * TILE_SIZE;
         rectangle.width = entity.getWidth() * TILE_SIZE;
