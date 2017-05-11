@@ -35,26 +35,19 @@ public class WorldRenderer extends OrthogonalTiledMapRenderer {
 
         beginRender();
 
-        TiledMapTileLayer toRenderAfter = null;
-
         for (MapLayer layer : map.getLayers()) {
 
             if (layer.isVisible()) {
                 if (layer instanceof TiledMapTileLayer) {
-                    if (layer.getName().equals("RenderAfter"))  {
-                        toRenderAfter = (TiledMapTileLayer) layer;
-                    } else {
-                        renderTileLayer((TiledMapTileLayer) layer);
+                    renderTileLayer((TiledMapTileLayer) layer);
+                } else if (layer.getName().equals("Entities")) {
+                    for (EntityRenderer entityRenderer: entityRenderers) {
+                        entityRenderer.render( getBatch() );
                     }
                 }
             }
         }
 
-        for (EntityRenderer entityRenderer: entityRenderers) {
-            entityRenderer.render( getBatch() );
-        }
-
-        renderTileLayer(toRenderAfter);
         endRender();
     }
 }
