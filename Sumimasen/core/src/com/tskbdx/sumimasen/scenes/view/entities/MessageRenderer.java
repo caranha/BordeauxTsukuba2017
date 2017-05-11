@@ -55,8 +55,7 @@ class MessageRenderer implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("update");
-        alphaTween.playWith(1, 0, message.getDuration());
+        alphaTween.playWith(1, 0, message.getTimeToAnswer(), message.getTimeToUnderstand());
         receiverDirection = message.getReceiver().getLastDirection();
 
         // Init position of the bubble

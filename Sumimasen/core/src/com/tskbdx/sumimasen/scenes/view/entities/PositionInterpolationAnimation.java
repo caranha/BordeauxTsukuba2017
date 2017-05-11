@@ -17,6 +17,7 @@ public class PositionInterpolationAnimation implements Animation {
 
     private boolean started = false;
     private boolean running = false;
+    private Runnable onFinished;
 
     private float clock = 0.f;
 
@@ -26,6 +27,10 @@ public class PositionInterpolationAnimation implements Animation {
         this.duration   = duration;
 
         this.rectangle = rectangle;
+    }
+
+    public void setOnFinished(Runnable onFinished) {
+        this.onFinished = onFinished;
     }
 
     @Override
@@ -45,6 +50,9 @@ public class PositionInterpolationAnimation implements Animation {
             rectangle.y = Interpolation.linear.apply(start.y, target.y, progress);
             if (progress == 1.f) {
                 running = false;
+                if (onFinished != null) {
+                    onFinished.run();
+                }
             }
         }
     }

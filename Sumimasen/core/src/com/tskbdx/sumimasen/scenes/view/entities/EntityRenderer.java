@@ -1,5 +1,7 @@
 package com.tskbdx.sumimasen.scenes.view.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -22,14 +24,14 @@ public class EntityRenderer implements Observer {
     static int TILE_SIZE = 8;
     protected Texture image;
     private MessageRenderer messageRenderer;
-    private Entity entity;
-    private Animation animation;
+    Entity entity;
+    protected Animation animation;
 
     private Rectangle rectangle = new Rectangle();
 
-    public EntityRenderer(Entity entity, String imagefile) {
+    public EntityRenderer(Entity entity, String imagefile, AssetManager assetManager) {
         this.entity = entity;
-        this.image = new Texture(IMAGES_RES_FOLDER + imagefile);
+        this.image = assetManager.get(IMAGES_RES_FOLDER + imagefile, Texture.class);
         rectangle.x = entity.getX() * TILE_SIZE;
         rectangle.y = entity.getY() * TILE_SIZE;
         rectangle.width = entity.getWidth() * TILE_SIZE;
@@ -47,13 +49,20 @@ public class EntityRenderer implements Observer {
      */
     @Override
     public void update(Observable observable, Object o) {
-        if (rectangle.x != entity.getX() * TILE_SIZE
-                || rectangle.y != entity.getY() * TILE_SIZE) {
+        if (entityChangedPosition()) {
             Vector2 target = new Vector2(entity.getX() * TILE_SIZE, entity.getY() * TILE_SIZE);
             int speed = entity.getSpeed();
             animation = new PositionInterpolationAnimation(rectangle, target, 1.f / speed);
             animation.start();
         }
+    }
+
+    /**
+     * @return true if this is the entity has succeeded to move
+     */
+    protected boolean entityChangedPosition() {
+        return rectangle.x != entity.getX() * TILE_SIZE
+                || rectangle.y != entity.getY() * TILE_SIZE;
     }
 
     boolean isAnimating() {

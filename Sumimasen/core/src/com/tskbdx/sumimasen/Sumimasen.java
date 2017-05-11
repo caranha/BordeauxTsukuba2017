@@ -2,28 +2,26 @@ package com.tskbdx.sumimasen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.tskbdx.sumimasen.scenes.inputprocessors.DialogueInputProcessor;
-
-import java.util.HashSet;
-import java.util.Map;
 
 public class Sumimasen extends Game {
 
     private SpriteBatch batch;
 	private BitmapFont font;
-	
-	@Override
+	private AssetManager assetManager;
+
+
+    @Override
 	public void create () {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
+		assetManager = new AssetManager();
 
 		//TODO : Start with a menu screen
-		setScreen(new GameScreen(this));
+		setScreen(new LoadingScreen(this, assetManager));
 	}
 
 	@Override
@@ -35,6 +33,7 @@ public class Sumimasen extends Game {
 	public void dispose () {
 		batch.dispose();
 		font.dispose();
+		assetManager.dispose();
 	}
 
 	public SpriteBatch getBatch() {
@@ -55,4 +54,8 @@ public class Sumimasen extends Game {
 		generator.dispose();
 		return font;
 	}
+
+    final AssetManager getAssetManager() {
+        return assetManager;
+    }
 }

@@ -3,6 +3,7 @@ package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 import com.badlogic.gdx.Gdx;
 import com.tskbdx.sumimasen.scenes.inputprocessors.DialogueInputProcessor;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
+import com.tskbdx.sumimasen.scenes.model.entities.Message;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -23,6 +24,8 @@ public class Dialogue extends Interaction {
 
     private Map<Integer, DialogueExchange> exchanges = new HashMap<>();
     private DialogueExchange currentExchange = new DialogueExchange();
+    private float talkClock = 0.f;
+    private float answerClock = 0.f;
 
     public Dialogue(Entity producer, Entity consumer, String xmlFile) {
         super(producer, consumer);
@@ -46,27 +49,43 @@ public class Dialogue extends Interaction {
         if (currentExchange.getAnswers().isEmpty()) {
             end();
         }
+        if (talkClock != 0.f) {
+            talkClock -= Gdx.graphics.getDeltaTime();
+            if (talkClock < 0.f) {
+                talkClock = 0.f;
+                ((DialogueInputProcessor) Gdx.input.getInputProcessor()).start();
+            }
+        }
+        if (answerClock != 0.f) {
+            answerClock -= Gdx.graphics.getDeltaTime();
+            if (answerClock < 0.f) {
+                answerClock = 0.f;
+                System.out.println("vpy");
+                printCurrentState();
+            }
+        }
     }
 
     public void pickAnswer(int index) {
-
         try {
             DialogueAnswer dialogueAnswer = currentExchange.getAnswers().get(index);
-            passive.setMessage(dialogueAnswer.getText(), 5.f, 2.f, active);
-            passive.getMessage().notifyObservers();
-            ((DialogueInputProcessor) Gdx.input.getInputProcessor()).update();
+            passive.setMessage(dialogueAnswer.getText(), 2.f, 2.f, active);
+            Message message = passive.getMessage();
+            message.notifyObservers();
+
             if (dialogueAnswer.getNextExchange() != null) {
                 currentExchange = exchanges.get(dialogueAnswer.getNextExchange());
             }
-            printCurrentState();
-        } catch (IndexOutOfBoundsException ignored) {
-            System.out.println("ignored : " + ignored.getMessage());
-        }
 
+            ((DialogueInputProcessor) Gdx.input.getInputProcessor()).update();
+            ((DialogueInputProcessor) Gdx.input.getInputProcessor()).stop();
+            answerClock = message.getTimeToUnderstand();
+        } catch (IndexOutOfBoundsException ignored) {
+        }
     }
 
     private void printCurrentState() {
-        active.setMessage(currentExchange.getText(), 5.f, 2.f, passive);
+        active.setMessage(currentExchange.getText(), 2.f, 3.f, passive);
         active.getMessage().notifyObservers();
 
         List<DialogueAnswer> answers = currentExchange.getAnswers();
@@ -74,6 +93,12 @@ public class Dialogue extends Interaction {
         System.out.println(currentExchange.getText());
         for (int i = 0; i < answers.size(); i++) {
             System.out.println((i + 1) + "\t" + answers.get(i).getText());
+        }
+
+        if (! answers.isEmpty()) {
+            talkClock = active.getMessage().getTimeToUnderstand();
+        } else {
+            end();
         }
     }
 

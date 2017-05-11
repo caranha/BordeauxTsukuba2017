@@ -1,5 +1,6 @@
 package com.tskbdx.sumimasen.scenes;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
 /**
@@ -7,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
  */
 public interface Scene {
 
-    void init();
+    void init(AssetManager assetManager);
     void update(float dt);
     void render(Batch batch);
 

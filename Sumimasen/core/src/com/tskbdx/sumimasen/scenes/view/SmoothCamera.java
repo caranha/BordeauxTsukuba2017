@@ -49,4 +49,5 @@ public class SmoothCamera extends OrthographicCamera {
                     targetY, duration);
         }
     }
+
 }

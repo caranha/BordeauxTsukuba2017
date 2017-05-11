@@ -50,8 +50,7 @@ public abstract class Entity extends Observable {
         this.height = height;
 
         this.direction = NONE;
-        this.movement = new Path(this, true, // collisions working
-                 WEST, NONE, NONE, NONE, EAST, NONE, NONE, NONE);
+        this.movement = null;
     }
 
     public void update(float dt) {
@@ -76,10 +75,13 @@ public abstract class Entity extends Observable {
         for (Object neighbour : neighbors) {
             if (neighbour instanceof Entity) {
 
-                if (((Entity) neighbour).getInteraction() != null) {
+                Entity entity = (Entity) neighbour;
+
+                if (entity.getInteraction() != null) {
                     // change target direction to face this
-                    ((Entity) neighbour).setDirection(getOpposite(getLastDirection()));
-                    ((Entity) neighbour).getInteraction().start();
+                    entity.setDirection(getOpposite(getLastDirection()));
+                    entity.notifyObservers();
+                    entity.getInteraction().start();
                 }
 
                 return;
@@ -209,10 +211,11 @@ public abstract class Entity extends Observable {
         return message;
     }
 
-    public void setMessage(String content, float duration, float delay, Entity receiver) {
+    public void setMessage(String content, float timeToUnderstand,
+                           float timeToAnswer, Entity receiver) {
         message.setContent(content);
-        message.setDuration(duration);
-        message.setDelay(delay);
+        message.setTimeToAnswer(timeToAnswer);
+        message.setTimeToUnderstand(timeToUnderstand);
         message.setReceiver(receiver);
         setChanged();
     }

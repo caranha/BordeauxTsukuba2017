@@ -1,6 +1,7 @@
 package com.tskbdx.sumimasen.scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
@@ -39,16 +40,15 @@ public class IntroScene implements Scene {
     }
 
     @Override
-    public void init() {
-
+    public void init(AssetManager assetManager) {
         //Load tiled map
-        TiledMap tiledMap = new TmxMapLoader().load("maps/map.tmx");
+        TiledMap tiledMap = new TmxMapLoader().load("maps/home.tmx");
         int width = tiledMap.getProperties().get("width", Integer.class);
         int height = tiledMap.getProperties().get("height", Integer.class);
         world = new World(width, height);
         worldRenderer = new WorldRenderer(tiledMap);
 
-        loadEntities(tiledMap);
+        loadEntities(tiledMap, assetManager);
 
         loadWalls(tiledMap);
 
@@ -64,7 +64,8 @@ public class IntroScene implements Scene {
 
     private void loadWalls(TiledMap tiledMap) {
 
-        TiledMapTileLayer collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Collision");
+        TiledMapTileLayer collisionLayer =
+                (TiledMapTileLayer) tiledMap.getLayers().get("Collidable");
 
         for(int i = 0; i < collisionLayer.getWidth(); i++) {
             for (int j = 0; j < collisionLayer.getHeight(); j++) {
@@ -73,11 +74,9 @@ public class IntroScene implements Scene {
                 }
             }
         }
-
-        tiledMap.getLayers().remove(collisionLayer);
     }
 
-    private void loadEntities(TiledMap tiledMap) {
+    private void loadEntities(TiledMap tiledMap, AssetManager assetManager) {
 
         MapObjects objects = tiledMap.getLayers().get("Entities").getObjects();
 
@@ -88,7 +87,6 @@ public class IntroScene implements Scene {
             int width   = (int) Math.ceil(object.getProperties().get("width" , Float.class) / 8);
             int height  = (int) Math.ceil(object.getProperties().get("height" , Float.class) / 8);
             String imagefile = object.getProperties().get("imagefile", String.class);
-
             Entity entity;
             EntityRenderer entityRenderer;
 
@@ -98,16 +96,13 @@ public class IntroScene implements Scene {
                 player.setWidth(width);
                 player.setHeight(height);
                 entity = player;
-        //        entityRenderer = new AnimatedEntityRendered(entity, imagefile, 3, 4);
+                entityRenderer = new AnimatedEntityRendered(entity, imagefile, 2, 8, 1.f / 0.25f, assetManager);
             } else {
                 SceneObject sceneObject = new SceneObject(x, y, width, height);
                 sceneObject.setInteraction(new Dialogue(sceneObject, player, "dialogues/test.xml"));
                 entity = sceneObject;
-         //       entityRenderer = new EntityRenderer(entity, imagefile);
+                entityRenderer = new EntityRenderer(entity, imagefile, assetManager);
             }
-            /*** PLAYER CLONAGE JUSTU !!! ***/
-            entityRenderer = new AnimatedEntityRendered(entity, imagefile, 3, 4);
-
             entity.setName(object.getName());
             world.addEntity(entity);
             worldRenderer.addEntityRenderer(entityRenderer);

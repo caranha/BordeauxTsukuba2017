@@ -9,8 +9,8 @@ import java.util.Observable;
 
 public class Message extends Observable {
     private String content = "";
-    private float duration;
-    private float delay;
+    private float timeToUnderstand;
+    private float timeToAnswer;
     private final Entity sender;
     private Entity receiver;
 
@@ -28,15 +28,7 @@ public class Message extends Observable {
 
     public void setContent(String content) {
         this.content = content == null ? "" : content;
-        setChanged();
-    }
-
-    public float getDuration() {
-        return duration;
-    }
-
-    public void setDuration(float duration) {
-        this.duration = duration;
+        System.out.println("content = " + this.content);
         setChanged();
     }
 
@@ -53,12 +45,25 @@ public class Message extends Observable {
         setChanged();
     }
 
-    public float getDelay() {
-        return delay;
+    public float getTimeToUnderstand() {
+        return timeToUnderstand;
     }
 
-    public void setDelay(float delay) {
-        this.delay = delay;
+    public void setTimeToUnderstand(float timeToUnderstand) {
+        this.timeToUnderstand = timeToUnderstand;
         setChanged();
+    }
+
+    public float getTimeToAnswer() {
+        return timeToAnswer;
+    }
+
+    public void setTimeToAnswer(float timeToAnswer) {
+        this.timeToAnswer = timeToAnswer;
+        setChanged();
+    }
+
+    public float getTotalDuration() {
+        return timeToAnswer + timeToUnderstand;
     }
 }
