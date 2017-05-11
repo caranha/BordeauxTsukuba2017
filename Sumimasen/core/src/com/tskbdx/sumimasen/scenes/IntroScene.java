@@ -3,6 +3,7 @@ package com.tskbdx.sumimasen.scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -63,7 +64,7 @@ public class IntroScene implements Scene {
     private void loadWalls(TiledMap tiledMap) {
 
         TiledMapTileLayer collisionLayer =
-                (TiledMapTileLayer) tiledMap.getLayers().get("Collidable");
+                (TiledMapTileLayer) tiledMap.getLayers().get("Collision");
 
         for(int i = 0; i < collisionLayer.getWidth(); i++) {
             for (int j = 0; j < collisionLayer.getHeight(); j++) {
@@ -72,11 +73,14 @@ public class IntroScene implements Scene {
                 }
             }
         }
+
+        collisionLayer.setVisible(false);
     }
 
     private void loadEntities(TiledMap tiledMap, AssetManager assetManager) {
 
-        MapObjects objects = tiledMap.getLayers().get("Entities").getObjects();
+        MapLayer entitiesLayer = tiledMap.getLayers().get("Entities");
+        MapObjects objects = entitiesLayer.getObjects();
 
         for (MapObject object : objects) {
 
@@ -102,15 +106,15 @@ public class IntroScene implements Scene {
                 entityRenderer = new EntityRenderer(entity, imagefile, assetManager);
             }
 
+            System.out.println(object.getName());
+
             entity.setName(object.getName());
 
             world.addEntity(entity);
             worldRenderer.addEntityRenderer(entityRenderer);
 
-            objects.remove(object);
+            object.setVisible(false);
         }
-
-
     }
 
     @Override

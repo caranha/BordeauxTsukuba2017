@@ -3,12 +3,10 @@ package com.tskbdx.sumimasen.scenes.model.entities;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
-import com.tskbdx.sumimasen.scenes.model.entities.movements.Path;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
-import java.util.Random;
 
 import static com.tskbdx.sumimasen.scenes.model.entities.Direction.*;
 
@@ -41,7 +39,7 @@ public abstract class Entity extends Observable {
     private Direction lastDirection = SOUTH; // by default
 
     //Number of cell per sec
-    private int speed = 4;
+    private int speed = 8;
 
     public Entity(int x, int y, int width, int height) {
         this.x = x;
