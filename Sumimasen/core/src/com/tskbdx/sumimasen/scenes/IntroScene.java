@@ -20,8 +20,6 @@ import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.AnimatedEntityRendered;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 
-import static com.tskbdx.sumimasen.GameScreen.gui;
-
 /**
  * Created by Sydpy on 4/27/17.
  */
@@ -42,7 +40,7 @@ public class IntroScene implements Scene {
     @Override
     public void init(AssetManager assetManager) {
         //Load tiled map
-        TiledMap tiledMap = new TmxMapLoader().load("maps/home.tmx");
+        TiledMap tiledMap = new TmxMapLoader().load("maps/map.tmx");
         int width = tiledMap.getProperties().get("width", Integer.class);
         int height = tiledMap.getProperties().get("height", Integer.class);
         world = new World(width, height);
@@ -103,9 +101,13 @@ public class IntroScene implements Scene {
                 entity = sceneObject;
                 entityRenderer = new EntityRenderer(entity, imagefile, assetManager);
             }
+
             entity.setName(object.getName());
+
             world.addEntity(entity);
             worldRenderer.addEntityRenderer(entityRenderer);
+
+            objects.remove(object);
         }
 
 
