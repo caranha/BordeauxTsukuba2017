@@ -11,17 +11,16 @@ public class Sumimasen extends Game {
 
     private SpriteBatch batch;
 	private BitmapFont font;
-	private AssetManager assetManager;
 
+	private static AssetManager assetManager = new AssetManager();
 
     @Override
 	public void create () {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
-		assetManager = new AssetManager();
 
 		//TODO : Start with a menu screen
-		setScreen(new LoadingScreen(this, assetManager));
+		setScreen(new LoadingScreen(this));
 	}
 
 	@Override
@@ -55,7 +54,7 @@ public class Sumimasen extends Game {
 		return font;
 	}
 
-    final AssetManager getAssetManager() {
+    public static AssetManager getAssetManager() {
         return assetManager;
     }
 }
