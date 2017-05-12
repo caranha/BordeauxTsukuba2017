@@ -1,13 +1,14 @@
 package com.tskbdx.sumimasen.scenes.inputprocessors;
 
 import com.badlogic.gdx.InputProcessor;
+import com.tskbdx.sumimasen.GameScreen;
+import com.tskbdx.sumimasen.scenes.model.entities.Player;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.badlogic.gdx.Input.Keys.*;
-import static com.tskbdx.sumimasen.GameScreen.player;
 import static com.tskbdx.sumimasen.scenes.model.entities.Direction.*;
 
 /**
@@ -15,6 +16,8 @@ import static com.tskbdx.sumimasen.scenes.model.entities.Direction.*;
  */
 
 public class BasicInputProcessor implements InputProcessor{
+
+    private Player player = GameScreen.getPlayer();
 
     /**
      * Commands identified by an Integer keycode.

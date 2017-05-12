@@ -10,17 +10,17 @@ import com.badlogic.gdx.graphics.Texture;
 public class LoadingScreen implements Screen {
 
     private final static String[] imageNames = {
-                    "player", "cab", "chatbubble", "entity", "item",
-                    "key", "left", "right", "down", "up", "machine",
-                    "magnet", "noname", "cat", "none16" };
+                    "player", "chatbubble", "entity", "item",
+                    "left", "right", "down", "up"
+                    , "noname", "cat" };
     // to do : same with other ressources
 
     private final AssetManager manager;
     private final Sumimasen game;
 
-    public LoadingScreen(Sumimasen game, AssetManager assetManager) {
+    public LoadingScreen(Sumimasen game) {
         this.game = game;
-        manager = assetManager;
+        manager = Sumimasen.getAssetManager();
         for (String name : imageNames) {
             manager.load("images/" + name + ".png", Texture.class);
         }
