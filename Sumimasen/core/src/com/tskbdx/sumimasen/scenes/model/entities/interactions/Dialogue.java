@@ -54,13 +54,13 @@ public class Dialogue extends Interaction {
             if (talkClock < 0.f) {
                 talkClock = 0.f;
                 ((DialogueInputProcessor) Gdx.input.getInputProcessor()).start();
+                System.out.println("aho");
             }
         }
         if (answerClock != 0.f) {
             answerClock -= Gdx.graphics.getDeltaTime();
             if (answerClock < 0.f) {
                 answerClock = 0.f;
-                System.out.println("vpy");
                 printCurrentState();
             }
         }
@@ -72,6 +72,10 @@ public class Dialogue extends Interaction {
             passive.setMessage(dialogueAnswer.getText(), 2.f, 2.f, active);
             Message message = passive.getMessage();
             message.notifyObservers();
+
+            // when passive talk, active stop
+            active.setMessage("", 0.f, 0.f, passive);
+            active.getMessage().notifyObservers();
 
             if (dialogueAnswer.getNextExchange() != null) {
                 currentExchange = exchanges.get(dialogueAnswer.getNextExchange());
@@ -85,8 +89,11 @@ public class Dialogue extends Interaction {
     }
 
     private void printCurrentState() {
-        active.setMessage(currentExchange.getText(), 2.f, 3.f, passive);
+        active.setMessage(currentExchange.getText(), 2.f, 0.f, passive);
         active.getMessage().notifyObservers();
+        // when active talk, passive stop
+        passive.setMessage("", 0.f, 0.f, active);
+        passive.getMessage().notifyObservers();
 
         List<DialogueAnswer> answers = currentExchange.getAnswers();
 
@@ -97,8 +104,6 @@ public class Dialogue extends Interaction {
 
         if (! answers.isEmpty()) {
             talkClock = active.getMessage().getTimeToUnderstand();
-        } else {
-            end();
         }
     }
 

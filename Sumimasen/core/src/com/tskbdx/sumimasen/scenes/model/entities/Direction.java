@@ -4,6 +4,8 @@ package com.tskbdx.sumimasen.scenes.model.entities;
  * Created by Sydpy on 5/2/17.
  */
 
+import sun.security.pkcs11.Secmod;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +28,7 @@ public enum Direction {
         opposites.put(NONE, NONE);
     }
 
+    public static boolean isHorizontal(Direction direction) { return direction.equals(WEST) || direction.equals(EAST); }
     public static Direction getOpposite(Direction direction) {
         return opposites.get(direction);
     }

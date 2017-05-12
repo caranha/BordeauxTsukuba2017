@@ -35,7 +35,6 @@ public class LoadingScreen implements Screen {
     public void render(float delta) {
         manager.update();
         float progression = manager.getProgress();
-        System.out.println("Loading : " + progression);
         if (progression == 1) {
             // we are done loading, let's move to game screen !
             game.setScreen(new GameScreen(game));

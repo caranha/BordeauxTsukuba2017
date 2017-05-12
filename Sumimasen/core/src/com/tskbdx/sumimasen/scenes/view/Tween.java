@@ -32,6 +32,7 @@ public class Tween {
     private Runnable onFinished;
     private float delay = 0.f;
     private float delayTimer = 0.f;
+    private boolean stay = false;
 
     public Tween(Interpolation interpolation) {
         Tween.tweens.add(this);
@@ -60,6 +61,12 @@ public class Tween {
 
     public void playWith(float start, float end, float durationInSec, float delay) {
         playWith(start, end, durationInSec);
+        this.delay = delay;
+    }
+
+    public void playWith(float start, float end, float durationInSec, float delay, boolean stay) {
+        playWith(start, end, durationInSec);
+        this.stay = stay;
         this.delay = delay;
     }
 
@@ -94,7 +101,8 @@ public class Tween {
      * according to the GDX Interpolation chosen.
      */
     public float getInterpolation() {
-        return interpolation.apply(start, end, progress());
+        return currentPosition == duration && stay ? end
+                : interpolation.apply(start, end, progress());
     }
 
     /**

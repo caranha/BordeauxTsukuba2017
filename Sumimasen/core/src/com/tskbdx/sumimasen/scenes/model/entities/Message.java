@@ -28,7 +28,6 @@ public class Message extends Observable {
 
     public void setContent(String content) {
         this.content = content == null ? "" : content;
-        System.out.println("content = " + this.content);
         setChanged();
     }
 

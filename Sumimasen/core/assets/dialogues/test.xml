@@ -7,7 +7,7 @@
     </exchange>
     <exchange id="2" text="Very nice weather by the way. Tell me your name again ?">
         <answers>
-            <answer text="I'm ..." nextExchange="3"></answer>
+            <answer text="I'm" nextExchange="3"></answer>
             <answer text="No." nextExchange="3"></answer>
         </answers>
     </exchange>
