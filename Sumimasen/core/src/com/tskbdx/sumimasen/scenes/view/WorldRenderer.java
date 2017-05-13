@@ -23,7 +23,7 @@ public class WorldRenderer extends OrthogonalTiledMapRenderer {
     private Batch screenBatch = new SpriteBatch();
 
     public WorldRenderer(TiledMap map) {
-        super(map);
+        super(map, new SpriteBatch());
     }
 
     public void addEntityRenderer(EntityRenderer entityRenderer) {

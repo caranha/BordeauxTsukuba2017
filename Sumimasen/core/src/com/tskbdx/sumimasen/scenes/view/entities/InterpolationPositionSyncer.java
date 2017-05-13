@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by Sydpy on 5/6/17.
  */
-public class PositionInterpolationAnimation implements Animation {
+public class InterpolationPositionSyncer implements PositionSyncer {
 
     private Vector2 start, target;
     private final float duration;
@@ -21,7 +21,7 @@ public class PositionInterpolationAnimation implements Animation {
 
     private float clock = 0.f;
 
-    public PositionInterpolationAnimation(Rectangle rectangle, Vector2 target, float duration) {
+    public InterpolationPositionSyncer(Rectangle rectangle, Vector2 target, float duration) {
         this.start      = new Vector2(rectangle.x, rectangle.y);
         this.target     = target;
         this.duration   = duration;
