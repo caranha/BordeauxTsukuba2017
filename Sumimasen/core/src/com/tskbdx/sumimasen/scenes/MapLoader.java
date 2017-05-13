@@ -13,6 +13,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.SceneObject;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
+import com.tskbdx.sumimasen.scenes.view.entities.animator.DirectionSpriteSheetAnimator;
 
 import java.util.List;
 
@@ -58,6 +59,11 @@ public class MapLoader {
                 entity.setName(object.getName());
 
                 entityRenderer = new EntityRenderer(entity, imagefile, Sumimasen.getAssetManager());
+
+                if (name.equals("player")) {
+                    entityRenderer.setAnimator(
+                            new DirectionSpriteSheetAnimator(entityRenderer, 1, 2,12,16, 0.5f ));
+                }
 
                 world.addEntity(entity);
                 worldRenderer.addEntityRenderer(entityRenderer);
