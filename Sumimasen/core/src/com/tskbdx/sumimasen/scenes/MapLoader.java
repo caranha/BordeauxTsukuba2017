@@ -11,6 +11,8 @@ import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.SceneObject;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.GetPickedUp;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.CollisionSound;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
@@ -18,6 +20,7 @@ import com.tskbdx.sumimasen.scenes.view.entities.MessageRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.animator.DirectionSpriteSheetAnimator;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Sydpy on 5/12/17.
@@ -50,9 +53,7 @@ public class MapLoader {
                 if (name.equals("player")) {
                     entity = GameScreen.getPlayer();
                 } else {
-                    SceneObject sceneObject = new SceneObject(x, y, width, height);
-                    sceneObject.setInteraction(new Dialogue(sceneObject, GameScreen.getPlayer(), "dialogues/test.xml"));
-                    entity = sceneObject;
+                    entity = new SceneObject(x, y, width, height);
                 }
 
                 entity.setX(x);
@@ -60,6 +61,17 @@ public class MapLoader {
                 entity.setWidth(width);
                 entity.setHeight(height);
                 entity.setName(object.getName());
+
+                // set interaction from property "firstInteraction"
+                Interaction interaction = null;
+                String firstInteraction = object.getProperties().get("firstInteraction", String.class);
+                if (firstInteraction != null && firstInteraction.equals("dialogue")) {
+                    interaction = new Dialogue(entity, GameScreen.getPlayer(),
+                            object.getProperties().get("dialogueName", String.class)); // check constructor for filename
+                } else if (firstInteraction != null && firstInteraction.equals("getPickedUp")) {
+                    interaction = new GetPickedUp(entity, GameScreen.getPlayer());
+                }
+                entity.setInteraction(interaction);
 
                 entity.addObserver(new CollisionSound("collision.mp3"));
                 entityRenderer = new EntityRenderer(entity, imagefile, Sumimasen.getAssetManager());

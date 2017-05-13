@@ -12,10 +12,13 @@ import com.tskbdx.sumimasen.scenes.view.entities.MessageRenderer;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by Sydpy on 4/28/17.
  */
+
 public class WorldRenderer extends OrthogonalTiledMapRenderer {
 
     private ArrayList<EntityRenderer> entityRenderers = new ArrayList<EntityRenderer>();

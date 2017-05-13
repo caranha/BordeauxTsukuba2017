@@ -68,6 +68,7 @@ public class Tween {
         playWith(start, end, durationInSec);
         this.stay = stay;
         this.delay = delay;
+        System.out.println("delay : " + delay);
     }
 
     /**
@@ -109,7 +110,7 @@ public class Tween {
      * @return progression value between 0 and 1.
      */
     private float progress() {
-        return currentPosition / duration;
+        return (currentPosition + delayTimer) / (duration + delay);
     }
 
     /**
@@ -121,7 +122,7 @@ public class Tween {
         if (playing) {
             if (delayTimer <= delay) {
                 currentPosition += dt;
-                if (currentPosition > duration) {
+                if (progress() > 1) {
                     currentPosition = duration;
                     playing = false;
                     if (onFinished != null) {

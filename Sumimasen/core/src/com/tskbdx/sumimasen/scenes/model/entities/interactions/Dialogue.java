@@ -13,15 +13,20 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.tskbdx.sumimasen.GameScreen.getPlayer;
 
 /**
  * Created by viet khang on 08/05/2017.
  */
 public class Dialogue extends Interaction {
 
+    private static final String FOLDER = "dialogues/";
     private Map<Integer, DialogueExchange> exchanges = new HashMap<>();
     private DialogueExchange currentExchange = new DialogueExchange();
     private float talkClock = 0.f;
@@ -30,7 +35,7 @@ public class Dialogue extends Interaction {
     public Dialogue(Entity producer, Entity consumer, String xmlFile) {
         super(producer, consumer);
 
-        buildDialogue(xmlFile);
+        buildDialogue(FOLDER + producer.getName() + '/' + xmlFile); // by convention
         currentExchange = exchanges.get(1);
     }
 
@@ -46,6 +51,7 @@ public class Dialogue extends Interaction {
 
     @Override
     public void update() {
+
         if (currentExchange.getAnswers().isEmpty()) {
             end();
         }
@@ -87,12 +93,15 @@ public class Dialogue extends Interaction {
         }
     }
 
+    @Override
+    public void end() {
+        super.end();
+        active.setInteraction(new Dialogue(active, getPlayer(), "default.xml"));
+    }
+
     private void printCurrentState() {
         active.setMessage(currentExchange.getText(), 2.f, 0.f, passive);
         active.getMessage().notifyObservers();
-        // when active talk, passive stop
-        passive.setMessage("", 0.f, 0.f, active);
-        passive.getMessage().notifyObservers();
 
         List<DialogueAnswer> answers = currentExchange.getAnswers();
 
@@ -103,6 +112,9 @@ public class Dialogue extends Interaction {
 
         if (! answers.isEmpty()) {
             talkClock = active.getMessage().getTimeToUnderstand();
+        } else {
+            active.setMessage(currentExchange.getText(), 2.f, 2.f, passive);
+            active.getMessage().notifyObservers();
         }
     }
 

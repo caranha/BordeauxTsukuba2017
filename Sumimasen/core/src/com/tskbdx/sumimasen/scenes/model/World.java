@@ -3,10 +3,7 @@ package com.tskbdx.sumimasen.scenes.model;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Sydpy on 4/27/17.
@@ -73,7 +70,11 @@ public class World {
 
     public void removeEntity(Entity entity) {
         setEntityLocation(entity, null);
-        entities.remove(entity);
+        // entities.remove(entity);
+        // Used during execution throws :
+        // ConcurrentModificationException
+        // to do : make it work
+        // already tried : synchronized list, methods
         entity.setWorld(null);
     }
 

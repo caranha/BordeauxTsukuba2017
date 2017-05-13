@@ -188,7 +188,7 @@ public class MessageRenderer implements Observer, Disposable {
 
     private void initOffsetCalculations() {
         offsetCalculator.put(NORTH, () -> onScreenPosition.add(-targetWidth / 2, -padding * 3));
-        offsetCalculator.put(SOUTH, () -> onScreenPosition.add(-targetWidth / 2, layout.height + padding * 3));
+        offsetCalculator.put(SOUTH, () -> onScreenPosition.add(-targetWidth / 2, layout.height + padding * 4));
         offsetCalculator.put(EAST, () -> onScreenPosition.add(-Math.min(targetWidth, layout.width) - padding * 5, layout.height / 2));
         offsetCalculator.put(WEST, () -> onScreenPosition.add(padding * 3, layout.height / 2));
     }

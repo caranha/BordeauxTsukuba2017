@@ -1,6 +1,5 @@
 package com.tskbdx.sumimasen.scenes.model.entities;
 
-import com.badlogic.gdx.scenes.scene2d.*;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
@@ -27,6 +26,8 @@ public abstract class Entity extends Observable {
 
     private boolean isInteracting = false;
     private Entity interactingWith = null;
+
+    private List<Entity> inventory = new ArrayList<>();
 
     /**
      * Message
@@ -57,7 +58,7 @@ public abstract class Entity extends Observable {
             movement.move(dt);
         }
 
-        if(interaction != null
+        if (interaction != null
                 && interaction.isStarted()
                 && !interaction.isFinished()) {
             interaction.update();
@@ -93,19 +94,19 @@ public abstract class Entity extends Observable {
         List<Object> neighbors = new ArrayList<>();
         switch (getLastDirection()) {
             case WEST:
-                for (int j = getY() ; j != getY() + getHeight() ; ++j)
+                for (int j = getY(); j != getY() + getHeight(); ++j)
                     neighbors.add(world.get(getX() - 1, j));
                 break;
             case EAST:
-                for (int j = getY() ; j != getY() + getHeight() ; ++j)
+                for (int j = getY(); j != getY() + getHeight(); ++j)
                     neighbors.add(world.get(getX() + getWidth() + 1, j));
                 break;
             case NORTH:
-                for (int i = getX() ; i != getX() + getWidth() ; ++i)
+                for (int i = getX(); i != getX() + getWidth(); ++i)
                     neighbors.add(world.get(i, getY() + getHeight()));
                 break;
             case SOUTH:
-                for (int i = getX() ; i != getX() + getWidth() ; ++i)
+                for (int i = getX(); i != getX() + getWidth(); ++i)
                     neighbors.add(world.get(i, getY() - 1));
                 break;
         }
@@ -155,13 +156,13 @@ public abstract class Entity extends Observable {
         setChanged();
     }
 
+    public World getWorld() {
+        return world;
+    }
+
     public void setWorld(World world) {
         this.world = world;
         setChanged();
-    }
-
-    public World getWorld() {
-        return world;
     }
 
     public Movement getMovement() {
@@ -173,16 +174,16 @@ public abstract class Entity extends Observable {
         setChanged();
     }
 
+    public final Direction getDirection() {
+        return direction;
+    }
+
     public void setDirection(Direction direction) {
         if (direction != NONE) {
             lastDirection = direction;
         }
         this.direction = direction;
         setChanged();
-    }
-
-    public final Direction getDirection() {
-        return direction;
     }
 
     public int getSpeed() {
@@ -198,12 +199,12 @@ public abstract class Entity extends Observable {
         return lastDirection;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Message getMessage() {
@@ -247,7 +248,9 @@ public abstract class Entity extends Observable {
         this.interactingWith = interactingWith;
     }
 
-    public void nextInteraction() {
-        interaction = null; // for the moment
+    public void store(Entity active) {
+        assert !inventory.contains(active);
+        inventory.add(active);
+        setChanged();
     }
 }

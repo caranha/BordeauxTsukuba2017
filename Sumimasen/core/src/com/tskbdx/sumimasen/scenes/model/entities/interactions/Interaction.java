@@ -73,8 +73,6 @@ public abstract class Interaction {
         System.out.println("End of interaction");
         GameScreen.gui = null;
         Gdx.input.setInputProcessor(new BasicInputProcessor());
-
-        active.nextInteraction();
     }
 
     public boolean isStarted() {

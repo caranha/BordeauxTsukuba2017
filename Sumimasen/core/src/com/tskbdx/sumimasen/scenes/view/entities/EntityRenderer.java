@@ -27,7 +27,6 @@ public class EntityRenderer implements Observer {
     static int TILE_SIZE = 8;
 
     private Texture spritesheet;
-    private MessageRenderer messageRenderer;
     private Entity entity;
     private PositionSyncer positionSyncer;
 
@@ -63,24 +62,30 @@ public class EntityRenderer implements Observer {
     }
 
     public void render(Batch batch) {
-        updatePosition();
+        // to dynamically remove from world and update in view
+        // we have several choices :
+        // - Make WorldRenderer to observe World
+        // - Put a tag in Entity to know if it's removed or not
+        // - Get current entity world (if null, then we can suppose
+        // it has been removed from)
+        // This last solution is the simpler as it doesn't affect
+        // current architecture but it can lead to dysfunctions somehow
+        if (entity.getWorld() != null) {
+            updatePosition();
 
-        if (animator == null) {
-            batch.draw(spritesheet,
-                    rectangle.getX(), rectangle.getY(),
-                    rectangle.getWidth(), rectangle.getHeight());
-        } else {
-            TextureRegion textureRegion = animator.update();
+            if (animator == null) {
+                batch.draw(spritesheet,
+                        rectangle.getX(), rectangle.getY(),
+                        rectangle.getWidth(), rectangle.getHeight());
+            } else {
+                TextureRegion textureRegion = animator.update();
 
-            rectangle.setHeight(textureRegion.getRegionHeight() * (rectangle.width / textureRegion.getRegionWidth()));
+                rectangle.setHeight(textureRegion.getRegionHeight() * (rectangle.width / textureRegion.getRegionWidth()));
 
-            batch.draw(textureRegion,
-                    rectangle.getX(), rectangle.getY(),
-                    rectangle.getWidth(), rectangle.getHeight());
-        }
-
-        if (messageRenderer != null) {
-            renderMessage(batch);
+                batch.draw(textureRegion,
+                        rectangle.getX(), rectangle.getY(),
+                        rectangle.getWidth(), rectangle.getHeight());
+            }
         }
     }
 
@@ -88,10 +93,6 @@ public class EntityRenderer implements Observer {
         if (isMoving()) {
             positionSyncer.update();
         }
-    }
-
-    private void renderMessage(Batch batch) {
-        messageRenderer.render(batch);
     }
 
     /**
