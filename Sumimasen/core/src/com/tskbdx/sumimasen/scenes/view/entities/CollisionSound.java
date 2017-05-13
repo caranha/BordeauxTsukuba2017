@@ -24,7 +24,7 @@ public class CollisionSound implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (arg.equals(false)) {
+        if (arg != null && arg.equals(false)) {
             sound.play();
         }
     }
