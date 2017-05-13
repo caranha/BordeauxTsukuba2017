@@ -8,12 +8,11 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRendererDrawOrderer;
+import com.tskbdx.sumimasen.scenes.view.entities.InventoryRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.MessageRenderer;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Created by Sydpy on 4/28/17.
@@ -23,6 +22,7 @@ public class WorldRenderer extends OrthogonalTiledMapRenderer {
 
     private ArrayList<EntityRenderer> entityRenderers = new ArrayList<EntityRenderer>();
     private ArrayList<MessageRenderer> messageRenderers = new ArrayList<>();
+    private InventoryRenderer inventoryRenderer;
     private Batch screenBatch = new SpriteBatch();
 
     public WorldRenderer(TiledMap map) {
@@ -38,6 +38,10 @@ public class WorldRenderer extends OrthogonalTiledMapRenderer {
     }
 
     public void addMessageRenderer(MessageRenderer messageRenderer) { messageRenderers.add(messageRenderer); }
+
+    public void setInventoryRenderer(InventoryRenderer inventoryRenderer) {
+        this.inventoryRenderer = inventoryRenderer;
+    }
 
     @Override
     public void render() {
@@ -64,6 +68,7 @@ public class WorldRenderer extends OrthogonalTiledMapRenderer {
         for (MessageRenderer messageRenderer : messageRenderers) {
             messageRenderer.render(screenBatch);
         }
+        inventoryRenderer.render(screenBatch);
         screenBatch.end();
     }
 }

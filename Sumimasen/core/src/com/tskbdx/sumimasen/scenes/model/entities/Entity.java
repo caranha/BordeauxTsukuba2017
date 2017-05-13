@@ -27,7 +27,7 @@ public abstract class Entity extends Observable {
     private boolean isInteracting = false;
     private Entity interactingWith = null;
 
-    private List<Entity> inventory = new ArrayList<>();
+    private List<Entity> stored = new ArrayList<>();
 
     /**
      * Message
@@ -248,9 +248,8 @@ public abstract class Entity extends Observable {
         this.interactingWith = interactingWith;
     }
 
-    public void store(Entity active) {
-        assert !inventory.contains(active);
-        inventory.add(active);
+    public void store(Entity entity) {
+        stored.add(entity);
         setChanged();
     }
 }

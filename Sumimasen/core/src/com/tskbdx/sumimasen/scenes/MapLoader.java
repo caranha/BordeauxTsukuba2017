@@ -5,7 +5,6 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.Sumimasen;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
@@ -16,11 +15,13 @@ import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.CollisionSound;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
+import com.tskbdx.sumimasen.scenes.view.entities.InventoryRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.MessageRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.animator.DirectionSpriteSheetAnimator;
 
 import java.util.List;
-import java.util.Objects;
+
+import static com.tskbdx.sumimasen.GameScreen.getPlayer;
 
 /**
  * Created by Sydpy on 5/12/17.
@@ -51,7 +52,7 @@ public class MapLoader {
             if (entityNames.contains(name)) {
 
                 if (name.equals("player")) {
-                    entity = GameScreen.getPlayer();
+                    entity = getPlayer();
                 } else {
                     entity = new SceneObject(x, y, width, height);
                 }
@@ -66,10 +67,10 @@ public class MapLoader {
                 Interaction interaction = null;
                 String firstInteraction = object.getProperties().get("firstInteraction", String.class);
                 if (firstInteraction != null && firstInteraction.equals("dialogue")) {
-                    interaction = new Dialogue(entity, GameScreen.getPlayer(),
+                    interaction = new Dialogue(entity, getPlayer(),
                             object.getProperties().get("dialogueName", String.class)); // check constructor for filename
                 } else if (firstInteraction != null && firstInteraction.equals("getPickedUp")) {
-                    interaction = new GetPickedUp(entity, GameScreen.getPlayer());
+                    interaction = new GetPickedUp(entity, getPlayer());
                 }
                 entity.setInteraction(interaction);
 
@@ -89,6 +90,10 @@ public class MapLoader {
 
             object.setVisible(false);
         }
+
+        InventoryRenderer inventoryRenderer = new InventoryRenderer();
+        getPlayer().addObserver(inventoryRenderer);
+        worldRenderer.setInventoryRenderer(inventoryRenderer);
     }
 
     public static void loadWalls(TiledMap tiledMap, World world, WorldRenderer worldRenderer) {

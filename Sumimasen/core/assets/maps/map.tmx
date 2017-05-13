@@ -216,7 +216,7 @@
     <property name="imagefile" value="entity.png"/>
    </properties>
   </object>
-  <object id="6" name="ToPickUp" x="160" y="144" width="16" height="8">
+  <object id="6" name="item" x="160" y="144" width="16" height="8">
    <properties>
     <property name="firstInteraction" value="getPickedUp"/>
     <property name="imagefile" value="item.png"/>
