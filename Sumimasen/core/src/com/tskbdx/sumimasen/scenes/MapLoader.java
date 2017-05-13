@@ -12,6 +12,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.SceneObject;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
+import com.tskbdx.sumimasen.scenes.view.entities.CollisionSound;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.MessageRenderer;
 
@@ -59,6 +60,7 @@ public class MapLoader {
                 entity.setHeight(height);
                 entity.setName(object.getName());
 
+                entity.addObserver(new CollisionSound("collision.mp3"));
                 entityRenderer = new EntityRenderer(entity, imagefile, Sumimasen.getAssetManager());
                 messageRenderer = new MessageRenderer(entity.getMessage());
 

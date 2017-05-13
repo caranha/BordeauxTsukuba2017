@@ -1,5 +1,6 @@
 package com.tskbdx.sumimasen.scenes.model.entities;
 
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;

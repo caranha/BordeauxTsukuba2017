@@ -24,14 +24,6 @@ public class Walk extends Movement {
         int speed = entity.getSpeed();
 
         if (canMove) {
-
-            /*
-             * Menage the case where the entity tried to move
-             * but hasn't succeeded
-             * In that cas, the direction has actually changed
-             */
-            entity.notifyObservers();
-
             int newX = entity.getX(), newY = entity.getY();
 
             switch (entity.getDirection()) {
@@ -56,7 +48,9 @@ public class Walk extends Movement {
             if (!entity.getWorld().isCollisionOnBox(entity, newX, newY, entity.getWidth(),
                     entity.getHeight())) {
                 entity.moveTo(newX, newY);
-                entity.notifyObservers();
+                entity.notifyObservers(true);
+            } else {
+                entity.notifyObservers(false);
             }
         } else {
             clock += dt;
