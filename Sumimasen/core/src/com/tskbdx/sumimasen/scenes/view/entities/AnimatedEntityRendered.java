@@ -89,6 +89,5 @@ public class AnimatedEntityRendered extends EntityRenderer {
             batch.draw(defaultTextures.get(processingDirection), getX() + 2, getY());
         }
 
-        renderMessage(batch);
     }
 }

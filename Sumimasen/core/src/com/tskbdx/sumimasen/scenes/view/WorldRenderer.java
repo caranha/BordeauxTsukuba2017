@@ -1,11 +1,14 @@
 package com.tskbdx.sumimasen.scenes.view;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRendererDrawOrderer;
+import com.tskbdx.sumimasen.scenes.view.entities.MessageRenderer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +19,8 @@ import java.util.Collections;
 public class WorldRenderer extends OrthogonalTiledMapRenderer {
 
     private ArrayList<EntityRenderer> entityRenderers = new ArrayList<EntityRenderer>();
+    private ArrayList<MessageRenderer> messageRenderers = new ArrayList<>();
+    private Batch screenBatch = new SpriteBatch();
 
     public WorldRenderer(TiledMap map) {
         super(map);
@@ -28,6 +33,8 @@ public class WorldRenderer extends OrthogonalTiledMapRenderer {
     public void removeEntityRenderer(EntityRenderer entityRenderer) {
         entityRenderers.remove(entityRenderer);
     }
+
+    public void addMessageRenderer(MessageRenderer messageRenderer) { messageRenderers.add(messageRenderer); }
 
     @Override
     public void render() {
@@ -49,5 +56,11 @@ public class WorldRenderer extends OrthogonalTiledMapRenderer {
         }
 
         endRender();
+
+       screenBatch.begin();
+        for (MessageRenderer messageRenderer : messageRenderers) {
+            messageRenderer.render(screenBatch);
+        }
+        screenBatch.end();
     }
 }

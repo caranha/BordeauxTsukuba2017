@@ -43,6 +43,7 @@ public class IntroScene implements Scene {
         worldRenderer = new WorldRenderer(tiledMap);
 
         entityNames.add("player");
+        entityNames.add("Entity #1");
 
         MapLoader.loadEntities(tiledMap, world, worldRenderer, entityNames);
         MapLoader.loadWalls(tiledMap, world, worldRenderer);

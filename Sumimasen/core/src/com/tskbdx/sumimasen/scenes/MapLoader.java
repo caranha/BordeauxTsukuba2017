@@ -13,6 +13,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.SceneObject;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
+import com.tskbdx.sumimasen.scenes.view.entities.MessageRenderer;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class MapLoader {
 
             Entity entity;
             EntityRenderer entityRenderer;
+            MessageRenderer messageRenderer;
 
             if (entityNames.contains(name)) {
 
@@ -58,9 +60,11 @@ public class MapLoader {
                 entity.setName(object.getName());
 
                 entityRenderer = new EntityRenderer(entity, imagefile, Sumimasen.getAssetManager());
+                messageRenderer = new MessageRenderer(entity.getMessage());
 
                 world.addEntity(entity);
                 worldRenderer.addEntityRenderer(entityRenderer);
+                worldRenderer.addMessageRenderer(messageRenderer);
             }
 
             object.setVisible(false);

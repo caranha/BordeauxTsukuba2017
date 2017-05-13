@@ -28,8 +28,11 @@ public enum Direction {
         opposites.put(NONE, NONE);
     }
 
-    public static boolean isHorizontal(Direction direction) { return direction.equals(WEST) || direction.equals(EAST); }
     public static Direction getOpposite(Direction direction) {
         return opposites.get(direction);
+    }
+
+    public boolean isHorizontal() {
+        return equals(WEST) || equals(EAST);
     }
 }

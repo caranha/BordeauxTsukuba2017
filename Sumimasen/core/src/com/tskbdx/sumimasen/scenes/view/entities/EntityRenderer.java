@@ -23,7 +23,6 @@ public class EntityRenderer implements Observer {
     private static String IMAGES_RES_FOLDER = "images/";
     static int TILE_SIZE = 8;
     protected Texture image;
-    private MessageRenderer messageRenderer;
     Entity entity;
     protected Animation animation;
 
@@ -37,7 +36,6 @@ public class EntityRenderer implements Observer {
         rectangle.width = entity.getWidth() * TILE_SIZE;
         rectangle.height = image.getHeight() * (rectangle.width / image.getWidth());
         entity.addObserver(this);
-        messageRenderer = new MessageRenderer(entity.getMessage());
     }
 
     /**
@@ -80,11 +78,6 @@ public class EntityRenderer implements Observer {
         batch.draw(image,
                 rectangle.getX(), rectangle.getY(),
                 rectangle.getWidth(), rectangle.getHeight());
-        renderMessage(batch);
-    }
-
-    void renderMessage(Batch batch) {
-        messageRenderer.render(batch);
     }
 
     private BitmapFont font = new BitmapFont();

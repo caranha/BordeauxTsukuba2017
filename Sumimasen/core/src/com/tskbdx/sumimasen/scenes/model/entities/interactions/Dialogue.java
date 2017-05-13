@@ -54,7 +54,6 @@ public class Dialogue extends Interaction {
             if (talkClock < 0.f) {
                 talkClock = 0.f;
                 ((DialogueInputProcessor) Gdx.input.getInputProcessor()).start();
-                System.out.println("aho");
             }
         }
         if (answerClock != 0.f) {
