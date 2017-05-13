@@ -52,8 +52,6 @@ public abstract class Interaction {
         passive.setInteractingWith(active);
 
         started = true;
-
-        System.out.println("Start of interaction");
     }
 
     public abstract void update();
@@ -69,10 +67,6 @@ public abstract class Interaction {
 
         active.setMovement(activeMovement);
         passive.setMovement(passiveMovement);
-
-        System.out.println("End of interaction");
-        GameScreen.gui = null;
-        Gdx.input.setInputProcessor(new BasicInputProcessor());
     }
 
     public boolean isStarted() {

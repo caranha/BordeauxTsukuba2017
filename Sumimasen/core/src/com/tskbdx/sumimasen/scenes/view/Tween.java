@@ -68,7 +68,6 @@ public class Tween {
         playWith(start, end, durationInSec);
         this.stay = stay;
         this.delay = delay;
-        System.out.println("delay : " + delay);
     }
 
     /**

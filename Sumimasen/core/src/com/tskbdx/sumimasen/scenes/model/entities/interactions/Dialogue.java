@@ -1,6 +1,8 @@
 package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
 import com.badlogic.gdx.Gdx;
+import com.tskbdx.sumimasen.GameScreen;
+import com.tskbdx.sumimasen.scenes.inputprocessors.BasicInputProcessor;
 import com.tskbdx.sumimasen.scenes.inputprocessors.DialogueInputProcessor;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Message;
@@ -97,6 +99,8 @@ public class Dialogue extends Interaction {
     public void end() {
         super.end();
         active.setInteraction(new Dialogue(active, getPlayer(), "default.xml"));
+        GameScreen.gui = null;
+        Gdx.input.setInputProcessor(new BasicInputProcessor());
     }
 
     private void printCurrentState() {

@@ -44,6 +44,7 @@ public class IntroScene implements Scene {
 
         entityNames.add("player");
         entityNames.add("Entity1");
+        entityNames.add("ToPickUp");
 
         MapLoader.loadEntities(tiledMap, world, worldRenderer, entityNames);
         MapLoader.loadWalls(tiledMap, world, worldRenderer);

@@ -22,8 +22,8 @@ public class GetPickedUp extends Interaction {
 
     @Override
     public void update() {
-        active.getWorld().removeEntity(active);
         passive.store(active);
+        active.getWorld().removeEntity(active);
         active.notifyObservers();
         passive.notifyObservers();
         end();
