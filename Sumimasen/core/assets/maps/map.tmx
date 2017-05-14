@@ -209,7 +209,7 @@
     <property name="imagefile" value="player.png"/>
    </properties>
   </object>
-  <object id="3" name="Entity1" x="224" y="24" width="16" height="8">
+  <object id="3" name="entity" x="224" y="24" width="16" height="8">
    <properties>
     <property name="dialogueName" value="late.xml"/>
     <property name="firstInteraction" value="dialogue"/>

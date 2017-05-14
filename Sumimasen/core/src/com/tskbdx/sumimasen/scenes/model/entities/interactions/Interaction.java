@@ -39,6 +39,9 @@ public abstract class Interaction {
     }
 
     public void start() {
+        active.notifyObservers(getClass());
+        passive.notifyObservers(getClass());
+
         active.setInteracting(true);
         passive.setInteracting(true);
 

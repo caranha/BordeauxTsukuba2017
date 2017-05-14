@@ -14,6 +14,16 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import static com.badlogic.gdx.graphics.Color.WHITE;
+
+/**
+ * For the moment :
+ * observable instance is not stored
+ * this can only add new stuff according to update
+ *
+ * To do : make a Inventory Class in model
+ * -> observer it
+ */
 public class InventoryRenderer implements Observer {
 
     private static final float SIZE = 50.f;
@@ -35,6 +45,7 @@ public class InventoryRenderer implements Observer {
     }
 
     public void render(Batch screenBatch) {
+        screenBatch.setColor(WHITE);
         int i = 0;
         for (Texture texture : textures) {
             screenBatch.draw(texture, 10 + i++ * (SIZE * 1.5f),

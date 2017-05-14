@@ -22,6 +22,7 @@ public class World {
     private Object objects[][]; // For the moment
 
     private List<Entity> entities = new ArrayList<>();
+    private Map<String, Entity> entityByName = new HashMap<>();
 
     public World(int width, int height) {
         objects = new Object[width][height];
@@ -53,6 +54,7 @@ public class World {
         if (! (entity instanceof Player)) { // for the moment no collision management on player
             setEntityLocation(entity, entity);
         }
+        entityByName.put(entity.getName(), entity);
     }
 
     /**
@@ -120,5 +122,12 @@ public class World {
             }
         }
         return false;
+    }
+
+    public final Entity getEntityByName(String name) {
+        if (entityByName.containsKey(name)) {
+            return entityByName.get(name);
+        }
+        return null;
     }
 }

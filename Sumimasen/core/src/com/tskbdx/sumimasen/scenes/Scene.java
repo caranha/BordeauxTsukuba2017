@@ -1,6 +1,7 @@
 package com.tskbdx.sumimasen.scenes;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 
 /**
  * Created by Sydpy on 4/27/17.

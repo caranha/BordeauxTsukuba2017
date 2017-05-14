@@ -2,7 +2,6 @@ package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
-import com.tskbdx.sumimasen.scenes.model.entities.SceneObject;
 
 /*
  * Created by viet khang on 13/05/2017.
@@ -24,6 +23,11 @@ public class GetPickedUp extends Interaction {
 
     public GetPickedUp(Entity active, Player passive) {
         super(active, passive);
+    }
+
+    @Override
+    public void start() {
+        super.start();
     }
 
     @Override

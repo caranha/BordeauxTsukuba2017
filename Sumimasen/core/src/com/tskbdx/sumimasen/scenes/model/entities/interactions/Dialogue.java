@@ -76,7 +76,7 @@ public class Dialogue extends Interaction {
     public void pickAnswer(int index) {
         try {
             DialogueAnswer dialogueAnswer = currentExchange.getAnswers().get(index);
-            passive.setMessage(dialogueAnswer.getText(), 2.f, 2.f, active);
+            passive.setMessage(dialogueAnswer.getText(), 3.5f, 0.5f, active);
             Message message = passive.getMessage();
             message.notifyObservers();
 

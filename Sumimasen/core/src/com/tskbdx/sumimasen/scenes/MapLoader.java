@@ -12,6 +12,8 @@ import com.tskbdx.sumimasen.scenes.model.entities.SceneObject;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.GetPickedUp;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
+import com.tskbdx.sumimasen.scenes.story.StoryTeller;
+import com.tskbdx.sumimasen.scenes.story.introduction.StartState;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.CollisionSound;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
@@ -94,6 +96,7 @@ public class MapLoader {
         InventoryRenderer inventoryRenderer = new InventoryRenderer();
         getPlayer().addObserver(inventoryRenderer);
         worldRenderer.setInventoryRenderer(inventoryRenderer);
+        getPlayer().addObserver(new StoryTeller(world, new StartState()));
     }
 
     public static void loadWalls(TiledMap tiledMap, World world, WorldRenderer worldRenderer) {

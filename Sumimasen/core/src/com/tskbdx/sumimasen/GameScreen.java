@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.tskbdx.sumimasen.scenes.IntroScene;
 import com.tskbdx.sumimasen.scenes.Scene;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
+import com.tskbdx.sumimasen.scenes.story.StoryTeller;
 
 /**
  * Created by Sydpy on 4/27/17.
@@ -17,7 +18,6 @@ public class GameScreen implements Screen {
     private final Sumimasen game;
 
     private static final Player player = new Player(0, 0 ,0, 0);
-
 
     private Scene currentScene = new IntroScene(player);
 

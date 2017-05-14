@@ -7,6 +7,8 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.tskbdx.sumimasen.scenes.inputprocessors.BasicInputProcessor;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
+import com.tskbdx.sumimasen.scenes.story.StoryTeller;
+import com.tskbdx.sumimasen.scenes.story.introduction.StartState;
 import com.tskbdx.sumimasen.scenes.view.SmoothCamera;
 import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
@@ -43,7 +45,7 @@ public class IntroScene implements Scene {
         worldRenderer = new WorldRenderer(tiledMap);
 
         entityNames.add("player");
-        entityNames.add("Entity1");
+        entityNames.add("entity");
         entityNames.add("item");
 
         MapLoader.loadEntities(tiledMap, world, worldRenderer, entityNames);
