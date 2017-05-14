@@ -16,7 +16,7 @@ public class NpcDisappearState implements StoryState {
         System.out.println(description());
     }
 
-    @Override
+    @Override 
     public Map<Class<? extends Interaction>, StoryState> next() {
         return null;
     }
