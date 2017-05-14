@@ -4,11 +4,13 @@ package com.tskbdx.sumimasen.scenes.model.entities.movements;
  * Created by viet khang on 09/05/2017.
  */
 
+import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -69,10 +71,15 @@ public class Path extends Movement {
                 break;
         }
 
-        if (!entity.getWorld().isCollisionOnBox(entity, newX, newY, entity.getWidth(),
-                entity.getHeight())) {
+        Rectangle rect = entity.getRectangle(new Rectangle());
+        rect.setPosition(newX, newY);
+
+        List<Entity> entityColliding = entity.getWorld().getEntities(rect);
+        entityColliding.remove(entity);
+
+        if (!entity.getWorld().isWall(rect)
+                &&  entityColliding.isEmpty()) {
             entity.moveTo(newX, newY);
-            entity.notifyObservers();
         }
     }
 

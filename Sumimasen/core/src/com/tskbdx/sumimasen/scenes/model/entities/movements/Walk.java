@@ -1,6 +1,9 @@
 package com.tskbdx.sumimasen.scenes.model.entities.movements;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
+
+import java.util.List;
 
 /**
  * Created by Sydpy on 5/2/17.
@@ -45,13 +48,17 @@ public class Walk extends Movement {
 
             canMove = false;
 
-            if (!entity.getWorld().isCollisionOnBox(entity, newX, newY, entity.getWidth(),
-                    entity.getHeight())) {
-                entity.moveTo(newX, newY);
-                entity.notifyObservers(true);
-            } else {
-                entity.notifyObservers(false);
+            Rectangle rect = entity.getRectangle(new Rectangle());
+            rect.setPosition(newX, newY);
+
+            List<Entity> entityColliding = entity.getWorld().getEntities(rect);
+            entityColliding.remove(entity);
+
+            if (!entity.getWorld().isWall(rect)
+                    &&  entityColliding.isEmpty()) {
+                this.entity.moveTo(newX, newY);
             }
+
         } else {
             clock += dt;
             if(clock >= 1.f/speed) {

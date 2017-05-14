@@ -1,7 +1,7 @@
 package com.tskbdx.sumimasen.scenes.model;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
-import com.tskbdx.sumimasen.scenes.model.entities.Player;
 
 import java.util.*;
 
@@ -19,26 +19,19 @@ import java.util.*;
  */
 public class World {
 
-    private Object objects[][]; // For the moment
+    private boolean wallsMap[][];
 
     private List<Entity> entities = new ArrayList<>();
+
     private Map<String, Entity> entityByName = new HashMap<>();
 
     public World(int width, int height) {
-        objects = new Object[width][height];
+        wallsMap = new boolean[width][height];
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 setVoid(i, j);
             }
-        }
-    }
-
-    public final Object get(int x, int y) {
-        try {
-            return objects[x][y];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return null;
         }
     }
 
@@ -50,78 +43,73 @@ public class World {
 
     public void addEntity(Entity entity) {
         entity.setWorld(this);
-        entities.add(entity);
-        if (! (entity instanceof Player)) { // for the moment no collision management on player
-            setEntityLocation(entity, entity);
-        }
-        entityByName.put(entity.getName(), entity);
-    }
 
-    /**
-     * Set a object at an entity location
-     * (from x to x + w and y to y + h)
-     * @param entity
-     */
-    public void setEntityLocation(Entity entity, Object object) {
-        for (int i = entity.getX() ; i != entity.getX() + entity.getWidth() ; ++i) {
-            for (int j = entity.getY(); j != entity.getY() + entity.getHeight(); ++j) {
-                objects[i][j] = object;
-            }
-        }
+        entityByName.put(entity.getName(), entity);
+        entities.add(entity);
     }
 
     public void removeEntity(Entity entity) {
-        setEntityLocation(entity, null);
-        // entities.remove(entity);
-        // Used during execution throws :
-        // ConcurrentModificationException
-        // to do : make it work
-        // already tried : synchronized list, methods
         entity.setWorld(null);
+
+        entityByName.remove(entity);
+        entities.remove(entity);
     }
 
     public void setVoid(int i, int j) {
-        objects[i][j] = null;
+        try {
+            wallsMap[i][j] = false;
+        } catch (ArrayIndexOutOfBoundsException ignored){}
     }
 
     public void setWall(int x, int y) {
-        objects[x][y] = Boolean.TRUE;
+        try {
+            wallsMap[x][y] = true;
+        } catch (ArrayIndexOutOfBoundsException ignored){}
     }
 
-    private boolean isWall(int x, int y) {
+    public boolean isWall(int x, int y) {
         try {
-            return objects[x][y] instanceof Boolean;
+            return wallsMap[x][y];
         } catch (ArrayIndexOutOfBoundsException e) {
             return false;
         }
     }
 
-    private boolean isEntity(int x, int y) {
-        try {
-            return objects[x][y] instanceof Entity;
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return false;
-        }
-    }
-
-    /**
-     * Since we want to move an entity in the world,
-     * we are facing a problem :
-     * if an 2x1 entity go left (or right), he won't be able
-     * because his left location will be free, certainly,
-     * but not for its right part.
-     * So we'll ignore if the entity is colling with itself.
-     */
-
-    public boolean isCollisionOnBox(Entity entity, int x, int y, int width, int height) {
-        for(int i = x; i < x + width; i++) {
-            for(int j = y; j < y + height; j++) {
-                if (isWall(i, j) ||
-                        (isEntity(i, j) && ! entity.equals(objects[i][j])))
-                    return true;
+    public boolean isWall(Rectangle rectangle) {
+        for(int i = (int) rectangle.x; i < rectangle.x + rectangle.width; i++) {
+            for(int j = (int) rectangle.y; j < rectangle.y + rectangle.height; j++) {
+                if (wallsMap[i][j]) return true;
             }
         }
+
         return false;
+    }
+
+    public Entity getEntities(int x, int y) {
+        for (Entity entity : entities) {
+            for (int i = entity.getX(); i < entity.getX() + entity.getWidth(); i++) {
+                for (int j = entity.getY(); j < entity.getY() + entity.getHeight(); j++) {
+                    if (i == x && j == y) {
+                        return entity;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public List<Entity> getEntities(Rectangle rectangle) {
+
+        List<Entity> colliding = new ArrayList<>();
+
+        for (Entity entity : entities) {
+            if (rectangle.overlaps(entity.getRectangle(new Rectangle()))) {
+                colliding.add(entity);
+            }
+        }
+
+        return colliding;
     }
 
     public final Entity getEntityByName(String name) {
@@ -130,4 +118,5 @@ public class World {
         }
         return null;
     }
+
 }

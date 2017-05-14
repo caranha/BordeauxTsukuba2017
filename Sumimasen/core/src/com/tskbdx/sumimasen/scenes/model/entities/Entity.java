@@ -1,5 +1,6 @@
 package com.tskbdx.sumimasen.scenes.model.entities;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
@@ -71,17 +72,16 @@ public abstract class Entity extends Observable {
      * in front of the entity
      */
     public void tryInteract() {
-        List<Object> neighbors = getInFrontOfNeighbors();
-        for (Object neighbour : neighbors) {
-            if (neighbour instanceof Entity) {
+        List<Entity> neighbors = getInFrontOfNeighbors();
+        for (Entity neighbour : neighbors) {
+            if (neighbour != null) {
 
-                Entity entity = (Entity) neighbour;
-
-                if (entity.getInteraction() != null) {
+                if (neighbour.isInteractable()) {
                     // change target direction to face this
-                    entity.setDirection(getOpposite(getLastDirection()));
-                    entity.notifyObservers();
-                    entity.getInteraction().start();
+                    neighbour.setDirection(getOpposite(getLastDirection()));
+                    neighbour.setChanged();
+                    neighbour.notifyObservers();
+                    neighbour.getInteraction().start();
                 }
 
                 return;
@@ -90,26 +90,32 @@ public abstract class Entity extends Observable {
         System.out.println("Nobody to interact with !");
     }
 
-    private List<Object> getInFrontOfNeighbors() {
-        List<Object> neighbors = new ArrayList<>();
+    private List<Entity> getInFrontOfNeighbors() {
+        List<Entity> neighbors = new ArrayList<>();
+
         switch (getLastDirection()) {
             case WEST:
-                for (int j = getY(); j != getY() + getHeight(); ++j)
-                    neighbors.add(world.get(getX() - 1, j));
+                for (int j = getY(); j != getY() + getHeight(); ++j) {
+                    neighbors.add(world.getEntities(getX() - 1, j));
+                }
                 break;
             case EAST:
-                for (int j = getY(); j != getY() + getHeight(); ++j)
-                    neighbors.add(world.get(getX() + getWidth() + 1, j));
+                for (int j = getY(); j != getY() + getHeight(); ++j) {
+                    neighbors.add(world.getEntities(getX() + getWidth() + 1, j));
+                }
                 break;
             case NORTH:
-                for (int i = getX(); i != getX() + getWidth(); ++i)
-                    neighbors.add(world.get(i, getY() + getHeight()));
+                for (int i = getX(); i != getX() + getWidth(); ++i) {
+                    neighbors.add(world.getEntities(i, getY() + getHeight()));
+                }
                 break;
             case SOUTH:
-                for (int i = getX(); i != getX() + getWidth(); ++i)
-                    neighbors.add(world.get(i, getY() - 1));
+                for (int i = getX(); i != getX() + getWidth(); ++i) {
+                    neighbors.add(world.getEntities(i, getY() - 1));
+                }
                 break;
         }
+
         return neighbors;
     }
 
@@ -123,10 +129,11 @@ public abstract class Entity extends Observable {
     }
 
     public void moveTo(int x, int y) {
-        world.setEntityLocation(this, null);
         setX(x);
         setY(y);
-        world.setEntityLocation(this, this);
+
+        setChanged();
+        notifyObservers();
     }
 
     public int getY() {
@@ -251,5 +258,9 @@ public abstract class Entity extends Observable {
     public void store(Entity entity) {
         stored.add(entity);
         setChanged();
+    }
+
+    public Rectangle getRectangle(Rectangle rectangle) {
+        return rectangle.set(x, y, width, height);
     }
 }
