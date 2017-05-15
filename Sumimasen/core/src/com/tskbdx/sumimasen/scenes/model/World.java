@@ -21,7 +21,7 @@ public class World {
 
     private boolean wallsMap[][];
 
-    private List<Entity> entities = new ArrayList<>();
+    private final List<Entity> entities;
 
     private Map<String, Entity> entityByName = new HashMap<>();
 
@@ -33,12 +33,21 @@ public class World {
                 setVoid(i, j);
             }
         }
+
+        entities = new ArrayList<>();
+                //Collections.synchronizedList(new ArrayList<>());
+        entities.clear();
     }
 
     public void update(float dt) {
-        for (Entity entity : entities) {
-            entity.update(dt);
-        }
+        //synchronized (entities) {
+            //entities.forEach(entity -> entity.update(dt));
+        //} don't work even if it has to (i let this comment as a reminder)
+        entities.forEach(entity -> { // Cheap fix substitution
+            if (entity != null) {
+                entity.update(dt);
+            }
+        });
     }
 
     public void addEntity(Entity entity) {
@@ -50,9 +59,11 @@ public class World {
 
     public void removeEntity(Entity entity) {
         entity.setWorld(null);
-
         entityByName.remove(entity.getName());
-       // entities.remove(entity);
+        //synchronized (entities) {
+           // entities.removeIf(o -> o.equals(entity));
+        //}
+        entities.set(entities.indexOf(entity), null);
     }
 
     public void setVoid(int i, int j) {
@@ -87,10 +98,12 @@ public class World {
 
     public Entity getEntity(int x, int y) {
         for (Entity entity : entities) {
-            for (int i = entity.getX(); i < entity.getX() + entity.getWidth(); i++) {
-                for (int j = entity.getY(); j < entity.getY() + entity.getHeight(); j++) {
-                    if (i == x && j == y) {
-                        return entity;
+            if (entity != null) {
+                for (int i = entity.getX(); i < entity.getX() + entity.getWidth(); i++) {
+                    for (int j = entity.getY(); j < entity.getY() + entity.getHeight(); j++) {
+                        if (i == x && j == y) {
+                            return entity;
+                        }
                     }
                 }
             }
@@ -104,7 +117,8 @@ public class World {
         List<Entity> colliding = new ArrayList<>();
 
         for (Entity entity : entities) {
-            if (rectangle.overlaps(entity.getRectangle(new Rectangle()))) {
+            if (entity != null &&
+                    rectangle.overlaps(entity.getRectangle(new Rectangle()))) {
                 colliding.add(entity);
             }
         }

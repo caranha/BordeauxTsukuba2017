@@ -7,9 +7,11 @@ package com.tskbdx.sumimasen.scenes.view.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.utils.Disposable;
 import com.tskbdx.sumimasen.scenes.model.entities.Inventory;
 import com.tskbdx.sumimasen.scenes.model.entities.SceneObject;
+import com.tskbdx.sumimasen.scenes.view.Tween;
 
 import java.util.*;
 
@@ -23,9 +25,7 @@ import static com.tskbdx.sumimasen.Sumimasen.getAssetManager;
 final class InventoryRenderer implements Observer, Disposable {
 
     private static final String FOLDER = "images/";
-    private static final float SIZE = 50.f;
-    private static final float PADDING = 10.f;
-    private final Map<SceneObject, Texture> textures = new HashMap<>();
+    private final Map<SceneObject, Slot> textures = new HashMap<>();
     private final Set<SceneObject> viewInventory;
     private final Set<SceneObject> modelInventory;
 
@@ -42,8 +42,8 @@ final class InventoryRenderer implements Observer, Disposable {
         if (modelInventory.size() > viewInventory.size()) {
             difference = getDifference(modelInventory, viewInventory);
             for (SceneObject object : difference) {
-                textures.put(object,
-                        getAssetManager().get(FOLDER + object.getName() + ".png"));
+                Texture texture = getAssetManager().get(FOLDER + object.getName() + ".png", Texture.class);
+                textures.put(object, new Slot(texture, textures.size()));
             }
         } else {
             difference = getDifference(viewInventory, modelInventory);
@@ -61,18 +61,52 @@ final class InventoryRenderer implements Observer, Disposable {
 
     public void render(Batch screenBatch) {
         screenBatch.setColor(WHITE);
-        int i = 0;
 
-        for (Map.Entry<SceneObject, Texture> entry : textures.entrySet()) {
-            screenBatch.draw(entry.getValue(), PADDING + i++ * SIZE,
-                    Gdx.graphics.getHeight() - SIZE - PADDING, SIZE, SIZE);
+        for (Map.Entry<SceneObject, Slot> entry : textures.entrySet()) {
+            Slot slot = entry.getValue();
+            screenBatch.draw(slot.texture, slot.x(), slot.y(), slot.size(), slot.size());
         }
     }
 
     @Override
     public void dispose() {
-        for (Map.Entry<SceneObject, Texture> entry : textures.entrySet()) {
+        for (Map.Entry<SceneObject, Slot> entry : textures.entrySet()) {
             entry.getValue().dispose();
+        }
+    }
+
+    private class Slot implements Disposable {
+        static final float PADDING = 10.f;
+        static final float SIZE = 50.f;
+        final Texture texture;
+        int index;
+        private Tween tween = new Tween(Interpolation.bounceOut);
+
+        Slot(Texture texture, int index) {
+            this.texture = texture;
+            this.index = index;
+            tween.playWith(0, 1, 1);
+        }
+
+        float x() {
+            return PADDING + index * SIZE + interpolationOffset();
+        }
+
+        float y() {
+            return Gdx.graphics.getHeight() - SIZE - PADDING + interpolationOffset();
+        }
+
+        float size() {
+            return SIZE * tween.getInterpolation();
+        }
+
+        private float interpolationOffset() {
+            return (1 - tween.getInterpolation()) * SIZE / 2;
+        }
+
+        @Override
+        public void dispose() {
+            texture.dispose();
         }
     }
 }
