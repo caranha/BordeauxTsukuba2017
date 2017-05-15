@@ -109,6 +109,9 @@ public class Tween {
      * @return progression value between 0 and 1.
      */
     private float progress() {
+        if (duration + delay == 0) {
+            return 0;
+        }
         return (currentPosition + delayTimer) / (duration + delay);
     }
 

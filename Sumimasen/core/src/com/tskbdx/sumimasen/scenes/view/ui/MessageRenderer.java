@@ -28,7 +28,7 @@ import static com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer.TILE_SIZE
 
 /**
  * When a entity talk, display a chat bubble
- * If he talks alone, this bubble appear above him
+ * If he talks alone, this bubble scaleTween above him
  * Else, it shows in the other side of his interlocutor
  *
  * Public method :

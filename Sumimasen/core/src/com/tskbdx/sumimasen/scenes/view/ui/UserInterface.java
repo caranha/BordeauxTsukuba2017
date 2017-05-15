@@ -41,7 +41,6 @@ public class UserInterface extends Stage implements Disposable {
 
     @Override
     public void draw() {
-        super.draw();
         getBatch().begin();
         messageRenderers.forEach(message -> message.render(getBatch()));
         inventoryRenderer.render(getBatch());

@@ -41,22 +41,32 @@ final class InventoryRenderer implements Observer, Disposable {
         assert modelInventory.size() != viewInventory.size();
         Collection<SceneObject> difference;
         if (modelInventory.size() > viewInventory.size()) {
+            /*
+             * There are more in the model than in the view.
+              * Let's add some items here.
+             */
             difference = getDifference(modelInventory, viewInventory);
             for (SceneObject object : difference) {
                 Texture texture = getAssetManager().get(FOLDER + object.getName() + ".png", Texture.class);
-                Slot slot = new Slot(texture, slots);
+                Slot slot = new Slot(texture, slots.size());
                 textures.put(object, slot);
                 slots.add(slot);
                 viewInventory.add(object);
             }
         } else {
+            /*
+             * There are less in the model than in the view.
+              * Let's remove some items here.
+             */
             difference = getDifference(viewInventory, modelInventory);
             for (SceneObject object : difference) {
                 slots.remove(textures.get(object));
                 textures.remove(object);
                 viewInventory.remove(object);
+                for (int index = 0 ; index != slots.size() ; ++index) {
+                    slots.get(index).moveTo(index);
+                }
             }
-
         }
     }
 
@@ -87,29 +97,38 @@ final class InventoryRenderer implements Observer, Disposable {
         static final float PADDING = 10.f;
         static final float SIZE = 50.f;
         final Texture texture;
-        private final List slots;
-        private Tween tween = new Tween(Interpolation.bounceOut);
+        final Tween scaleTween = new Tween(Interpolation.bounceOut);
+        final Tween positionTween = new Tween(Interpolation.smooth);
+        float position;
 
-        Slot(Texture texture, List slots) {
+        Slot(Texture texture, float startPosition) {
             this.texture = texture;
-            this.slots = slots;
-            tween.playWith(0, 1, 1);
+            position = startPosition;
+            scaleTween.playWith(0, 1, 1);
+            System.out.println(position);
         }
 
         float x() {
-            return (PADDING + SIZE) * slots.indexOf(this) + PADDING + interpolationOffset();
+            return (PADDING + SIZE) * (position + positionInterpolation())
+                    + PADDING + scaleInterpolation();
         }
 
         float y() {
-            return Gdx.graphics.getHeight() - SIZE - PADDING + interpolationOffset();
+            return Gdx.graphics.getHeight() - SIZE - PADDING + scaleInterpolation();
         }
 
         float size() {
-            return SIZE * tween.getInterpolation();
+            return SIZE * scaleTween.getInterpolation();
         }
 
-        private float interpolationOffset() {
-            return (1 - tween.getInterpolation()) * SIZE / 2;
+        float scaleInterpolation() {
+            return (1 - scaleTween.getInterpolation()) * SIZE / 2;
+        }
+
+        float positionInterpolation() { return positionTween.getInterpolation(); }
+
+        void moveTo(int newPosition) {
+            positionTween.playWith(position + positionInterpolation(), newPosition, 1);
         }
 
         @Override

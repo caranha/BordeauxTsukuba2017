@@ -48,7 +48,7 @@ public class BasicInputProcessor implements InputProcessor{
         associate(keyDownCommands, () -> player.tryInteract(),
                 ENTER, SPACE);
 
-        System.out.println("Associating M with inventory random remove for test");
+        System.out.println("Associating M key with inventory random remove for test");
         associate(keyDownCommands, () -> player.inventoryRandomRemove(), M);
     }
 
