@@ -28,7 +28,7 @@ public abstract class Entity extends Observable {
     private boolean isInteracting = false;
     private Entity interactingWith = null;
 
-    private List<Entity> stored = new ArrayList<>();
+    private Inventory inventory = new Inventory();
 
     /**
      * Message
@@ -87,7 +87,6 @@ public abstract class Entity extends Observable {
                 return;
             }
         }
-        System.out.println("Nobody to interact with !");
     }
 
     private List<Entity> getInFrontOfNeighbors() {
@@ -96,22 +95,22 @@ public abstract class Entity extends Observable {
         switch (getLastDirection()) {
             case WEST:
                 for (int j = getY(); j != getY() + getHeight(); ++j) {
-                    neighbors.add(world.getEntities(getX() - 1, j));
+                    neighbors.add(world.getEntity(getX() - 1, j));
                 }
                 break;
             case EAST:
                 for (int j = getY(); j != getY() + getHeight(); ++j) {
-                    neighbors.add(world.getEntities(getX() + getWidth() + 1, j));
+                    neighbors.add(world.getEntity(getX() + getWidth() + 1, j));
                 }
                 break;
             case NORTH:
                 for (int i = getX(); i != getX() + getWidth(); ++i) {
-                    neighbors.add(world.getEntities(i, getY() + getHeight()));
+                    neighbors.add(world.getEntity(i, getY() + getHeight()));
                 }
                 break;
             case SOUTH:
                 for (int i = getX(); i != getX() + getWidth(); ++i) {
-                    neighbors.add(world.getEntities(i, getY() - 1));
+                    neighbors.add(world.getEntity(i, getY() - 1));
                 }
                 break;
         }
@@ -224,6 +223,7 @@ public abstract class Entity extends Observable {
         message.setTimeToAnswer(timeToAnswer);
         message.setTimeToUnderstand(timeToUnderstand);
         message.setReceiver(receiver);
+        receiver.setChanged();
         setChanged();
     }
 
@@ -256,11 +256,15 @@ public abstract class Entity extends Observable {
     }
 
     public void store(Entity entity) {
-        stored.add(entity);
+        inventory.store((SceneObject) entity);
         setChanged();
     }
 
     public Rectangle getRectangle(Rectangle rectangle) {
         return rectangle.set(x, y, width, height);
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 }

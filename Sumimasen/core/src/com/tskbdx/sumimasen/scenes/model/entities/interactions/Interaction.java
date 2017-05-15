@@ -4,14 +4,8 @@ package com.tskbdx.sumimasen.scenes.model.entities.interactions;
  * Created by viet khang on 08/05/2017.
  */
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
-import com.tskbdx.sumimasen.GameScreen;
-import com.tskbdx.sumimasen.scenes.inputprocessors.BasicInputProcessor;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
-import com.tskbdx.sumimasen.scenes.model.entities.movements.Walk;
 
 /**
  * Interaction is a callback always linked
@@ -39,11 +33,11 @@ public abstract class Interaction {
     }
 
     public void start() {
-        active.notifyObservers(getClass());
-        passive.notifyObservers(getClass());
-
         active.setInteracting(true);
         passive.setInteracting(true);
+
+        active.setInteraction(this);
+        passive.setInteraction(this);
 
         activeMovement = active.getMovement();
         passiveMovement = passive.getMovement();
@@ -53,6 +47,9 @@ public abstract class Interaction {
 
         active.setInteractingWith(passive);
         passive.setInteractingWith(active);
+
+        active.notifyObservers(getClass());
+        passive.notifyObservers(getClass());
 
         started = true;
     }

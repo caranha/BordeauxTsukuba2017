@@ -24,7 +24,7 @@ public class EntityRenderer implements Observer {
 
     private static String IMAGES_RES_FOLDER = "images/";
 
-    static int TILE_SIZE = 8;
+    public static int TILE_SIZE = 8;
 
     private Texture spritesheet;
     private Entity entity;

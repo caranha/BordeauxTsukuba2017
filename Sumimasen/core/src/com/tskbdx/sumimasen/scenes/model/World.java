@@ -51,8 +51,8 @@ public class World {
     public void removeEntity(Entity entity) {
         entity.setWorld(null);
 
-        entityByName.remove(entity);
-        entities.remove(entity);
+        entityByName.remove(entity.getName());
+       // entities.remove(entity);
     }
 
     public void setVoid(int i, int j) {
@@ -85,7 +85,7 @@ public class World {
         return false;
     }
 
-    public Entity getEntities(int x, int y) {
+    public Entity getEntity(int x, int y) {
         for (Entity entity : entities) {
             for (int i = entity.getX(); i < entity.getX() + entity.getWidth(); i++) {
                 for (int j = entity.getY(); j < entity.getY() + entity.getHeight(); j++) {
@@ -99,7 +99,7 @@ public class World {
         return null;
     }
 
-    public List<Entity> getEntities(Rectangle rectangle) {
+    public List<Entity> getEntity(Rectangle rectangle) {
 
         List<Entity> colliding = new ArrayList<>();
 
@@ -119,4 +119,7 @@ public class World {
         return null;
     }
 
+    public List<Entity> getEntities() {
+        return entities;
+    }
 }

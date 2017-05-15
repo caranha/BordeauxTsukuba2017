@@ -1,6 +1,5 @@
 package com.tskbdx.sumimasen.scenes.view;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -8,11 +7,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRendererDrawOrderer;
-import com.tskbdx.sumimasen.scenes.view.entities.InventoryRenderer;
-import com.tskbdx.sumimasen.scenes.view.entities.MessageRenderer;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Created by Sydpy on 4/28/17.
@@ -21,9 +17,6 @@ import java.util.Collections;
 public class WorldRenderer extends OrthogonalTiledMapRenderer {
 
     private ArrayList<EntityRenderer> entityRenderers = new ArrayList<EntityRenderer>();
-    private ArrayList<MessageRenderer> messageRenderers = new ArrayList<>();
-    private InventoryRenderer inventoryRenderer;
-    private Batch screenBatch = new SpriteBatch();
 
     public WorldRenderer(TiledMap map) {
         super(map, new SpriteBatch());
@@ -37,15 +30,9 @@ public class WorldRenderer extends OrthogonalTiledMapRenderer {
         entityRenderers.remove(entityRenderer);
     }
 
-    public void addMessageRenderer(MessageRenderer messageRenderer) { messageRenderers.add(messageRenderer); }
-
-    public void setInventoryRenderer(InventoryRenderer inventoryRenderer) {
-        this.inventoryRenderer = inventoryRenderer;
-    }
-
     @Override
     public void render() {
-        Collections.sort(entityRenderers, new EntityRendererDrawOrderer());
+        entityRenderers.sort(new EntityRendererDrawOrderer());
 
         beginRender();
 
@@ -63,12 +50,5 @@ public class WorldRenderer extends OrthogonalTiledMapRenderer {
         }
 
         endRender();
-
-       screenBatch.begin();
-        for (MessageRenderer messageRenderer : messageRenderers) {
-            messageRenderer.render(screenBatch);
-        }
-        inventoryRenderer.render(screenBatch);
-        screenBatch.end();
     }
 }

@@ -23,7 +23,7 @@ public class StartState implements StoryState {
 
     @Override
     public void process(World world) {
-        System.out.println(description());
+
     }
 
     @Override

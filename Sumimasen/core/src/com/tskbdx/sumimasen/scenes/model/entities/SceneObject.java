@@ -9,4 +9,5 @@ public class SceneObject extends Entity {
     public SceneObject(int x, int y, int width, int height) {
         super(x, y, width, height);
     }
+
 }

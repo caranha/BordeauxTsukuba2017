@@ -17,8 +17,6 @@ import com.tskbdx.sumimasen.scenes.story.introduction.StartState;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.CollisionSound;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
-import com.tskbdx.sumimasen.scenes.view.entities.InventoryRenderer;
-import com.tskbdx.sumimasen.scenes.view.entities.MessageRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.animator.DirectionSpriteSheetAnimator;
 
 import java.util.List;
@@ -49,7 +47,6 @@ public class MapLoader {
 
             Entity entity;
             EntityRenderer entityRenderer;
-            MessageRenderer messageRenderer;
 
             if (entityNames.contains(name)) {
 
@@ -78,7 +75,6 @@ public class MapLoader {
 
                 entity.addObserver(new CollisionSound("collision.mp3"));
                 entityRenderer = new EntityRenderer(entity, imagefile, Sumimasen.getAssetManager());
-                messageRenderer = new MessageRenderer(entity.getMessage());
 
                 if (name.equals("player")) {
                     entityRenderer.setAnimator(
@@ -87,15 +83,11 @@ public class MapLoader {
 
                 world.addEntity(entity);
                 worldRenderer.addEntityRenderer(entityRenderer);
-                worldRenderer.addMessageRenderer(messageRenderer);
             }
 
             object.setVisible(false);
         }
 
-        InventoryRenderer inventoryRenderer = new InventoryRenderer();
-        getPlayer().addObserver(inventoryRenderer);
-        worldRenderer.setInventoryRenderer(inventoryRenderer);
         getPlayer().addObserver(new StoryTeller(world, new StartState()));
     }
 

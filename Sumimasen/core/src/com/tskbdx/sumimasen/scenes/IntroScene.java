@@ -1,27 +1,29 @@
 package com.tskbdx.sumimasen.scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.tskbdx.sumimasen.scenes.inputprocessors.BasicInputProcessor;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
-import com.tskbdx.sumimasen.scenes.story.StoryTeller;
-import com.tskbdx.sumimasen.scenes.story.introduction.StartState;
 import com.tskbdx.sumimasen.scenes.view.SmoothCamera;
 import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
+import com.tskbdx.sumimasen.scenes.view.ui.UserInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+import static com.tskbdx.sumimasen.GameScreen.getPlayer;
+
+/*
  * Created by Sydpy on 4/27/17.
  */
 public class IntroScene implements Scene {
 
-    private static float SCALE_FACTOR = 4.0f;
+    private final static float SCALE_FACTOR = 4.0f;
     private final Player player;
 
     public static SmoothCamera camera;
@@ -29,7 +31,11 @@ public class IntroScene implements Scene {
     private World world;
     private WorldRenderer worldRenderer;
 
+    private UserInterface userInterface;
+
     private List<String> entityNames = new ArrayList<>();
+
+    private InputProcessor basicProcessor = new BasicInputProcessor();
 
     public IntroScene(Player player) {
         this.player = player;
@@ -51,7 +57,8 @@ public class IntroScene implements Scene {
         MapLoader.loadEntities(tiledMap, world, worldRenderer, entityNames);
         MapLoader.loadWalls(tiledMap, world, worldRenderer);
 
-        Gdx.input.setInputProcessor(new BasicInputProcessor());
+        userInterface = new UserInterface(world, getPlayer());
+        setInputProcessor(basicProcessor);
 
         camera = new SmoothCamera(1.f);
         camera.setToOrtho(false, 800, 480);
@@ -66,6 +73,17 @@ public class IntroScene implements Scene {
         world.update(dt);
         camera.translate(player.getX()*8 - camera.position.x, player.getY()*8 - camera.position.y);
         camera.update();
+
+        userInterface.act(dt);
+
+        setInputProcessor(player.isInteracting() ? userInterface : basicProcessor);
+    }
+
+    private void setInputProcessor(InputProcessor inputProcessor) {
+        if (Gdx.input.getInputProcessor() != inputProcessor) {
+            // we want to compare references
+            Gdx.input.setInputProcessor(inputProcessor);
+        }
     }
 
     @Override
@@ -75,6 +93,8 @@ public class IntroScene implements Scene {
 
         worldRenderer.setView(camera);
         worldRenderer.render();
+
+        userInterface.draw();
     }
 
     @Override
@@ -89,6 +109,13 @@ public class IntroScene implements Scene {
 
     @Override
     public void dispose() {
+        userInterface.dispose();
+    }
 
+    @Override
+    public void resize(int width, int height) {
+        //userInterface.getViewport().setScreenSize(width, height);
+        //userInterface.getViewport().update(width, height, true);
+        // to do
     }
 }

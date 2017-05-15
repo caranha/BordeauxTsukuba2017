@@ -16,4 +16,6 @@ public interface Scene {
     Scene getNextScene();
 
     void dispose();
+
+    void resize(int width, int height);
 }

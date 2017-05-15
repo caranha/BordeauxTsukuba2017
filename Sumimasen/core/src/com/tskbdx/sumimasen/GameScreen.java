@@ -8,13 +8,13 @@ import com.tskbdx.sumimasen.scenes.IntroScene;
 import com.tskbdx.sumimasen.scenes.Scene;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
 import com.tskbdx.sumimasen.scenes.story.StoryTeller;
+import com.tskbdx.sumimasen.scenes.view.ui.UserInterface;
 
 /**
  * Created by Sydpy on 4/27/17.
  */
 public class GameScreen implements Screen {
 
-    public static Stage gui;
     private final Sumimasen game;
 
     private static final Player player = new Player(0, 0 ,0, 0);
@@ -42,10 +42,6 @@ public class GameScreen implements Screen {
         currentScene.render(game.getBatch());
         game.getBatch().end();
 
-        if (gui != null) {
-            gui.act(delta);
-            gui.draw();
-        }
 
         if (currentScene.isFinished()) {
             Scene nextScene = currentScene.getNextScene();
@@ -59,7 +55,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        currentScene.resize(width, height);
     }
 
     @Override
@@ -80,7 +76,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         currentScene.dispose();
-        gui.dispose();
     }
 
     public static Player getPlayer() {

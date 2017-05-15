@@ -1,9 +1,7 @@
 package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
 import com.badlogic.gdx.Gdx;
-import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.inputprocessors.BasicInputProcessor;
-import com.tskbdx.sumimasen.scenes.inputprocessors.DialogueInputProcessor;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Message;
 import org.w3c.dom.Document;
@@ -15,8 +13,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +43,6 @@ public class Dialogue extends Interaction {
         active.setMovement(null);
         passive.setMovement(null);
 
-        Gdx.input.setInputProcessor(new DialogueInputProcessor(this));
         printCurrentState();
     }
 
@@ -61,7 +56,8 @@ public class Dialogue extends Interaction {
             talkClock -= Gdx.graphics.getDeltaTime();
             if (talkClock < 0.f) {
                 talkClock = 0.f;
-                ((DialogueInputProcessor) Gdx.input.getInputProcessor()).start();
+                active.notifyObservers(this);
+                passive.notifyObservers(this);
             }
         }
         if (answerClock != 0.f) {
@@ -73,7 +69,7 @@ public class Dialogue extends Interaction {
         }
     }
 
-    public void pickAnswer(int index) {
+    public void pickAnswer(int index) { // passive entity answers
         try {
             DialogueAnswer dialogueAnswer = currentExchange.getAnswers().get(index);
             passive.setMessage(dialogueAnswer.getText(), 3.5f, 0.5f, active);
@@ -88,8 +84,8 @@ public class Dialogue extends Interaction {
                 currentExchange = exchanges.get(dialogueAnswer.getNextExchange());
             }
 
-            ((DialogueInputProcessor) Gdx.input.getInputProcessor()).update();
-            ((DialogueInputProcessor) Gdx.input.getInputProcessor()).stop();
+            active.notifyObservers();
+            passive.notifyObservers();
             answerClock = message.getTimeToUnderstand();
         } catch (IndexOutOfBoundsException ignored) {
         }
@@ -99,20 +95,13 @@ public class Dialogue extends Interaction {
     public void end() {
         super.end();
         active.setInteraction(new Dialogue(active, getPlayer(), "default.xml"));
-        GameScreen.gui = null;
-        Gdx.input.setInputProcessor(new BasicInputProcessor());
     }
 
-    private void printCurrentState() {
+    private void printCurrentState() { // active entity talks
         active.setMessage(currentExchange.getText(), 2.f, 0.f, passive);
         active.getMessage().notifyObservers();
 
         List<DialogueAnswer> answers = currentExchange.getAnswers();
-
-        System.out.println(currentExchange.getText());
-        for (int i = 0; i < answers.size(); i++) {
-            System.out.println((i + 1) + "\t" + answers.get(i).getText());
-        }
 
         if (! answers.isEmpty()) {
             talkClock = active.getMessage().getTimeToUnderstand();

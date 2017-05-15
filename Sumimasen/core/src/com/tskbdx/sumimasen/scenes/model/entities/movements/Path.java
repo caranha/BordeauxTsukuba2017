@@ -74,7 +74,7 @@ public class Path extends Movement {
         Rectangle rect = entity.getRectangle(new Rectangle());
         rect.setPosition(newX, newY);
 
-        List<Entity> entityColliding = entity.getWorld().getEntities(rect);
+        List<Entity> entityColliding = entity.getWorld().getEntity(rect);
         entityColliding.remove(entity);
 
         if (!entity.getWorld().isWall(rect)

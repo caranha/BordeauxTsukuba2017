@@ -13,10 +13,10 @@ public class NpcDisappearState implements StoryState {
 
     @Override
     public void process(World world) {
-        System.out.println(description());
+
     }
 
-    @Override 
+    @Override
     public Map<Class<? extends Interaction>, StoryState> next() {
         return null;
     }

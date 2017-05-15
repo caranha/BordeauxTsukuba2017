@@ -27,7 +27,6 @@ public class NpcHappyState implements StoryState {
         Entity entity = world.getEntityByName("entity");
         assert entity != null;
         entity.setInteraction(new GetPickedUp(entity, getPlayer()));
-        System.out.println(description());
     }
 
     public Map<Class<? extends Interaction>, StoryState> next() {

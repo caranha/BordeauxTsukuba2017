@@ -23,11 +23,6 @@ public final class StoryTeller implements Observer {
     private StoryState state;
 
     public StoryTeller(World world, StoryState firstState) {
-        System.out.println("(debug) I'm the story teller.\n" +
-                "I observe Player interactions.\n" +
-                "I'll change the current story state according to it,\n" +
-                "it's the state itself that will change the model\n" +
-                "according of its predefined behavior.");
         this.world = world;
         state = firstState;
         tellStory();
@@ -38,10 +33,7 @@ public final class StoryTeller implements Observer {
         if (arg instanceof Class) {
             Class interactionClass = (Class) arg;
             if (Interaction.class.isAssignableFrom(interactionClass)) {
-                System.out.println("\nInteraction : " + interactionClass.getSimpleName());
                 if (changeState(interactionClass)) {
-                    System.out.println("State changed to "
-                            + state.getClass().getSimpleName() + "\n");
                     tellStory();
                 }
             }
@@ -49,7 +41,6 @@ public final class StoryTeller implements Observer {
     }
 
     private void tellStory() {
-        System.out.println("Let's talk about " + state.getClass().getSimpleName() + " :\n");
         state.process(world);
     }
 
