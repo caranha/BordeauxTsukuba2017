@@ -4,12 +4,14 @@ import com.badlogic.gdx.InputProcessor;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
+import javafx.scene.input.KeyCode;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.badlogic.gdx.Input.Keys.*;
 import static com.tskbdx.sumimasen.scenes.model.entities.Direction.*;
+import static javafx.scene.input.KeyCode.NUMPAD0;
 
 /**
  * Created by Sydpy on 4/27/17.
@@ -46,17 +48,8 @@ public class BasicInputProcessor implements InputProcessor{
         associate(keyDownCommands, () -> player.tryInteract(),
                 ENTER, SPACE);
 
-        //Just for test
-        for(int i = 0; i < 10; i++) {
-            int finalI = i;
-            associate(keyDownCommands, () -> {
-                if (player.isInteracting()) {
-                    if (player.getInteractingWith().getInteraction() instanceof Dialogue) {
-                        ((Dialogue) player.getInteractingWith().getInteraction()).pickAnswer(finalI);
-                    }
-                }
-            }, i + 8);
-        }
+        System.out.println("Associating M with inventory random remove for test");
+        associate(keyDownCommands, () -> player.inventoryRandomRemove(), M);
     }
 
     private void initKeyUp() {

@@ -10,4 +10,8 @@ public class Player extends Entity {
         super(x, y, width, height);
         setMovement(new Walk(this));
     }
+
+    public void inventoryRandomRemove() {
+        getInventory().randomRemove();
+    }
 }

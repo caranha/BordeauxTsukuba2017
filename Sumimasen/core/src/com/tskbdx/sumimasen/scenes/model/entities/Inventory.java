@@ -25,4 +25,18 @@ public class Inventory extends Observable {
     public final Set<SceneObject> getObjects() {
         return objects;
     }
+
+    void randomRemove() { //testing remove (press M)
+        try {
+            int random = new Random().nextInt(objects.size()), index = 0;
+            for (SceneObject object: objects) {
+                if (random == index++) {
+                    objects.remove(object);
+                    setChanged();
+                    break;
+                }
+            }
+            notifyObservers();
+        } catch (Exception ignored) {}
+    }
 }

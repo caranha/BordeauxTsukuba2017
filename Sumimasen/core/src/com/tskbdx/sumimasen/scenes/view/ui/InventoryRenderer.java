@@ -49,6 +49,7 @@ final class InventoryRenderer implements Observer, Disposable {
         } else {
             difference = getDifference(viewInventory, modelInventory);
             for (SceneObject object : difference) {
+                System.out.println(object);
                 textures.remove(object);
                 viewInventory.remove(object);
             }
@@ -91,7 +92,7 @@ final class InventoryRenderer implements Observer, Disposable {
         }
 
         float x() {
-            return (PADDING + SIZE) * index + interpolationOffset();
+            return (PADDING + SIZE) * index + PADDING + interpolationOffset();
         }
 
         float y() {
