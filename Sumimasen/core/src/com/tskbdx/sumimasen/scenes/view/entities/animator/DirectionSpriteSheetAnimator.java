@@ -22,8 +22,6 @@ public class DirectionSpriteSheetAnimator implements Animator {
 
     private float stateTime = 0.f;
 
-    private float lastX, lastY;
-
     /**
      * @param entityRenderer Renderer to animate
      * @param notMovingFrames Number of frames for the not moving animation
@@ -77,8 +75,6 @@ public class DirectionSpriteSheetAnimator implements Animator {
         movingAnimations.put(Direction.EAST , new Animation<>(frameDuration, movingRight));
         movingAnimations.put(Direction.NONE , movingAnimations.get(Direction.SOUTH));
 
-        lastX = entityRenderer.getX();
-        lastY = entityRenderer.getY();
     }
 
     @Override
@@ -89,11 +85,8 @@ public class DirectionSpriteSheetAnimator implements Animator {
         Direction lastDirection = entityRenderer.entityLastDirection();
 
         Animation<TextureRegion> animation =
-                entityRenderer.entityDirection() != Direction.NONE ?
+                direction != Direction.NONE ?
                 movingAnimations.get(lastDirection) : notMovingAnimations.get(lastDirection);
-
-        lastX = entityRenderer.getX();
-        lastY = entityRenderer.getY();
 
         return animation.getKeyFrame(stateTime, true);
     }
