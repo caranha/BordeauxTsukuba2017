@@ -128,7 +128,9 @@ final class InventoryRenderer implements Observer, Disposable {
         float positionInterpolation() { return positionTween.getInterpolation(); }
 
         void moveTo(int newPosition) {
-            positionTween.playWith(position + positionInterpolation(), newPosition, 1);
+            //positionTween.playWith(position + positionInterpolation(), newPosition, 1);
+            // to do : an animation
+            position = newPosition;
         }
 
         @Override
