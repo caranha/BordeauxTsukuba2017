@@ -66,10 +66,9 @@ public class MapLoader {
                 Interaction interaction = null;
                 String firstInteraction = object.getProperties().get("firstInteraction", String.class);
                 if (firstInteraction != null && firstInteraction.equals("dialogue")) {
-                    interaction = new Dialogue(entity, getPlayer(),
-                            object.getProperties().get("dialogueName", String.class)); // check constructor for filename
+                    interaction = new Dialogue(object.getProperties().get("dialogueName", String.class)); // check constructor for filename
                 } else if (firstInteraction != null && firstInteraction.equals("getPickedUp")) {
-                    interaction = new GetPickedUp(entity, getPlayer());
+                    interaction = new GetPickedUp();
                 }
                 entity.setInteraction(interaction);
 

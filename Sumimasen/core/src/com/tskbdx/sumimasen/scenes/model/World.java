@@ -96,7 +96,7 @@ public class World {
         return false;
     }
 
-    public Entity getEntity(int x, int y) {
+    public Entity getEntities(int x, int y) {
         for (Entity entity : entities) {
             if (entity != null) {
                 for (int i = entity.getX(); i < entity.getX() + entity.getWidth(); i++) {
@@ -112,7 +112,7 @@ public class World {
         return null;
     }
 
-    public List<Entity> getEntity(Rectangle rectangle) {
+    public List<Entity> getEntities(Rectangle rectangle) {
 
         List<Entity> colliding = new ArrayList<>();
 

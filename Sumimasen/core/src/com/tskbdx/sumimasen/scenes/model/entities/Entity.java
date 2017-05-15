@@ -81,7 +81,7 @@ public abstract class Entity extends Observable {
                     neighbour.setDirection(getOpposite(getLastDirection()));
                     neighbour.setChanged();
                     neighbour.notifyObservers();
-                    neighbour.getInteraction().start();
+                    neighbour.getInteraction().start(neighbour, this);
                 }
 
                 return;
@@ -95,22 +95,22 @@ public abstract class Entity extends Observable {
         switch (getLastDirection()) {
             case WEST:
                 for (int j = getY(); j != getY() + getHeight(); ++j) {
-                    neighbors.add(world.getEntity(getX() - 1, j));
+                    neighbors.add(world.getEntities(getX() - 1, j));
                 }
                 break;
             case EAST:
                 for (int j = getY(); j != getY() + getHeight(); ++j) {
-                    neighbors.add(world.getEntity(getX() + getWidth() + 1, j));
+                    neighbors.add(world.getEntities(getX() + getWidth() + 1, j));
                 }
                 break;
             case NORTH:
                 for (int i = getX(); i != getX() + getWidth(); ++i) {
-                    neighbors.add(world.getEntity(i, getY() + getHeight()));
+                    neighbors.add(world.getEntities(i, getY() + getHeight()));
                 }
                 break;
             case SOUTH:
                 for (int i = getX(); i != getX() + getWidth(); ++i) {
-                    neighbors.add(world.getEntity(i, getY() - 1));
+                    neighbors.add(world.getEntities(i, getY() - 1));
                 }
                 break;
         }

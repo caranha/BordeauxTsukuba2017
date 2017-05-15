@@ -1,7 +1,6 @@
 package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
 import com.badlogic.gdx.Gdx;
-import com.tskbdx.sumimasen.scenes.inputprocessors.BasicInputProcessor;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Message;
 import org.w3c.dom.Document;
@@ -17,8 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tskbdx.sumimasen.GameScreen.getPlayer;
-
 /**
  * Created by viet khang on 08/05/2017.
  */
@@ -30,18 +27,19 @@ public class Dialogue extends Interaction {
     private float talkClock = 0.f;
     private float answerClock = 0.f;
 
-    public Dialogue(Entity producer, Entity consumer, String xmlFile) {
-        super(producer, consumer);
+    private String xmlFile;
 
-        buildDialogue(FOLDER + producer.getName() + '/' + xmlFile); // by convention
-        currentExchange = exchanges.get(1);
+    public Dialogue(String xmlFile) {
+        super();
+        this.xmlFile = xmlFile;
     }
 
     @Override
-    public void start() {
-        super.start();
-        active.setMovement(null);
-        passive.setMovement(null);
+    public void start(Entity active, Entity passive) {
+        super.start(active, passive);
+
+        buildDialogue(FOLDER + active.getName() + '/' + xmlFile); // by convention
+        currentExchange = exchanges.get(1);
 
         printCurrentState();
     }
@@ -56,8 +54,6 @@ public class Dialogue extends Interaction {
             talkClock -= Gdx.graphics.getDeltaTime();
             if (talkClock < 0.f) {
                 talkClock = 0.f;
-                active.notifyObservers(this);
-                passive.notifyObservers(this);
             }
         }
         if (answerClock != 0.f) {
@@ -72,42 +68,39 @@ public class Dialogue extends Interaction {
     public void pickAnswer(int index) { // passive entity answers
         try {
             DialogueAnswer dialogueAnswer = currentExchange.getAnswers().get(index);
-            passive.setMessage(dialogueAnswer.getText(), 3.5f, 0.5f, active);
-            Message message = passive.getMessage();
+            getPassive().setMessage(dialogueAnswer.getText(), 3.5f, 0.5f, getActive());
+            Message message = getPassive().getMessage();
             message.notifyObservers();
 
             // when passive talk, active stop
-            active.setMessage("", 0.f, 0.f, passive);
-            active.getMessage().notifyObservers();
+            getActive().setMessage("", 0.f, 0.f, getPassive());
+            getActive().getMessage().notifyObservers();
 
             if (dialogueAnswer.getNextExchange() != null) {
                 currentExchange = exchanges.get(dialogueAnswer.getNextExchange());
             }
 
-            active.notifyObservers();
-            passive.notifyObservers();
             answerClock = message.getTimeToUnderstand();
-        } catch (IndexOutOfBoundsException ignored) {
-        }
+        } catch (IndexOutOfBoundsException ignored) {}
     }
 
     @Override
     public void end() {
         super.end();
-        active.setInteraction(new Dialogue(active, getPlayer(), "default.xml"));
+        getActive().setInteraction(new Dialogue("default.xml"));
     }
 
     private void printCurrentState() { // active entity talks
-        active.setMessage(currentExchange.getText(), 2.f, 0.f, passive);
-        active.getMessage().notifyObservers();
+        getActive().setMessage(currentExchange.getText(), 2.f, 0.f, getPassive());
+        getActive().getMessage().notifyObservers();
 
         List<DialogueAnswer> answers = currentExchange.getAnswers();
 
         if (! answers.isEmpty()) {
-            talkClock = active.getMessage().getTimeToUnderstand();
+            talkClock = getActive().getMessage().getTimeToUnderstand();
         } else {
-            active.setMessage(currentExchange.getText(), 2.f, 2.f, passive);
-            active.getMessage().notifyObservers();
+            getActive().setMessage(currentExchange.getText(), 2.f, 2.f, getPassive());
+            getActive().getMessage().notifyObservers();
         }
     }
 

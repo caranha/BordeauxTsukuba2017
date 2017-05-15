@@ -14,8 +14,8 @@ import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
  * -> This dynamic behavior should be stored in the active.
  */
 public abstract class Interaction {
-    final protected Entity active;
-    final protected Entity passive;
+    private Entity active;
+    private Entity passive;
 
     private boolean started = false;
     private boolean finished = false;
@@ -27,12 +27,13 @@ public abstract class Interaction {
     private Movement activeMovement;
     private Movement passiveMovement;
 
-    Interaction(Entity producer, Entity consumer) {
-        this.active = producer;
-        this.passive = consumer;
-    }
+    Interaction() {}
 
-    public void start() {
+    public void start(Entity active, Entity passive) {
+
+        this.active = active;
+        this.passive = passive;
+
         active.setInteracting(true);
         passive.setInteracting(true);
 
@@ -75,5 +76,13 @@ public abstract class Interaction {
 
     public boolean isFinished() {
         return finished;
+    }
+
+    public Entity getActive() {
+        return active;
+    }
+
+    public Entity getPassive() {
+        return passive;
     }
 }
