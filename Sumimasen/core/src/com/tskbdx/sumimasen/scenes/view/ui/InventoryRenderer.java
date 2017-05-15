@@ -44,11 +44,13 @@ final class InventoryRenderer implements Observer, Disposable {
             for (SceneObject object : difference) {
                 Texture texture = getAssetManager().get(FOLDER + object.getName() + ".png", Texture.class);
                 textures.put(object, new Slot(texture, textures.size()));
+                viewInventory.add(object);
             }
         } else {
             difference = getDifference(viewInventory, modelInventory);
             for (SceneObject object : difference) {
                 textures.remove(object);
+                viewInventory.remove(object);
             }
         }
     }
@@ -89,7 +91,7 @@ final class InventoryRenderer implements Observer, Disposable {
         }
 
         float x() {
-            return PADDING + index * SIZE + interpolationOffset();
+            return (PADDING + SIZE) * index + interpolationOffset();
         }
 
         float y() {
