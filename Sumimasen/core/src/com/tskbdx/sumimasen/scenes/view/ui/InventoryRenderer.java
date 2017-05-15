@@ -26,38 +26,43 @@ final class InventoryRenderer implements Observer, Disposable {
 
     private static final String FOLDER = "images/";
     private final Map<SceneObject, Slot> textures = new HashMap<>();
-    private final Set<SceneObject> viewInventory;
-    private final Set<SceneObject> modelInventory;
+    private final List<Slot> slots = new ArrayList<>();
+    private final List<SceneObject> viewInventory;
+    private final Collection<SceneObject> modelInventory;
 
     InventoryRenderer(Inventory inventory) {
         inventory.addObserver(this);
         modelInventory = inventory.getObjects();
-        viewInventory = new HashSet<>(modelInventory);
+        viewInventory = new ArrayList<>(modelInventory);
     }
 
     @Override
     public void update(Observable o, Object arg) {
         assert modelInventory.size() != viewInventory.size();
-        Set<SceneObject> difference;
+        Collection<SceneObject> difference;
         if (modelInventory.size() > viewInventory.size()) {
             difference = getDifference(modelInventory, viewInventory);
             for (SceneObject object : difference) {
                 Texture texture = getAssetManager().get(FOLDER + object.getName() + ".png", Texture.class);
-                textures.put(object, new Slot(texture, textures.size()));
+                Slot slot = new Slot(texture, slots);
+                textures.put(object, slot);
+                slots.add(slot);
                 viewInventory.add(object);
             }
         } else {
             difference = getDifference(viewInventory, modelInventory);
             for (SceneObject object : difference) {
-                System.out.println(object);
+                slots.remove(textures.get(object));
                 textures.remove(object);
                 viewInventory.remove(object);
             }
+
         }
     }
 
-    private Set<SceneObject> getDifference(Set<SceneObject> a, Set<SceneObject> b) {
-        Set<SceneObject> difference = new HashSet<>(a);
+    private Collection<SceneObject> getDifference(Collection<SceneObject> a,
+                                           Collection<SceneObject> b) {
+        Collection<SceneObject> difference = new HashSet<>(a);
         difference.removeAll(b);
         return difference;
     }
@@ -82,17 +87,17 @@ final class InventoryRenderer implements Observer, Disposable {
         static final float PADDING = 10.f;
         static final float SIZE = 50.f;
         final Texture texture;
-        int index;
+        private final List slots;
         private Tween tween = new Tween(Interpolation.bounceOut);
 
-        Slot(Texture texture, int index) {
+        Slot(Texture texture, List slots) {
             this.texture = texture;
-            this.index = index;
+            this.slots = slots;
             tween.playWith(0, 1, 1);
         }
 
         float x() {
-            return (PADDING + SIZE) * index + PADDING + interpolationOffset();
+            return (PADDING + SIZE) * slots.indexOf(this) + PADDING + interpolationOffset();
         }
 
         float y() {
