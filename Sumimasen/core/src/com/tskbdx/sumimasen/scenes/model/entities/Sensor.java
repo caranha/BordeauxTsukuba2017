@@ -29,6 +29,12 @@ public class Sensor extends Entity {
             onCollision.start(this, entities.get(0));
         }
 
+        if (onCollision != null
+                && onCollision.isStarted()
+                && !onCollision.isFinished()) {
+            onCollision.update();
+        }
+
     }
 
     public void setOnCollision(Interaction interaction) {
