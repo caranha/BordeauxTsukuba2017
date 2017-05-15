@@ -86,9 +86,11 @@ public class DirectionSpriteSheetAnimator implements Animator {
         stateTime += Gdx.graphics.getDeltaTime();
 
         Direction direction = entityRenderer.entityDirection();
+        Direction lastDirection = entityRenderer.entityLastDirection();
+
         Animation<TextureRegion> animation =
                 entityRenderer.entityDirection() != Direction.NONE ?
-                movingAnimations.get(direction) : notMovingAnimations.get(direction);
+                movingAnimations.get(lastDirection) : notMovingAnimations.get(lastDirection);
 
         lastX = entityRenderer.getX();
         lastY = entityRenderer.getY();

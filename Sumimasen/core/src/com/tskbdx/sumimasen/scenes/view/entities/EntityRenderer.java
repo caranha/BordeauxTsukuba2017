@@ -111,6 +111,10 @@ public class EntityRenderer implements Observer {
         return entity.getDirection();
     }
 
+    public Direction entityLastDirection() {
+        return entity.getLastDirection();
+    }
+
     public void setAnimator(Animator animator) {
         this.animator = animator;
     }
