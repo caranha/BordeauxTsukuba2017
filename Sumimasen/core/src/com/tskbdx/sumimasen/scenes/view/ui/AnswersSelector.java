@@ -3,15 +3,13 @@ package com.tskbdx.sumimasen.scenes.view.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
-import com.tskbdx.sumimasen.scenes.model.entities.interactions.DialogueAnswer;
-import com.tskbdx.sumimasen.scenes.model.entities.interactions.DialogueExchange;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue.*;
 
 import java.util.List;
 import java.util.Observable;

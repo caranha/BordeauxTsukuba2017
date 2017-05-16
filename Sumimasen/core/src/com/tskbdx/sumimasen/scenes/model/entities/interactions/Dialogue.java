@@ -23,7 +23,7 @@ import static com.tskbdx.sumimasen.scenes.utility.Utility.setTimeout;
  */
 public class Dialogue extends Interaction {
 
-    private class DialogueAnswer {
+    public class DialogueAnswer {
 
         String text = "";
         Integer nextExchange;
@@ -48,7 +48,7 @@ public class Dialogue extends Interaction {
         }
     }
 
-    private class DialogueExchange {
+    public class DialogueExchange {
         private String text ="";
 
         private List<DialogueAnswer> answers = new ArrayList<>();
