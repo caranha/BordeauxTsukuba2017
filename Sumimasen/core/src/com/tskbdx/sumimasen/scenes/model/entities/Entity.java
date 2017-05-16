@@ -58,12 +58,6 @@ public abstract class Entity extends Observable {
         if (movement != null) {
             movement.move(dt);
         }
-
-        if (interaction != null
-                && interaction.isStarted()
-                && !interaction.isFinished()) {
-            interaction.update();
-        }
     }
 
 

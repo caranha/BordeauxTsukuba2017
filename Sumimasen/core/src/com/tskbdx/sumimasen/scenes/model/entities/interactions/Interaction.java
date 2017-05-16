@@ -55,8 +55,6 @@ public abstract class Interaction {
         started = true;
     }
 
-    public abstract void update();
-
     public void end() {
         active.setInteracting(false);
         passive.setInteracting(false);

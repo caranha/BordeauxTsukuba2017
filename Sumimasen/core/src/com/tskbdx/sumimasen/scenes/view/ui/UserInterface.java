@@ -1,7 +1,5 @@
 package com.tskbdx.sumimasen.scenes.view.ui;
 
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Disposable;
@@ -29,7 +27,7 @@ public class UserInterface extends Stage implements Disposable {
         entities.forEach(worldEntity ->
                 messageRenderers.add(new MessageRenderer(worldEntity.getMessage())));
         inventoryRenderer = new InventoryRenderer(entity.getInventory());
-        textButtons = new DialogueRenderer(entity, this);
+        textButtons = new AnswersSelector(entity, this);
     }
 
     @Override

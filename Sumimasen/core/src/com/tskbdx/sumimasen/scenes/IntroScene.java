@@ -2,6 +2,7 @@ package com.tskbdx.sumimasen.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -26,7 +27,7 @@ public class IntroScene implements Scene {
     private final static float SCALE_FACTOR = 4.0f;
     private final Player player;
 
-    public static SmoothCamera camera;
+    public static OrthographicCamera camera;
 
     private World world;
     private WorldRenderer worldRenderer;

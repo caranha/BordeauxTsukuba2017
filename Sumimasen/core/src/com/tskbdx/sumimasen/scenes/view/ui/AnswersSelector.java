@@ -28,13 +28,13 @@ import java.util.Observer;
  * Act as an Gdx Scene2D actor, thus
  * handle on click event.
  */
-final class DialogueRenderer extends Group implements Observer {
+final class AnswersSelector extends Group implements Observer {
 
     private final Entity entity;
     private final Skin skin = new Skin(Gdx.files.internal(
             "skin/skin/cloud-form-ui.json"));
 
-    DialogueRenderer(Entity entity, UserInterface userInterface) {
+    AnswersSelector(Entity entity, UserInterface userInterface) {
         this.entity = entity;
         entity.addObserver(this);
 

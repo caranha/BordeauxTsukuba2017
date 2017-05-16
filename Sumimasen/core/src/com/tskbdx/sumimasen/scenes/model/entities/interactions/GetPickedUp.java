@@ -27,10 +27,6 @@ public class GetPickedUp extends Interaction {
     @Override
     public void start(Entity active, Entity passive) {
         super.start(active, passive);
-    }
-
-    @Override
-    public void update() {
         getPassive().store(getActive());
         getActive().getWorld().removeEntity(getActive());
         getPassive().notifyObservers(getActive());
