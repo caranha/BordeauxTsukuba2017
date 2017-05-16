@@ -14,6 +14,7 @@ abstract public class Utility {
 
     /*
      * Random method are upper bound exclusive
+     * In Java 1.7 or later, the standard way to do this is as follows :
      */
     public static int getRandomInteger(int lower, int upper) {
         assert upper > lower;
@@ -38,9 +39,10 @@ abstract public class Utility {
      */
 
     /*
-     * List of existing created services
+     * Key = existing created services
+     * Value = current working task associated to key
      */
-    private static Map<ScheduledExecutorService, ScheduledFuture<?>>
+    private static Map<ScheduledExecutorService, ScheduledFuture>
             executorServices = new HashMap<>();
 
     public static void setTimeout(Runnable callback, int delay) {
@@ -48,7 +50,7 @@ abstract public class Utility {
          * For each service, we check if it's available
          * if so : schedules another task
          */
-        for (Map.Entry<ScheduledExecutorService, ScheduledFuture<?>>
+        for (Map.Entry<ScheduledExecutorService, ScheduledFuture>
                 entry : executorServices.entrySet()) {
             if (entry.getValue().isDone()) {
                 entry.setValue(entry.getKey().schedule(
@@ -65,10 +67,10 @@ abstract public class Utility {
         executorServices.put(service,
                 service.schedule(callback, delay, TimeUnit.MILLISECONDS));
         // Max services used : ~2
-        // System.out.println(executorServices.size());
+         System.out.println(executorServices.size());
     }
 
     public static void setTimeout(Runnable callback, float delay) {
-        setTimeout(callback, (int) (delay * 1000));
+        setTimeout(callback, Math.round(delay * 1000));
     }
 }
