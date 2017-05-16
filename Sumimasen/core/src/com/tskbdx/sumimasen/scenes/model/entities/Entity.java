@@ -14,7 +14,7 @@ import static com.tskbdx.sumimasen.scenes.model.entities.Direction.*;
 /**
  * Created by Sydpy on 4/28/17.
  */
-public abstract class Entity extends Observable {
+public class Entity extends Observable {
 
     private World world;
 
@@ -43,6 +43,8 @@ public abstract class Entity extends Observable {
 
     //Number of cell per sec
     private int speed = 8;
+
+    public Entity() {}
 
     public Entity(int x, int y, int width, int height) {
         this.x = x;
@@ -243,7 +245,7 @@ public abstract class Entity extends Observable {
     }
 
     public void store(Entity entity) {
-        inventory.store((SceneObject) entity);
+        inventory.store(entity);
         setChanged();
     }
 

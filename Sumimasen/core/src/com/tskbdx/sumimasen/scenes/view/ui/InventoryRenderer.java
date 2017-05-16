@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.utils.Disposable;
+import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Inventory;
-import com.tskbdx.sumimasen.scenes.model.entities.SceneObject;
 import com.tskbdx.sumimasen.scenes.view.Tween;
 
 import java.util.*;
@@ -25,10 +25,10 @@ import static com.tskbdx.sumimasen.Sumimasen.getAssetManager;
 final class InventoryRenderer implements Observer, Disposable {
 
     private static final String FOLDER = "images/";
-    private final Map<SceneObject, Slot> textures = new HashMap<>();
+    private final Map<Entity, Slot> textures = new HashMap<>();
     private final List<Slot> slots = new ArrayList<>();
-    private final List<SceneObject> viewInventory;
-    private final Collection<SceneObject> modelInventory;
+    private final List<Entity> viewInventory;
+    private final Collection<Entity> modelInventory;
 
     InventoryRenderer(Inventory inventory) {
         inventory.addObserver(this);
@@ -39,14 +39,14 @@ final class InventoryRenderer implements Observer, Disposable {
     @Override
     public void update(Observable o, Object arg) {
         assert modelInventory.size() != viewInventory.size();
-        Collection<SceneObject> difference;
+        Collection<Entity> difference;
         if (modelInventory.size() > viewInventory.size()) {
             /*
              * There are more in the model than in the view.
               * Let's add some items here.
              */
             difference = getDifference(modelInventory, viewInventory);
-            for (SceneObject object : difference) {
+            for (Entity object : difference) {
                 Texture texture = getAssetManager().get(FOLDER + object.getName() + ".png", Texture.class);
                 Slot slot = new Slot(texture, slots.size());
                 textures.put(object, slot);
@@ -59,7 +59,7 @@ final class InventoryRenderer implements Observer, Disposable {
               * Let's remove some items here.
              */
             difference = getDifference(viewInventory, modelInventory);
-            for (SceneObject object : difference) {
+            for (Entity object : difference) {
                 slots.remove(textures.get(object));
                 textures.remove(object);
                 viewInventory.remove(object);
@@ -70,9 +70,9 @@ final class InventoryRenderer implements Observer, Disposable {
         }
     }
 
-    private Collection<SceneObject> getDifference(Collection<SceneObject> a,
-                                           Collection<SceneObject> b) {
-        Collection<SceneObject> difference = new HashSet<>(a);
+    private Collection<Entity> getDifference(Collection<Entity> a,
+                                           Collection<Entity> b) {
+        Collection<Entity> difference = new HashSet<>(a);
         difference.removeAll(b);
         return difference;
     }
@@ -80,7 +80,7 @@ final class InventoryRenderer implements Observer, Disposable {
     public void render(Batch screenBatch) {
         screenBatch.setColor(WHITE);
 
-        for (Map.Entry<SceneObject, Slot> entry : textures.entrySet()) {
+        for (Map.Entry<Entity, Slot> entry : textures.entrySet()) {
             Slot slot = entry.getValue();
             screenBatch.draw(slot.texture, slot.x(), slot.y(), slot.size(), slot.size());
         }
@@ -88,7 +88,7 @@ final class InventoryRenderer implements Observer, Disposable {
 
     @Override
     public void dispose() {
-        for (Map.Entry<SceneObject, Slot> entry : textures.entrySet()) {
+        for (Map.Entry<Entity, Slot> entry : textures.entrySet()) {
             entry.getValue().dispose();
         }
     }

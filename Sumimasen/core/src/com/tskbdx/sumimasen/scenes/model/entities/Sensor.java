@@ -12,6 +12,8 @@ public class Sensor extends Entity {
 
     public Interaction onCollision = null;
 
+    public Sensor() {}
+
     public Sensor(int x, int y, int width, int height) {
         super(x, y, width, height);
     }

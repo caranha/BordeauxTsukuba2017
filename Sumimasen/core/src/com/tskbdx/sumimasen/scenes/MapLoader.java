@@ -8,7 +8,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.tskbdx.sumimasen.Sumimasen;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
-import com.tskbdx.sumimasen.scenes.model.entities.SceneObject;
 import com.tskbdx.sumimasen.scenes.model.entities.Sensor;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.GetPickedUp;
@@ -49,13 +48,16 @@ public class MapLoader {
 
             String type = object.getProperties().get("type", String.class);
 
-            System.out.println(name);
-
             //TODO : Refacto this
             if (type != null && type.equals("sensor")) {
 
-                Sensor entity = new Sensor(x,y,width,height);
+                Sensor entity = new Sensor();
                 EntityRenderer entityRenderer;
+
+                entity.setX(x);
+                entity.setY(y);
+                entity.setWidth(width);
+                entity.setHeight(height);
 
                 entity.setName(object.getName());
 
@@ -81,8 +83,13 @@ public class MapLoader {
                 if (name.equals("player")) {
                     entity = getPlayer();
                 } else {
-                    entity = new SceneObject(x, y, width, height);
+                    entity = new Entity();
                 }
+
+                entity.setX(x);
+                entity.setY(y);
+                entity.setWidth(width);
+                entity.setHeight(height);
 
                 entity.setName(object.getName());
 
@@ -119,7 +126,7 @@ public class MapLoader {
         getPlayer().addObserver(new StoryTeller(world, new StartState()));
     }
 
-    public static void loadWalls(TiledMap tiledMap, World world, WorldRenderer worldRenderer) {
+    public static void loadWalls(TiledMap tiledMap, World world) {
 
         TiledMapTileLayer collisionLayer =
                 (TiledMapTileLayer) tiledMap.getLayers().get("Collision");
