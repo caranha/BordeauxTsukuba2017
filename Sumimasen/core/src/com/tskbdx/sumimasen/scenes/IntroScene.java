@@ -27,7 +27,7 @@ public class IntroScene implements Scene {
     private final static float SCALE_FACTOR = 4.0f;
     private final Player player;
 
-    public static OrthographicCamera camera;
+    public static SmoothCamera camera;
 
     private World world;
     private WorldRenderer worldRenderer;
@@ -64,7 +64,7 @@ public class IntroScene implements Scene {
         camera = new SmoothCamera(1.f);
         camera.setToOrtho(false, 800, 480);
         camera.zoom = 1.f / SCALE_FACTOR;
-        camera.update();
+        camera.setTo(getPlayer().getX() * 8.f, getPlayer().getY() * 8.f);
     }
 
     @Override

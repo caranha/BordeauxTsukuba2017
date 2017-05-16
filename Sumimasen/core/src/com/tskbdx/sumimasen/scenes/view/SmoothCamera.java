@@ -22,10 +22,9 @@ public class SmoothCamera extends OrthographicCamera {
             tweenY = new Tween(interpolation);
 
     public SmoothCamera(float transitionInSec) {
+        //   camera.translate(player.getX()*8 - camera.position.x, player.getY()*8 - camera.position.y);
+
         duration = transitionInSec;
-        Player player = getPlayer();
-        position.x = player.getX() * 8;
-        position.y = player.getY() * 8;
         super.update();
     }
 
@@ -55,5 +54,11 @@ public class SmoothCamera extends OrthographicCamera {
             tweenY.playWith(position.y,
                     targetY, duration);
         }
+    }
+
+    public void setTo(float x, float y) {
+        position.x = x;
+        position.y = y;
+        update();
     }
 }
