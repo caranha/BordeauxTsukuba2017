@@ -82,7 +82,8 @@ public class World {
         return false;
     }
 
-    public Entity getEntities(int x, int y) {
+    //TODO : rethink this method
+    public Entity getEntity(int x, int y) {
         for (Entity entity : entities) {
             if (entity != null) {
                 for (int i = entity.getX(); i < entity.getX() + entity.getWidth(); i++) {
