@@ -9,9 +9,11 @@ import com.tskbdx.sumimasen.Sumimasen;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.SceneObject;
+import com.tskbdx.sumimasen.scenes.model.entities.Sensor;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.GetPickedUp;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.Teleport;
 import com.tskbdx.sumimasen.scenes.story.StoryTeller;
 import com.tskbdx.sumimasen.scenes.story.introduction.StartState;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
@@ -45,10 +47,36 @@ public class MapLoader {
             String imagefile = object.getProperties().get("imagefile", String.class);
             String name = object.getName();
 
-            Entity entity;
-            EntityRenderer entityRenderer;
+            String type = object.getProperties().get("type", String.class);
 
-            if (entityNames.contains(name)) {
+            System.out.println(name);
+
+            //TODO : Refacto this
+            if (type != null && type.equals("sensor")) {
+
+                Sensor entity = new Sensor(x,y,width,height);
+                EntityRenderer entityRenderer;
+
+                entity.setName(object.getName());
+
+                String onCollision = object.getProperties().get("onCollision", String.class);
+
+                if (onCollision.equals("teleport")) {
+
+                    Integer toX = object.getProperties().get("toX", Integer.class);
+                    Integer toY = object.getProperties().get("toY", Integer.class);
+
+                    entity.setOnCollision(new Teleport(toX, toY));
+                }
+
+                entityRenderer = new EntityRenderer(entity, imagefile, Sumimasen.getAssetManager());
+                world.addEntity(entity);
+                worldRenderer.addEntityRenderer(entityRenderer);
+
+            } else if (entityNames.contains(name)) {
+
+                Entity entity;
+                EntityRenderer entityRenderer;
 
                 if (name.equals("player")) {
                     entity = getPlayer();
@@ -56,18 +84,19 @@ public class MapLoader {
                     entity = new SceneObject(x, y, width, height);
                 }
 
-                entity.setX(x);
-                entity.setY(y);
-                entity.setWidth(width);
-                entity.setHeight(height);
                 entity.setName(object.getName());
 
-                // set interaction from property "firstInteraction"
+                // set interaction from property "defaultInteraction"
                 Interaction interaction = null;
-                String firstInteraction = object.getProperties().get("firstInteraction", String.class);
-                if (firstInteraction != null && firstInteraction.equals("dialogue")) {
+                String defaultInteraction = object.getProperties().get("defaultInteraction", String.class);
+
+                if (defaultInteraction != null
+                        && defaultInteraction.equals("dialogue")) {
+
                     interaction = new Dialogue(object.getProperties().get("dialogueName", String.class)); // check constructor for filename
-                } else if (firstInteraction != null && firstInteraction.equals("getPickedUp")) {
+
+                } else if (defaultInteraction != null
+                        && defaultInteraction.equals("getPickedUp")) {
                     interaction = new GetPickedUp();
                 }
                 entity.setInteraction(interaction);

@@ -68,19 +68,19 @@ public abstract class Interaction {
         passive.setMovement(passiveMovement);
     }
 
-    public boolean isStarted() {
+    public final boolean isStarted() {
         return started;
     }
 
-    public boolean isFinished() {
+    public final boolean isFinished() {
         return finished;
     }
 
-    public Entity getActive() {
+    public final Entity getActive() {
         return active;
     }
 
-    public Entity getPassive() {
+    public final Entity getPassive() {
         return passive;
     }
 }

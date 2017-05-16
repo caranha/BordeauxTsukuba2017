@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="96" height="96" tilewidth="8" tileheight="8" nextobjectid="9">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="96" height="96" tilewidth="8" tileheight="8" nextobjectid="12">
  <tileset firstgid="1" name="tileset" tilewidth="8" tileheight="8" tilecount="4096" columns="64">
   <image source="tileset.png" width="512" height="512"/>
  </tileset>
@@ -211,27 +211,35 @@
   </object>
   <object id="3" name="entity" x="224" y="24" width="16" height="8">
    <properties>
+    <property name="defaultInteraction" value="dialogue"/>
     <property name="dialogueName" value="late.xml"/>
-    <property name="firstInteraction" value="dialogue"/>
     <property name="imagefile" value="entity.png"/>
    </properties>
   </object>
-  <object id="6" name="item" x="213" y="141" width="16" height="8">
+  <object id="6" name="item" x="200" y="144" width="16" height="8">
    <properties>
-    <property name="firstInteraction" value="getPickedUp"/>
+    <property name="defaultInteraction" value="getPickedUp"/>
     <property name="imagefile" value="item.png"/>
    </properties>
   </object>
-  <object id="7" name="item" x="157" y="143" width="16" height="8">
+  <object id="7" name="item" x="152" y="144" width="16" height="8">
    <properties>
-    <property name="firstInteraction" value="getPickedUp"/>
+    <property name="defaultInteraction" value="getPickedUp"/>
     <property name="imagefile" value="item.png"/>
    </properties>
   </object>
-  <object id="8" name="item" x="186" y="142" width="16" height="8">
+  <object id="8" name="item" x="176" y="144" width="16" height="8">
    <properties>
-    <property name="firstInteraction" value="getPickedUp"/>
+    <property name="defaultInteraction" value="getPickedUp"/>
     <property name="imagefile" value="item.png"/>
+   </properties>
+  </object>
+  <object id="9" name="sensor test" type="sensor" x="224" y="216" width="16" height="8">
+   <properties>
+    <property name="imagefile" value="entity.png"/>
+    <property name="onCollision" value="teleport"/>
+    <property name="toX" type="int" value="416"/>
+    <property name="toY" type="int" value="232"/>
    </properties>
   </object>
  </objectgroup>
