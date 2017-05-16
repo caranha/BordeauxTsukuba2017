@@ -1,6 +1,7 @@
 package com.tskbdx.sumimasen.scenes.model.entities.movements;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 
 import java.util.List;
@@ -19,8 +20,8 @@ public class Walk implements Movement {
     private boolean canMove = true;
 
     @Override
-    public void move(Entity entity) {
-        if (canMove) {
+    public MovementResult move(Entity entity) {
+        if (canMove && entity.getDirection() != Direction.NONE) {
             int newX = entity.getX(), newY = entity.getY();
             switch (entity.getDirection()) {
                 case EAST:
@@ -35,8 +36,6 @@ public class Walk implements Movement {
                 case SOUTH:
                     --newY; //++newY;
                     break;
-                case NONE:
-                    return;
             }
 
             canMove = false;
@@ -57,5 +56,13 @@ public class Walk implements Movement {
                 move(entity);
             }, 1.f / entity.getSpeed());
         }
+
+        MovementResult mvtResult = new MovementResult();
+        mvtResult.addEntityAround(entity.getWorld().getEntity(entity.getX(), entity.getY() - 1));
+        mvtResult.addEntityAround(entity.getWorld().getEntity(entity.getX() - 1, entity.getY()));
+        mvtResult.addEntityAround(entity.getWorld().getEntity(entity.getX(), entity.getY() + entity.getHeight()));
+        mvtResult.addEntityAround(entity.getWorld().getEntity(entity.getX() + entity.getWidth(), entity.getY()));
+
+        return mvtResult;
     }
 }

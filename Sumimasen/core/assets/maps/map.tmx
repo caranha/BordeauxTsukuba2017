@@ -234,12 +234,12 @@
     <property name="imagefile" value="item.png"/>
    </properties>
   </object>
-  <object id="9" name="sensor test" type="sensor" x="224" y="216" width="16" height="8">
+  <object id="9" name="sensor" x="224" y="216" width="16" height="8">
    <properties>
     <property name="imagefile" value="entity.png"/>
-    <property name="onCollision" value="teleport"/>
-    <property name="toX" type="int" value="416"/>
-    <property name="toY" type="int" value="232"/>
+    <property name="onCollide" value="teleport"/>
+    <property name="toX" type="int" value="4"/>
+    <property name="toY" type="int" value="4"/>
    </properties>
   </object>
  </objectgroup>

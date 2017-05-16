@@ -13,5 +13,5 @@ import com.tskbdx.sumimasen.scenes.model.entities.Entity;
  * behavior can be very useful
  */
 public interface Movement {
-    void move(Entity entity);
+    MovementResult move(Entity entity);
 }

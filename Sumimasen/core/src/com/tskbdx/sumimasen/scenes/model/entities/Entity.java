@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
+import com.tskbdx.sumimasen.scenes.model.entities.movements.MovementResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class Entity extends Observable {
 
     private Movement movement;
     private Interaction interaction;
+    private Interaction onCollide;
 
     private int x, y;
     private int width, height;
@@ -257,8 +259,29 @@ public class Entity extends Observable {
         return inventory;
     }
 
+    public Interaction getOnCollide() {
+        return onCollide;
+    }
+
+    public void setOnCollide(Interaction onCollide) {
+        this.onCollide = onCollide;
+    }
+
     public void move(Direction direction) {
         setDirection(direction);
-        movement.move(this);
+        MovementResult move = movement.move(this);
+
+        if (!move.getEntitiesAround().isEmpty()) {
+
+            Entity entity = move.getEntitiesAround().get(0);
+
+            if (entity.getOnCollide() != null
+                    && !entity.getOnCollide().isStarted()) {
+
+                entity.getOnCollide().start(entity, this);
+            }
+
+        }
+
     }
 }
