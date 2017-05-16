@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.tskbdx.sumimasen.scenes.inputprocessors.BasicInputProcessor;
+import com.tskbdx.sumimasen.scenes.inputprocessors.GameCommands;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
 import com.tskbdx.sumimasen.scenes.view.SmoothCamera;
@@ -36,7 +36,7 @@ public class IntroScene implements Scene {
 
     private List<String> entityNames = new ArrayList<>();
 
-    private InputProcessor basicProcessor = new BasicInputProcessor();
+    private InputProcessor basicProcessor = new GameCommands();
 
     public IntroScene(Player player) {
         this.player = player;
