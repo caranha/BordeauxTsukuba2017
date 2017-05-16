@@ -1,6 +1,5 @@
 package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
-import com.badlogic.gdx.Gdx;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Message;
 import org.w3c.dom.Document;
@@ -16,7 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
+import static com.tskbdx.sumimasen.scenes.utility.Utility.setTimeout;
+
+/*
  * Created by viet khang on 08/05/2017.
  */
 public class Dialogue extends Interaction {
@@ -24,8 +25,6 @@ public class Dialogue extends Interaction {
     private static final String FOLDER = "dialogues/";
     private Map<Integer, DialogueExchange> exchanges = new HashMap<>();
     private DialogueExchange currentExchange = new DialogueExchange();
-    private float talkClock = 0.f;
-    private float answerClock = 0.f;
 
     private String xmlFile;
 
@@ -44,33 +43,12 @@ public class Dialogue extends Interaction {
         printCurrentState();
     }
 
-    @Override
-    public void update() {
-
-        if (currentExchange.getAnswers().isEmpty()) {
-            end();
-        }
-        if (talkClock != 0.f) {
-            talkClock -= Gdx.graphics.getDeltaTime();
-            if (talkClock < 0.f) {
-                talkClock = 0.f;
-            }
-        }
-        if (answerClock != 0.f) {
-            answerClock -= Gdx.graphics.getDeltaTime();
-            if (answerClock < 0.f) {
-                answerClock = 0.f;
-                printCurrentState();
-            }
-        }
-    }
-
     public void pickAnswer(int index) { // passive entity answers
         try {
             DialogueAnswer dialogueAnswer = currentExchange.getAnswers().get(index);
             getPassive().setMessage(dialogueAnswer.getText(), 3.5f, 0.5f, getActive());
-            Message message = getPassive().getMessage();
-            message.notifyObservers();
+            Message answer = getPassive().getMessage();
+            answer.notifyObservers();
 
             // when passive talk, active stop
             getActive().setMessage("", 0.f, 0.f, getPassive());
@@ -80,7 +58,9 @@ public class Dialogue extends Interaction {
                 currentExchange = exchanges.get(dialogueAnswer.getNextExchange());
             }
 
-            answerClock = message.getTimeToUnderstand();
+            getActive().notifyObservers();
+            getPassive().notifyObservers();
+            setTimeout(this::printCurrentState, answer.getTimeToUnderstand());
         } catch (IndexOutOfBoundsException ignored) {}
     }
 
@@ -97,10 +77,14 @@ public class Dialogue extends Interaction {
         List<DialogueAnswer> answers = currentExchange.getAnswers();
 
         if (! answers.isEmpty()) {
-            talkClock = getActive().getMessage().getTimeToUnderstand();
+            setTimeout(() -> {
+                getActive().notifyObservers(this);
+                getPassive().notifyObservers(this);
+            }, getActive().getMessage().getTimeToUnderstand());
         } else {
             getActive().setMessage(currentExchange.getText(), 2.f, 2.f, getPassive());
             getActive().getMessage().notifyObservers();
+            end();
         }
     }
 

@@ -7,10 +7,9 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 abstract public class Utility {
 
-    /**
+    /*
      * Random method are upper bound exclusive
      */
-
     public static int getRandomInteger(int lower, int upper) {
         assert upper > lower;
         return ThreadLocalRandom.current().nextInt(lower, upper);
@@ -36,5 +35,9 @@ abstract public class Utility {
             } catch (Exception ignored) {
             }
         }).start();
+    }
+
+    public static void setTimeout(Runnable callback, float delay) {
+        setTimeout(callback, (int) (delay * 1000));
     }
 }
