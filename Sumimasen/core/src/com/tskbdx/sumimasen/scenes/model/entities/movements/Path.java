@@ -13,24 +13,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import static com.tskbdx.sumimasen.scenes.utility.Utility.setTimeout;
+
 /**
  * Implements entity movement scripting
  * Automatically remove itself from the entity when done
  */
-public class Path extends Movement {
+public class Path implements Movement {
     private final Queue<Direction> directionQueue = new LinkedList<>();
-    private float clock = 0.f;
     private boolean ready = true;
     private final boolean loop;
 
-    public Path(Entity entity, boolean loop, Direction... directions) {
-        super(entity);
+    public Path(boolean loop, Direction... directions) {
         this.loop = loop;
         Collections.addAll(directionQueue, directions);
     }
 
     @Override
-    public void move(float dt) {
+    public void move(Entity entity) {
         if (directionQueue.isEmpty()) {
             entity.setMovement(null);
         } else if (ready) {
@@ -41,13 +41,16 @@ public class Path extends Movement {
              * In that cas, the direction has actually changed
              */
             entity.notifyObservers();
-            process(directionQueue.poll());
+            process(directionQueue.poll(), entity);
         } else {
-            updateClock(dt);
+            setTimeout(() -> {
+                ready = true;
+                move(entity);
+            }, 1.f / entity.getSpeed());
         }
     }
 
-    private void process(Direction direction) {
+    private void process(Direction direction, Entity entity) {
         entity.setDirection(direction);
         if (loop) {
             directionQueue.add(direction);
@@ -80,14 +83,6 @@ public class Path extends Movement {
         if (!entity.getWorld().isWall(rect)
                 &&  entityColliding.isEmpty()) {
             entity.moveTo(newX, newY);
-        }
-    }
-
-    private void updateClock(float dt) {
-        clock += dt;
-        if(clock >= 1.f / entity.getSpeed()) {
-            ready = true;
-            clock %= 1.f / entity.getSpeed();
         }
     }
 }

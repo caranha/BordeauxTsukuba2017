@@ -54,13 +54,6 @@ public abstract class Entity extends Observable {
         this.movement = null;
     }
 
-    public void update(float dt) {
-        if (movement != null) {
-            movement.move(dt);
-        }
-    }
-
-
     /**
      * Can only interact if there is a SceneObject
      * in front of the entity
@@ -260,5 +253,10 @@ public abstract class Entity extends Observable {
 
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public void move(Direction direction) {
+        setDirection(direction);
+        movement.move(this);
     }
 }

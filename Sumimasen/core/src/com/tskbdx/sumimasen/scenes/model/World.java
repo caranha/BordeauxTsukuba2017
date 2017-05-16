@@ -35,19 +35,7 @@ public class World {
         }
 
         entities = new ArrayList<>();
-                //Collections.synchronizedList(new ArrayList<>());
         entities.clear();
-    }
-
-    public void update(float dt) {
-        //synchronized (entities) {
-            //entities.forEach(entity -> entity.update(dt));
-        //} don't work even if it has to (i let this comment as a reminder)
-        entities.forEach(entity -> { // Cheap fix substitution
-            if (entity != null) {
-                entity.update(dt);
-            }
-        });
     }
 
     public void addEntity(Entity entity) {
@@ -59,14 +47,12 @@ public class World {
 
     public void removeEntity(Entity entity) {
         entity.setWorld(null);
+
         entityByName.remove(entity.getName());
-        //synchronized (entities) {
-           // entities.removeIf(o -> o.equals(entity));
-        //}
-        entities.set(entities.indexOf(entity), null);
+        entities.remove(entity); // finally works
     }
 
-    public void setVoid(int i, int j) {
+    private void setVoid(int i, int j) {
         try {
             wallsMap[i][j] = false;
         } catch (ArrayIndexOutOfBoundsException ignored){}

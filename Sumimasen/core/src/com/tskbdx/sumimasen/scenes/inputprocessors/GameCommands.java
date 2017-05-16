@@ -20,7 +20,7 @@ import static com.tskbdx.sumimasen.scenes.model.entities.Direction.*;
  * Arrows or Z Q S D
  *
  * To interact :
- * Space or Enter
+ * Space
  */
 public class GameCommands extends InputAdapter {
 
@@ -28,39 +28,38 @@ public class GameCommands extends InputAdapter {
      * Commands identified by an Integer keycode.
      */
     private final Map<Integer, Runnable> keyDownCommands = new HashMap<>();
-    private final Map<Integer, Runnable> keyUpCommands = new HashMap<>();
-    private int currentKey;
+    private final Map<Integer,Runnable> keyUpCommands = new HashMap<>();
+    private int currentKeycode;
 
     /**
      * Constructor : set association between keycode and commands
      */
     public GameCommands() {
-        initKeyUp();
         initKeyDown();
-    }
-
-    private void initKeyDown() {
-        associate(keyDownCommands, () -> getPlayer().setDirection(NORTH),
-                W, UP);
-        associate(keyDownCommands, () -> getPlayer().setDirection(SOUTH),
-                S, DOWN);
-        associate(keyDownCommands, () -> getPlayer().setDirection(EAST),
-                D, RIGHT);
-        associate(keyDownCommands, () -> getPlayer().setDirection(WEST),
-                A, LEFT);
-        associate(keyDownCommands, () -> getPlayer().tryInteract(),
-                ENTER, SPACE);
+        initKeyUp();
     }
 
     private void initKeyUp() {
         associate(keyUpCommands, () -> getPlayer().setDirection(NONE),
-                W, S, D, A, UP, DOWN, RIGHT, LEFT
-        );
+                W, UP, S, DOWN, D, RIGHT, A, LEFT);
     }
 
-    private void associate(Map<Integer, Runnable> map, Runnable command, int... keys) {
+    private void initKeyDown() {
+        associate(keyDownCommands, () -> getPlayer().move(NORTH),
+                W, UP);
+        associate(keyDownCommands, () -> getPlayer().move(SOUTH),
+                S, DOWN);
+        associate(keyDownCommands, () -> getPlayer().move(EAST),
+                D, RIGHT);
+        associate(keyDownCommands, () -> getPlayer().move(WEST),
+                A, LEFT);
+        associate(keyDownCommands, () -> getPlayer().tryInteract(),
+                SPACE);
+    }
+
+    private void associate(Map<Integer, Runnable> map, Runnable callback, int... keys) {
         for (int key : keys) {
-            map.put(key, command);
+            map.put(key, callback);
         }
     }
 
@@ -72,14 +71,10 @@ public class GameCommands extends InputAdapter {
         return false;
     }
 
-    /**
-     * Unused methods
-     */
-
     @Override
     public boolean keyDown(int keycode) {
         if (execute(keyDownCommands, keycode)) {
-            currentKey = keycode;
+            currentKeycode = keycode;
             return true;
         }
         return false;
@@ -87,6 +82,6 @@ public class GameCommands extends InputAdapter {
 
     @Override
     public boolean keyUp(int keycode) {
-        return keycode == currentKey && execute(keyUpCommands, keycode);
+        return currentKeycode == keycode && execute(keyUpCommands, keycode);
     }
 }

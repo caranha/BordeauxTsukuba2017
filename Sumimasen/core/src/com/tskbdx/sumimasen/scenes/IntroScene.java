@@ -71,7 +71,6 @@ public class IntroScene implements Scene {
     public void update(float dt) {
         Tween.updateAll(dt);
 
-        world.update(dt);
         camera.translate(player.getX()*8 - camera.position.x, player.getY()*8 - camera.position.y);
         camera.update();
 

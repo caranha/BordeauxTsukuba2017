@@ -16,9 +16,7 @@ public class Sensor extends Entity {
         super(x, y, width, height);
     }
 
-    @Override
-    public void update(float dt) {
-        super.update(dt);
+    public void update() {
 
         Rectangle myRectangle = getRectangle(new Rectangle());
 

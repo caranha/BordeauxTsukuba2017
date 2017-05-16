@@ -1,6 +1,8 @@
 package com.tskbdx.sumimasen.scenes.utility;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.*;
 
 /*
  * Created by viet khang on 16/05/2017.
@@ -26,15 +28,38 @@ abstract public class Utility {
 
     /*
      * Purpose : callback after a delay without blocking
+     * Using ExecutorService to submit Runnable
+     * (Thread can't set a new one after creation)
+     *
+     * ScheduledExecutorService used to submit with a delay
      */
+
+    /*
+     * List of existing created services
+     */
+    private static List<ScheduledExecutorService> executorServices = new LinkedList<>();
+
     public static void setTimeout(Runnable callback, int delay) {
-        new Thread(() -> {
-            try {
-                Thread.sleep(delay);
-                callback.run();
-            } catch (Exception ignored) {
+        /*
+         * For each service, we check if it's available
+         * if so : schedules another task
+         */
+        for (ScheduledExecutorService service : executorServices) {
+            if (service.isTerminated()) {
+                service.schedule(callback, delay, TimeUnit.MILLISECONDS);
+                return;
             }
-        }).start();
+        }
+
+        /*
+         * Else create a new one
+         */
+        final boolean multiThreaded = false; // no big changes since it's fast calculations
+        ScheduledExecutorService service = multiThreaded ?
+                Executors.newSingleThreadScheduledExecutor() :
+                Executors.newScheduledThreadPool(4);
+        service.schedule(callback, delay, TimeUnit.MILLISECONDS);
+        executorServices.add(service);
     }
 
     public static void setTimeout(Runnable callback, float delay) {

@@ -105,7 +105,6 @@ final class InventoryRenderer implements Observer, Disposable {
             this.texture = texture;
             position = startPosition;
             scaleTween.playWith(0, 1, 1);
-            System.out.println(position);
         }
 
         float x() {

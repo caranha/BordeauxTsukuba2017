@@ -5,30 +5,23 @@ import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 
 import java.util.List;
 
-/**
+import static com.tskbdx.sumimasen.scenes.utility.Utility.setTimeout;
+
+/*
  * Created by Sydpy on 5/2/17.
  */
 
 /**
  * Walk
  */
-public class Walk extends Movement {
-
-    public Walk(Entity entity) {
-        super(entity);
-    }
+public class Walk implements Movement {
 
     private boolean canMove = true;
-    private float clock = 0.f;
 
     @Override
-    public void move(float dt) {
-
-        int speed = entity.getSpeed();
-
+    public void move(Entity entity) {
         if (canMove) {
             int newX = entity.getX(), newY = entity.getY();
-
             switch (entity.getDirection()) {
                 case EAST:
                     ++newX;
@@ -55,16 +48,14 @@ public class Walk extends Movement {
             entityColliding.remove(entity);
 
             if (!entity.getWorld().isWall(rect)
-                    &&  entityColliding.isEmpty()) {
-                this.entity.moveTo(newX, newY);
+                    && entityColliding.isEmpty()) {
+                entity.moveTo(newX, newY);
             }
 
-        } else {
-            clock += dt;
-            if(clock >= 1.f/speed) {
+            setTimeout(() -> {
                 canMove = true;
-                clock %= 1.f/speed;
-            }
+                move(entity);
+            }, 1.f / entity.getSpeed());
         }
     }
 }

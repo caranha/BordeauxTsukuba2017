@@ -2,7 +2,7 @@ package com.tskbdx.sumimasen.scenes.model.entities.movements;
 
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 
-/**
+/*
  * Created by viet khang on 08/05/2017.
  */
 
@@ -12,12 +12,6 @@ import com.tskbdx.sumimasen.scenes.model.entities.Entity;
  * Dynamically changing this entity movement
  * behavior can be very useful
  */
-public abstract class Movement {
-    final protected Entity entity;
-
-    Movement(Entity entity) {
-        this.entity = entity;
-    }
-
-    public abstract void move(float dt);
+public interface Movement {
+    void move(Entity entity);
 }

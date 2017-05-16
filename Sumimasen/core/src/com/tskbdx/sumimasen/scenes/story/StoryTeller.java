@@ -47,7 +47,6 @@ public final class StoryTeller implements Observer {
     private boolean changeState(Class interactionType) {
         Map<Class<? extends Interaction>, StoryState> nextState = state.next();
         if (nextState == null) {
-            System.out.println("No more scene !");
         } else if (nextState.containsKey(interactionType)) {
             state = nextState.get(interactionType);
             return true;
