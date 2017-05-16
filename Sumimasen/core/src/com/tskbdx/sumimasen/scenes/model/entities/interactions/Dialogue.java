@@ -12,6 +12,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,60 @@ import java.util.Map;
  * Created by viet khang on 08/05/2017.
  */
 public class Dialogue extends Interaction {
+
+    private class DialogueAnswer {
+
+        String text = "";
+        Integer nextExchange;
+
+        public DialogueAnswer() {
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+
+        public Integer getNextExchange() {
+            return nextExchange;
+        }
+
+        public void setNextExchange(int nextExchange) {
+            this.nextExchange = nextExchange;
+        }
+    }
+
+    private class DialogueExchange {
+        private String text ="";
+
+        private List<DialogueAnswer> answers = new ArrayList<>();
+
+        public DialogueExchange() {
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+
+        public List<DialogueAnswer> getAnswers() {
+            return answers;
+        }
+
+        public void addAnswer(DialogueAnswer answer) {
+            answers.add(answer);
+        }
+        public void removeAnswer(DialogueAnswer answer) {
+            answers.remove(answer);
+        }
+    }
+
 
     private static final String FOLDER = "dialogues/";
     private Map<Integer, DialogueExchange> exchanges = new HashMap<>();
