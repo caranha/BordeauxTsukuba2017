@@ -2,8 +2,11 @@ package com.tskbdx.sumimasen.scenes.view;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Interpolation;
+import com.tskbdx.sumimasen.scenes.model.entities.Player;
 
-/**
+import static com.tskbdx.sumimasen.GameScreen.getPlayer;
+
+/*
  * Created by viet khang on 08/05/2017.
  */
 
@@ -20,6 +23,10 @@ public class SmoothCamera extends OrthographicCamera {
 
     public SmoothCamera(float transitionInSec) {
         duration = transitionInSec;
+        Player player = getPlayer();
+        position.x = player.getX() * 8;
+        position.y = player.getY() * 8;
+        super.update();
     }
 
     /**
@@ -49,5 +56,4 @@ public class SmoothCamera extends OrthographicCamera {
                     targetY, duration);
         }
     }
-
 }
