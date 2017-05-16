@@ -1,8 +1,11 @@
 package com.tskbdx.sumimasen.scenes.utility;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
  * Created by viet khang on 16/05/2017.
@@ -37,16 +40,19 @@ abstract public class Utility {
     /*
      * List of existing created services
      */
-    private static List<ScheduledExecutorService> executorServices = new LinkedList<>();
+    private static Map<ScheduledExecutorService, ScheduledFuture<?>>
+            executorServices = new HashMap<>();
 
     public static void setTimeout(Runnable callback, int delay) {
         /*
          * For each service, we check if it's available
          * if so : schedules another task
          */
-        for (ScheduledExecutorService service : executorServices) {
-            if (service.isTerminated()) {
-                service.schedule(callback, delay, TimeUnit.MILLISECONDS);
+        for (Map.Entry<ScheduledExecutorService, ScheduledFuture<?>>
+                entry : executorServices.entrySet()) {
+            if (entry.getValue().isDone()) {
+                entry.setValue(entry.getKey().schedule(
+                        callback, delay, TimeUnit.MILLISECONDS));
                 return;
             }
         }
@@ -54,12 +60,12 @@ abstract public class Utility {
         /*
          * Else create a new one
          */
-        final boolean multiThreaded = false; // no big changes since it's fast calculations
-        ScheduledExecutorService service = multiThreaded ?
-                Executors.newSingleThreadScheduledExecutor() :
-                Executors.newScheduledThreadPool(4);
-        service.schedule(callback, delay, TimeUnit.MILLISECONDS);
-        executorServices.add(service);
+        // can create a service in another thread but there is no big change
+        ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+        executorServices.put(service,
+                service.schedule(callback, delay, TimeUnit.MILLISECONDS));
+        // Max services used : ~2
+        // System.out.println(executorServices.size());
     }
 
     public static void setTimeout(Runnable callback, float delay) {
