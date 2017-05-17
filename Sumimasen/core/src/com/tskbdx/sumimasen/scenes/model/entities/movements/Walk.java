@@ -49,6 +49,7 @@ public class Walk implements Movement {
             if (!entity.getWorld().isWall(rect)
                     && entityColliding.isEmpty()) {
                 entity.moveTo(newX, newY);
+                entity.notifyObservers();
             }
 
             setTimeout(() -> {

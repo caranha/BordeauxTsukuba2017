@@ -70,7 +70,6 @@ public class Entity extends Observable {
                 if (neighbour.isInteractable()) {
                     // change target direction to face this
                     neighbour.setDirection(getOpposite(getLastDirection()));
-                    neighbour.setChanged();
                     neighbour.notifyObservers();
                     neighbour.getInteraction().start(neighbour, this);
                 }
@@ -123,7 +122,6 @@ public class Entity extends Observable {
         setY(y);
 
         setChanged();
-        notifyObservers();
     }
 
     public int getY() {
@@ -202,6 +200,7 @@ public class Entity extends Observable {
 
     public void setName(String name) {
         this.name = name;
+        setChanged();
     }
 
     public Message getMessage() {
@@ -228,6 +227,7 @@ public class Entity extends Observable {
 
     public void setInteraction(Interaction interaction) {
         this.interaction = interaction;
+        setChanged();
     }
 
     public boolean isInteracting() {
@@ -236,6 +236,7 @@ public class Entity extends Observable {
 
     public void setInteracting(boolean interacting) {
         isInteracting = interacting;
+        setChanged();
     }
 
     public Entity getInteractingWith() {
@@ -244,6 +245,7 @@ public class Entity extends Observable {
 
     public void setInteractingWith(Entity interactingWith) {
         this.interactingWith = interactingWith;
+        setChanged();
     }
 
     public void store(Entity entity) {
@@ -265,6 +267,7 @@ public class Entity extends Observable {
 
     public void setOnCollide(Interaction onCollide) {
         this.onCollide = onCollide;
+        setChanged();
     }
 
     public void move(Direction direction) {
@@ -272,7 +275,7 @@ public class Entity extends Observable {
         MovementResult move = movement.move(this);
 
         if (!move.getEntitiesAround().isEmpty()) {
-
+            
             Entity entity = move.getEntitiesAround().get(0);
 
             if (entity.getOnCollide() != null

@@ -17,8 +17,7 @@ public class Teleport implements Movement {
     @Override
     public MovementResult move(Entity entity) {
 
-        entity.setX(x);
-        entity.setY(y);
+        entity.moveTo(x, y);
         entity.notifyObservers();
 
         return  MovementResult.computeMovementResult(entity);
