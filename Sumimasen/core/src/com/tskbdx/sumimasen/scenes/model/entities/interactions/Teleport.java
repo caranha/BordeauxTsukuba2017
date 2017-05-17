@@ -19,10 +19,10 @@ public class Teleport extends Interaction {
     public void start(Entity active, Entity passive) {
         super.start(active, passive);
 
-        System.out.println("STEAAAAAAAAAAAAAK");
-
         passive.setX(x);
         passive.setY(y);
+
+        end();
     }
 
     @Override

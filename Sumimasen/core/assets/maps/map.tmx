@@ -239,7 +239,7 @@
     <property name="imagefile" value="entity.png"/>
     <property name="onCollide" value="teleport"/>
     <property name="toX" type="int" value="4"/>
-    <property name="toY" type="int" value="4"/>
+    <property name="toY" type="int" value="92"/>
    </properties>
   </object>
  </objectgroup>
