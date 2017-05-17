@@ -19,4 +19,15 @@ public class MovementResult {
     public List<Entity> getEntitiesAround() {
         return entitiesAround;
     }
+
+    public static MovementResult computeMovementResult(Entity entity) {
+
+        MovementResult mvtResult = new MovementResult();
+        mvtResult.addEntityAround(entity.getWorld().getEntity(entity.getX(), entity.getY() - 1));
+        mvtResult.addEntityAround(entity.getWorld().getEntity(entity.getX() - 1, entity.getY()));
+        mvtResult.addEntityAround(entity.getWorld().getEntity(entity.getX(), entity.getY() + entity.getHeight()));
+        mvtResult.addEntityAround(entity.getWorld().getEntity(entity.getX() + entity.getWidth(), entity.getY()));
+
+        return mvtResult;
+    }
 }
