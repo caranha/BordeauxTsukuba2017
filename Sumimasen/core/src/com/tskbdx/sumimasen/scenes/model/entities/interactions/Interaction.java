@@ -17,9 +17,6 @@ public abstract class Interaction {
     private Entity active;
     private Entity passive;
 
-    private boolean started = false;
-    private boolean finished = false;
-
     // The idea is :
     // An entity can't move during interaction
     // He recovers it movement back at the end
@@ -52,7 +49,6 @@ public abstract class Interaction {
         active.notifyObservers(getClass());
         passive.notifyObservers(getClass());
 
-        started = true;
     }
 
     public void end() {
@@ -62,18 +58,8 @@ public abstract class Interaction {
         active.setInteractingWith(null);
         passive.setInteractingWith(null);
 
-        finished = true;
-
         active.setMovement(activeMovement);
         passive.setMovement(passiveMovement);
-    }
-
-    public final boolean isStarted() {
-        return started;
-    }
-
-    public final boolean isFinished() {
-        return finished;
     }
 
     public final Entity getActive() {

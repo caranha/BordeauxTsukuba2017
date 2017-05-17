@@ -278,8 +278,7 @@ public class Entity extends Observable {
 
             Entity entity = move.getEntitiesAround().get(0);
 
-            if (entity.getOnCollide() != null
-                    && !entity.getOnCollide().isStarted()) {
+            if (entity.getOnCollide() != null) {
 
                 entity.getOnCollide().start(entity, this);
             }
