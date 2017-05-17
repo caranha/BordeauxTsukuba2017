@@ -31,11 +31,11 @@ abstract public class Utility {
     }
 
     /*
-     * Purpose : callback after a delay without blocking
+     * Purpose : callback after a DELAY without blocking
      * Using ExecutorService to submit Runnable
      * (Thread can't set a new one after creation)
      *
-     * ScheduledExecutorService used to submit with a delay
+     * ScheduledExecutorService used to submit with a DELAY
      */
 
     /*

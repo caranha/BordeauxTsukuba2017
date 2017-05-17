@@ -8,6 +8,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.Teleport;
+import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
+import com.tskbdx.sumimasen.scenes.view.effects.Effect;
+import com.tskbdx.sumimasen.scenes.view.effects.Fade;
 import com.tskbdx.sumimasen.scenes.view.entities.animator.Animator;
 
 import java.util.Observable;
@@ -34,6 +38,8 @@ public class EntityRenderer implements Observer {
 
     private Animator animator = null;
 
+    private WorldRenderer worldRenderer;
+
     public EntityRenderer(Entity entity, String imagefile, AssetManager assetManager) {
         this.entity = entity;
         this.spritesheet = assetManager.get(IMAGES_RES_FOLDER + imagefile, Texture.class);
@@ -53,7 +59,22 @@ public class EntityRenderer implements Observer {
      */
     @Override
     public void update(Observable observable, Object o) {
-        if (positionSynced()) {
+
+        if (o == Teleport.class) {
+            if (worldRenderer != null) {
+                System.out.println("Yo");
+
+                Effect fadeIn = new Fade(Teleport.DELAY, Fade.IN);
+                fadeIn.setCallback(() -> {
+                    worldRenderer.setEffect(new Fade(Teleport.DELAY, Fade.OUT));
+                });
+
+                worldRenderer.setEffect(fadeIn);
+
+            }
+        }
+
+        if (positionNotSynced()) {
             Vector2 target = new Vector2(entity.getX() * TILE_SIZE, entity.getY() * TILE_SIZE);
             int speed = entity.getSpeed();
             positionSyncer = new InterpolationPositionSyncer(rectangle, target, 1.f / speed);
@@ -95,10 +116,7 @@ public class EntityRenderer implements Observer {
         }
     }
 
-    /**
-     * @return true if this is the entity has succeeded to move
-     */
-    public boolean positionSynced() {
+    public boolean positionNotSynced() {
         return rectangle.x != entity.getX() * TILE_SIZE
                 || rectangle.y != entity.getY() * TILE_SIZE;
     }
@@ -137,5 +155,13 @@ public class EntityRenderer implements Observer {
 
     public Texture getSpritesheet() {
         return spritesheet;
+    }
+
+    public WorldRenderer getWorldRenderer() {
+        return worldRenderer;
+    }
+
+    public void setWorldRenderer(WorldRenderer worldRenderer) {
+        this.worldRenderer = worldRenderer;
     }
 }

@@ -275,7 +275,7 @@ public class Entity extends Observable {
         MovementResult move = movement.move(this);
 
         if (!move.getEntitiesAround().isEmpty()) {
-            
+
             Entity entity = move.getEntitiesAround().get(0);
 
             if (entity.getOnCollide() != null

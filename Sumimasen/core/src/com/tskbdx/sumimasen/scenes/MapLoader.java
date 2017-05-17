@@ -11,7 +11,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.GetPickedUp;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
-import com.tskbdx.sumimasen.scenes.model.entities.interactions.DoTeleport;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.Teleport;
 import com.tskbdx.sumimasen.scenes.story.StoryTeller;
 import com.tskbdx.sumimasen.scenes.story.introduction.StartState;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
@@ -92,7 +92,7 @@ public class MapLoader {
                         Integer toX = object.getProperties().get("toX", Integer.class);
                         Integer toY = object.getProperties().get("toY", Integer.class);
 
-                        onCollide = new DoTeleport(toX, toY);
+                        onCollide = new Teleport(toX, toY);
                     }
 
                     entity.setOnCollide(onCollide);
