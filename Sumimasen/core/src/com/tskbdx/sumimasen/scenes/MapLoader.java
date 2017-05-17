@@ -8,7 +8,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.tskbdx.sumimasen.Sumimasen;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
-import com.tskbdx.sumimasen.scenes.model.entities.Sensor;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.GetPickedUp;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
@@ -46,36 +45,8 @@ public class MapLoader {
             String imagefile = object.getProperties().get("imagefile", String.class);
             String name = object.getName();
 
-            String type = object.getProperties().get("type", String.class);
 
-            //TODO : Refacto this
-            if (type != null && type.equals("sensor")) {
-
-                Sensor entity = new Sensor();
-                EntityRenderer entityRenderer;
-
-                entity.setX(x);
-                entity.setY(y);
-                entity.setWidth(width);
-                entity.setHeight(height);
-
-                entity.setName(object.getName());
-
-                String onCollision = object.getProperties().get("onCollision", String.class);
-
-                if (onCollision.equals("teleport")) {
-
-                    Integer toX = object.getProperties().get("toX", Integer.class);
-                    Integer toY = object.getProperties().get("toY", Integer.class);
-
-                    entity.setOnCollision(new Teleport(toX, toY));
-                }
-
-                entityRenderer = new EntityRenderer(entity, imagefile, Sumimasen.getAssetManager());
-                world.addEntity(entity);
-                worldRenderer.addEntityRenderer(entityRenderer);
-
-            } else if (entityNames.contains(name)) {
+            if (entityNames.contains(name)) {
 
                 Entity entity;
                 EntityRenderer entityRenderer;
@@ -94,19 +65,38 @@ public class MapLoader {
                 entity.setName(object.getName());
 
                 // set interaction from property "defaultInteraction"
-                Interaction interaction = null;
                 String defaultInteraction = object.getProperties().get("defaultInteraction", String.class);
 
-                if (defaultInteraction != null
-                        && defaultInteraction.equals("dialogue")) {
+                if (defaultInteraction != null) {
 
-                    interaction = new Dialogue(object.getProperties().get("dialogueName", String.class)); // check constructor for filename
+                    Interaction interaction = null;
+                    if (defaultInteraction.equals("dialogue")) {
 
-                } else if (defaultInteraction != null
-                        && defaultInteraction.equals("getPickedUp")) {
-                    interaction = new GetPickedUp();
+                        interaction = new Dialogue(object.getProperties().get("dialogueName", String.class)); // check constructor for filename
+
+                    } else if (defaultInteraction.equals("getPickedUp")) {
+
+                        interaction = new GetPickedUp();
+
+                    }
+
+                    entity.setInteraction(interaction);
                 }
-                entity.setInteraction(interaction);
+
+                String onCollideInteraction = object.getProperties().get("onCollide", String.class);
+
+                if (onCollideInteraction != null) {
+
+                    Interaction onCollide = null;
+                    if (onCollideInteraction.equals("teleport")) {
+                        Integer toX = object.getProperties().get("toX", Integer.class);
+                        Integer toY = object.getProperties().get("toY", Integer.class);
+
+                        onCollide = new Teleport(toX, toY);
+                    }
+
+                    entity.setOnCollide(onCollide);
+                }
 
                 entity.addObserver(new CollisionSound("collision.mp3"));
                 entityRenderer = new EntityRenderer(entity, imagefile, Sumimasen.getAssetManager());

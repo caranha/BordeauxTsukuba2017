@@ -30,7 +30,7 @@ public class Path implements Movement {
     }
 
     @Override
-    public void move(Entity entity) {
+    public MovementResult move(Entity entity) {
         if (directionQueue.isEmpty()) {
             entity.setMovement(null);
         } else if (ready) {
@@ -48,6 +48,8 @@ public class Path implements Movement {
                 move(entity);
             }, 1.f / entity.getSpeed());
         }
+
+        return MovementResult.computeMovementResult(entity);
     }
 
     private void process(Direction direction, Entity entity) {

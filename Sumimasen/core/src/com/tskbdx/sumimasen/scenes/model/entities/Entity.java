@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
+import com.tskbdx.sumimasen.scenes.model.entities.movements.MovementResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class Entity extends Observable {
 
     private Movement movement;
     private Interaction interaction;
+    private Interaction onCollide;
 
     private int x, y;
     private int width, height;
@@ -68,7 +70,6 @@ public class Entity extends Observable {
                 if (neighbour.isInteractable()) {
                     // change target direction to face this
                     neighbour.setDirection(getOpposite(getLastDirection()));
-                    neighbour.setChanged();
                     neighbour.notifyObservers();
                     neighbour.getInteraction().start(neighbour, this);
                 }
@@ -121,7 +122,6 @@ public class Entity extends Observable {
         setY(y);
 
         setChanged();
-        notifyObservers();
     }
 
     public int getY() {
@@ -200,6 +200,7 @@ public class Entity extends Observable {
 
     public void setName(String name) {
         this.name = name;
+        setChanged();
     }
 
     public Message getMessage() {
@@ -226,6 +227,7 @@ public class Entity extends Observable {
 
     public void setInteraction(Interaction interaction) {
         this.interaction = interaction;
+        setChanged();
     }
 
     public boolean isInteracting() {
@@ -234,6 +236,7 @@ public class Entity extends Observable {
 
     public void setInteracting(boolean interacting) {
         isInteracting = interacting;
+        setChanged();
     }
 
     public Entity getInteractingWith() {
@@ -242,6 +245,7 @@ public class Entity extends Observable {
 
     public void setInteractingWith(Entity interactingWith) {
         this.interactingWith = interactingWith;
+        setChanged();
     }
 
     public void store(Entity entity) {
@@ -257,8 +261,30 @@ public class Entity extends Observable {
         return inventory;
     }
 
+    public Interaction getOnCollide() {
+        return onCollide;
+    }
+
+    public void setOnCollide(Interaction onCollide) {
+        this.onCollide = onCollide;
+        setChanged();
+    }
+
     public void move(Direction direction) {
         setDirection(direction);
-        movement.move(this);
+        MovementResult move = movement.move(this);
+
+        if (!move.getEntitiesAround().isEmpty()) {
+
+            Entity entity = move.getEntitiesAround().get(0);
+
+            if (entity.getOnCollide() != null
+                    && !entity.getOnCollide().isStarted()) {
+
+                entity.getOnCollide().start(entity, this);
+            }
+
+        }
+
     }
 }
