@@ -17,7 +17,7 @@ public class Fade extends Effect {
     private float clock = 0.f;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
-    int inOrOut;
+    private int inOrOut;
 
     public Fade(float duration, int inOrOut) {
         super();
