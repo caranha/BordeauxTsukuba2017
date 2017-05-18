@@ -1,70 +1,104 @@
 package com.tskbdx.sumimasen.scenes.view;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.tskbdx.sumimasen.Sumimasen;
+import com.tskbdx.sumimasen.scenes.Pair;
+import com.tskbdx.sumimasen.scenes.model.World;
+import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.view.effects.Effect;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRendererDrawOrderer;
+import com.tskbdx.sumimasen.scenes.view.entities.animator.DirectionSpriteSheetAnimator;
 
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Created by Sydpy on 4/28/17.
  */
 
-public class WorldRenderer extends OrthogonalTiledMapRenderer {
+public class WorldRenderer implements Observer{
 
-    private ArrayList<EntityRenderer> entityRenderers = new ArrayList<EntityRenderer>();
+    private Map<Entity, EntityRenderer> rendererByEntity = new HashMap<>();
 
-    private Effect effect = null;
+    private Effect effect;
 
-    public WorldRenderer(TiledMap map) {
-        super(map, new SpriteBatch());
+    private OrthogonalTiledMapRenderer tiledMapRenderer;
+    private Batch batch = new SpriteBatch();
+
+    private OrthographicCamera camera;
+
+    public WorldRenderer(World world, OrthographicCamera camera) {
+        world.addObserver(this);
+
+        this.camera = camera;
     }
 
-    public void addEntityRenderer(EntityRenderer entityRenderer) {
-        entityRenderers.add(entityRenderer);
-        entityRenderer.setWorldRenderer(this);
-    }
-
-    public void removeEntityRenderer(EntityRenderer entityRenderer) {
-        entityRenderers.remove(entityRenderer);
-        entityRenderer.setWorldRenderer(null);
-    }
-
-    @Override
     public void render() {
-        entityRenderers.sort(new EntityRendererDrawOrderer());
+//        rendererByEntity.sort(new EntityRendererDrawOrderer());
 
-        beginRender();
+        batch.begin();
 
+        tiledMapRenderer.setView(camera);
 
-        for (MapLayer layer : map.getLayers()) {
+        ArrayList<EntityRenderer> renderers = new ArrayList<>(rendererByEntity.values());
+        Collections.sort(renderers, new EntityRendererDrawOrderer());
+
+        for (MapLayer layer : tiledMapRenderer.getMap().getLayers()) {
 
             if (layer.isVisible()) {
                 if (layer instanceof TiledMapTileLayer) {
-                    renderTileLayer((TiledMapTileLayer) layer);
+                    tiledMapRenderer.renderTileLayer((TiledMapTileLayer) layer);
                 } else if (layer.getName().equals("Entities")) {
-                    for (EntityRenderer entityRenderer: entityRenderers) {
-                        entityRenderer.render( getBatch() );
+                    for (EntityRenderer entityRenderer: renderers) {
+                        entityRenderer.render( batch );
                     }
                 }
             }
         }
 
         if (effect != null && !effect.isFinished()) {
-            effect.render(getBatch());
+            effect.render(batch);
         }
 
-        endRender();
+        batch.end();
     }
 
     public void setEffect(Effect effect) {
         this.effect = effect;
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+
+        if (o instanceof TiledMap) {
+            tiledMapRenderer = new OrthogonalTiledMapRenderer((TiledMap) o, batch);
+        } else if (o instanceof Pair) {
+
+            if (((Pair) o).getLeft() instanceof Entity
+                    && ((Pair) o).getRight() instanceof String) {
+
+                Entity entity = (Entity) ((Pair) o).getLeft();
+                String imageFile = (String) ((Pair) o).getRight();
+                EntityRenderer entityRenderer = new EntityRenderer(entity, imageFile, Sumimasen.getAssetManager());
+
+                if (entity.getName().equals("player")) {
+                    entityRenderer.setAnimator(new DirectionSpriteSheetAnimator(entityRenderer, 1, 2, 12, 16, 0.4f));
+                }
+
+                entityRenderer.setWorldRenderer(this);
+
+                rendererByEntity.put(entity, entityRenderer);
+            }
+
+        } else if (o instanceof Entity) {
+            rendererByEntity.remove(o);
+        }
+
     }
 }

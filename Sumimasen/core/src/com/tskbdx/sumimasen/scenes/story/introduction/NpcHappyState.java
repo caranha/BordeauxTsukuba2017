@@ -7,6 +7,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.story.StoryState;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /*
@@ -21,8 +22,11 @@ public class NpcHappyState implements StoryState {
 
     @Override
     public void process(World world) {
-        Entity entity = world.getEntityByName("entity");
-        assert entity != null;
+
+        List<Entity> entitiesByName = world.getEntitiesByName("entity");
+
+        // Let the game crash if we can't find the entity
+        Entity entity = entitiesByName.get(0);
         entity.setInteraction(new GetPickedUp());
     }
 

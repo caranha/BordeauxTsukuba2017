@@ -2,7 +2,6 @@ package com.tskbdx.sumimasen.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -44,27 +43,25 @@ public class IntroScene implements Scene {
 
     @Override
     public void init() {
-        //Load tiled map
-        TiledMap tiledMap = new TmxMapLoader().load("maps/map.tmx");
-        int width = tiledMap.getProperties().get("width", Integer.class);
-        int height = tiledMap.getProperties().get("height", Integer.class);
-        world = new World(width, height);
-        worldRenderer = new WorldRenderer(tiledMap);
-
         entityNames.add("player");
         entityNames.add("entity");
         entityNames.add("item");
         entityNames.add("sensor");
 
-        MapLoader.loadEntities(tiledMap, world, worldRenderer, entityNames);
-        MapLoader.loadWalls(tiledMap, world);
+        camera = new SmoothCamera(1.f);
+        camera.setToOrtho(false, 800, 480);
+        camera.zoom = 1.f / SCALE_FACTOR;
+
+        //Load tiled map
+        TiledMap tiledMap = new TmxMapLoader().load("maps/map.tmx");
+        world = new World();
+        worldRenderer = new WorldRenderer(world, camera);
+
+        world.init(tiledMap, entityNames);
 
         userInterface = new UserInterface(world, getPlayer());
         setInputProcessor(basicProcessor);
 
-        camera = new SmoothCamera(1.f);
-        camera.setToOrtho(false, 800, 480);
-        camera.zoom = 1.f / SCALE_FACTOR;
         camera.setTo(getPlayer().getX() * 8.f, getPlayer().getY() * 8.f);
     }
 
@@ -92,7 +89,6 @@ public class IntroScene implements Scene {
 
         batch.setProjectionMatrix(camera.combined);
 
-        worldRenderer.setView(camera);
         worldRenderer.render();
 
         userInterface.draw();

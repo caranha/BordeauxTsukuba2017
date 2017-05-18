@@ -38,7 +38,7 @@ final class InventoryRenderer implements Observer, Disposable {
 
     @Override
     public void update(Observable o, Object arg) {
-        assert modelInventory.size() != viewInventory.size();
+
         Collection<Entity> difference;
         if (modelInventory.size() > viewInventory.size()) {
             /*

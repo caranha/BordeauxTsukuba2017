@@ -1,7 +1,20 @@
 package com.tskbdx.sumimasen.scenes.model;
 
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
+import com.tskbdx.sumimasen.GameScreen;
+import com.tskbdx.sumimasen.scenes.Pair;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.GetPickedUp;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.Teleport;
+import com.tskbdx.sumimasen.scenes.story.StoryTeller;
+import com.tskbdx.sumimasen.scenes.story.introduction.StartState;
 
 import java.util.*;
 
@@ -17,39 +30,130 @@ import java.util.*;
  * Else :
  * - Empty location are filled by null value.
  */
-public class World {
+public class World extends Observable {
 
     private boolean wallsMap[][];
 
-    private final List<Entity> entities;
+    private List<Entity> entities = new ArrayList<>();
 
-    private Map<String, Entity> entityByName = new HashMap<>();
+    public World() { }
 
-    public World(int width, int height) {
-        wallsMap = new boolean[width][height];
+    public void init(TiledMap tiledMap, List<String> entityNames) {
 
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
+        int mapWidth = tiledMap.getProperties().get("width", Integer.class);
+        int mapHeight = tiledMap.getProperties().get("height", Integer.class);
+
+        wallsMap = new boolean[mapWidth][mapHeight];
+
+        for (int i = 0; i < mapWidth; i++) {
+            for (int j = 0; j < mapHeight; j++) {
                 setVoid(i, j);
             }
         }
 
-        entities = new ArrayList<>();
         entities.clear();
+
+        setChanged();
+        notifyObservers(tiledMap);
+
+        MapLayer entitiesLayer = tiledMap.getLayers().get("Entities");
+        MapObjects objects = entitiesLayer.getObjects();
+
+        for (MapObject object : objects) {
+
+            String name = object.getName();
+
+            if (entityNames.contains(name)) {
+
+                int x = (int) Math.ceil(object.getProperties().get("x", Float.class) / 8);
+                int y = (int) Math.ceil(object.getProperties().get("y", Float.class) / 8);
+                int width = (int) Math.ceil(object.getProperties().get("width", Float.class) / 8);
+                int height = (int) Math.ceil(object.getProperties().get("height", Float.class) / 8);
+                String imagefile = object.getProperties().get("imagefile", String.class);
+
+                Entity entity;
+
+                if (name.equals("player")) {
+                    entity = GameScreen.getPlayer();
+                } else {
+                    entity = new Entity();
+                }
+
+                entity.setX(x);
+                entity.setY(y);
+                entity.setWidth(width);
+                entity.setHeight(height);
+
+                entity.setName(object.getName());
+
+                // set interaction from property "defaultInteraction"
+                String defaultInteraction = object.getProperties().get("defaultInteraction", String.class);
+
+                if (defaultInteraction != null) {
+
+                    Interaction interaction = null;
+                    if (defaultInteraction.equals("dialogue")) {
+
+                        interaction = new Dialogue(object.getProperties().get("dialogueName", String.class)); // check constructor for filename
+
+                    } else if (defaultInteraction.equals("getPickedUp")) {
+
+                        interaction = new GetPickedUp();
+
+                    }
+
+                    entity.setInteraction(interaction);
+                }
+
+                String onCollideInteraction = object.getProperties().get("onCollide", String.class);
+
+                if (onCollideInteraction != null) {
+
+                    Interaction onCollide = null;
+                    if (onCollideInteraction.equals("teleport")) {
+                        Integer toX = object.getProperties().get("toX", Integer.class);
+                        Integer toY = object.getProperties().get("toY", Integer.class);
+
+                        onCollide = new Teleport(toX, toY);
+                    }
+
+                    entity.setOnCollide(onCollide);
+                }
+
+                addEntity(entity);
+                notifyObservers(new Pair<>(entity, imagefile));
+            }
+
+            object.setVisible(false);
+        }
+
+        GameScreen.getPlayer().addObserver(new StoryTeller(this, new StartState()));
+
+        TiledMapTileLayer collisionLayer =
+                (TiledMapTileLayer) tiledMap.getLayers().get("Collision");
+
+        for(int i = 0; i < collisionLayer.getWidth(); i++) {
+            for (int j = 0; j < collisionLayer.getHeight(); j++) {
+                if (collisionLayer.getCell(i,j) != null) {
+                    setWall(i,j);
+                }
+            }
+        }
+
+        collisionLayer.setVisible(false);
     }
 
     public void addEntity(Entity entity) {
         entity.setWorld(this);
-
-        entityByName.put(entity.getName(), entity);
         entities.add(entity);
+        setChanged();
     }
 
     public void removeEntity(Entity entity) {
         entity.setWorld(null);
-
-        entityByName.remove(entity.getName());
-        entities.remove(entity); // finally works
+        entities.remove(entity);
+        setChanged();
+        notifyObservers(entity);
     }
 
     private void setVoid(int i, int j) {
@@ -113,11 +217,12 @@ public class World {
         return colliding;
     }
 
-    public final Entity getEntityByName(String name) {
-        if (entityByName.containsKey(name)) {
-            return entityByName.get(name);
-        }
-        return null;
+    public final List<Entity> getEntitiesByName(String name) {
+
+        List<Entity> entitiesByName = new ArrayList<>(entities);
+        entitiesByName.removeIf( e -> !e.getName().equals(name));
+
+        return entitiesByName;
     }
 
     public List<Entity> getEntities() {
