@@ -9,10 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.Pair;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
-import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
-import com.tskbdx.sumimasen.scenes.model.entities.interactions.GetPickedUp;
-import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
-import com.tskbdx.sumimasen.scenes.model.entities.interactions.Teleport;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.*;
 import com.tskbdx.sumimasen.scenes.story.StoryTeller;
 import com.tskbdx.sumimasen.scenes.story.introduction.StartState;
 
@@ -38,7 +35,7 @@ public class World extends Observable {
 
     public World() { }
 
-    public void init(TiledMap tiledMap, List<String> entityNames) {
+    public void init(TiledMap tiledMap) {
 
         int mapWidth = tiledMap.getProperties().get("width", Integer.class);
         int mapHeight = tiledMap.getProperties().get("height", Integer.class);
@@ -63,66 +60,65 @@ public class World extends Observable {
 
             String name = object.getName();
 
-            if (entityNames.contains(name)) {
+            int x = (int) Math.ceil(object.getProperties().get("x", Float.class) / 8);
+            int y = (int) Math.ceil(object.getProperties().get("y", Float.class) / 8);
+            int width = (int) Math.ceil(object.getProperties().get("width", Float.class) / 8);
+            int height = (int) Math.ceil(object.getProperties().get("height", Float.class) / 8);
+            String imagefile = object.getProperties().get("imagefile", String.class);
 
-                int x = (int) Math.ceil(object.getProperties().get("x", Float.class) / 8);
-                int y = (int) Math.ceil(object.getProperties().get("y", Float.class) / 8);
-                int width = (int) Math.ceil(object.getProperties().get("width", Float.class) / 8);
-                int height = (int) Math.ceil(object.getProperties().get("height", Float.class) / 8);
-                String imagefile = object.getProperties().get("imagefile", String.class);
+            Entity entity;
 
-                Entity entity;
-
-                if (name.equals("player")) {
-                    entity = GameScreen.getPlayer();
-                } else {
-                    entity = new Entity();
-                }
-
-                entity.setX(x);
-                entity.setY(y);
-                entity.setWidth(width);
-                entity.setHeight(height);
-
-                entity.setName(object.getName());
-
-                // set interaction from property "defaultInteraction"
-                String defaultInteraction = object.getProperties().get("defaultInteraction", String.class);
-
-                if (defaultInteraction != null) {
-
-                    Interaction interaction = null;
-                    if (defaultInteraction.equals("dialogue")) {
-
-                        interaction = new Dialogue(object.getProperties().get("dialogueName", String.class)); // check constructor for filename
-
-                    } else if (defaultInteraction.equals("getPickedUp")) {
-
-                        interaction = new GetPickedUp();
-
-                    }
-
-                    entity.setInteraction(interaction);
-                }
-
-                String onCollideInteraction = object.getProperties().get("onCollide", String.class);
-
-                if (onCollideInteraction != null) {
-
-                    Interaction onCollide = null;
-                    if (onCollideInteraction.equals("teleport")) {
-                        Integer toX = object.getProperties().get("toX", Integer.class);
-                        Integer toY = object.getProperties().get("toY", Integer.class);
-
-                        onCollide = new Teleport(toX, toY);
-                    }
-
-                    entity.setOnCollide(onCollide);
-                }
-
-                addEntity(entity);
-                notifyObservers(new Pair<>(entity, imagefile));
+            if (name.equals("player")) {
+                entity = GameScreen.getPlayer();
+            } else {
+                entity = new Entity();
             }
+
+            entity.setX(x);
+            entity.setY(y);
+            entity.setWidth(width);
+            entity.setHeight(height);
+
+            entity.setName(object.getName());
+
+            // set interaction from property "defaultInteraction"
+            String defaultInteraction = object.getProperties().get("defaultInteraction", String.class);
+
+            if (defaultInteraction != null) {
+
+                Interaction interaction = null;
+                if (defaultInteraction.equals("dialogue")) {
+
+                    interaction = new Dialogue(object.getProperties().get("dialogueName", String.class)); // check constructor for filename
+
+                } else if (defaultInteraction.equals("getPickedUp")) {
+
+                    interaction = new GetPickedUp();
+
+                }
+
+                entity.setInteraction(interaction);
+            }
+
+            String onCollideInteraction = object.getProperties().get("onCollide", String.class);
+
+            if (onCollideInteraction != null) {
+
+                if (onCollideInteraction.equals("teleport")) {
+                    Integer toX = object.getProperties().get("toX", Integer.class);
+                    Integer toY = object.getProperties().get("toY", Integer.class);
+
+                    entity.setOnCollide(new Teleport(toX, toY));
+                } else if (onCollideInteraction.equals("changeMap")) {
+                    String toMap = object.getProperties().get("toMap", String.class);
+
+                    entity.setOnCollide(new ChangeMap(toMap));
+                }
+
+            }
+
+            addEntity(entity);
+            notifyObservers(new Pair<>(entity, imagefile));
 
             object.setVisible(false);
         }

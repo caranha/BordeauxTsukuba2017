@@ -13,9 +13,6 @@ import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.ui.UserInterface;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.tskbdx.sumimasen.GameScreen.getPlayer;
 
 /*
@@ -33,8 +30,6 @@ public class IntroScene implements Scene {
 
     private UserInterface userInterface;
 
-    private List<String> entityNames = new ArrayList<>();
-
     private InputProcessor basicProcessor = new GameCommands();
 
     public IntroScene(Player player) {
@@ -43,10 +38,6 @@ public class IntroScene implements Scene {
 
     @Override
     public void init() {
-        entityNames.add("player");
-        entityNames.add("entity");
-        entityNames.add("item");
-        entityNames.add("sensor");
 
         camera = new SmoothCamera(1.f);
         camera.setToOrtho(false, 800, 480);
@@ -57,7 +48,7 @@ public class IntroScene implements Scene {
         world = new World();
         worldRenderer = new WorldRenderer(world, camera);
 
-        world.init(tiledMap, entityNames);
+        world.init(tiledMap);
 
         userInterface = new UserInterface(world, getPlayer());
         setInputProcessor(basicProcessor);

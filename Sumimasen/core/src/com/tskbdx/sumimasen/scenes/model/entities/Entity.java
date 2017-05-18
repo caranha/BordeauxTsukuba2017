@@ -272,18 +272,22 @@ public class Entity extends Observable {
 
     public void move(Direction direction) {
         setDirection(direction);
-        MovementResult move = movement.move(this);
 
-        if (!move.getEntitiesAround().isEmpty()) {
+        if (movement != null) {
+            MovementResult move = movement.move(this);
+            if (!move.getEntitiesAround().isEmpty()) {
 
-            Entity entity = move.getEntitiesAround().get(0);
+                Entity entity = move.getEntitiesAround().get(0);
 
-            if (entity.getOnCollide() != null) {
+                if (entity.getOnCollide() != null) {
 
-                entity.getOnCollide().start(entity, this);
+                    entity.getOnCollide().start(entity, this);
+                }
+
             }
-
         }
+
+
 
     }
 }

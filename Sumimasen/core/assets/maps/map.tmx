@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="96" height="96" tilewidth="8" tileheight="8" nextobjectid="12">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="96" height="96" tilewidth="8" tileheight="8" nextobjectid="15">
  <tileset firstgid="1" name="tileset" tilewidth="8" tileheight="8" tilecount="4096" columns="64">
   <image source="tileset.png" width="512" height="512"/>
  </tileset>
@@ -240,6 +240,13 @@
     <property name="onCollide" value="teleport"/>
     <property name="toX" type="int" value="4"/>
     <property name="toY" type="int" value="92"/>
+   </properties>
+  </object>
+  <object id="14" name="map changer" x="200" y="216" width="16" height="8">
+   <properties>
+    <property name="imagefile" value="entity.png"/>
+    <property name="onCollide" value="changeMap"/>
+    <property name="toMap" value="home"/>
    </properties>
   </object>
  </objectgroup>
