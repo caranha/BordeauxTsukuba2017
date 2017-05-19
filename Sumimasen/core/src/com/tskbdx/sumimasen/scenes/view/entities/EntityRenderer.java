@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.ChangeMap;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Teleport;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.effects.Effect;
@@ -60,9 +61,8 @@ public class EntityRenderer implements Observer {
     @Override
     public void update(Observable observable, Object o) {
 
-        if (o == Teleport.class) {
+        if (o == Teleport.class || o == ChangeMap.class) {
             if (worldRenderer != null) {
-                System.out.println("Yo");
 
                 Effect fadeIn = new Fade(Teleport.DELAY, Fade.IN);
                 fadeIn.setCallback(() -> {

@@ -1,6 +1,5 @@
 package com.tskbdx.sumimasen.scenes.view;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
@@ -31,9 +30,9 @@ public class WorldRenderer implements Observer{
     private OrthogonalTiledMapRenderer tiledMapRenderer;
     private Batch batch = new SpriteBatch();
 
-    private OrthographicCamera camera;
+    private SmoothCamera camera;
 
-    public WorldRenderer(World world, OrthographicCamera camera) {
+    public WorldRenderer(World world, SmoothCamera camera) {
         world.addObserver(this);
 
         this.camera = camera;
@@ -138,5 +137,9 @@ public class WorldRenderer implements Observer{
             rendererByEntity.remove(o);
         }
 
+    }
+
+    public SmoothCamera getCamera() {
+        return camera;
     }
 }
