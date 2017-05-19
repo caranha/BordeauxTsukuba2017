@@ -55,7 +55,7 @@ public class WorldRenderer implements Observer{
 
         for (EntityRenderer renderer : renderers) {
             if(floating.getCell((int) renderer.getX() / 8 , (int) renderer.getY() / 8) != null
-                    || floating.getCell((int) (renderer.getX() + renderer.getWidth()) / 8 - 1 , (int) renderer.getY() / 8) != null) {
+                    || floating.getCell((int) (renderer.getX() + renderer.getWidth()) / 8 , (int) renderer.getY() / 8) != null) {
                 beforeFloating.add(renderer);
             } else {
                 afterFloating.add(renderer);
