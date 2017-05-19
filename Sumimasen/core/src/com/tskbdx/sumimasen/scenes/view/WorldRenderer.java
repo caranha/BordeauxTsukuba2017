@@ -39,24 +39,62 @@ public class WorldRenderer implements Observer{
         this.camera = camera;
     }
 
+    //TODO: Maybe to ptimize
     public void render() {
-//        rendererByEntity.sort(new EntityRendererDrawOrderer());
 
         batch.begin();
 
         tiledMapRenderer.setView(camera);
 
-        ArrayList<EntityRenderer> renderers = new ArrayList<>(rendererByEntity.values());
+        List<EntityRenderer> renderers = new ArrayList<>(rendererByEntity.values());
         Collections.sort(renderers, new EntityRendererDrawOrderer());
+
+        TiledMapTileLayer floating = (TiledMapTileLayer) tiledMapRenderer.getMap().getLayers().get("Floating");
+
+        List<EntityRenderer> beforeFloating = new ArrayList<>();
+        List<EntityRenderer> afterFloating = new ArrayList<>();
+
+        for (EntityRenderer renderer : renderers) {
+            if(floating.getCell((int) renderer.getX() / 8 , (int) renderer.getY() / 8) != null
+                    || floating.getCell((int) (renderer.getX() + renderer.getWidth()) / 8 - 1 , (int) renderer.getY() / 8) != null) {
+                beforeFloating.add(renderer);
+            } else {
+                afterFloating.add(renderer);
+            }
+        }
 
         for (MapLayer layer : tiledMapRenderer.getMap().getLayers()) {
 
             if (layer.isVisible()) {
                 if (layer instanceof TiledMapTileLayer) {
-                    tiledMapRenderer.renderTileLayer((TiledMapTileLayer) layer);
-                } else if (layer.getName().equals("Entities")) {
-                    for (EntityRenderer entityRenderer: renderers) {
-                        entityRenderer.render( batch );
+
+                    if (layer.getName().equals("Floating")) {
+
+                        for (EntityRenderer beforeFloatingRenderer : beforeFloating) {
+
+                            for (int i = 0; i < afterFloating.size(); i++) {
+                                EntityRenderer afterFloatingRenderer = afterFloating.get(i);
+
+                                if (afterFloatingRenderer.getY() > beforeFloatingRenderer.getY()
+                                        && afterFloatingRenderer.getRectangle().overlaps(beforeFloatingRenderer.getRectangle())) {
+
+                                    afterFloatingRenderer.render(batch);
+                                    afterFloating.remove(i);
+                                    i--;
+                                }
+                            }
+
+                            beforeFloatingRenderer.render(batch);
+                        }
+
+                        tiledMapRenderer.renderTileLayer((TiledMapTileLayer) layer);
+
+                        for (EntityRenderer entityRenderer : afterFloating) {
+                            entityRenderer.render(batch);
+                        }
+
+                    } else {
+                        tiledMapRenderer.renderTileLayer((TiledMapTileLayer) layer);
                     }
                 }
             }

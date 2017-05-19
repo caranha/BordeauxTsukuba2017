@@ -153,6 +153,10 @@ public class EntityRenderer implements Observer {
         return rectangle.getHeight();
     }
 
+    public Rectangle getRectangle() {
+        return rectangle;
+    }
+
     public Texture getSpritesheet() {
         return spritesheet;
     }
