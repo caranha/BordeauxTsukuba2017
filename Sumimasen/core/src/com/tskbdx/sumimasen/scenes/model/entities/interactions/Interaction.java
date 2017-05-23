@@ -49,8 +49,6 @@ public abstract class Interaction {
 
         active.notifyObservers(getClass());
         passive.notifyObservers(getClass());
-
-        Story.update(this, active, passive);
     }
 
     public void end() {
@@ -62,6 +60,8 @@ public abstract class Interaction {
 
         active.setMovement(activeMovement);
         passive.setMovement(passiveMovement);
+
+        Story.update(this, active, passive);
     }
 
     public final Entity getActive() {

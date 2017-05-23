@@ -42,7 +42,6 @@ public class Path implements Movement {
              */
             entity.notifyObservers();
             process(directionQueue.poll(), entity);
-        } else {
             setTimeout(() -> {
                 ready = true;
                 move(entity);
@@ -85,6 +84,7 @@ public class Path implements Movement {
         if (!entity.getWorld().isWall(rect)
                 &&  entityColliding.isEmpty()) {
             entity.moveTo(newX, newY);
+            entity.notifyObservers();
         }
     }
 }

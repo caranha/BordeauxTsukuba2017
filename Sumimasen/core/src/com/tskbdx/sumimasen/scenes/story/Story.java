@@ -33,7 +33,7 @@ final public class Story {
     }
 
     /**
-     * To call at the start of every Model interaction.
+     * To call at the end of every Model interaction.
      * An interaction is an event which can trigger an new state.
      * @see State
      * @see Event
