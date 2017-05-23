@@ -12,16 +12,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar.ProgressBarStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+import java.io.File;
+
 /**
  * Created by Sydpy on 4/27/17.
  */
 public class LoadingScreen implements Screen {
-
-    private final static String[] imageNames = {
-            "player", "chatbubble", "entity", "item",
-            "left", "right", "down", "up"
-            , "noname", "cat"};
-    // to do : same with other ressources
 
     private final AssetManager manager;
     private final Sumimasen game;
@@ -31,9 +27,8 @@ public class LoadingScreen implements Screen {
     public LoadingScreen(Sumimasen game) {
         this.game = game;
         manager = Sumimasen.getAssetManager();
-        for (String name : imageNames) {
-            manager.load("images/" + name + ".png", Texture.class);
-        }
+
+        loadImages("images/");
 
         // Settings of the progress bar
         Pixmap pixmap = new Pixmap(10, 10, Pixmap.Format.RGBA8888);
@@ -51,6 +46,24 @@ public class LoadingScreen implements Screen {
         // Add a new progress bar from the settings
         stage.addActor(createProgressBar(progressBarBackground, progressBarForeground,
                 progressBarWidth, progressBarHeight));
+    }
+
+    private void loadImages(String path) {
+
+        File root = new File(path);
+        File[] list = root.listFiles();
+
+        if (list != null) {
+            for (File f : list) {
+                if (f.isDirectory()) {
+                    loadImages(f.getAbsolutePath());
+                } else if (f.getName().endsWith(".png")) {
+                    System.out.println("loading " + path + f.getName());
+                    manager.load(path + f.getName(), Texture.class);
+                }
+            }
+        }
+
     }
 
     @Override
