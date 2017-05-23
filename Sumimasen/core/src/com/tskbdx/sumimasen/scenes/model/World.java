@@ -7,7 +7,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.GameScreen;
-import com.tskbdx.sumimasen.scenes.Pair;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.*;
 import com.tskbdx.sumimasen.scenes.story.StoryTeller;
@@ -64,7 +63,6 @@ public class World extends Observable {
             int y = (int) Math.ceil(object.getProperties().get("y", Float.class) / 8);
             int width = (int) Math.ceil(object.getProperties().get("width", Float.class) / 8);
             int height = (int) Math.ceil(object.getProperties().get("height", Float.class) / 8);
-            String imagefile = object.getProperties().get("imagefile", String.class);
 
             Entity entity;
 
@@ -118,7 +116,7 @@ public class World extends Observable {
             }
 
             addEntity(entity);
-            notifyObservers(new Pair<>(entity, imagefile));
+            notifyObservers(object);
 
             object.setVisible(false);
         }

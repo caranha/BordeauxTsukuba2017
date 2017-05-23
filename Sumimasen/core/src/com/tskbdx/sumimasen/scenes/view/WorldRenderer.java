@@ -3,17 +3,16 @@ package com.tskbdx.sumimasen.scenes.view;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.tskbdx.sumimasen.Sumimasen;
-import com.tskbdx.sumimasen.scenes.Pair;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.view.effects.Effect;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRendererDrawOrderer;
-import com.tskbdx.sumimasen.scenes.view.entities.animator.DirectionSpriteSheetAnimator;
+import com.tskbdx.sumimasen.scenes.view.entities.SpritesheetUtils;
 
 import java.util.*;
 
@@ -23,6 +22,7 @@ import java.util.*;
 
 public class WorldRenderer implements Observer{
 
+    private World world;
     private Map<Entity, EntityRenderer> rendererByEntity = new HashMap<>();
 
     private Effect effect;
@@ -34,7 +34,7 @@ public class WorldRenderer implements Observer{
 
     public WorldRenderer(World world, SmoothCamera camera) {
         world.addObserver(this);
-
+        this.world = world;
         this.camera = camera;
     }
 
@@ -115,23 +115,11 @@ public class WorldRenderer implements Observer{
 
         if (o instanceof TiledMap) {
             tiledMapRenderer = new OrthogonalTiledMapRenderer((TiledMap) o, batch);
-        } else if (o instanceof Pair) {
+        } else if (o instanceof MapObject) {
 
-            if (((Pair) o).getLeft() instanceof Entity
-                    && ((Pair) o).getRight() instanceof String) {
+            MapObject mo = (MapObject) o;
 
-                Entity entity = (Entity) ((Pair) o).getLeft();
-                String imageFile = (String) ((Pair) o).getRight();
-                EntityRenderer entityRenderer = new EntityRenderer(entity, imageFile, Sumimasen.getAssetManager());
-
-                if (entity.getName().equals("player")) {
-                    entityRenderer.setAnimator(new DirectionSpriteSheetAnimator(entityRenderer, 1, 2, 12, 16, 0.4f));
-                }
-
-                entityRenderer.setWorldRenderer(this);
-
-                rendererByEntity.put(entity, entityRenderer);
-            }
+            buildEntityRendererFromMapObject(mo);
 
         } else if (o instanceof Entity) {
             rendererByEntity.remove(o);
@@ -139,7 +127,38 @@ public class WorldRenderer implements Observer{
 
     }
 
-    public SmoothCamera getCamera() {
-        return camera;
+    private void buildEntityRendererFromMapObject(MapObject mo) {
+        String name = mo.getName();
+        List<Entity> entitiesByName = world.getEntitiesByName(name);
+
+        Entity entity = entitiesByName.get(entitiesByName.size() - 1);
+
+        EntityRenderer entityRenderer = new EntityRenderer(entity);
+
+        String standingSpritesheet = mo.getProperties().get("standingSpritesheet", String.class);
+        String walkingSpritesheet = mo.getProperties().get("walkingSpritesheet", String.class);
+        String imageFile = mo.getProperties().get("imageFile", String.class);
+
+        if ( (standingSpritesheet == null || standingSpritesheet.equals("")) && (walkingSpritesheet == null || walkingSpritesheet.equals(""))) {
+
+            if (imageFile == null || imageFile.equals("")) imageFile = "entity.png";
+
+            entityRenderer.setStandingAnimator(SpritesheetUtils.getAnimatorFromSpritesheet(imageFile));
+            entityRenderer.setWalkingAnimator(SpritesheetUtils.getAnimatorFromSpritesheet(imageFile));
+
+        } else if (standingSpritesheet == null || standingSpritesheet.equals("")) {
+            standingSpritesheet = "entity.png";
+            entityRenderer.setStandingAnimator(SpritesheetUtils.getAnimatorFromSpritesheet(standingSpritesheet));
+        } else if (walkingSpritesheet == null || walkingSpritesheet.equals("")) {
+            walkingSpritesheet = "entity.png";
+            entityRenderer.setWalkingAnimator(SpritesheetUtils.getAnimatorFromSpritesheet(walkingSpritesheet));
+        } else {
+            entityRenderer.setStandingAnimator(SpritesheetUtils.getAnimatorFromSpritesheet(standingSpritesheet));
+            entityRenderer.setWalkingAnimator(SpritesheetUtils.getAnimatorFromSpritesheet(walkingSpritesheet));
+        }
+
+        entityRenderer.setWorldRenderer(this);
+
+        rendererByEntity.put(entity, entityRenderer);
     }
 }

@@ -1,7 +1,5 @@
 package com.tskbdx.sumimasen.scenes.view.entities;
 
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -14,6 +12,7 @@ import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.effects.Effect;
 import com.tskbdx.sumimasen.scenes.view.effects.Fade;
 import com.tskbdx.sumimasen.scenes.view.entities.animator.Animator;
+import com.tskbdx.sumimasen.scenes.view.entities.animator.DirectionSpriteSheetAnimator;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -27,27 +26,25 @@ import java.util.Observer;
  */
 public class EntityRenderer implements Observer {
 
-    private static String IMAGES_RES_FOLDER = "images/";
-
     public static int TILE_SIZE = 8;
 
-    private Texture spritesheet;
     private Entity entity;
     private PositionSyncer positionSyncer;
 
     private Rectangle rectangle = new Rectangle();
 
-    private Animator animator = null;
+    private Animator walkingAnimator;
+    private Animator standingAnimator;
+
+    private Animator currentAnimator;
 
     private WorldRenderer worldRenderer;
 
-    public EntityRenderer(Entity entity, String imagefile, AssetManager assetManager) {
+    public EntityRenderer(Entity entity) {
         this.entity = entity;
-        this.spritesheet = assetManager.get(IMAGES_RES_FOLDER + imagefile, Texture.class);
         rectangle.x = entity.getX() * TILE_SIZE;
         rectangle.y = entity.getY() * TILE_SIZE;
         rectangle.width = entity.getWidth() * TILE_SIZE;
-        rectangle.height = spritesheet.getHeight() * (rectangle.width / spritesheet.getWidth());
         entity.addObserver(this);
     }
 
@@ -74,12 +71,14 @@ public class EntityRenderer implements Observer {
             }
         }
 
-        if (positionNotSynced()) {
+        if (!positionSynced()) {
             Vector2 target = new Vector2(entity.getX() * TILE_SIZE, entity.getY() * TILE_SIZE);
             int speed = entity.getSpeed();
             positionSyncer = new InterpolationPositionSyncer(rectangle, target, 1.f / speed);
             positionSyncer.start();
+
         }
+
     }
 
     public void render(Batch batch) {
@@ -91,15 +90,26 @@ public class EntityRenderer implements Observer {
         // it has been removed from)
         // This last solution is the simpler as it doesn't affect
         // current architecture but it can lead to dysfunctions somehow
+
+        if (!positionSynced()) {
+            currentAnimator = walkingAnimator;
+            if (currentAnimator instanceof DirectionSpriteSheetAnimator) {
+                if (entity.getDirection() != Direction.NONE) {
+                    ((DirectionSpriteSheetAnimator) currentAnimator).setCurrentDirection(entity.getDirection());
+                }
+            }
+        } else {
+            currentAnimator = standingAnimator;
+            if (currentAnimator instanceof DirectionSpriteSheetAnimator) {
+                ((DirectionSpriteSheetAnimator) currentAnimator).setCurrentDirection(entity.getLastDirection());
+            }
+        }
+
         if (entity.getWorld() != null) {
             updatePosition();
 
-            if (animator == null) {
-                batch.draw(spritesheet,
-                        rectangle.getX(), rectangle.getY(),
-                        rectangle.getWidth(), rectangle.getHeight());
-            } else {
-                TextureRegion textureRegion = animator.update();
+            if (currentAnimator != null) {
+                TextureRegion textureRegion = currentAnimator.update();
 
                 rectangle.setHeight(textureRegion.getRegionHeight() * (rectangle.width / textureRegion.getRegionWidth()));
 
@@ -116,25 +126,13 @@ public class EntityRenderer implements Observer {
         }
     }
 
-    public boolean positionNotSynced() {
-        return rectangle.x != entity.getX() * TILE_SIZE
-                || rectangle.y != entity.getY() * TILE_SIZE;
+    private boolean positionSynced() {
+        return rectangle.x == entity.getX() * TILE_SIZE
+                && rectangle.y == entity.getY() * TILE_SIZE;
     }
 
-    public boolean isMoving() {
+    private boolean isMoving() {
         return positionSyncer != null && !positionSyncer.isFinished();
-    }
-
-    public Direction entityDirection() {
-        return entity.getDirection();
-    }
-
-    public Direction entityLastDirection() {
-        return entity.getLastDirection();
-    }
-
-    public void setAnimator(Animator animator) {
-        this.animator = animator;
     }
 
     public float getX() {
@@ -157,15 +155,23 @@ public class EntityRenderer implements Observer {
         return rectangle;
     }
 
-    public Texture getSpritesheet() {
-        return spritesheet;
-    }
-
-    public WorldRenderer getWorldRenderer() {
-        return worldRenderer;
-    }
-
     public void setWorldRenderer(WorldRenderer worldRenderer) {
         this.worldRenderer = worldRenderer;
+    }
+
+    public void setWalkingAnimator(Animator walkingAnimator) {
+        this.walkingAnimator = walkingAnimator;
+
+        if (currentAnimator == null) currentAnimator = walkingAnimator;
+    }
+
+    public void setStandingAnimator(Animator standingAnimator) {
+        this.standingAnimator = standingAnimator;
+
+        if (currentAnimator == null) currentAnimator = standingAnimator;
+    }
+
+    public void setCurrentAnimator(Animator currentAnimator) {
+        this.currentAnimator = currentAnimator;
     }
 }

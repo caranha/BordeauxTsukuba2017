@@ -102,8 +102,8 @@ public class IntroScene implements Scene {
 
     @Override
     public void resize(int width, int height) {
-        //userInterface.getViewport().setScreenSize(width, height);
-        //userInterface.getViewport().update(width, height, true);
+        userInterface.getViewport().setScreenSize(width, height);
+        userInterface.getViewport().update(width, height, true);
         // to do
     }
 }
