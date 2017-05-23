@@ -6,6 +6,7 @@ package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
+import com.tskbdx.sumimasen.scenes.story.Story;
 
 /**
  * Interaction is a callback always linked
@@ -49,6 +50,7 @@ public abstract class Interaction {
         active.notifyObservers(getClass());
         passive.notifyObservers(getClass());
 
+        Story.update(this, active, passive);
     }
 
     public void end() {

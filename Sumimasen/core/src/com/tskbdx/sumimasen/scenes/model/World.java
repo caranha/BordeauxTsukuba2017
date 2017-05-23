@@ -9,10 +9,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.*;
-import com.tskbdx.sumimasen.scenes.story.StoryTeller;
-import com.tskbdx.sumimasen.scenes.story.introduction.StartState;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
 
 /**
  * Created by Sydpy on 4/27/17.
@@ -120,8 +120,6 @@ public class World extends Observable {
 
             object.setVisible(false);
         }
-
-        GameScreen.getPlayer().addObserver(new StoryTeller(this, new StartState()));
 
         TiledMapTileLayer collisionLayer =
                 (TiledMapTileLayer) tiledMap.getLayers().get("Collision");

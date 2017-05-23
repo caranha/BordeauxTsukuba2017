@@ -3,12 +3,9 @@ package com.tskbdx.sumimasen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.tskbdx.sumimasen.scenes.IntroScene;
 import com.tskbdx.sumimasen.scenes.Scene;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
-import com.tskbdx.sumimasen.scenes.story.StoryTeller;
-import com.tskbdx.sumimasen.scenes.view.ui.UserInterface;
 
 /**
  * Created by Sydpy on 4/27/17.

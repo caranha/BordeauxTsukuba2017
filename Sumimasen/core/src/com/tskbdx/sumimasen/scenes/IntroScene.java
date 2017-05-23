@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.tskbdx.sumimasen.scenes.inputprocessors.GameCommands;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
+import com.tskbdx.sumimasen.scenes.story.Story;
 import com.tskbdx.sumimasen.scenes.view.SmoothCamera;
 import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
@@ -54,6 +55,8 @@ public class IntroScene implements Scene {
         setInputProcessor(basicProcessor);
 
         camera.setTo(getPlayer().getX() * 8.f, getPlayer().getY() * 8.f);
+
+        Story.setScene(this);
     }
 
     @Override
@@ -105,5 +108,10 @@ public class IntroScene implements Scene {
         userInterface.getViewport().setScreenSize(width, height);
         userInterface.getViewport().update(width, height, true);
         // to do
+    }
+
+    @Override
+    public World getWorld() {
+        return world;
     }
 }

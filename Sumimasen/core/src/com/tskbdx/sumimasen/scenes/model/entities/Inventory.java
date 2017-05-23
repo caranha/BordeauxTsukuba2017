@@ -22,21 +22,11 @@ public class Inventory extends Observable {
         }
     }
 
-    public final Set<Entity> getObjects() {
-        return objects;
+    boolean contains(Entity entity) {
+        return objects.add(entity);
     }
 
-    void randomRemove() { //testing remove (press M)
-        try {
-            int random = new Random().nextInt(objects.size()), index = 0;
-            for (Entity object: objects) {
-                if (random == index++) {
-                    objects.remove(object);
-                    setChanged();
-                    break;
-                }
-            }
-            notifyObservers();
-        } catch (Exception ignored) {}
+    public final Set<Entity> getObjects() {
+        return objects;
     }
 }
