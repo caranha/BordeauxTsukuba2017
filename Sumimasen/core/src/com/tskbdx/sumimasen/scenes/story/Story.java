@@ -19,7 +19,7 @@ final public class Story {
     private static State state; // according to a specific state.
 
     /**
-     * Don't instance a story, just use its public methods.
+     * Don't instance Story, just use its public methods.
      */
     private Story() {
     }
