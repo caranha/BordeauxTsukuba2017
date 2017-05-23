@@ -6,6 +6,11 @@ import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 /*
  * Created by viet khang on 23/05/2017.
  */
+
+/**
+ * Encapsulating class that gather necessary properties
+ * from an Interaction instance.
+ */
 public class Event {
 
     final private Class<? extends Interaction> interactionType;
