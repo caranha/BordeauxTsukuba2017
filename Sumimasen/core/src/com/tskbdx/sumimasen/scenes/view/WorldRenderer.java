@@ -62,6 +62,23 @@ public class WorldRenderer implements Observer{
             }
         }
 
+        for (int i = 0; i < afterFloating.size(); i++) {
+
+            EntityRenderer afterFloatingRenderer = afterFloating.get(i);
+
+            for (EntityRenderer beforeFloatingRenderer : beforeFloating) {
+
+                if (afterFloatingRenderer.getY() > beforeFloatingRenderer.getY()
+                        && afterFloatingRenderer.getRectangle().overlaps(beforeFloatingRenderer.getRectangle())) {
+
+                    beforeFloating.add(0, afterFloatingRenderer);
+                    afterFloating.remove(i);
+                    i--;
+                    break;
+                }
+            }
+        }
+
         for (MapLayer layer : tiledMapRenderer.getMap().getLayers()) {
 
             if (layer.isVisible()) {
@@ -70,19 +87,6 @@ public class WorldRenderer implements Observer{
                     if (layer.getName().equals("Floating")) {
 
                         for (EntityRenderer beforeFloatingRenderer : beforeFloating) {
-
-                            for (int i = 0; i < afterFloating.size(); i++) {
-                                EntityRenderer afterFloatingRenderer = afterFloating.get(i);
-
-                                if (afterFloatingRenderer.getY() > beforeFloatingRenderer.getY()
-                                        && afterFloatingRenderer.getRectangle().overlaps(beforeFloatingRenderer.getRectangle())) {
-
-                                    afterFloatingRenderer.render(batch);
-                                    afterFloating.remove(i);
-                                    i--;
-                                }
-                            }
-
                             beforeFloatingRenderer.render(batch);
                         }
 

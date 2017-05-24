@@ -82,14 +82,6 @@ public class EntityRenderer implements Observer {
     }
 
     public void render(Batch batch) {
-        // to dynamically remove from world and update in view
-        // we have several choices :
-        // - Make WorldRenderer to observe World
-        // - Put a tag in Entity to know if it's removed or not
-        // - Get current entity world (if null, then we can suppose
-        // it has been removed from)
-        // This last solution is the simpler as it doesn't affect
-        // current architecture but it can lead to dysfunctions somehow
 
         if (!positionSynced()) {
             currentAnimator = walkingAnimator;
@@ -171,7 +163,4 @@ public class EntityRenderer implements Observer {
         if (currentAnimator == null) currentAnimator = standingAnimator;
     }
 
-    public void setCurrentAnimator(Animator currentAnimator) {
-        this.currentAnimator = currentAnimator;
-    }
 }
