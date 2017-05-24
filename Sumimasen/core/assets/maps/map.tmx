@@ -316,19 +316,19 @@
     <property name="dialogueName" value="late.xml"/>
    </properties>
   </object>
-  <object id="6" name="item" x="200" y="136" width="16" height="8">
+  <object id="6" name="item3" x="200" y="136" width="16" height="8">
    <properties>
     <property name="defaultInteraction" value="getPickedUp"/>
     <property name="imageFile" value="item.png"/>
    </properties>
   </object>
-  <object id="7" name="item" x="152" y="136" width="16" height="8">
+  <object id="7" name="item1" x="152" y="136" width="16" height="8">
    <properties>
     <property name="defaultInteraction" value="getPickedUp"/>
     <property name="imageFile" value="item.png"/>
    </properties>
   </object>
-  <object id="8" name="item" x="176" y="136" width="16" height="8">
+  <object id="8" name="item2" x="176" y="136" width="16" height="8">
    <properties>
     <property name="defaultInteraction" value="getPickedUp"/>
     <property name="imageFile" value="item.png"/>

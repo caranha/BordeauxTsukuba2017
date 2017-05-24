@@ -3,24 +3,22 @@ package com.tskbdx.sumimasen.scenes.view;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.tskbdx.sumimasen.scenes.TiledMapUtils;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.view.effects.Effect;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRendererDrawOrderer;
-import com.tskbdx.sumimasen.scenes.view.entities.SpritesheetUtils;
 
 import java.util.*;
 
 /**
  * Created by Sydpy on 4/28/17.
  */
-
-public class WorldRenderer implements Observer{
+public class WorldRenderer implements Observer {
 
     private World world;
     private Map<Entity, EntityRenderer> rendererByEntity = new HashMap<>();
@@ -36,6 +34,18 @@ public class WorldRenderer implements Observer{
         world.addObserver(this);
         this.world = world;
         this.camera = camera;
+    }
+
+    public void init(TiledMap tiledMap, List<TiledMapUtils.MapObjectMapping> mappings) {
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, batch);
+        tiledMap.getLayers().get("Collision").setVisible(false);
+
+        for (TiledMapUtils.MapObjectMapping mapObjectMapping : mappings) {
+
+            buildEntityRendererFromMapObjectMapping(mapObjectMapping);
+
+        }
+
     }
 
     //TODO: Maybe to ptimize
@@ -54,8 +64,8 @@ public class WorldRenderer implements Observer{
         List<EntityRenderer> afterFloating = new ArrayList<>();
 
         for (EntityRenderer renderer : renderers) {
-            if(floating.getCell((int) renderer.getX() / 8 , (int) renderer.getY() / 8) != null
-                    || floating.getCell((int) (renderer.getX() + renderer.getWidth()) / 8 , (int) renderer.getY() / 8) != null) {
+            if (floating.getCell((int) renderer.getX() / 8, (int) renderer.getY() / 8) != null
+                    || floating.getCell((int) (renderer.getX() + renderer.getWidth()) / 8, (int) renderer.getY() / 8) != null) {
                 beforeFloating.add(renderer);
             } else {
                 afterFloating.add(renderer);
@@ -117,51 +127,17 @@ public class WorldRenderer implements Observer{
     @Override
     public void update(Observable observable, Object o) {
 
-        if (o instanceof TiledMap) {
-            tiledMapRenderer = new OrthogonalTiledMapRenderer((TiledMap) o, batch);
-        } else if (o instanceof MapObject) {
-
-            MapObject mo = (MapObject) o;
-
-            buildEntityRendererFromMapObject(mo);
-
-        } else if (o instanceof Entity) {
-            rendererByEntity.remove(o);
-        }
-
     }
 
-    private void buildEntityRendererFromMapObject(MapObject mo) {
-        String name = mo.getName();
-        List<Entity> entitiesByName = world.getEntitiesByName(name);
+    private void buildEntityRendererFromMapObjectMapping(TiledMapUtils.MapObjectMapping mo) {
 
-        Entity entity = entitiesByName.get(entitiesByName.size() - 1);
+        Entity entity = world.getEntitiesByName(mo.name);
 
         EntityRenderer entityRenderer = new EntityRenderer(entity);
-
-        String standingSpritesheet = mo.getProperties().get("standingSpritesheet", String.class);
-        String walkingSpritesheet = mo.getProperties().get("walkingSpritesheet", String.class);
-        String imageFile = mo.getProperties().get("imageFile", String.class);
-
-        if ( (standingSpritesheet == null || standingSpritesheet.equals("")) && (walkingSpritesheet == null || walkingSpritesheet.equals(""))) {
-
-            if (imageFile == null || imageFile.equals("")) imageFile = "entity.png";
-
-            entityRenderer.setStandingAnimator(SpritesheetUtils.getAnimatorFromSpritesheet(imageFile));
-            entityRenderer.setWalkingAnimator(SpritesheetUtils.getAnimatorFromSpritesheet(imageFile));
-
-        } else if (standingSpritesheet == null || standingSpritesheet.equals("")) {
-            standingSpritesheet = "entity.png";
-            entityRenderer.setStandingAnimator(SpritesheetUtils.getAnimatorFromSpritesheet(standingSpritesheet));
-        } else if (walkingSpritesheet == null || walkingSpritesheet.equals("")) {
-            walkingSpritesheet = "entity.png";
-            entityRenderer.setWalkingAnimator(SpritesheetUtils.getAnimatorFromSpritesheet(walkingSpritesheet));
-        } else {
-            entityRenderer.setStandingAnimator(SpritesheetUtils.getAnimatorFromSpritesheet(standingSpritesheet));
-            entityRenderer.setWalkingAnimator(SpritesheetUtils.getAnimatorFromSpritesheet(walkingSpritesheet));
-        }
-
         entityRenderer.setWorldRenderer(this);
+
+        entityRenderer.setStandingAnimator(mo.standingAnimator);
+        entityRenderer.setWalkingAnimator(mo.walkingAnimator);
 
         rendererByEntity.put(entity, entityRenderer);
     }

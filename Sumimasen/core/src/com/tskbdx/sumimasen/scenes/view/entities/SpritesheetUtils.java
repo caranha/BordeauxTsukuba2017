@@ -55,16 +55,11 @@ public class SpritesheetUtils {
 
                 return new DirectionSpriteSheetAnimator(regions, 0.2f);
 
-            case "entity.png" :
-                return new FixedAnimator(texture);
-            case "item.png" :
-                return new FixedAnimator(texture);
-
             default :
                 break;
         }
 
-        return new FixedAnimator(texture);
+        return texture == null ? null : new FixedAnimator(texture);
     }
 
 }
