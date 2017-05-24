@@ -41,7 +41,7 @@ abstract public class Utility {
         Scanner scanner = new Scanner(string);
         Object next;
 
-        if (scanner.hasNext())
+        if (scanner.hasNextInt())
             next = scanner.nextInt();
         else if (scanner.hasNextDouble())
             next = scanner.nextDouble();
