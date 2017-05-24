@@ -2,6 +2,7 @@ package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Message;
+import com.tskbdx.sumimasen.scenes.utility.Utility;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -11,11 +12,14 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.tskbdx.sumimasen.GameScreen.getPlayer;
 import static com.tskbdx.sumimasen.scenes.utility.Utility.setTimeout;
 
 /*
@@ -23,66 +27,10 @@ import static com.tskbdx.sumimasen.scenes.utility.Utility.setTimeout;
  */
 public class Dialogue extends Interaction {
 
-    public class DialogueAnswer {
-
-        String text = "";
-        Integer nextExchange;
-
-        public DialogueAnswer() {
-        }
-
-        public String getText() {
-            return text;
-        }
-
-        public void setText(String text) {
-            this.text = text;
-        }
-
-        public Integer getNextExchange() {
-            return nextExchange;
-        }
-
-        public void setNextExchange(int nextExchange) {
-            this.nextExchange = nextExchange;
-        }
-    }
-
-    public class DialogueExchange {
-        private String text ="";
-
-        private List<DialogueAnswer> answers = new ArrayList<>();
-
-        public DialogueExchange() {
-        }
-
-        public String getText() {
-            return text;
-        }
-
-        public void setText(String text) {
-            this.text = text;
-        }
-
-        public List<DialogueAnswer> getAnswers() {
-            return answers;
-        }
-
-        public void addAnswer(DialogueAnswer answer) {
-            answers.add(answer);
-        }
-        public void removeAnswer(DialogueAnswer answer) {
-            answers.remove(answer);
-        }
-    }
-
-
     private static final String FOLDER = "dialogues/";
     private Map<Integer, DialogueExchange> exchanges = new HashMap<>();
     private DialogueExchange currentExchange = new DialogueExchange();
-
     private String xmlFile;
-
     public Dialogue(String xmlFile) {
         super();
         this.xmlFile = xmlFile;
@@ -101,6 +49,7 @@ public class Dialogue extends Interaction {
     public void pickAnswer(int index) { // passive entity answers
         try {
             DialogueAnswer dialogueAnswer = currentExchange.getAnswers().get(index);
+            dialogueAnswer.processCallbacks();
             getPassive().setMessage(dialogueAnswer.getText(), 3.5f, 0.5f, getActive());
             Message answer = getPassive().getMessage();
             answer.notifyObservers();
@@ -116,7 +65,8 @@ public class Dialogue extends Interaction {
             getActive().notifyObservers();
             getPassive().notifyObservers();
             setTimeout(this::printCurrentState, answer.getTimeToUnderstand());
-        } catch (IndexOutOfBoundsException ignored) {}
+        } catch (IndexOutOfBoundsException ignored) {
+        }
     }
 
     @Override
@@ -131,7 +81,7 @@ public class Dialogue extends Interaction {
 
         List<DialogueAnswer> answers = currentExchange.getAnswers();
 
-        if (! answers.isEmpty()) {
+        if (!answers.isEmpty()) {
             setTimeout(() -> {
                 getActive().notifyObservers(this);
                 getPassive().notifyObservers(this);
@@ -142,7 +92,6 @@ public class Dialogue extends Interaction {
             end();
         }
     }
-
 
     private void buildDialogue(String xmlFile) {
 
@@ -199,6 +148,7 @@ public class Dialogue extends Interaction {
                     answer.setNextExchange(nextExchange);
 
                     exchange.addAnswer(answer);
+                    answer.setCallbacks(answerNode.getElementsByTagName("callback"));
                 }
             }
         }
@@ -210,5 +160,129 @@ public class Dialogue extends Interaction {
 
     public final DialogueExchange getCurrentExchange() {
         return currentExchange;
+    }
+
+    public class DialogueAnswer {
+
+        String text = "";
+        Integer nextExchange;
+        private NodeList callbacks;
+
+
+        public DialogueAnswer() {
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+
+        public Integer getNextExchange() {
+            return nextExchange;
+        }
+
+        public void setNextExchange(int nextExchange) {
+            this.nextExchange = nextExchange;
+        }
+
+        void setCallbacks(NodeList callbacks) {
+            this.callbacks = callbacks;
+        }
+
+        /**
+         * Parse answer's children node with tag "callback".
+         * Call a method from its property with reflection.
+         * // to do : consider the target object with "on" property.
+         */
+        void processCallbacks() {
+            for (int i = 0; i != callbacks.getLength(); ++i) {
+                Element callback = (Element) callbacks.item(i);
+                /*
+                 * for each callback we take its method name
+                 */
+                String methodName = callback.getAttribute("methodName");
+                /*
+                 * a method can have multiple arguments
+                 * each argument has a type and a value
+                 */
+                NodeList arguments = callback.getElementsByTagName("arg");
+                List<Class> argsType = new ArrayList<>();
+                List<Object> argsValue = new ArrayList<>();
+
+                for (int j = 0; j != arguments.getLength(); ++j) {
+                    Element argument = (Element) arguments.item(i);
+                    /*
+                     * for each argument we store its type and value
+                     */
+                    String type = argument.getAttribute("type");
+                    try {
+                        /*
+                         * Get class from name
+                         */
+                        argsType.add(Class.forName(type));
+                    } catch (ClassNotFoundException e) {
+                        /*
+                         * if it doesn't work maybe it was a native type
+                         * (int, double etc...)
+                         */
+                        argsType.add(Utility.getPrimitiveType(type));
+                    }
+                    /*
+                     * We get typed value from the string in value property
+                     */
+                    argsValue.add(Utility.interpret(argument.getAttribute("value")));
+                }
+
+                /*
+                 * Now let's call the method
+                 */
+                Object target = getPlayer();
+                try {
+                    Method method = target.getClass().getMethod(methodName,
+                            argsType.toArray(new Class[argsType.size()]));
+                    method.invoke(target, argsValue.toArray());
+                } catch (NoSuchMethodException e) {
+                    throw new IllegalStateException("Does " + methodName + " exist ?");
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    throw new IllegalStateException("Is " + methodName + " public ?");
+                }
+            }
+        }
+    }
+
+    public class DialogueExchange {
+        private String text = "";
+
+        private List<DialogueAnswer> answers = new ArrayList<>();
+
+        public DialogueExchange() {
+        }
+
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+
+        public List<DialogueAnswer> getAnswers() {
+            return answers;
+        }
+
+        public void addAnswer(DialogueAnswer answer) {
+            answers.add(answer);
+        }
+
+        public void removeAnswer(DialogueAnswer answer) {
+            answers.remove(answer);
+        }
+
+        public void setCallbacks(NodeList callbacks) {
+        }
     }
 }

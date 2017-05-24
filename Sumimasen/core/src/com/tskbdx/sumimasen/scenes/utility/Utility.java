@@ -1,16 +1,58 @@
 package com.tskbdx.sumimasen.scenes.utility;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
  * Created by viet khang on 16/05/2017.
  */
 abstract public class Utility {
+
+    /*
+     * Key = existing created services
+     * Value = current working task associated to key
+     */
+    private static Map<ScheduledExecutorService, ScheduledFuture>
+            executorServices = new HashMap<>();
+    private static Map<String, Class> nativeTypes = new HashMap<>();
+
+    static {
+        nativeTypes.put("int", Integer.TYPE);
+        nativeTypes.put("long", Long.TYPE);
+        nativeTypes.put("double", Double.TYPE);
+        nativeTypes.put("float", Float.TYPE);
+        nativeTypes.put("bool", Boolean.TYPE);
+        nativeTypes.put("char", Character.TYPE);
+        nativeTypes.put("byte", Byte.TYPE);
+        nativeTypes.put("void", Void.TYPE);
+        nativeTypes.put("short", Short.TYPE);
+    }
+
+    public static Class getPrimitiveType(String name) {
+        if (!nativeTypes.containsKey(name)) {
+            throw new IllegalStateException("invalid native name");
+        }
+        return nativeTypes.get(name);
+    }
+
+    public static Object interpret(String string) {
+        Scanner scanner = new Scanner(string);
+        Object next;
+
+        if (scanner.hasNext())
+            next = scanner.nextInt();
+        else if (scanner.hasNextDouble())
+            next = scanner.nextDouble();
+        else if (scanner.hasNext())
+            next = scanner.next();
+        else
+            next = string;
+
+        scanner.close();
+        return next;
+    }
 
     /*
      * Random method are upper bound exclusive
@@ -38,13 +80,6 @@ abstract public class Utility {
      * ScheduledExecutorService used to submit with a DELAY
      */
 
-    /*
-     * Key = existing created services
-     * Value = current working task associated to key
-     */
-    private static Map<ScheduledExecutorService, ScheduledFuture>
-            executorServices = new HashMap<>();
-
     public static void setTimeout(Runnable callback, int delay) {
         /*
          * For each service, we check if it's available
@@ -66,8 +101,6 @@ abstract public class Utility {
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
         executorServices.put(service,
                 service.schedule(callback, delay, TimeUnit.MILLISECONDS));
-        // Max services used : ~2
-         System.out.println(executorServices.size());
     }
 
     public static void setTimeout(Runnable callback, float delay) {
