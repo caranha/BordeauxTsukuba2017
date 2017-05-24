@@ -64,7 +64,7 @@ public class SpritesheetUtils {
                 break;
         }
 
-        return getAnimatorFromSpritesheet("entity.png");
+        return new FixedAnimator(texture);
     }
 
 }
