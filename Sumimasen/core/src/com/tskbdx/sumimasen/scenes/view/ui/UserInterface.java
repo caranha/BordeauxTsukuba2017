@@ -31,6 +31,14 @@ public class UserInterface extends Stage implements Disposable {
     }
 
     @Override
+    public void act(float dt) {
+        try {
+            super.act(dt);
+        } catch (Exception ignored) {
+        }
+    }
+
+    @Override
     public void dispose() {
         messageRenderers.forEach(MessageRenderer::dispose);
         inventoryRenderer.dispose();
