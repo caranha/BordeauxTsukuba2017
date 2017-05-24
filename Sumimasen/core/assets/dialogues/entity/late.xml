@@ -15,12 +15,12 @@
         <answers>
             <answer text="Actually this is my dressing gown." nextExchange="4">
                 <callback methodName="addNaiveness" on="player">
-                    <arg type="int" value="1"></arg>
+                    <arg type="int" value="1"/>
                 </callback>
             </answer>
             <answer text="Yes ! I bought it especially for this job." nextExchange="5">
                 <callback methodName="addNaiveness" on="player">
-                    <arg type="int" value="-1"></arg>
+                    <arg type="int" value="-1"/>
                 </callback>
             </answer>
         </answers>
@@ -30,7 +30,7 @@
             <answer text="Yeah it's made of coton and ..." nextExchange="5"></answer>
             <answer text="Not really I should have put something under ..." nextExchange="5">
                 <callback methodName="addNaiveness" on="player">
-                    <arg type="int" value="1"></arg>
+                    <arg type="int" value="1"/>
                 </callback>
             </answer>
         </answers>

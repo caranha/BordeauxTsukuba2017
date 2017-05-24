@@ -50,7 +50,7 @@ public class Dialogue extends Interaction {
         try {
             DialogueAnswer dialogueAnswer = currentExchange.getAnswers().get(index);
             dialogueAnswer.processCallbacks();
-            getPassive().setMessage(dialogueAnswer.getText(), 3.5f, 0.5f, getActive());
+            getPassive().setMessage(dialogueAnswer.getText(), 1.5f, 1.f, getActive());
             Message answer = getPassive().getMessage();
             answer.notifyObservers();
 
@@ -246,8 +246,10 @@ public class Dialogue extends Interaction {
                     method.invoke(target, argsValue.toArray());
                 } catch (NoSuchMethodException e) {
                     throw new IllegalStateException("Does " + methodName + " exist ?");
-                } catch (IllegalAccessException | InvocationTargetException e) {
+                } catch (IllegalAccessException e) {
                     throw new IllegalStateException("Is " + methodName + " public ?");
+                } catch (InvocationTargetException e) {
+                    throw new IllegalStateException("Is " + methodName + " not abstract ?");
                 }
             }
         }
