@@ -19,7 +19,6 @@ public class Sumimasen extends Game {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
 
-		//TODO : Start with a menu screen
 		setScreen(new LoadingScreen(this));
 	}
 
