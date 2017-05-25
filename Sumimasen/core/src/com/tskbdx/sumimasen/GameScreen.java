@@ -18,13 +18,12 @@ public class GameScreen implements Screen {
 
     private final Sumimasen game;
 
-    private static final Player player = new Player(0, 0 ,0, 0);
+    private static Player player = new Player(0, 0 ,0, 0);
 
-    private Scene currentScene = new IntroScene(player);
+    private Scene currentScene = new IntroScene();
 
     public GameScreen(final Sumimasen game) {
         this.game = game;
-        Gdx.gl20.glClearColor(0,0,0,1);
         currentScene.init();
     }
 
@@ -57,7 +56,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        currentScene.resize(width, height);
     }
 
     @Override

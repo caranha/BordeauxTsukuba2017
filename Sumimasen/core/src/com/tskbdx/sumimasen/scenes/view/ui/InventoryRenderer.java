@@ -5,18 +5,19 @@ package com.tskbdx.sumimasen.scenes.view.ui;
  */
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.utils.Disposable;
+import com.tskbdx.sumimasen.scenes.Scene;
+import com.tskbdx.sumimasen.scenes.TiledMapUtils;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Inventory;
 import com.tskbdx.sumimasen.scenes.view.Tween;
+import com.tskbdx.sumimasen.scenes.view.entities.animator.Animator;
 
 import java.util.*;
 
 import static com.badlogic.gdx.graphics.Color.WHITE;
-import static com.tskbdx.sumimasen.Sumimasen.getAssetManager;
 
 /**
  * Observe a Inventory instance in model
@@ -29,9 +30,13 @@ final class InventoryRenderer implements Observer, Disposable {
     private final List<Slot> slots = new ArrayList<>();
     private final List<Entity> viewInventory;
     private final Collection<Entity> modelInventory;
+    private final Scene scene;
 
-    InventoryRenderer(Inventory inventory) {
+    InventoryRenderer(Inventory inventory, Scene scene) {
         inventory.addObserver(this);
+
+        this.scene = scene;
+
         modelInventory = inventory.getObjects();
         viewInventory = new ArrayList<>(modelInventory);
     }
@@ -47,11 +52,26 @@ final class InventoryRenderer implements Observer, Disposable {
              */
             difference = getDifference(modelInventory, viewInventory);
             for (Entity object : difference) {
-                Texture texture = getAssetManager().get(FOLDER + object.getName() + ".png", Texture.class);
-                Slot slot = new Slot(texture, slots.size());
-                textures.put(object, slot);
-                slots.add(slot);
-                viewInventory.add(object);
+
+                TiledMapUtils.MapObjectMapping mapObjectMapping = null;
+                for (TiledMapUtils.MapObjectMapping mapping: scene.getMapObjectMappings()) {
+                   if (mapping.name.equals(object.getName())) {
+                       mapObjectMapping = mapping;
+                       break;
+                   }
+                }
+
+                if (mapObjectMapping != null) {
+
+                    Animator animator = mapObjectMapping.standingAnimator;
+                    if ( animator == null) animator = mapObjectMapping.walkingAnimator;
+
+                    Slot slot = new Slot(animator, slots.size());
+                    textures.put(object, slot);
+                    slots.add(slot);
+                    viewInventory.add(object);
+                }
+
             }
         } else {
             /*
@@ -82,27 +102,25 @@ final class InventoryRenderer implements Observer, Disposable {
 
         for (Map.Entry<Entity, Slot> entry : textures.entrySet()) {
             Slot slot = entry.getValue();
-            screenBatch.draw(slot.texture, slot.x(), slot.y(), slot.size(), slot.size());
+            screenBatch.draw(slot.animator.update(), slot.x(), slot.y(), slot.size(), slot.size());
         }
     }
 
     @Override
     public void dispose() {
-        for (Map.Entry<Entity, Slot> entry : textures.entrySet()) {
-            entry.getValue().dispose();
-        }
     }
 
-    private class Slot implements Disposable {
+    private class Slot {
         static final float PADDING = 10.f;
         static final float SIZE = 50.f;
-        final Texture texture;
+
+        final Animator animator;
         final Tween scaleTween = new Tween(Interpolation.bounceOut);
         final Tween positionTween = new Tween(Interpolation.smooth);
         float position;
 
-        Slot(Texture texture, float startPosition) {
-            this.texture = texture;
+        Slot(Animator animator, float startPosition) {
+            this.animator = animator;
             position = startPosition;
             scaleTween.playWith(0, 1, 1);
         }
@@ -130,11 +148,6 @@ final class InventoryRenderer implements Observer, Disposable {
             //positionTween.playWith(position + positionInterpolation(), newPosition, 1);
             // to do : an animation
             position = newPosition;
-        }
-
-        @Override
-        public void dispose() {
-            texture.dispose();
         }
     }
 }

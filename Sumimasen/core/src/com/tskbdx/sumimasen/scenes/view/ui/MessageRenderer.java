@@ -1,5 +1,6 @@
 package com.tskbdx.sumimasen.scenes.view.ui;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -10,21 +11,17 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
+import com.tskbdx.sumimasen.Sumimasen;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Message;
 import com.tskbdx.sumimasen.scenes.view.Tween;
+import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-
-import static com.badlogic.gdx.graphics.Color.BLACK;
-import static com.tskbdx.sumimasen.Sumimasen.getFont;
-import static com.tskbdx.sumimasen.scenes.IntroScene.camera;
-import static com.tskbdx.sumimasen.scenes.model.entities.Direction.*;
-import static com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer.TILE_SIZE;
 
 /**
  * When a entity talk, display a chat bubble
@@ -40,7 +37,8 @@ final class MessageRenderer implements Observer, Disposable {
 
     private final Message message;
     private final GlyphLayout layout = new GlyphLayout();
-    private final BitmapFont font = getFont(19, "OpenSans");
+    private final BitmapFont font = Sumimasen.getFont(19, "OpenSans");
+    private final Camera camera;
     private String content;
     private Direction direction;
     private Vector2 onScreenPosition;
@@ -54,8 +52,9 @@ final class MessageRenderer implements Observer, Disposable {
     private float targetWidth;
     private float padding = 10.f;
 
-    MessageRenderer(Message message) {
+    MessageRenderer(Message message, Camera camera) {
         this.message = message;
+        this.camera = camera;
         message.addObserver(this);
         initPositionCalculations();
         initOffsetCalculations();
@@ -77,14 +76,14 @@ final class MessageRenderer implements Observer, Disposable {
             // Set layout
             direction = message.getSender().getLastDirection();
             targetWidth = getTargetWidth(direction.isHorizontal());
-            layout.setText(font, content, BLACK, targetWidth,
+            layout.setText(font, content, Color.BLACK, targetWidth,
                     Align.center, true);
 
             // Calculate position
             if (receiver != null) {
                 execute(positionCalculator, direction);
             } else { // speaking alone, bubble above => same fx than :
-                execute(positionCalculator, SOUTH);
+                execute(positionCalculator, Direction.SOUTH);
             }
 
             // Start tweens
@@ -117,7 +116,7 @@ final class MessageRenderer implements Observer, Disposable {
     }
 
     private void initScreenPosition(float x, float y) {
-        startingPosition = new Vector2(x * TILE_SIZE, y * TILE_SIZE);
+        startingPosition = new Vector2(x * EntityRenderer.TILE_SIZE, y * EntityRenderer.TILE_SIZE);
         onScreenPosition = toScreenPosition(startingPosition.x, startingPosition.y);
         onScreenPosition.x -= targetWidth / 2;
     }
@@ -146,7 +145,7 @@ final class MessageRenderer implements Observer, Disposable {
             layout.setText(font, content, processedColor,
                     getTargetWidth(direction.isHorizontal()), Align.center, true);
             onScreenPosition = toScreenPosition(startingPosition.x, startingPosition.y);
-            padding = content.length() < 10 && direction.equals(EAST) ? 20.f : 10.f;
+            padding = content.length() < 10 && direction.equals(Direction.EAST) ? 20.f : 10.f;
             execute(offsetCalculator, direction);
             return true;
         }
@@ -172,24 +171,24 @@ final class MessageRenderer implements Observer, Disposable {
      */
     private void initPositionCalculations() {
         Entity sender = message.getSender();
-        positionCalculator.put(NORTH,
+        positionCalculator.put(Direction.NORTH,
                 () -> initScreenPosition(sender.getX() + sender.getWidth() * 0.5f,
                         sender.getY()));
-        positionCalculator.put(SOUTH,
+        positionCalculator.put(Direction.SOUTH,
                 () -> initScreenPosition(sender.getX() + sender.getWidth() * 0.5f,
                         sender.getY() + sender.getHeight() * 2));
-        positionCalculator.put(WEST,
+        positionCalculator.put(Direction.WEST,
                 () -> initScreenPosition(sender.getX() + sender.getWidth(),
                         sender.getY() + sender.getHeight()));
-        positionCalculator.put(EAST,
+        positionCalculator.put(Direction.EAST,
                 () -> initScreenPosition(sender.getX(),
                         sender.getY() + sender.getHeight()));
     }
 
     private void initOffsetCalculations() {
-        offsetCalculator.put(NORTH, () -> onScreenPosition.add(-targetWidth / 2, -padding * 3));
-        offsetCalculator.put(SOUTH, () -> onScreenPosition.add(-targetWidth / 2, layout.height + padding * 4));
-        offsetCalculator.put(EAST, () -> onScreenPosition.add(-Math.min(targetWidth, layout.width) - padding * 5, layout.height / 2));
-        offsetCalculator.put(WEST, () -> onScreenPosition.add(padding * 3, layout.height / 2));
+        offsetCalculator.put(Direction.NORTH, () -> onScreenPosition.add(-targetWidth / 2, -padding * 3));
+        offsetCalculator.put(Direction.SOUTH, () -> onScreenPosition.add(-targetWidth / 2, layout.height + padding * 4));
+        offsetCalculator.put(Direction.EAST, () -> onScreenPosition.add(-Math.min(targetWidth, layout.width) - padding * 5, layout.height / 2));
+        offsetCalculator.put(Direction.WEST, () -> onScreenPosition.add(padding * 3, layout.height / 2));
     }
 }

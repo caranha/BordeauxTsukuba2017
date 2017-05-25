@@ -3,11 +3,12 @@ package com.tskbdx.sumimasen.scenes.view.ui;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Disposable;
-import com.tskbdx.sumimasen.scenes.model.World;
+import com.tskbdx.sumimasen.scenes.Scene;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*
  * Created by viet khang on 15/05/2017.
@@ -16,18 +17,21 @@ import java.util.List;
 /**
  * UserInterface
  */
+//TODO: Rethink this class
 public class UserInterface extends Stage implements Disposable {
 
-    private final InventoryRenderer inventoryRenderer;
-    private final List<MessageRenderer> messageRenderers = new ArrayList<>();
+    private final Map<Entity, MessageRenderer> messageRendererByEntity = new HashMap<>();
     private final Group textButtons;
+    private final InventoryRenderer inventoryRenderer;
 
-    public UserInterface(World world, Entity entity) {
-        List<Entity> entities = world.getEntities();
-        entities.forEach(worldEntity ->
-                messageRenderers.add(new MessageRenderer(worldEntity.getMessage())));
-        inventoryRenderer = new InventoryRenderer(entity.getInventory());
+    private final Scene scene;
+
+    public UserInterface(Scene scene, Entity entity) {
+
+        this.scene = scene;
+
         textButtons = new AnswersSelector(entity, this);
+        inventoryRenderer = new InventoryRenderer(entity.getInventory(), scene);
     }
 
     @Override
@@ -40,7 +44,10 @@ public class UserInterface extends Stage implements Disposable {
 
     @Override
     public void dispose() {
-        messageRenderers.forEach(MessageRenderer::dispose);
+        for (MessageRenderer messageRenderer : messageRendererByEntity.values()) {
+            messageRenderer.dispose();
+        }
+
         inventoryRenderer.dispose();
         super.dispose();
     }
@@ -48,9 +55,22 @@ public class UserInterface extends Stage implements Disposable {
     @Override
     public void draw() {
         getBatch().begin();
-        messageRenderers.forEach(message -> message.render(getBatch()));
+
+        for (MessageRenderer messageRenderer : messageRendererByEntity.values()) {
+            messageRenderer.render(getBatch());
+        }
+
         inventoryRenderer.render(getBatch());
         textButtons.draw(getBatch(), 1);
         getBatch().end();
+    }
+
+    public void update() {
+        List<Entity> entities = scene.getWorld().getEntities();
+
+        for (Entity e : entities) {
+            messageRendererByEntity.put(e, new MessageRenderer(e.getMessage(), scene.getCamera()));
+        }
+
     }
 }
