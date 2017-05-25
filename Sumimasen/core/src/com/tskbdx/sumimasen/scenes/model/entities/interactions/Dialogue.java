@@ -1,5 +1,6 @@
 package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
+import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Message;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
@@ -18,9 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.tskbdx.sumimasen.GameScreen.getPlayer;
-import static com.tskbdx.sumimasen.scenes.utility.Utility.setTimeout;
 
 /*
  * Created by viet khang on 08/05/2017.
@@ -64,7 +62,7 @@ public class Dialogue extends Interaction {
 
             getActive().notifyObservers();
             getPassive().notifyObservers();
-            setTimeout(this::printCurrentState, answer.getTimeToUnderstand());
+            Utility.setTimeout(this::printCurrentState, answer.getTimeToUnderstand());
         } catch (IndexOutOfBoundsException ignored) {
         }
     }
@@ -82,7 +80,7 @@ public class Dialogue extends Interaction {
         List<DialogueAnswer> answers = currentExchange.getAnswers();
 
         if (!answers.isEmpty()) {
-            setTimeout(() -> {
+            Utility.setTimeout(() -> {
                 getActive().notifyObservers(this);
                 getPassive().notifyObservers(this);
             }, getActive().getMessage().getTimeToUnderstand());
@@ -239,7 +237,7 @@ public class Dialogue extends Interaction {
                 /*
                  * Now let's call the method
                  */
-                Object target = getPlayer();
+                Object target = GameScreen.getPlayer();
                 try {
                     Method method = target.getClass().getMethod(methodName,
                             argsType.toArray(new Class[argsType.size()]));

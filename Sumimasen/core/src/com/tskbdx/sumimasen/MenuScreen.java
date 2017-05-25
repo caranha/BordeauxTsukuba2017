@@ -15,8 +15,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static com.tskbdx.sumimasen.Sumimasen.getAssetManager;
-
 /*
  * Created by viet khang on 24/05/2017.
  */
@@ -60,7 +58,7 @@ final class MenuScreen extends Stage implements Screen {
 
     private Button createNewGameButton() {
         TextButton button = new TextButton("New game",
-                getAssetManager().get("skin/skin/cloud-form-ui.json", Skin.class));
+                Sumimasen.getAssetManager().get("skin/skin/cloud-form-ui.json", Skin.class));
         button.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -72,7 +70,7 @@ final class MenuScreen extends Stage implements Screen {
 
     private Button createContinueButton() {
         TextButton button = new TextButton("Continue",
-                getAssetManager().get("skin/skin/cloud-form-ui.json", Skin.class));
+                Sumimasen.getAssetManager().get("skin/skin/cloud-form-ui.json", Skin.class));
         button.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -84,7 +82,7 @@ final class MenuScreen extends Stage implements Screen {
 
     private Button createCreditsButton() {
         TextButton button = new TextButton("Credits",
-                getAssetManager().get("skin/skin/cloud-form-ui.json", Skin.class));
+                Sumimasen.getAssetManager().get("skin/skin/cloud-form-ui.json", Skin.class));
         button.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

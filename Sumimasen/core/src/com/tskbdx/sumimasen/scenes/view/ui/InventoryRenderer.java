@@ -5,6 +5,7 @@ package com.tskbdx.sumimasen.scenes.view.ui;
  */
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.utils.Disposable;
@@ -16,8 +17,6 @@ import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.entities.animator.Animator;
 
 import java.util.*;
-
-import static com.badlogic.gdx.graphics.Color.WHITE;
 
 /**
  * Observe a Inventory instance in model
@@ -98,7 +97,7 @@ final class InventoryRenderer implements Observer, Disposable {
     }
 
     public void render(Batch screenBatch) {
-        screenBatch.setColor(WHITE);
+        screenBatch.setColor(Color.WHITE);
 
         for (Map.Entry<Entity, Slot> entry : textures.entrySet()) {
             Slot slot = entry.getValue();

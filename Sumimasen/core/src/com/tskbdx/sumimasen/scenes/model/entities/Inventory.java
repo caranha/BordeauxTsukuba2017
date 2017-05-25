@@ -1,11 +1,14 @@
 package com.tskbdx.sumimasen.scenes.model.entities;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Observable;
+import java.util.Set;
 
 /*
  * Created by viet khang on 15/05/2017.
  */
-public class Inventory extends Observable {
+public class Inventory extends Observable implements Serializable {
     private Set<Entity> objects = new HashSet<>();
 
     void store(Entity object) {

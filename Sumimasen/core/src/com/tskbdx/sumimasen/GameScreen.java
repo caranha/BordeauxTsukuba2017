@@ -7,10 +7,6 @@ import com.tskbdx.sumimasen.scenes.IntroScene;
 import com.tskbdx.sumimasen.scenes.Scene;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-
 /**
  * Created by Sydpy on 4/27/17.
  */
@@ -77,15 +73,7 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
 
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream("/tmp/save");
-            ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
-            out.writeObject(currentScene);
-            out.close();
-            fileOutputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        currentScene.save("/tmp/");
 
         currentScene.dispose();
     }

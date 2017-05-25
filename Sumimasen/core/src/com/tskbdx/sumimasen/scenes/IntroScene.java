@@ -7,8 +7,6 @@ import com.tskbdx.sumimasen.scenes.story.Story;
 import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.ui.UserInterface;
 
-import static com.tskbdx.sumimasen.GameScreen.getPlayer;
-
 /*
  * Created by Sydpy on 4/27/17.
  */
@@ -30,7 +28,7 @@ public class IntroScene extends Scene {
 
         Story.setScene(this);
 
-        getCamera().setTo(getPlayer().getX() * 8.f, getPlayer().getY() * 8.f);
+        getCamera().setTo(GameScreen.getPlayer().getX() * 8.f, GameScreen.getPlayer().getY() * 8.f);
     }
 
     @Override

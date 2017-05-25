@@ -4,8 +4,6 @@ package com.tskbdx.sumimasen.scenes.model.entities;
  * Created by Sydpy on 5/2/17.
  */
 
-import sun.security.pkcs11.Secmod;
-
 import java.util.HashMap;
 import java.util.Map;
 

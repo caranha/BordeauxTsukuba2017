@@ -3,10 +3,9 @@ package com.tskbdx.sumimasen.scenes.model.entities.movements;
 import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
+import com.tskbdx.sumimasen.scenes.utility.Utility;
 
 import java.util.List;
-
-import static com.tskbdx.sumimasen.scenes.utility.Utility.setTimeout;
 
 /*
  * Created by Sydpy on 5/2/17.
@@ -52,7 +51,7 @@ public class Walk implements Movement {
                 entity.notifyObservers();
             }
 
-            setTimeout(() -> {
+            Utility.setTimeout(() -> {
                 canMove = true;
                 move(entity);
             }, 1.f / entity.getSpeed());

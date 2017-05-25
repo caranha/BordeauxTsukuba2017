@@ -7,6 +7,7 @@ import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.TiledMapUtils;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -21,7 +22,7 @@ import java.util.*;
  * Else :
  * - Empty location are filled by null value.
  */
-public class World extends Observable {
+public class World extends Observable implements Serializable {
 
     private boolean wallsMap[][];
 
