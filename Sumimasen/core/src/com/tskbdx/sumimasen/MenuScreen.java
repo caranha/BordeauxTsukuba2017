@@ -10,19 +10,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import static com.tskbdx.sumimasen.Sumimasen.getAssetManager;
 
 /*
  * Created by viet khang on 24/05/2017.
  */
-final class MenuScreen implements Screen {
+final class MenuScreen extends Stage implements Screen {
 
     private final Sumimasen game;
-    private final Stage stage = new Stage();
     private final List<Button> buttons = new LinkedList<>();
+    private Map<String, Screen> screens = new HashMap<>();
 
     MenuScreen(Sumimasen game) {
         this.game = game;
@@ -33,8 +35,6 @@ final class MenuScreen implements Screen {
         addButton(createNewGameButton());
         addButton(createCreditsButton());
         layoutButtons();
-
-        Gdx.input.setInputProcessor(stage);
     }
 
     private void layoutButtons() {
@@ -52,7 +52,7 @@ final class MenuScreen implements Screen {
 
     private void addButton(Button button) {
         buttons.add(button);
-        stage.addActor(button);
+        addActor(button);
     }
 
     private Button createNewGameButton() {
@@ -61,12 +61,12 @@ final class MenuScreen implements Screen {
         button.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                play();
+                goToGameScreen();
             }
         });
         return button;
     }
-    
+
     private Button createContinueButton() {
         TextButton button = new TextButton("Continue",
                 getAssetManager().get("skin/skin/cloud-form-ui.json", Skin.class));
@@ -92,19 +92,23 @@ final class MenuScreen implements Screen {
     }
 
     private void goToCredits() {
+        if (!screens.containsKey("credits")) {
+            screens.put("credits", new CreditsScreen(game, this));
+        }
+        game.setScreen(screens.get("credits"));
     }
 
     @Override
     public void show() {
-
+        Gdx.input.setInputProcessor(this);
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        stage.act(delta);
-        stage.draw();
+        act(delta);
+        draw();
     }
 
     @Override
@@ -136,8 +140,11 @@ final class MenuScreen implements Screen {
         return false;
     }
 
-    private void play() {
-        game.setScreen(new GameScreen(game));
+    private void goToGameScreen() {
+        if (!screens.containsKey("game")) {
+            screens.put("game", new GameScreen(game));
+        }
+        game.setScreen(screens.get("game"));
     }
 
     private void goToSavedGames() {
