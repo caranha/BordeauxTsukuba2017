@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -18,6 +19,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.Message;
 import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
@@ -27,25 +29,28 @@ import java.util.Observer;
  * When a entity talk, display a chat bubble
  * If he talks alone, this bubble scaleTween above him
  * Else, it shows in the other side of his interlocutor
- *
+ * <p>
  * Public method :
  * + update() (from Obserrver)
  * + render(Batch) (Main method)
  * + dispose() (from disposable)
  */
-final class MessageRenderer implements Observer, Disposable {
+final class MessageRenderer implements Observer, Disposable, Serializable {
 
     private final Message message;
     private final GlyphLayout layout = new GlyphLayout();
     private final BitmapFont font = Sumimasen.getFont(19, "OpenSans");
     private final Camera camera;
+    private final Sprite bubbleHorizontal = new Sprite(Sumimasen.getAssetManager().get("images/bubbleHorizontal.png", Texture.class));
+    private final Sprite bubbleVertical = new Sprite(Sumimasen.getAssetManager().get("images/bubbleVertical.png", Texture.class));
+    private Sprite currentBubble;
     private String content;
     private Direction direction;
     private Vector2 onScreenPosition;
     private Vector2 startingPosition; // on world
     private Map<Direction, Runnable> positionCalculator = new HashMap<>();
     private Map<Direction, Runnable> offsetCalculator = new HashMap<>();
-    private Texture background = new Texture("images/chatbubble.png");
+    private Map<Direction, Runnable> rotationCalculator = new HashMap<>();
     private Tween alphaTween = new Tween(Interpolation.smooth);
     private Tween bounceTween = new Tween(Interpolation.bounceOut);
     private boolean firstTime = true;
@@ -58,12 +63,12 @@ final class MessageRenderer implements Observer, Disposable {
         message.addObserver(this);
         initPositionCalculations();
         initOffsetCalculations();
+        initRotationCalculator();
     }
 
     @Override
     public void dispose() {
         font.dispose();
-        background.dispose();
     }
 
     @Override
@@ -79,11 +84,15 @@ final class MessageRenderer implements Observer, Disposable {
             layout.setText(font, content, Color.BLACK, targetWidth,
                     Align.center, true);
 
-            // Calculate position
+            // Calculate position and bubble rotation
             if (receiver != null) {
                 execute(positionCalculator, direction);
+                execute(rotationCalculator, direction);
+                currentBubble = direction.isHorizontal() ? bubbleHorizontal : bubbleVertical;
             } else { // speaking alone, bubble above => same fx than :
                 execute(positionCalculator, Direction.SOUTH);
+                execute(rotationCalculator, Direction.SOUTH);
+                currentBubble = bubbleVertical;
             }
 
             // Start tweens
@@ -104,7 +113,7 @@ final class MessageRenderer implements Observer, Disposable {
             screenBatch.setColor(1, 1, 1, alphaTween.getInterpolation());
 
             // draw
-            drawBackground(screenBatch);
+            drawBubble(screenBatch);
             drawMessage(screenBatch);
         }
     }
@@ -121,21 +130,22 @@ final class MessageRenderer implements Observer, Disposable {
         onScreenPosition.x -= targetWidth / 2;
     }
 
-    private void drawBackground(Batch screenBatch) {
+    private void drawBubble(Batch screenBatch) {
         float interpolation = bounceTween.isPlaying() ? bounceTween.getInterpolation() : 1;
-        float x = onScreenPosition.x + (targetWidth - layout.width) / 2 - padding,
-                y = onScreenPosition.y - layout.height - padding,
-                w = (layout.width + padding * 2),
-                h = (layout.height + padding * 2);
-        screenBatch.draw(background,
-                x + (1 - interpolation) * (padding + layout.width / 2),
-                y + (1 - interpolation) * (padding + layout.height / 2),
-                w * interpolation,
-                h * interpolation);
+        float x = onScreenPosition.x + (targetWidth - layout.width) / 2 - padding + (1 - interpolation) * (padding + layout.width / 2),
+                y = onScreenPosition.y - layout.height - padding + (1 - interpolation) * (padding + layout.height / 2),
+                w = (layout.width + padding * 2) * interpolation,
+                h = (layout.height + padding * 2) * interpolation;
+        screenBatch.draw(currentBubble, x, y,w * .5f,h * .5f, w, h,
+                1, 1, currentBubble.getRotation());
     }
 
     private void drawMessage(Batch screenBatch) {
-        font.draw(screenBatch, layout, onScreenPosition.x, onScreenPosition.y);
+        float deltaX = 0.f;
+        if (direction.equals(Direction.WEST)) {
+            deltaX = padding * .5f;
+        }
+        font.draw(screenBatch, layout, onScreenPosition.x + deltaX, onScreenPosition.y);
     }
 
     private boolean update() {
@@ -190,5 +200,12 @@ final class MessageRenderer implements Observer, Disposable {
         offsetCalculator.put(Direction.SOUTH, () -> onScreenPosition.add(-targetWidth / 2, layout.height + padding * 4));
         offsetCalculator.put(Direction.EAST, () -> onScreenPosition.add(-Math.min(targetWidth, layout.width) - padding * 5, layout.height / 2));
         offsetCalculator.put(Direction.WEST, () -> onScreenPosition.add(padding * 3, layout.height / 2));
+    }
+
+    private void initRotationCalculator() {
+        rotationCalculator.put(Direction.SOUTH, () -> bubbleVertical.setRotation(0));
+        rotationCalculator.put(Direction.EAST, () -> bubbleHorizontal.setRotation(0));
+        rotationCalculator.put(Direction.NORTH, () -> bubbleVertical.setRotation(180));
+        rotationCalculator.put(Direction.WEST, () -> bubbleHorizontal.setRotation(180));
     }
 }

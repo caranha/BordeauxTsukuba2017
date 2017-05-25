@@ -4,17 +4,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar.ProgressBarStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.io.File;
 
-/**
+/*
  * Created by Sydpy on 4/27/17.
  */
 public class LoadingScreen implements Screen {
@@ -24,11 +26,12 @@ public class LoadingScreen implements Screen {
     private final Stage stage = new Stage();
     private ProgressBar bar;
 
-    public LoadingScreen(Sumimasen game) {
+    LoadingScreen(Sumimasen game) {
         this.game = game;
         manager = Sumimasen.getAssetManager();
 
         loadImages("images/");
+        loadSkin("skin/skin/cloud-form-ui.json");
 
         // Settings of the progress bar
         Pixmap pixmap = new Pixmap(10, 10, Pixmap.Format.RGBA8888);
@@ -48,6 +51,10 @@ public class LoadingScreen implements Screen {
                 progressBarWidth, progressBarHeight));
     }
 
+    private void loadSkin(String path) {
+        manager.load(path, Skin.class);
+    }
+
     private void loadImages(String path) {
 
         File root = new File(path);
@@ -58,7 +65,6 @@ public class LoadingScreen implements Screen {
                 if (f.isDirectory()) {
                     loadImages(f.getAbsolutePath());
                 } else if (f.getName().endsWith(".png")) {
-                    System.out.println("loading " + path + f.getName());
                     manager.load(path + f.getName(), Texture.class);
                 }
             }
@@ -68,12 +74,14 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         manager.update();
         float progression = manager.getProgress();
 
         if (progression == 1.f) {
-            // we are done loading, let's move to game screen !
-            game.setScreen(new GameScreen(game));
+            // we are done loading, let's move to menu screen !
+            game.setScreen(new MenuScreen(game));
         }
 
         bar.setValue(progression);
