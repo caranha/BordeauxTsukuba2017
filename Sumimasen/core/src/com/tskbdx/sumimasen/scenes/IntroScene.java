@@ -14,12 +14,15 @@ import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.ui.UserInterface;
 
+import java.io.Serializable;
+import java.util.List;
+
 import static com.tskbdx.sumimasen.GameScreen.getPlayer;
 
 /*
  * Created by Sydpy on 4/27/17.
  */
-public class IntroScene implements Scene {
+public class IntroScene implements Scene, Serializable {
 
     private final static float SCALE_FACTOR = 4.0f;
     private final Player player;
@@ -49,7 +52,10 @@ public class IntroScene implements Scene {
         world = new World();
         worldRenderer = new WorldRenderer(world, camera);
 
-        world.init(tiledMap);
+        List<TiledMapUtils.MapObjectMapping> mapObjectMappings = TiledMapUtils.mapObjectMappings(tiledMap);
+
+        world.init(tiledMap, mapObjectMappings);
+        worldRenderer.init(tiledMap, mapObjectMappings);
 
         userInterface = new UserInterface(world, getPlayer());
         setInputProcessor(basicProcessor);

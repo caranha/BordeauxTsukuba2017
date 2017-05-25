@@ -293,12 +293,7 @@ public class Entity extends Observable {
 
 
     public boolean has(String object) {
-        List<Entity> entities = getWorld().getEntitiesByName(object);
-        for (Entity entity : entities) {
-            if (getInventory().contains(entity)) {
-                return true;
-            }
-        }
-        return false;
+        Entity entity = world.getEntitiesByName(object);
+        return getInventory().contains(entity);
     }
 }

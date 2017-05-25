@@ -101,6 +101,7 @@ public class EntityRenderer implements Observer {
             updatePosition();
 
             if (currentAnimator != null) {
+
                 TextureRegion textureRegion = currentAnimator.update();
 
                 rectangle.setHeight(textureRegion.getRegionHeight() * (rectangle.width / textureRegion.getRegionWidth()));

@@ -29,6 +29,8 @@ public class Sumimasen extends Game {
 	
 	@Override
 	public void dispose () {
+
+        screen.dispose();
 		batch.dispose();
 		font.dispose();
 		assetManager.dispose();

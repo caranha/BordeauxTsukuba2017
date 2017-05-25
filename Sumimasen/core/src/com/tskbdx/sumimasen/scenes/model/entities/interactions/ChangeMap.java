@@ -2,10 +2,13 @@ package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.tskbdx.sumimasen.scenes.TiledMapUtils;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
+
+import java.util.List;
 
 /**
  * Created by Sydpy on 5/17/17.
@@ -34,7 +37,8 @@ public class ChangeMap extends Interaction {
         passive.notifyObservers(ChangeMap.class);
 
         Utility.setTimeout(() -> {
-            passive.getWorld().init(tiledMap);
+            List<TiledMapUtils.MapObjectMapping> mapObjectMappings = TiledMapUtils.mapObjectMappings(tiledMap);
+            passive.getWorld().init(tiledMap, mapObjectMappings);
             passive.setMovement(backup);
             passive.notifyObservers();
             end();
