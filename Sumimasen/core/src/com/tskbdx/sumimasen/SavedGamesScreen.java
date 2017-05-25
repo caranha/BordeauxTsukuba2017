@@ -11,6 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import static com.tskbdx.sumimasen.Sumimasen.getAssetManager;
 
 /*
@@ -20,14 +23,42 @@ final class SavedGamesScreen extends Stage implements Screen {
 
     private final Screen previousScreen;
     private final Game game;
-    
+    private final List<Button> buttons = new LinkedList<>();
+
     SavedGamesScreen(Game game, Screen previousScreen) {
         this.previousScreen = previousScreen;
         this.game = game;
+        String[] savedGames = getSavedGames();
+        for (String savedGame : savedGames) {
+            addButton(createButtonFor(savedGame));
+        }
         addActor(createBackButton());
+        layoutButtons();
     }
 
-    private Actor createBackButton() {
+    private Button createButtonFor(String savedGame) {
+        Button button = new TextButton(savedGame,
+                getAssetManager().get("skin/skin/cloud-form-ui.json",
+                        Skin.class));
+        button.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                goTo(savedGame);
+            }
+        });
+        return button;
+    }
+
+    private void goTo(String savedGame) {
+        System.out.println("loading " + savedGame);
+    }
+
+    private void addButton(Button backButton) {
+        addActor(backButton);
+        buttons.add(backButton);
+    }
+
+    private Button createBackButton() {
         Button button = new TextButton("Back",
                 getAssetManager().get(
                         "skin/skin/cloud-form-ui.json", Skin.class));
@@ -59,6 +90,23 @@ final class SavedGamesScreen extends Stage implements Screen {
         draw();
     }
 
+    private void layoutButtons() {
+        final float windowWidth = Gdx.graphics.getWidth(),
+                windowHeight = Gdx.graphics.getHeight(),
+                bottomPadding = 50f,
+                topPadding = 150f;
+        for (int i = 0; i < buttons.size(); i++) {
+            Button button = buttons.get(buttons.size() - i - 1);
+            button.setSize(windowWidth * 0.3f,
+                    windowHeight * 0.14f);
+            button.setPosition((windowWidth - button.getWidth()) * .5f,
+                    ((windowHeight - topPadding - bottomPadding) / buttons.size()) * i +
+                            ((windowHeight - topPadding - bottomPadding) /
+                                    buttons.size() - button.getHeight()) * .5f
+                            + topPadding);
+        }
+    }
+
     @Override
     public void resize(int width, int height) {
 
@@ -82,5 +130,9 @@ final class SavedGamesScreen extends Stage implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    private String[] getSavedGames() {
+        return new String[]{"A", "B", "C"};
     }
 }
