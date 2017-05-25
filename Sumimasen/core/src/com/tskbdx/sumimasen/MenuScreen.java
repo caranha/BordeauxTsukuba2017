@@ -152,7 +152,7 @@ final class MenuScreen extends Stage implements Screen {
 
     private void goToSavedGames() {
         if (!screens.containsKey(SavedGamesScreen.class)) {
-            screens.put(SavedGamesScreen.class, new SavedGamesScreen());
+            screens.put(SavedGamesScreen.class, new SavedGamesScreen(game, this));
         }
         game.setScreen(screens.get(SavedGamesScreen.class));
     }
