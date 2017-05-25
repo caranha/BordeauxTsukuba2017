@@ -16,6 +16,7 @@ public class Sumimasen extends Game {
 
     @Override
 	public void create () {
+		System.out.println();
 		batch = new SpriteBatch();
 		font = new BitmapFont();
 

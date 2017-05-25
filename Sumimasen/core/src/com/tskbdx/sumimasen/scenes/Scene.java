@@ -10,6 +10,8 @@ import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.view.SmoothCamera;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 
 /**
@@ -85,5 +87,23 @@ public abstract class Scene {
             worldRenderer.init(tiledMap, mapObjectMappings);
 
         }
+    }
+
+    public void save(String dirName) {
+
+        System.out.println("Serializing world");
+        try {
+
+            FileOutputStream fileOutputStream = new FileOutputStream(dirName + "world.save");
+            ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
+            out.writeObject(world);
+            out.close();
+            fileOutputStream.close();
+
+        } catch (java.io.IOException e) {
+            System.err.println("Error while serializing world !");
+            e.printStackTrace();
+        }
+
     }
 }

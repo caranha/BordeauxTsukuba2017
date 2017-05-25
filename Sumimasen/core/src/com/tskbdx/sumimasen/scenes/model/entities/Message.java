@@ -1,13 +1,14 @@
 package com.tskbdx.sumimasen.scenes.model.entities;
 
 
+import java.io.Serializable;
 import java.util.Observable;
 
 /**
  * Created by viet khang on 10/05/2017.
  */
 
-public class Message extends Observable {
+public class Message extends Observable implements Serializable {
     private String content = "";
     private float timeToUnderstand;
     private float timeToAnswer;
