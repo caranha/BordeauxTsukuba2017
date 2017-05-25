@@ -21,9 +21,9 @@ final class CreditsScreen extends Stage implements Screen {
     private final Game game;
     private final Screen previousScreen;
 
-    CreditsScreen(Game game, Screen menuScreen) {
+    CreditsScreen(Game game, Screen previousScreen) {
         this.game = game;
-        this.previousScreen = menuScreen;
+        this.previousScreen = previousScreen;
 
         addActor(createBackButton());
     }

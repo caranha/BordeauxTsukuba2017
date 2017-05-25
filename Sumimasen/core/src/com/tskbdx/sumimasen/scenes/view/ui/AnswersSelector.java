@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.tskbdx.sumimasen.Sumimasen;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
@@ -24,7 +25,7 @@ import java.util.Observer;
 /**
  * Observers an entity and display
  * text buttons while it is answering
- *
+ * <p>
  * Act as an Gdx Scene2D actor, thus
  * handle on click event.
  */
@@ -56,22 +57,25 @@ final class AnswersSelector extends Group implements Observer {
         DialogueExchange exchange = dialogue.getCurrentExchange();
         List<DialogueAnswer> answers = exchange.getAnswers();
         Array<Actor> children = getChildren();
-        for (int i = 0 ; i != answers.size() ; ++i) {
+        for (int i = 0; i != answers.size(); ++i) {
             Button button;
             // If not enough buttons created :
             if (i >= children.size) {
                 button = new TextButton(answers.get(i).getText(), skin);
                 final int finalI = i;
-                button.addListener((event) -> {
+                button.addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
                         dialogue.pickAnswer(finalI);
-                        return true;});
+                    }
+                });
                 addActor(button);
             } else {
                 button = (TextButton) children.get(i);
                 ((TextButton) button).setText(answers.get(i).getText());
             }
             button.setSize(Gdx.graphics.getWidth() / answers.size(), Gdx.graphics.getHeight() * 0.1f);
-            button.setPosition(i * button.getWidth(),0);
+            button.setPosition(i * button.getWidth(), 0);
             button.setVisible(true);
         }
     }
