@@ -5,9 +5,8 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.*;
-import com.tskbdx.sumimasen.scenes.view.entities.SpritesheetUtils;
-import com.tskbdx.sumimasen.scenes.view.entities.animator.Animator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class TiledMapUtils {
 
     public static final int TILE_SIZE = 8;
 
-    public static class MapObjectMapping {
+    public static class MapObjectMapping implements Serializable {
 
         public final String name;
         public final int x;
@@ -29,8 +28,8 @@ public class TiledMapUtils {
         public final Interaction defaultInteraction;
         public final Interaction onCollide;
 
-        public final Animator standingAnimator;
-        public final Animator walkingAnimator;
+        public final String standingSpritesheet;
+        public final String walkingSpritesheet;
 
         MapObjectMapping(MapObject mapObject) {
 
@@ -74,28 +73,28 @@ public class TiledMapUtils {
             if (standingSpritesheet != null && !standingSpritesheet.equals("")
                     && walkingSpritesheet != null && !walkingSpritesheet.equals("")) {
 
-                standingAnimator    = SpritesheetUtils.getAnimatorFromSpritesheet(standingSpritesheet);
-                walkingAnimator     = SpritesheetUtils.getAnimatorFromSpritesheet(walkingSpritesheet);
+                this.standingSpritesheet = standingSpritesheet;
+                this.walkingSpritesheet = walkingSpritesheet;
 
             } else if (standingSpritesheet != null && !standingSpritesheet.equals("")) {
 
-                standingAnimator    = SpritesheetUtils.getAnimatorFromSpritesheet(standingSpritesheet);
-                walkingAnimator     = SpritesheetUtils.getAnimatorFromSpritesheet(standingSpritesheet);
+                this.standingSpritesheet = standingSpritesheet;
+                this.walkingSpritesheet = standingSpritesheet;
 
             } else if (walkingSpritesheet != null && !walkingSpritesheet.equals("")) {
 
-                standingAnimator    = SpritesheetUtils.getAnimatorFromSpritesheet(walkingSpritesheet);
-                walkingAnimator     = SpritesheetUtils.getAnimatorFromSpritesheet(walkingSpritesheet);
+                this.standingSpritesheet = walkingSpritesheet;
+                this.walkingSpritesheet = walkingSpritesheet;
 
             } else if (imageFile != null && !imageFile.equals("")) {
 
-                standingAnimator    = SpritesheetUtils.getAnimatorFromSpritesheet(imageFile);
-                walkingAnimator     = SpritesheetUtils.getAnimatorFromSpritesheet(imageFile);
+                this.standingSpritesheet = imageFile;
+                this.walkingSpritesheet = imageFile;
 
             } else {
 
-                standingAnimator    = SpritesheetUtils.getAnimatorFromSpritesheet("entity.png");
-                walkingAnimator     = SpritesheetUtils.getAnimatorFromSpritesheet("entity.png");
+                this.standingSpritesheet = "entity.png";
+                this.walkingSpritesheet = "entity.png";
             }
 
         }

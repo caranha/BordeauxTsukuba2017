@@ -7,6 +7,10 @@ import com.tskbdx.sumimasen.scenes.IntroScene;
 import com.tskbdx.sumimasen.scenes.Scene;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 /**
  * Created by Sydpy on 4/27/17.
  */
@@ -72,7 +76,22 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
 
-        currentScene.save("/tmp/");
+        String dir = "/tmp/";
+
+        try {
+            currentScene.save(dir);
+
+            System.out.println("Serializing player");
+            FileOutputStream fileOutputStream = new FileOutputStream(dir + "player.save", false);
+            ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
+            out.writeObject(player);
+            out.close();
+            fileOutputStream.close();
+
+        } catch (IOException e) {
+            System.err.println("Error while serializing the current state of the game !");
+            e.printStackTrace();
+        }
 
         currentScene.dispose();
     }

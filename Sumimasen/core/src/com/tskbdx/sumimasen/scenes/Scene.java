@@ -11,6 +11,7 @@ import com.tskbdx.sumimasen.scenes.view.SmoothCamera;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.List;
 
@@ -21,9 +22,10 @@ public abstract class Scene {
 
     public final static float SCALE_FACTOR = 4.f;
 
+    protected String currentMap = "maps/map.tmx";
+
     private World world;
     private WorldRenderer worldRenderer;
-
 
     private SmoothCamera camera;
     private InputProcessor inputProcessor;
@@ -76,9 +78,11 @@ public abstract class Scene {
         return mapObjectMappings;
     }
 
-    protected final void loadCurrentMap(String map) {
+    protected final void loadMap(String map) {
 
         if (map != null && map.endsWith(".tmx")) {
+            currentMap = map;
+
             TiledMap tiledMap = new TmxMapLoader().load(map);
 
             mapObjectMappings = TiledMapUtils.mapObjectMappings(tiledMap);
@@ -89,21 +93,33 @@ public abstract class Scene {
         }
     }
 
-    public void save(String dirName) {
+    public void save(String dirName) throws IOException {
 
         System.out.println("Serializing world");
-        try {
 
-            FileOutputStream fileOutputStream = new FileOutputStream(dirName + "world.save");
-            ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
-            out.writeObject(world);
-            out.close();
-            fileOutputStream.close();
+        FileOutputStream fileOutputStream1 = new FileOutputStream(dirName + "world.save", false);
+        fileOutputStream1.flush();
+        ObjectOutputStream out1 = new ObjectOutputStream(fileOutputStream1);
+        out1.writeObject(world);
+        out1.close();
+        fileOutputStream1.close();
 
-        } catch (java.io.IOException e) {
-            System.err.println("Error while serializing world !");
-            e.printStackTrace();
-        }
+        System.out.println("Serializing current map");
 
+        FileOutputStream fileOutputStream2 = new FileOutputStream(dirName + "map.save", false);
+        fileOutputStream2.flush();
+        ObjectOutputStream out2 = new ObjectOutputStream(fileOutputStream2);
+        out2.writeObject(currentMap);
+        out2.close();
+        fileOutputStream2.close();
+
+        System.out.println("Serializing current map objects mapping");
+
+        FileOutputStream fileOutputStream3 = new FileOutputStream(dirName + "mapping.save", false);
+        fileOutputStream3.flush();
+        ObjectOutputStream out3 = new ObjectOutputStream(fileOutputStream3);
+        out3.writeObject(mapObjectMappings);
+        out3.close();
+        fileOutputStream3.close();
     }
 }
