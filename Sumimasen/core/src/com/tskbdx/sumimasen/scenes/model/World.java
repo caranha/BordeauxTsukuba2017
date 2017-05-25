@@ -76,7 +76,7 @@ public class World extends Observable {
 
     public void removeEntity(Entity entity) {
         entity.setWorld(null);
-        entitiesByName.remove(entity);
+        entitiesByName.remove(entity.getName());
         setChanged();
         notifyObservers(entity);
     }
