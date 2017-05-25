@@ -1,13 +1,12 @@
 package com.tskbdx.sumimasen.scenes.inputprocessors;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.tskbdx.sumimasen.GameScreen;
+import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.badlogic.gdx.Input.Keys.*;
-import static com.tskbdx.sumimasen.GameScreen.getPlayer;
-import static com.tskbdx.sumimasen.scenes.model.entities.Direction.*;
 
 /*
  * Created by Sydpy on 4/27/17.
@@ -40,21 +39,21 @@ public class GameCommands extends InputAdapter {
     }
 
     private void initKeyUp() {
-        associate(keyUpCommands, () -> getPlayer().setDirection(NONE),
-                W, UP, S, DOWN, D, RIGHT, A, LEFT);
+        associate(keyUpCommands, () -> GameScreen.getPlayer().setDirection(Direction.NONE),
+                Input.Keys.W, Input.Keys.UP, Input.Keys.S, Input.Keys.DOWN, Input.Keys.D, Input.Keys.RIGHT, Input.Keys.A, Input.Keys.LEFT);
     }
 
     private void initKeyDown() {
-        associate(keyDownCommands, () -> getPlayer().move(NORTH),
-                W, UP);
-        associate(keyDownCommands, () -> getPlayer().move(SOUTH),
-                S, DOWN);
-        associate(keyDownCommands, () -> getPlayer().move(EAST),
-                D, RIGHT);
-        associate(keyDownCommands, () -> getPlayer().move(WEST),
-                A, LEFT);
-        associate(keyDownCommands, () -> getPlayer().tryInteract(),
-                SPACE);
+        associate(keyDownCommands, () -> GameScreen.getPlayer().move(Direction.NORTH),
+                Input.Keys.W, Input.Keys.UP);
+        associate(keyDownCommands, () -> GameScreen.getPlayer().move(Direction.SOUTH),
+                Input.Keys.S, Input.Keys.DOWN);
+        associate(keyDownCommands, () -> GameScreen.getPlayer().move(Direction.EAST),
+                Input.Keys.D, Input.Keys.RIGHT);
+        associate(keyDownCommands, () -> GameScreen.getPlayer().move(Direction.WEST),
+                Input.Keys.A, Input.Keys.LEFT);
+        associate(keyDownCommands, () -> GameScreen.getPlayer().tryInteract(),
+                Input.Keys.SPACE);
     }
 
     private void associate(Map<Integer, Runnable> map, Runnable callback, int... keys) {

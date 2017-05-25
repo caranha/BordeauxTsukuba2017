@@ -1,6 +1,8 @@
 package com.tskbdx.sumimasen.scenes.model.entities;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Observable;
+import java.util.Set;
 
 /*
  * Created by viet khang on 15/05/2017.

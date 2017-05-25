@@ -7,9 +7,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.movements.Path;
 import com.tskbdx.sumimasen.scenes.story.Event;
 import com.tskbdx.sumimasen.scenes.story.State;
 
-import static com.tskbdx.sumimasen.scenes.model.entities.Direction.NORTH;
-import static com.tskbdx.sumimasen.scenes.model.entities.Direction.SOUTH;
-import static com.tskbdx.sumimasen.scenes.model.entities.Direction.WEST;
+import static com.tskbdx.sumimasen.scenes.model.entities.Direction.*;
 
 /*
  * Created by viet khang on 23/05/2017.

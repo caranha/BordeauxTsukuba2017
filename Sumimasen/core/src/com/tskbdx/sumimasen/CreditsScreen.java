@@ -11,8 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-import static com.tskbdx.sumimasen.Sumimasen.getAssetManager;
-
 /*
  * Created by viet khang on 25/05/2017.
  */
@@ -30,7 +28,7 @@ final class CreditsScreen extends Stage implements Screen {
 
     private Button createBackButton() {
         Button button = new TextButton("Back",
-                getAssetManager().get(
+                Sumimasen.getAssetManager().get(
                         "skin/skin/cloud-form-ui.json", Skin.class));
         button.addListener(new ChangeListener() {
             @Override

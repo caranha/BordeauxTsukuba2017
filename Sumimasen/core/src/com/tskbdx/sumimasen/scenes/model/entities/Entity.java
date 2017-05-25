@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
-import static com.tskbdx.sumimasen.scenes.model.entities.Direction.*;
-
 /**
  * Created by Sydpy on 4/28/17.
  */
@@ -41,7 +39,7 @@ public class Entity extends Observable {
      * lastDirection is like the static direction state
      */
     private Direction direction;
-    private Direction lastDirection = SOUTH; // by default
+    private Direction lastDirection = Direction.SOUTH; // by default
 
     //Number of cell per sec
     private int speed = 8;
@@ -54,7 +52,7 @@ public class Entity extends Observable {
         this.width = width;
         this.height = height;
 
-        this.direction = NONE;
+        this.direction = Direction.NONE;
         this.movement = null;
     }
 
@@ -69,7 +67,7 @@ public class Entity extends Observable {
 
                 if (neighbour.isInteractable()) {
                     // change target direction to face this
-                    neighbour.setDirection(getOpposite(getLastDirection()));
+                    neighbour.setDirection(Direction.getOpposite(getLastDirection()));
                     neighbour.notifyObservers();
                     neighbour.getInteraction().start(neighbour, this);
                 }
@@ -174,7 +172,7 @@ public class Entity extends Observable {
     }
 
     public void setDirection(Direction direction) {
-        if (direction != NONE) {
+        if (direction != Direction.NONE) {
             lastDirection = direction;
         }
         this.direction = direction;

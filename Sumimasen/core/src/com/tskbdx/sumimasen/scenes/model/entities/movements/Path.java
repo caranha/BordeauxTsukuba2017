@@ -7,13 +7,12 @@ package com.tskbdx.sumimasen.scenes.model.entities.movements;
 import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
+import com.tskbdx.sumimasen.scenes.utility.Utility;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-
-import static com.tskbdx.sumimasen.scenes.utility.Utility.setTimeout;
 
 /**
  * Implements entity movement scripting
@@ -42,7 +41,7 @@ public class Path implements Movement {
              */
             entity.notifyObservers();
             process(directionQueue.poll(), entity);
-            setTimeout(() -> {
+            Utility.setTimeout(() -> {
                 ready = true;
                 move(entity);
             }, 1.f / entity.getSpeed());
