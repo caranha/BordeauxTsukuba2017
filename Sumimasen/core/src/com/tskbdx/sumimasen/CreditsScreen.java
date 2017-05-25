@@ -26,7 +26,7 @@ final class CreditsScreen extends Stage implements Screen {
         addActor(createBackButton());
     }
 
-    private Button createBackButton() {
+    private Actor createBackButton() {
         Button button = new TextButton("Back",
                 Sumimasen.getAssetManager().get(
                         "skin/skin/cloud-form-ui.json", Skin.class));
