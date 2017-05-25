@@ -24,7 +24,7 @@ final class MenuScreen extends Stage implements Screen {
 
     private final Sumimasen game;
     private final List<Button> buttons = new LinkedList<>();
-    private Map<String, Screen> screens = new HashMap<>();
+    private Map<Class<? extends Screen>, Screen> screens = new HashMap<>();
 
     MenuScreen(Sumimasen game) {
         this.game = game;
@@ -92,10 +92,10 @@ final class MenuScreen extends Stage implements Screen {
     }
 
     private void goToCredits() {
-        if (!screens.containsKey("credits")) {
-            screens.put("credits", new CreditsScreen(game, this));
+        if (!screens.containsKey(CreditsScreen.class)) {
+            screens.put(CreditsScreen.class, new CreditsScreen(game, this));
         }
-        game.setScreen(screens.get("credits"));
+        game.setScreen(screens.get(CreditsScreen.class));
     }
 
     @Override
@@ -141,12 +141,16 @@ final class MenuScreen extends Stage implements Screen {
     }
 
     private void goToGameScreen() {
-        if (!screens.containsKey("game")) {
-            screens.put("game", new GameScreen(game));
+        if (!screens.containsKey(GameScreen.class)) {
+            screens.put(GameScreen.class, new GameScreen(game));
         }
-        game.setScreen(screens.get("game"));
+        game.setScreen(screens.get(GameScreen.class));
     }
 
     private void goToSavedGames() {
+        if (!screens.containsKey(SavedGamesScreen.class)) {
+            screens.put(SavedGamesScreen.class, new SavedGamesScreen());
+        }
+        game.setScreen(screens.get(SavedGamesScreen.class));
     }
 }
