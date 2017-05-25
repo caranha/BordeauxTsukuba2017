@@ -39,14 +39,17 @@ final class MenuScreen extends Stage implements Screen {
 
     private void layoutButtons() {
         final float windowWidth = Gdx.graphics.getWidth(),
-                windowHeight = Gdx.graphics.getHeight();
+                windowHeight = Gdx.graphics.getHeight(),
+                verticalPadding = 50f;
         for (int i = 0; i < buttons.size(); i++) {
             Button button = buttons.get(buttons.size() - i - 1);
             button.setSize(windowWidth * 0.3f,
                     windowHeight * 0.2f);
             button.setPosition((windowWidth - button.getWidth()) * .5f,
-                    (windowHeight / buttons.size()) * i +
-                            (windowHeight / buttons.size() - button.getHeight()) * .5f);
+                    ((windowHeight - (verticalPadding * 2f)) / buttons.size()) * i +
+                            ((windowHeight - (verticalPadding * 2f)) /
+                                    buttons.size() - button.getHeight()) * .5f
+                            + verticalPadding);
         }
     }
 
@@ -137,7 +140,7 @@ final class MenuScreen extends Stage implements Screen {
     }
 
     private boolean hasSavedGame() {
-        return false;
+        return true;
     }
 
     private void goToGameScreen() {
