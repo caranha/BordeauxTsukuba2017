@@ -51,6 +51,8 @@ final class SavedGamesScreen extends Stage implements Screen {
 
     private void goTo(String savedGame) {
         System.out.println("loading " + savedGame);
+        System.out.println("for the moment lets go back");
+        game.setScreen(previousScreen);
     }
 
     private void addButton(Button backButton) {
