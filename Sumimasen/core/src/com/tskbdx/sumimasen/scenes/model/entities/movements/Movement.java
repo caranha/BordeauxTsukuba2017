@@ -2,8 +2,6 @@ package com.tskbdx.sumimasen.scenes.model.entities.movements;
 
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 
-import java.io.Serializable;
-
 /*
  * Created by viet khang on 08/05/2017.
  */
@@ -14,6 +12,6 @@ import java.io.Serializable;
  * Dynamically changing this entity movement
  * behavior can be very useful
  */
-public interface Movement extends Serializable {
+public interface Movement {
     MovementResult move(Entity entity);
 }

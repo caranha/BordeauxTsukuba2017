@@ -167,10 +167,6 @@ public class Dialogue extends Interaction {
         Integer nextExchange;
         private NodeList callbacks;
 
-
-        public DialogueAnswer() {
-        }
-
         public String getText() {
             return text;
         }
@@ -258,10 +254,6 @@ public class Dialogue extends Interaction {
         private String text = "";
 
         private List<DialogueAnswer> answers = new ArrayList<>();
-
-        public DialogueExchange() {
-        }
-
 
         public String getText() {
             return text;

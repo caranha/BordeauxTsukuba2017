@@ -14,6 +14,7 @@ import com.tskbdx.sumimasen.scenes.TiledMapUtils;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Inventory;
 import com.tskbdx.sumimasen.scenes.view.Tween;
+import com.tskbdx.sumimasen.scenes.view.entities.SpritesheetUtils;
 import com.tskbdx.sumimasen.scenes.view.entities.animator.Animator;
 
 import java.util.*;
@@ -62,8 +63,8 @@ final class InventoryRenderer implements Observer, Disposable {
 
                 if (mapObjectMapping != null) {
 
-                    Animator animator = mapObjectMapping.standingAnimator;
-                    if ( animator == null) animator = mapObjectMapping.walkingAnimator;
+                    Animator animator = SpritesheetUtils.getAnimatorFromSpritesheet(mapObjectMapping.standingSpritesheet);
+                    if ( animator == null) SpritesheetUtils.getAnimatorFromSpritesheet(mapObjectMapping.standingSpritesheet);
 
                     Slot slot = new Slot(animator, slots.size());
                     textures.put(object, slot);

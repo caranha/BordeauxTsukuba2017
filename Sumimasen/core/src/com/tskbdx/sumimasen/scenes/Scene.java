@@ -10,8 +10,6 @@ import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.view.SmoothCamera;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.util.List;
 
 /**
@@ -21,9 +19,11 @@ public abstract class Scene {
 
     public final static float SCALE_FACTOR = 4.f;
 
+    protected String currentMap = "maps/map.tmx";
+    protected String spawn = "player_home";
+
     private World world;
     private WorldRenderer worldRenderer;
-
 
     private SmoothCamera camera;
     private InputProcessor inputProcessor;
@@ -52,6 +52,7 @@ public abstract class Scene {
     public abstract void render(Batch batch);
 
     public abstract boolean isFinished();
+
     public abstract Scene getNextScene();
 
     public abstract void dispose();
@@ -76,34 +77,18 @@ public abstract class Scene {
         return mapObjectMappings;
     }
 
-    protected final void loadCurrentMap(String map) {
+    protected final void loadMap(String map, String spawn) {
 
         if (map != null && map.endsWith(".tmx")) {
+            currentMap = map;
+
             TiledMap tiledMap = new TmxMapLoader().load(map);
 
             mapObjectMappings = TiledMapUtils.mapObjectMappings(tiledMap);
 
-            world.init(tiledMap, mapObjectMappings);
+            world.init(tiledMap, mapObjectMappings, spawn);
             worldRenderer.init(tiledMap, mapObjectMappings);
 
         }
-    }
-
-    public void save(String dirName) {
-
-        System.out.println("Serializing world");
-        try {
-
-            FileOutputStream fileOutputStream = new FileOutputStream(dirName + "world.save");
-            ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
-            out.writeObject(world);
-            out.close();
-            fileOutputStream.close();
-
-        } catch (java.io.IOException e) {
-            System.err.println("Error while serializing world !");
-            e.printStackTrace();
-        }
-
     }
 }

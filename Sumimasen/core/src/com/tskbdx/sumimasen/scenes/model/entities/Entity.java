@@ -14,7 +14,7 @@ import java.util.Observable;
 /**
  * Created by Sydpy on 4/28/17.
  */
-public class Entity extends Observable implements Serializable {
+public class Entity extends Observable {
 
     private World world;
 
@@ -46,16 +46,6 @@ public class Entity extends Observable implements Serializable {
     private int speed = 8;
 
     public Entity() {}
-
-    public Entity(int x, int y, int width, int height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-
-        this.direction = Direction.NONE;
-        this.movement = null;
-    }
 
     /**
      * Can only interact if there is a SceneObject

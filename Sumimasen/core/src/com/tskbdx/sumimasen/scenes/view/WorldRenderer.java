@@ -12,6 +12,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.view.effects.Effect;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRendererDrawOrderer;
+import com.tskbdx.sumimasen.scenes.view.entities.SpritesheetUtils;
 
 import java.util.*;
 
@@ -133,11 +134,13 @@ public class WorldRenderer implements Observer {
 
         Entity entity = world.getEntitiesByName(mo.name);
 
+        System.out.println(mo.name);
+
         EntityRenderer entityRenderer = new EntityRenderer(entity);
         entityRenderer.setWorldRenderer(this);
 
-        entityRenderer.setStandingAnimator(mo.standingAnimator);
-        entityRenderer.setWalkingAnimator(mo.walkingAnimator);
+        entityRenderer.setStandingAnimator(SpritesheetUtils.getAnimatorFromSpritesheet(mo.standingSpritesheet));
+        entityRenderer.setWalkingAnimator(SpritesheetUtils.getAnimatorFromSpritesheet(mo.standingSpritesheet));
 
         rendererByEntity.put(entity, entityRenderer);
     }

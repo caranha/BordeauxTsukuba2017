@@ -2,20 +2,20 @@ package com.tskbdx.sumimasen.scenes.model.entities;
 
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Walk;
 
+import java.io.Serializable;
+
 /*Z
  * Created by Sydpy on 4/27/17.
  */
-public class Player extends Entity {
+public class Player extends Entity implements Serializable {
 
     private int kindness = 0, naiveness = 0;
 
     public Player() {
         setMovement(new Walk());
-    }
-
-    public Player(int x, int y, int width, int height) {
-        super(x, y, width, height);
-        setMovement(new Walk());
+        setName("player");
+        setWidth(2);
+        setHeight(2);
     }
 
     public void addKindness(int value) {
