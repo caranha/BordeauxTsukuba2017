@@ -20,6 +20,7 @@ public abstract class Scene {
     public final static float SCALE_FACTOR = 4.f;
 
     protected String currentMap = "maps/map.tmx";
+    protected String spawn = "player_home";
 
     private World world;
     private WorldRenderer worldRenderer;
@@ -76,7 +77,7 @@ public abstract class Scene {
         return mapObjectMappings;
     }
 
-    protected final void loadMap(String map) {
+    protected final void loadMap(String map, String spawn) {
 
         if (map != null && map.endsWith(".tmx")) {
             currentMap = map;
@@ -85,7 +86,7 @@ public abstract class Scene {
 
             mapObjectMappings = TiledMapUtils.mapObjectMappings(tiledMap);
 
-            world.init(tiledMap, mapObjectMappings);
+            world.init(tiledMap, mapObjectMappings, spawn);
             worldRenderer.init(tiledMap, mapObjectMappings);
 
         }

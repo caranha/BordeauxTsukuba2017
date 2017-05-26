@@ -19,7 +19,7 @@ public class GameScreen implements Screen {
 
     private final Sumimasen game;
 
-    private static Player player = new Player(0, 0 ,0, 0);
+    private static Player player = new Player();
 
     private Scene currentScene;
 

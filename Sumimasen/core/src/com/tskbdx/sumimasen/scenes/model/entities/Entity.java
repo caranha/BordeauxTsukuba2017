@@ -47,16 +47,6 @@ public class Entity extends Observable {
 
     public Entity() {}
 
-    public Entity(int x, int y, int width, int height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-
-        this.direction = Direction.NONE;
-        this.movement = null;
-    }
-
     /**
      * Can only interact if there is a SceneObject
      * in front of the entity

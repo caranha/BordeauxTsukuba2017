@@ -1,11 +1,14 @@
 package com.tskbdx.sumimasen.scenes.model;
 
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.TiledMapUtils;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
+import com.tskbdx.sumimasen.scenes.model.entities.Spawn;
 
 import java.io.Serializable;
 import java.util.*;
@@ -27,10 +30,11 @@ public class World extends Observable implements Serializable {
     private boolean wallsMap[][];
 
     private Map<String, Entity> entitiesByName = new HashMap<>();
+    private Map<String, Spawn> spawnByName = new HashMap<>();
 
     public World() { }
 
-    public void init(TiledMap tiledMap, List<TiledMapUtils.MapObjectMapping> mappings ) {
+    public void init(TiledMap tiledMap, List<TiledMapUtils.MapObjectMapping> mappings, String playerSpawn ) {
 
         TiledMapTileLayer collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Collision");
 
@@ -44,21 +48,41 @@ public class World extends Observable implements Serializable {
             }
         }
 
+        MapLayer entities = tiledMap.getLayers().get("Entities");
+        for (MapObject mapObject : entities.getObjects()) {
+            if ("spawn".equals(mapObject.getProperties().get("type", String.class))) {
+
+                Spawn spawn = new Spawn(
+                        mapObject.getName(),
+                        mapObject.getProperties().get("x", Float.class).intValue(),
+                        mapObject.getProperties().get("y", Float.class).intValue());
+
+                spawnByName.put(spawn.getName(), spawn);
+
+                if (playerSpawn.equals(spawn.getName())) {
+
+                    System.out.println("Found player spawn : " + playerSpawn);
+
+                    GameScreen.getPlayer().setX(spawn.getX() / 8);
+                    GameScreen.getPlayer().setY(spawn.getY() / 8);
+
+                    GameScreen.getPlayer().setWorld(this);
+                    entitiesByName.put(GameScreen.getPlayer().getName(), GameScreen.getPlayer());
+                }
+            }
+        }
+
         for (TiledMapUtils.MapObjectMapping mapping : mappings) {
-            createEntity(mapping);
+            if(mapping.name != null && !mapping.name.equals(GameScreen.getPlayer().getName()))
+                createEntity(mapping);
         }
 
     }
 
-    public Entity createEntity(TiledMapUtils.MapObjectMapping mapping) {
+    private void createEntity(TiledMapUtils.MapObjectMapping mapping) {
 
-        Entity entity;
+        Entity entity = new Entity();
 
-        if ("player".equals(mapping.name)) {
-            entity = GameScreen.getPlayer();
-        } else {
-            entity = new Entity();
-        }
         entity.setName(mapping.name);
 
         entity.setX(mapping.x);
@@ -71,8 +95,6 @@ public class World extends Observable implements Serializable {
 
         entity.setWorld(this);
         entitiesByName.put(mapping.name, entity);
-
-        return entity;
     }
 
     public void removeEntity(Entity entity) {

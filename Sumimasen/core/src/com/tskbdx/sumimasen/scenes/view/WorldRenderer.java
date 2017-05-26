@@ -134,6 +134,8 @@ public class WorldRenderer implements Observer {
 
         Entity entity = world.getEntitiesByName(mo.name);
 
+        System.out.println(mo.name);
+
         EntityRenderer entityRenderer = new EntityRenderer(entity);
         entityRenderer.setWorldRenderer(this);
 

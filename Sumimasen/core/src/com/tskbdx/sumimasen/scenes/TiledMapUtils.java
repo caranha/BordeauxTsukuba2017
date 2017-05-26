@@ -4,6 +4,7 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.*;
 
 import java.io.Serializable;
@@ -19,17 +20,19 @@ public class TiledMapUtils {
 
     public static class MapObjectMapping implements Serializable {
 
-        public final String name;
-        public final int x;
-        public final int y;
-        public final int width;
-        public final int height;
+        public String name;
+        public int x;
+        public int y;
+        public int width;
+        public int height;
 
-        public final Interaction defaultInteraction;
-        public final Interaction onCollide;
+        public Interaction defaultInteraction;
+        public Interaction onCollide;
 
-        public final String standingSpritesheet;
-        public final String walkingSpritesheet;
+        public String standingSpritesheet;
+        String walkingSpritesheet;
+
+        MapObjectMapping() {}
 
         MapObjectMapping(MapObject mapObject) {
 
@@ -61,7 +64,8 @@ public class TiledMapUtils {
             } else if ("changeMap".equals(onCollideName)) {
 
                 String toMap = mapObject.getProperties().get("toMap", String.class);
-                onCollide = new ChangeMap(toMap);
+                String toSpawn = mapObject.getProperties().get("toSpawn", String.class);
+                onCollide = new ChangeMap(toMap, toSpawn);
             } else {
                 onCollide = null;
             }
@@ -96,7 +100,6 @@ public class TiledMapUtils {
                 this.standingSpritesheet = "entity.png";
                 this.walkingSpritesheet = "entity.png";
             }
-
         }
     }
 
@@ -109,8 +112,17 @@ public class TiledMapUtils {
         MapObjects objects = entities.getObjects();
 
         for (MapObject object : objects) {
-            mappings.add(new MapObjectMapping(object));
+            if("entity".equals(object.getProperties().get("type", String.class))) {
+                mappings.add(new MapObjectMapping(object));
+            }
         }
+
+        MapObjectMapping playerMapping = new MapObjectMapping();
+        playerMapping.name = GameScreen.getPlayer().getName();
+        playerMapping.walkingSpritesheet = "player_walking.png";
+        playerMapping.standingSpritesheet = "player_standing.png";
+
+        mappings.add(playerMapping);
 
         return mappings;
     }

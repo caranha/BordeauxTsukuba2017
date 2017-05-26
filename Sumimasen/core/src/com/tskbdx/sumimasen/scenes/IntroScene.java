@@ -19,12 +19,13 @@ public class IntroScene extends Scene {
         super();
         userInterface = new UserInterface(this, GameScreen.getPlayer());
         currentMap = "maps/map.tmx";
+        spawn = "player_home";
     }
 
     @Override
     public void init() {
 
-        loadMap(currentMap);
+        loadMap(currentMap, spawn);
         userInterface.update();
 
         Story.setScene(this);

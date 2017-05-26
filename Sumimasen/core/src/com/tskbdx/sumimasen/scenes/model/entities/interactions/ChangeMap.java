@@ -18,9 +18,11 @@ public class ChangeMap extends Interaction {
     public static final float DELAY = 2.f;
 
     private String mapName;
+    private String spawnName;
 
-    public ChangeMap(String mapName) {
+    public ChangeMap(String mapName, String spawnName) {
         this.mapName = mapName;
+        this.spawnName = spawnName;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class ChangeMap extends Interaction {
 
         Utility.setTimeout(() -> {
             List<TiledMapUtils.MapObjectMapping> mapObjectMappings = TiledMapUtils.mapObjectMappings(tiledMap);
-            passive.getWorld().init(tiledMap, mapObjectMappings);
+            passive.getWorld().init(tiledMap, mapObjectMappings, spawnName);
             passive.setMovement(backup);
             passive.notifyObservers();
             end();

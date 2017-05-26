@@ -13,11 +13,9 @@ public class Player extends Entity implements Serializable {
 
     public Player() {
         setMovement(new Walk());
-    }
-
-    public Player(int x, int y, int width, int height) {
-        super(x, y, width, height);
-        setMovement(new Walk());
+        setName("player");
+        setWidth(2);
+        setHeight(2);
     }
 
     public void addKindness(int value) {
