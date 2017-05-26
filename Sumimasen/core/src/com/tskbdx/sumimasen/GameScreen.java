@@ -73,7 +73,7 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
 
-        currentScene.save("/tmp/");
+        currentScene.save("test");
 
         currentScene.dispose();
     }
