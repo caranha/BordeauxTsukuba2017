@@ -7,6 +7,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.tskbdx.sumimasen.scenes.inputprocessors.GameCommands;
 import com.tskbdx.sumimasen.scenes.model.World;
+import com.tskbdx.sumimasen.scenes.story.Story;
 import com.tskbdx.sumimasen.scenes.view.SmoothCamera;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 
@@ -25,6 +26,8 @@ public abstract class Scene {
     private World world;
     private WorldRenderer worldRenderer;
 
+    protected final Story story = Story.getInstance();
+
     private SmoothCamera camera;
     private InputProcessor inputProcessor;
 
@@ -42,6 +45,7 @@ public abstract class Scene {
         world = new World();
         worldRenderer = new WorldRenderer(world, camera);
 
+        story.setScene(this);
     }
 
     public abstract void init();

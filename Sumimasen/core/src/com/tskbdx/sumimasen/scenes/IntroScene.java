@@ -3,7 +3,6 @@ package com.tskbdx.sumimasen.scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.tskbdx.sumimasen.GameScreen;
-import com.tskbdx.sumimasen.scenes.story.Story;
 import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.ui.UserInterface;
 
@@ -27,8 +26,6 @@ public class IntroScene extends Scene {
 
         loadMap(currentMap, spawn);
         userInterface.update();
-
-        Story.setScene(this);
 
         getCamera().setTo(GameScreen.getPlayer().getX() * 8.f, GameScreen.getPlayer().getY() * 8.f);
     }
