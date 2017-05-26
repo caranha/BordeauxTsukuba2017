@@ -8,15 +8,13 @@ import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 import com.tskbdx.sumimasen.scenes.story.Story;
 
-import java.io.Serializable;
-
 /**
  * Interaction is a callback always linked
  * with 2 (for the moment) entities : the active and
  * passive.
  * -> This dynamic behavior should be stored in the active.
  */
-public abstract class Interaction implements Serializable {
+public abstract class Interaction {
     private Entity active;
     private Entity passive;
 

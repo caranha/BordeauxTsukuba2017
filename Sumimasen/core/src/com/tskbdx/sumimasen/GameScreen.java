@@ -7,25 +7,36 @@ import com.tskbdx.sumimasen.scenes.IntroScene;
 import com.tskbdx.sumimasen.scenes.Scene;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created by Sydpy on 4/27/17.
  */
 public class GameScreen implements Screen {
 
+    private final String SAVE_DIR = "/tmp/";
+
     private final Sumimasen game;
 
-    private static final Player player = new Player(0, 0 ,0, 0);
+    private static Player player = new Player(0, 0 ,0, 0);
 
-    private Scene currentScene = new IntroScene();
+    private Scene currentScene;
 
     public GameScreen(final Sumimasen game) {
+        this(game, false);
+    }
+
+    public GameScreen(final Sumimasen game, boolean loadFromSave) {
         this.game = game;
         Gdx.gl20.glClearColor(0,0,0,1);
-        currentScene.init();
+
+        if (loadFromSave) {
+            loadFromSave();
+        } else {
+            currentScene = new IntroScene();
+            currentScene.init();
+        }
     }
 
     @Override
@@ -77,24 +88,57 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
 
-        String dir = "/tmp/";
-
         try {
-            currentScene.save(dir);
+            System.out.println("Serializing current scene");
+            FileOutputStream fout1 = new FileOutputStream(SAVE_DIR + "scene.save");
+            ObjectOutputStream out1 = new ObjectOutputStream(fout1);
+            out1.writeObject(currentScene.getClass());
+            out1.close();
+            fout1.close();
 
             System.out.println("Serializing player");
-            FileOutputStream fileOutputStream = new FileOutputStream(dir + "player.save", false);
-            ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
-            out.writeObject(player);
-            out.close();
-            fileOutputStream.close();
+            FileOutputStream fout2 = new FileOutputStream(SAVE_DIR + "player.save");
+            ObjectOutputStream out2 = new ObjectOutputStream(fout2);
+            out2.writeObject(player);
+            fout2.close();
 
         } catch (IOException e) {
-            System.err.println("Error while serializing the current state of the game !");
+            System.err.println("Error while saving current game state");
+            e.printStackTrace();
+        }
+    }
+
+    public void loadFromSave() {
+
+        try {
+            System.out.println("Deserializing current scene");
+            FileInputStream fin1                = new FileInputStream(SAVE_DIR + "scene.save");
+            ObjectInputStream in1               = new ObjectInputStream(fin1);
+            Class<? extends Scene> sceneClass   = (Class<? extends Scene>) in1.readObject();
+            in1.close();
+            fin1.close();
+
+            System.out.println("Deserializing player");
+            FileInputStream fin2    = new FileInputStream(SAVE_DIR + "player.save");
+            ObjectInputStream in2   = new ObjectInputStream(fin2);
+            Player player           = (Player) in2.readObject();
+            in2.close();
+            fin2.close();
+
+            this.currentScene = sceneClass.getConstructor().newInstance();
+            GameScreen.player = player;
+
+        } catch (IOException |
+                ClassNotFoundException |
+                NoSuchMethodException |
+                IllegalAccessException |
+                InvocationTargetException |
+                InstantiationException e) {
+
+            System.out.println("Error while loading previously saved state");
             e.printStackTrace();
         }
 
-        currentScene.dispose();
     }
 
     public static Player getPlayer() {

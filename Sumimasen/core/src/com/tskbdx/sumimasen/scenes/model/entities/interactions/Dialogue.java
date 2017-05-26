@@ -13,7 +13,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -161,7 +160,7 @@ public class Dialogue extends Interaction {
         return currentExchange;
     }
 
-    public class DialogueAnswer implements Serializable {
+    public class DialogueAnswer {
 
         String text = "";
         Integer nextExchange;
@@ -250,7 +249,7 @@ public class Dialogue extends Interaction {
         }
     }
 
-    public class DialogueExchange implements Serializable {
+    public class DialogueExchange {
         private String text = "";
 
         private List<DialogueAnswer> answers = new ArrayList<>();

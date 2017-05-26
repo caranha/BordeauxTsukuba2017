@@ -14,7 +14,7 @@ import java.util.Observable;
 /**
  * Created by Sydpy on 4/28/17.
  */
-public class Entity extends Observable implements Serializable {
+public class Entity extends Observable {
 
     private World world;
 

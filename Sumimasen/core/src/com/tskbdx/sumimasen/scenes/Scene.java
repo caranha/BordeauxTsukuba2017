@@ -10,9 +10,6 @@ import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.view.SmoothCamera;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.List;
 
 /**
@@ -54,6 +51,7 @@ public abstract class Scene {
     public abstract void render(Batch batch);
 
     public abstract boolean isFinished();
+
     public abstract Scene getNextScene();
 
     public abstract void dispose();
@@ -91,35 +89,5 @@ public abstract class Scene {
             worldRenderer.init(tiledMap, mapObjectMappings);
 
         }
-    }
-
-    public void save(String dirName) throws IOException {
-
-        System.out.println("Serializing world");
-
-        FileOutputStream fileOutputStream1 = new FileOutputStream(dirName + "world.save", false);
-        fileOutputStream1.flush();
-        ObjectOutputStream out1 = new ObjectOutputStream(fileOutputStream1);
-        out1.writeObject(world);
-        out1.close();
-        fileOutputStream1.close();
-
-        System.out.println("Serializing current map");
-
-        FileOutputStream fileOutputStream2 = new FileOutputStream(dirName + "map.save", false);
-        fileOutputStream2.flush();
-        ObjectOutputStream out2 = new ObjectOutputStream(fileOutputStream2);
-        out2.writeObject(currentMap);
-        out2.close();
-        fileOutputStream2.close();
-
-        System.out.println("Serializing current map objects mapping");
-
-        FileOutputStream fileOutputStream3 = new FileOutputStream(dirName + "mapping.save", false);
-        fileOutputStream3.flush();
-        ObjectOutputStream out3 = new ObjectOutputStream(fileOutputStream3);
-        out3.writeObject(mapObjectMappings);
-        out3.close();
-        fileOutputStream3.close();
     }
 }
