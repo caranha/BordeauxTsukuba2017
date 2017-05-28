@@ -15,44 +15,21 @@ import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
  * @see State
  */
 final public class Story {
-    private static Scene scene; // Story can modify a context scene,
-    private static State state; // according to a specific state.
+    private static Story instance;
+    private Scene scene; // Story can modify a context scene,
+    private State state; // according to a specific state.
 
     /**
-     * Don't instance Story, just use its public methods.
+     * Story is now a singleton.
      */
     private Story() {
     }
 
-    /**
-     * To call first and to recall if the scene has changed.
-     */
-    public static void setScene(Scene scene) {
-        Story.scene = scene;
-        changeState(getFirstState(scene));
-    }
-
-    /**
-     * To call at the end of every Model interaction.
-     * An interaction is an event which can trigger an new state.
-     * @see State
-     * @see Event
-     */
-    public static void update(Interaction interaction, Entity active, Entity passive) {
-        assert scene != null : "Call Story::setScene first";
-
-        State nextState = state.nextState(new Event(interaction, active, passive));
-        if (nextState != null) {
-            changeState(nextState);
+    public static Story getInstance() {
+        if (instance == null) {
+            instance = new Story();
         }
-    }
-
-    /**
-     * Change state update the current state and make it process.
-     */
-    private static void changeState(State nextState) {
-        state = nextState;
-        state.process(scene);
+        return instance;
     }
 
     /**
@@ -71,5 +48,37 @@ final public class Story {
         } catch (InstantiationException e) {
             throw new IllegalStateException("Is " + name + " concrete ?");
         }
+    }
+
+    /**
+     * To call first and to recall if the scene has changed.
+     */
+    public void setScene(Scene scene) {
+        this.scene = scene;
+        changeState(getFirstState(scene));
+    }
+
+    /**
+     * To call at the end of every Model interaction.
+     * An interaction is an event which can trigger an new state.
+     *
+     * @see State
+     * @see Event
+     */
+    public void update(Interaction interaction, Entity active, Entity passive) {
+        assert scene != null : "Call Story::setScene first";
+
+        State nextState = state.nextState(new Event(interaction, active, passive));
+        if (nextState != null) {
+            changeState(nextState);
+        }
+    }
+
+    /**
+     * Change state update the current state and make it process.
+     */
+    private void changeState(State nextState) {
+        state = nextState;
+        state.process(scene);
     }
 }

@@ -61,7 +61,7 @@ public abstract class Interaction {
         active.setMovement(activeMovement);
         passive.setMovement(passiveMovement);
 
-        Story.update(this, active, passive);
+        Story.getInstance().update(this, active, passive);
     }
 
     public final Entity getActive() {

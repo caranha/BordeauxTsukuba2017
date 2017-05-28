@@ -10,10 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /*
  * Created by viet khang on 24/05/2017.
@@ -22,7 +20,6 @@ final class MenuScreen extends Stage implements Screen {
 
     private final Sumimasen game;
     private final List<Button> buttons = new LinkedList<>();
-    private Map<Class<? extends Screen>, Screen> screens = new HashMap<>();
 
     MenuScreen(Sumimasen game) {
         this.game = game;
@@ -31,7 +28,6 @@ final class MenuScreen extends Stage implements Screen {
             addButton(createContinueButton());
         }
         addButton(createNewGameButton());
-        addButton(createCreditsButton());
         layoutButtons();
     }
 
@@ -74,29 +70,12 @@ final class MenuScreen extends Stage implements Screen {
         button.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                goToSavedGames();
+                GameScreen gameScreen = new GameScreen(game);
+                gameScreen.loadFromSave();
+                game.setScreen(gameScreen);
             }
         });
         return button;
-    }
-
-    private Button createCreditsButton() {
-        TextButton button = new TextButton("Credits",
-                Sumimasen.getAssetManager().get("skin/skin/cloud-form-ui.json", Skin.class));
-        button.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                goToCredits();
-            }
-        });
-        return button;
-    }
-
-    private void goToCredits() {
-        if (!screens.containsKey(CreditsScreen.class)) {
-            screens.put(CreditsScreen.class, new CreditsScreen(game, this));
-        }
-        game.setScreen(screens.get(CreditsScreen.class));
     }
 
     @Override
@@ -142,16 +121,6 @@ final class MenuScreen extends Stage implements Screen {
     }
 
     private void goToGameScreen() {
-        if (!screens.containsKey(GameScreen.class)) {
-            screens.put(GameScreen.class, new GameScreen(game));
-        }
-        game.setScreen(screens.get(GameScreen.class));
-    }
-
-    private void goToSavedGames() {
-        if (!screens.containsKey(SavedGamesScreen.class)) {
-            screens.put(SavedGamesScreen.class, new SavedGamesScreen(game, this));
-        }
-        game.setScreen(screens.get(SavedGamesScreen.class));
+        game.setScreen(new GameScreen(game));
     }
 }

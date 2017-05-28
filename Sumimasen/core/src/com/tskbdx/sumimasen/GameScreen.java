@@ -87,7 +87,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
         try {
             System.out.println("Serializing current scene");
             FileOutputStream fout1 = new FileOutputStream(SAVE_DIR + "scene.save");
@@ -138,7 +137,6 @@ public class GameScreen implements Screen {
             System.out.println("Error while loading previously saved state");
             e.printStackTrace();
         }
-
     }
 
     public static Player getPlayer() {
