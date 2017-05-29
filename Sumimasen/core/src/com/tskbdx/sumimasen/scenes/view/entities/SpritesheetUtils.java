@@ -25,6 +25,8 @@ public class SpritesheetUtils {
 
         Map<Direction, TextureRegion[]> regions = new HashMap<>();
 
+        TextureRegion[] textureRegions = null;
+
         switch (spritesheetFile) {
             case "player_standing.png" :
 
@@ -58,12 +60,22 @@ public class SpritesheetUtils {
 
             case "cat.png":
 
-                TextureRegion[] textureRegions = new TextureRegion[] {
+                textureRegions = new TextureRegion[] {
                         new TextureRegion(texture, 0, 0, 16, 16),
                         new TextureRegion(texture, 0,16,16,16)
                 };
 
                 return new StandardAnimator(textureRegions, 0.4f);
+
+            case "tv.png":
+
+                textureRegions = new TextureRegion[]{
+                        new TextureRegion(texture, 0, 0, 24, 16),
+                        new TextureRegion(texture, 0, 16, 24, 16)
+                };
+
+                return new StandardAnimator(textureRegions, 0.4f);
+
 
             default :
                 break;
