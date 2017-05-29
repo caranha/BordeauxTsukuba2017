@@ -6,6 +6,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.MovementResult;
+import com.tskbdx.sumimasen.scenes.story.Story;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,8 @@ public class Entity extends Observable {
      * Message
      */
     private Message message = new Message(this);
-    /**dd
+    /**
+     * dd
      * direction is the current direction movement state
      * lastDirection is like the static direction state
      */
@@ -45,7 +47,8 @@ public class Entity extends Observable {
     //Number of cell per sec
     private int speed = 8;
 
-    public Entity() {}
+    public Entity() {
+    }
 
     /**
      * Can only interact if there is a SceneObject
@@ -179,7 +182,7 @@ public class Entity extends Observable {
         setChanged();
     }
 
-   public Direction getLastDirection() {
+    public Direction getLastDirection() {
         return lastDirection;
     }
 
@@ -277,7 +280,6 @@ public class Entity extends Observable {
         }
 
 
-
     }
 
 
@@ -287,6 +289,8 @@ public class Entity extends Observable {
     }
 
     public void changeDialogue(String name) {
-        setInteraction(new Dialogue("dialogues/" + getName() + ""));
+        setInteraction(new Dialogue("dialogues/"
+                + Story.getSceneName()
+                + name));
     }
 }
