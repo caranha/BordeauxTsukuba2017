@@ -92,8 +92,6 @@ public abstract class Scene {
 
             TiledMap tiledMap = new TmxMapLoader().load("maps/" + map + ".tmx");
 
-            System.out.println("SAUCISSE");
-
             mapObjectMappings = TiledMapUtils.mapObjectMappings(tiledMap);
 
             world.init(tiledMap, mapObjectMappings, spawn);
