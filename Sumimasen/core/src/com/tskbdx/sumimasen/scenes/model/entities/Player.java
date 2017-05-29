@@ -3,13 +3,15 @@ package com.tskbdx.sumimasen.scenes.model.entities;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Walk;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /*Z
  * Created by Sydpy on 4/27/17.
  */
 public class Player extends Entity implements Serializable {
 
-    private int kindness = 0, naiveness = 0;
+    List<String> tags = new ArrayList<>();
 
     public Player() {
         setMovement(new Walk());
@@ -18,13 +20,8 @@ public class Player extends Entity implements Serializable {
         setHeight(2);
     }
 
-    public void addKindness(int value) {
-        kindness += value;
-        setChanged();
-    }
-
-    public void addNaiveness(int value) {
-        naiveness += value;
-        setChanged();
+    public void addTag(String tag) {
+        assert ! tags.contains(tag) : "Player already has tag : " + tag;
+        tags.add(tag);
     }
 }
