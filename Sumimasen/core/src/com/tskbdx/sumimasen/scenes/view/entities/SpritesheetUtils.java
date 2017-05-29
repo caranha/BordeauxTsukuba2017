@@ -7,6 +7,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.view.entities.animator.Animator;
 import com.tskbdx.sumimasen.scenes.view.entities.animator.DirectionSpriteSheetAnimator;
 import com.tskbdx.sumimasen.scenes.view.entities.animator.FixedAnimator;
+import com.tskbdx.sumimasen.scenes.view.entities.animator.StandardAnimator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +55,15 @@ public class SpritesheetUtils {
                         new TextureRegion(texture, 12, 16, 12, 16)});
 
                 return new DirectionSpriteSheetAnimator(regions, 0.2f);
+
+            case "cat.png":
+
+                TextureRegion[] textureRegions = new TextureRegion[] {
+                        new TextureRegion(texture, 0, 0, 16, 16),
+                        new TextureRegion(texture, 0,16,16,16)
+                };
+
+                return new StandardAnimator(textureRegions, 0.4f);
 
             default :
                 break;
