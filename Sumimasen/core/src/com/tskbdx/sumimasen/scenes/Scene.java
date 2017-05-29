@@ -81,7 +81,7 @@ public abstract class Scene {
         return mapObjectMappings;
     }
 
-    public final void loadMap(String map, String spawn) {
+    public void loadMap(String map, String spawn) {
 
         if (map != null) {
 
@@ -91,6 +91,8 @@ public abstract class Scene {
             this.spawn = spawn;
 
             TiledMap tiledMap = new TmxMapLoader().load("maps/" + map + ".tmx");
+
+            System.out.println("SAUCISSE");
 
             mapObjectMappings = TiledMapUtils.mapObjectMappings(tiledMap);
 

@@ -27,7 +27,7 @@ public class ChangeMap extends Interaction {
 
         Movement backup = passive.getMovement();
         passive.setMovement(null);
-        passive.setDirection(Direction.NONE);
+        passive.setDirection(Direction.SOUTH);
 
         passive.notifyObservers(ChangeMap.class);
 

@@ -44,6 +44,7 @@ public class WorldRenderer implements Observer {
 
         tiledMap.getLayers().get("Collision").setVisible(false);
 
+
         for (TiledMapUtils.MapObjectMapping mapObjectMapping : mappings) {
 
             buildEntityRendererFromMapObjectMapping(mapObjectMapping);
