@@ -38,10 +38,10 @@ public class TiledMapUtils {
 
             name    = mapObject.getName();
 
-            x       = (int) Math.ceil(mapObject.getProperties().get("x", Float.class) / TILE_SIZE);
-            y       = (int) Math.ceil(mapObject.getProperties().get("y", Float.class) / TILE_SIZE);
-            width   = (int) Math.ceil(mapObject.getProperties().get("width", Float.class) / TILE_SIZE);
-            height  = (int) Math.ceil(mapObject.getProperties().get("height", Float.class) / TILE_SIZE);
+            x       = (int) Math.floor(mapObject.getProperties().get("x", Float.class) / TILE_SIZE);
+            y       = (int) Math.floor(mapObject.getProperties().get("y", Float.class) / TILE_SIZE);
+            width   = (int) Math.floor(mapObject.getProperties().get("width", Float.class) / TILE_SIZE);
+            height  = (int) Math.floor(mapObject.getProperties().get("height", Float.class) / TILE_SIZE);
 
 
             String defaultInteractionName  = mapObject.getProperties().get("defaultInteraction", String.class);

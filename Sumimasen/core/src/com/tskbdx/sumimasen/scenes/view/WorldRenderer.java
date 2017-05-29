@@ -38,7 +38,10 @@ public class WorldRenderer implements Observer {
     }
 
     public void init(TiledMap tiledMap, List<TiledMapUtils.MapObjectMapping> mappings) {
+
+        rendererByEntity.clear();
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, batch);
+
         tiledMap.getLayers().get("Collision").setVisible(false);
 
         for (TiledMapUtils.MapObjectMapping mapObjectMapping : mappings) {

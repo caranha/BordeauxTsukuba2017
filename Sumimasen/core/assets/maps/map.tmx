@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="64" height="48" tilewidth="8" tileheight="8" nextobjectid="9">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="64" height="48" tilewidth="8" tileheight="8" nextobjectid="10">
  <tileset firstgid="1" name="tileset" tilewidth="8" tileheight="8" tilecount="4096" columns="64">
   <image source="tileset.png" width="512" height="512"/>
  </tileset>
@@ -112,6 +112,14 @@
   <object id="3" name="progress" type="spawn" x="456" y="112" width="16" height="8"/>
   <object id="6" name="lab_left" type="spawn" x="336" y="280" width="8" height="8"/>
   <object id="7" name="lab_right" type="spawn" x="432" y="280" width="8" height="8"/>
+  <object id="9" name="To city ..." type="entity" x="184" y="96" width="16" height="8">
+   <properties>
+    <property name="imagefile" value="up.png"/>
+    <property name="onCollide" value="changeMap"/>
+    <property name="toMap" value="home"/>
+    <property name="toSpawn" value="entrance"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer name="Floating" width="64" height="48">
   <data encoding="csv">
