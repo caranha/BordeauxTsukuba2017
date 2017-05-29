@@ -70,9 +70,7 @@ final class MenuScreen extends Stage implements Screen {
         button.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                GameScreen gameScreen = new GameScreen(game);
-                gameScreen.loadFromSave();
-                game.setScreen(gameScreen);
+                game.setScreen(new GameScreen(game, true));
             }
         });
         return button;

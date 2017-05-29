@@ -1,7 +1,6 @@
 package com.tskbdx.sumimasen.scenes.model.entities;
 
 
-import java.io.Serializable;
 import java.util.Observable;
 
 /**
@@ -14,6 +13,7 @@ public class Message extends Observable {
     private float timeToAnswer;
     private final Entity sender;
     private Entity receiver;
+    private boolean think = false;
 
     Message(Entity entity) {
         sender = entity;
@@ -65,5 +65,13 @@ public class Message extends Observable {
 
     public float getTotalDuration() {
         return timeToAnswer + timeToUnderstand;
+    }
+
+    public boolean isThink() {
+        return think;
+    }
+
+    public void setThink(boolean think) {
+        this.think = think;
     }
 }

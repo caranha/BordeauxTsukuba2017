@@ -15,7 +15,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class GameScreen implements Screen {
 
-    private final String SAVE_DIR = "/tmp/";
+    private final String SAVE_DIR = "";
 
     private final Sumimasen game;
 
@@ -33,6 +33,7 @@ public class GameScreen implements Screen {
 
         if (loadFromSave) {
             loadFromSave();
+            currentScene.init();
         } else {
             currentScene = new IntroScene();
             currentScene.init();

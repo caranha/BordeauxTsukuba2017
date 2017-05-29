@@ -2,11 +2,11 @@ package com.tskbdx.sumimasen.scenes.model.entities;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.model.World;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.MovementResult;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -35,7 +35,7 @@ public class Entity extends Observable {
      * Message
      */
     private Message message = new Message(this);
-    /**
+    /**dd
      * direction is the current direction movement state
      * lastDirection is like the static direction state
      */
@@ -179,7 +179,7 @@ public class Entity extends Observable {
         setChanged();
     }
 
-    public Direction getLastDirection() {
+   public Direction getLastDirection() {
         return lastDirection;
     }
 
@@ -284,5 +284,9 @@ public class Entity extends Observable {
     public boolean has(String object) {
         Entity entity = world.getEntitiesByName(object);
         return getInventory().contains(entity);
+    }
+
+    public void changeDialogue(String name) {
+        setInteraction(new Dialogue("dialogues/" + getName() + ""));
     }
 }

@@ -32,6 +32,11 @@ final public class Story {
         return instance;
     }
 
+    public static String getSceneName() {
+        assert instance != null : "story isn't set up with a scene";
+        return instance.getClass().getSimpleName();
+    }
+
     /**
      * Try to instance a class named FirstState in a subpackage
      * "script{SceneClassName}".
@@ -61,7 +66,7 @@ final public class Story {
     /**
      * To call at the end of every Model interaction.
      * An interaction is an event which can trigger an new state.
-     *
+     *ddddddddd
      * @see State
      * @see Event
      */
