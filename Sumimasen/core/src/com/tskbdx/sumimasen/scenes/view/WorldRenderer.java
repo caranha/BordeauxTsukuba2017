@@ -13,6 +13,8 @@ import com.tskbdx.sumimasen.scenes.view.effects.Effect;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRendererDrawOrderer;
 import com.tskbdx.sumimasen.scenes.view.entities.SpritesheetUtils;
+import com.tskbdx.sumimasen.scenes.view.entities.animator.Animator;
+import com.tskbdx.sumimasen.scenes.view.entities.animator.DirectionSpriteSheetAnimator;
 
 import java.util.*;
 
@@ -143,8 +145,19 @@ public class WorldRenderer implements Observer {
         EntityRenderer entityRenderer = new EntityRenderer(entity);
         entityRenderer.setWorldRenderer(this);
 
-        entityRenderer.setStandingAnimator(SpritesheetUtils.getAnimatorFromSpritesheet(mo.standingSpritesheet));
-        entityRenderer.setWalkingAnimator(SpritesheetUtils.getAnimatorFromSpritesheet(mo.standingSpritesheet));
+        Animator standingAnimator = SpritesheetUtils.getAnimatorFromSpritesheet(mo.standingSpritesheet);
+        if (standingAnimator instanceof DirectionSpriteSheetAnimator) {
+            ((DirectionSpriteSheetAnimator) standingAnimator).setEntity(entity);
+        }
+
+        Animator walkingAnimator = SpritesheetUtils.getAnimatorFromSpritesheet(mo.walkingSpritesheet);
+        if (walkingAnimator instanceof DirectionSpriteSheetAnimator) {
+            ((DirectionSpriteSheetAnimator) walkingAnimator).setEntity(entity);
+        }
+
+
+        entityRenderer.setStandingAnimator(standingAnimator);
+        entityRenderer.setWalkingAnimator(walkingAnimator);
 
         rendererByEntity.put(entity, entityRenderer);
     }

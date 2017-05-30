@@ -1,6 +1,5 @@
 package com.tskbdx.sumimasen.scenes.model.entities.movements;
 
-import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
@@ -39,13 +38,10 @@ public class Walk implements Movement {
 
             canMove = false;
 
-            Rectangle rect = entity.getRectangle(new Rectangle());
-            rect.setPosition(newX, newY);
-
-            List<Entity> entityColliding = entity.getWorld().getEntities(rect);
+            List<Entity> entityColliding = entity.getWorld().getEntities(newX, newY, entity.getWidth(), entity.getHeight());
             entityColliding.remove(entity);
 
-            if (!entity.getWorld().isWall(rect)
+            if (!entity.getWorld().isWall(newX, newY, entity.getWidth(), entity.getHeight())
                     && entityColliding.isEmpty()) {
                 entity.moveTo(newX, newY);
                 entity.notifyObservers();

@@ -30,7 +30,7 @@ public class TiledMapUtils {
         public Interaction onCollide;
 
         public String standingSpritesheet;
-        String walkingSpritesheet;
+        public String walkingSpritesheet;
 
         MapObjectMapping() {}
 
@@ -55,13 +55,7 @@ public class TiledMapUtils {
             }
 
             String onCollideName = mapObject.getProperties().get("onCollide", String.class);
-            if ("teleport".equals(onCollideName)) {
-
-                int toX = mapObject.getProperties().get("toX", Integer.class);
-                int toY = mapObject.getProperties().get("toY", Integer.class);
-
-                onCollide = new Teleport(toX, toY);
-            } else if ("changeMap".equals(onCollideName)) {
+            if ("changeMap".equals(onCollideName)) {
 
                 String toMap = mapObject.getProperties().get("toMap", String.class);
                 String toSpawn = mapObject.getProperties().get("toSpawn", String.class);

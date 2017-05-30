@@ -12,7 +12,7 @@ public class MovementResult {
 
     private List<Entity> entitiesAround = new ArrayList<>();
 
-    public void addEntityAround(Entity entity) {
+    private void addEntityAround(Entity entity) {
         if (entity != null) entitiesAround.add(entity);
     }
 
@@ -21,6 +21,8 @@ public class MovementResult {
     }
 
     public static MovementResult computeMovementResult(Entity entity) {
+
+        System.out.println(entity.getHeight());
 
         MovementResult mvtResult = new MovementResult();
         mvtResult.addEntityAround(entity.getWorld().getEntity(entity.getX(), entity.getY() - 1));

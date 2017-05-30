@@ -25,7 +25,7 @@ public class SpritesheetUtils {
 
         Map<Direction, TextureRegion[]> regions = new HashMap<>();
 
-        TextureRegion[] textureRegions = null;
+        TextureRegion[] textureRegions;
 
         switch (spritesheetFile) {
             case "player_standing.png" :

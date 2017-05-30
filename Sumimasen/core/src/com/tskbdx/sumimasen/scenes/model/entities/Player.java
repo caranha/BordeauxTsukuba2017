@@ -12,19 +12,10 @@ public class Player extends Entity implements Serializable {
     private int kindness = 0, naiveness = 0;
 
     public Player() {
+        super();
         setMovement(new Walk());
         setName("player");
         setWidth(2);
-        setHeight(2);
-    }
-
-    public void addKindness(int value) {
-        kindness += value;
-        setChanged();
-    }
-
-    public void addNaiveness(int value) {
-        naiveness += value;
-        setChanged();
+        setHeight(1);
     }
 }
