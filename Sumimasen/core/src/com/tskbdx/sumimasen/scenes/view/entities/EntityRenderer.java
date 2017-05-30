@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.ChangeMap;
@@ -60,14 +61,12 @@ public class EntityRenderer implements Observer {
 
         if (o == Teleport.class || o == ChangeMap.class) {
             if (worldRenderer != null) {
-
                 Effect fadeIn = new Fade(Teleport.DELAY, Fade.IN);
                 fadeIn.setCallback(() -> {
                     worldRenderer.setEffect(new Fade(Teleport.DELAY, Fade.OUT));
                 });
 
                 worldRenderer.setEffect(fadeIn);
-
             }
         }
 
