@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
+import javafx.scene.input.KeyCode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,7 +74,9 @@ public class GameCommands extends InputAdapter {
     @Override
     public boolean keyDown(int keycode) {
         if (execute(keyDownCommands, keycode)) {
-            currentKeycode = keycode;
+            if(keycode != Input.Keys.SPACE) {
+                currentKeycode = keycode;
+            }
             return true;
         }
         return false;
