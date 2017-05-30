@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 /**
- * You'd want to call updateAll in main loop to update all tweens.
+ * You'd want to call updateAll in main loop to init all tweens.
  */
 public class Tween {
     /**
@@ -87,9 +87,9 @@ public class Tween {
     /**
      * Pause and restart the tween.
      */
-    void stop() {
+    public void stop() {
         pause();
-        currentPosition = 0;
+        playWith(0, 0, 0, 0);
     }
 
     public boolean isPlaying() {

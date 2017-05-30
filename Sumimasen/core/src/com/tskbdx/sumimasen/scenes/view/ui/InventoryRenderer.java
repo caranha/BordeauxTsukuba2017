@@ -21,7 +21,7 @@ import java.util.*;
 
 /**
  * Observe a Inventory instance in model
- * and update from it.
+ * and init from it.
  */
 final class InventoryRenderer implements Observer, Disposable {
 

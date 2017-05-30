@@ -80,7 +80,7 @@ final public class Story {
     }
 
     /**
-     * Change state update the current state and make it process.
+     * Change state init the current state and make it process.
      */
     private void changeState(State nextState) {
         state = nextState;

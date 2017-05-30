@@ -46,7 +46,7 @@ public class EntityRenderer implements Observer {
     }
 
     /**
-     * On update, calculate observable location and
+     * On init, calculate observable location and
      * prepare the positionSyncer to reach it
      *
      * @param observable

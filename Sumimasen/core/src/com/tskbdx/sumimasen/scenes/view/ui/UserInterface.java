@@ -65,7 +65,7 @@ public class UserInterface extends Stage implements Disposable {
         getBatch().end();
     }
 
-    public void update() {
+    public void init() {
         List<Entity> entities = scene.getWorld().getEntities();
 
         for (Entity e : entities) {
