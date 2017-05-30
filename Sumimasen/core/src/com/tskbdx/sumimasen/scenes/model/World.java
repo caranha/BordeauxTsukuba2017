@@ -74,8 +74,6 @@ public class World extends Observable implements Serializable {
 
                 if (playerSpawn.equals(spawn.getName())) {
 
-                    System.out.println("Found player spawn : " + playerSpawn);
-
                     GameScreen.getPlayer().moveTo(spawn.getX() / 8, spawn.getY() / 8);
 
                     GameScreen.getPlayer().setWorld(this);
@@ -181,6 +179,28 @@ public class World extends Observable implements Serializable {
         }
 
         return colliding;
+    }
+
+    public List<Entity> getEntitiesAround(Entity entity) {
+
+        List<Entity> entities = new ArrayList<>();
+
+        for (int i = entity.getX(); i < entity.getX() + entity.getWidth(); i++) {
+            Entity e;
+            e = getEntity(i, entity.getY() - 1);
+            if (e != null && !entities.contains(e)) entities.add(e);
+            e = getEntity(i, entity.getY() + entity.getHeight());
+            if (e != null && !entities.contains(e)) entities.add(e);
+        }
+
+        for (int i = entity.getY(); i < entity.getY() + entity.getHeight(); i++) {
+            Entity e;
+            e = getEntity(entity.getX() - 1, i);
+            if (e != null && !entities.contains(e)) entities.add(e);
+            e = getEntity(entity.getX() + entity.getWidth(), i);
+            if (e != null && !entities.contains(e)) entities.add(e);
+        }
+        return entities;
     }
 
     public final Entity getEntitiesByName(String name) {

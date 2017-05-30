@@ -28,7 +28,7 @@ public class Path implements Movement {
     }
 
     @Override
-    public MovementResult move(Entity entity) {
+    public void move(Entity entity) {
         if (directionQueue.isEmpty()) {
             entity.setMovement(null);
         } else if (ready) {
@@ -38,15 +38,12 @@ public class Path implements Movement {
              * but hasn't succeeded
              * In that cas, the direction has actually changed
              */
-            entity.notifyObservers();
             process(directionQueue.poll(), entity);
             Utility.setTimeout(() -> {
                 ready = true;
                 move(entity);
             }, 1.f / entity.getSpeed());
         }
-
-        return MovementResult.computeMovementResult(entity);
     }
 
     private void process(Direction direction, Entity entity) {

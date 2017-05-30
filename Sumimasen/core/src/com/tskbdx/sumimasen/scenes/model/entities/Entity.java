@@ -3,7 +3,6 @@ package com.tskbdx.sumimasen.scenes.model.entities;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
-import com.tskbdx.sumimasen.scenes.model.entities.movements.MovementResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -239,14 +238,19 @@ public class Entity extends Observable {
 
         if (movement != null) {
 
-            MovementResult move = movement.move(this);
-            if (!move.getEntitiesAround().isEmpty()) {
+            movement.move(this);
+            if (world != null) {
 
-                Entity entity = move.getEntitiesAround().get(0);
+                List<Entity> entitiesAround = world.getEntitiesAround(this);
 
-                if (entity.getOnCollide() != null) {
+                if (!entitiesAround.isEmpty()) {
 
-                    entity.getOnCollide().start(entity, this);
+                    for (Entity entity : entitiesAround) {
+                        if (entity != this && entity.getOnCollide() != null) {
+                            entity.getOnCollide().start(entity, this);
+                        }
+                    }
+
                 }
             }
         }

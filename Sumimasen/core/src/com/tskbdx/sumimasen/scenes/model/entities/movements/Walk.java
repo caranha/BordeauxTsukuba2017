@@ -18,7 +18,7 @@ public class Walk implements Movement {
     private boolean canMove = true;
 
     @Override
-    public MovementResult move(Entity entity) {
+    public void move(Entity entity) {
         if (canMove && entity.getDirection() != Direction.NONE) {
             int newX = entity.getX(), newY = entity.getY();
             switch (entity.getDirection()) {
@@ -52,7 +52,5 @@ public class Walk implements Movement {
                 move(entity);
             }, 1.f / entity.getSpeed());
         }
-
-        return MovementResult.computeMovementResult(entity);
     }
 }
