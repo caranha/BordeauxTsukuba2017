@@ -56,6 +56,7 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
     private boolean firstTime = true;
     private float targetWidth;
     private float padding = 10.f;
+    private boolean follow = false; // following sender ?
 
     MessageRenderer(Message message, Camera camera) {
         this.message = message;
@@ -86,14 +87,14 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
 
             // Calculate position and bubble rotation
             if (receiver != null) {
-                execute(positionCalculator, direction);
-                execute(rotationCalculator, direction);
                 currentBubble = direction.isHorizontal() ? bubbleHorizontal : bubbleVertical;
-            } else { // speaking alone, bubble above => same fx than :
-                execute(positionCalculator, Direction.SOUTH);
-                execute(rotationCalculator, Direction.SOUTH);
+                follow = false;
+            } else {
                 currentBubble = bubbleVertical;
+                follow = true;
             }
+            execute(positionCalculator, direction);
+            execute(rotationCalculator, direction);
 
             // Start tweens
             alphaTween.playWith(1, message.getTimeToAnswer() != 0.f ? 0 : 1, message.getTimeToAnswer(), message.getTimeToUnderstand(), true);
@@ -136,7 +137,7 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
                 y = onScreenPosition.y - layout.height - padding + (1 - interpolation) * (padding + layout.height / 2),
                 w = (layout.width + padding * 2) * interpolation,
                 h = (layout.height + padding * 2) * interpolation;
-        screenBatch.draw(currentBubble, x, y,w * .5f,h * .5f, w, h,
+        screenBatch.draw(currentBubble, x, y, w * .5f, h * .5f, w, h,
                 1, 1, currentBubble.getRotation());
     }
 
@@ -154,7 +155,11 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
             Color processedColor = new Color(0, 0, 0, alphaTween.getInterpolation());
             layout.setText(font, content, processedColor,
                     getTargetWidth(direction.isHorizontal()), Align.center, true);
+            if (follow) {
+                execute(positionCalculator, direction);
+            }
             onScreenPosition = toScreenPosition(startingPosition.x, startingPosition.y);
+
             padding = content.length() < 10 && direction.equals(Direction.EAST) ? 20.f : 10.f;
             execute(offsetCalculator, direction);
             return true;
@@ -203,9 +208,9 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
     }
 
     private void initRotationCalculator() {
-        rotationCalculator.put(Direction.SOUTH, () -> bubbleVertical.setRotation(0));
-        rotationCalculator.put(Direction.EAST, () -> bubbleHorizontal.setRotation(0));
-        rotationCalculator.put(Direction.NORTH, () -> bubbleVertical.setRotation(180));
-        rotationCalculator.put(Direction.WEST, () -> bubbleHorizontal.setRotation(180));
+        rotationCalculator.put(Direction.SOUTH, () -> currentBubble.setRotation(0));
+        rotationCalculator.put(Direction.EAST, () -> currentBubble.setRotation(0));
+        rotationCalculator.put(Direction.NORTH, () -> currentBubble.setRotation(180));
+        rotationCalculator.put(Direction.WEST, () -> currentBubble.setRotation(180));
     }
 }
