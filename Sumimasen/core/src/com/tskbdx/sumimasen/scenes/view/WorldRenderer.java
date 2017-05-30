@@ -38,8 +38,12 @@ public class WorldRenderer implements Observer {
     }
 
     public void init(TiledMap tiledMap, List<TiledMapUtils.MapObjectMapping> mappings) {
+
+        rendererByEntity.clear();
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, batch);
+
         tiledMap.getLayers().get("Collision").setVisible(false);
+
 
         for (TiledMapUtils.MapObjectMapping mapObjectMapping : mappings) {
 
@@ -143,5 +147,9 @@ public class WorldRenderer implements Observer {
         entityRenderer.setWalkingAnimator(SpritesheetUtils.getAnimatorFromSpritesheet(mo.standingSpritesheet));
 
         rendererByEntity.put(entity, entityRenderer);
+    }
+
+    public SmoothCamera getCamera() {
+        return camera;
     }
 }

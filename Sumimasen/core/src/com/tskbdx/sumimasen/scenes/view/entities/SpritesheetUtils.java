@@ -77,6 +77,24 @@ public class SpritesheetUtils {
                 return new StandardAnimator(textureRegions, 0.4f);
 
 
+            case "machine.png":
+
+                textureRegions = new TextureRegion[]{
+                        new TextureRegion(texture, 0, 0, 16, 24),
+                        new TextureRegion(texture, 16, 0, 16, 24)
+                };
+
+                return new StandardAnimator(textureRegions, 0.4f);
+
+            case "machine_broken.png":
+
+                textureRegions = new TextureRegion[]{
+                        new TextureRegion(texture, 0, 0, 16, 24),
+                        new TextureRegion(texture, 16, 0, 16, 24)
+                };
+
+                return new StandardAnimator(textureRegions, 0.4f);
+
             default :
                 break;
         }
