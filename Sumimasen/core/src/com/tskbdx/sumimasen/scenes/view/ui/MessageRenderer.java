@@ -222,17 +222,16 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
 }
 
 final class FollowEntity implements Observer {
-    private final static float DURATION = 0.4f;
     private final Entity entity;
-    private final Tween tweenX = new Tween(Interpolation.sineOut),
-            tweenY = new Tween(Interpolation.sineOut);
+    private final Tween tweenX = new Tween(Interpolation.linear),
+            tweenY = new Tween(Interpolation.linear);
     private int startX;
     private int startY;
+    private float duration;
 
     FollowEntity(Entity entity) {
         this.entity = entity;
-        startX = entity.getX();
-        startY = entity.getY();
+        reset();
         entity.addObserver(this);
     }
 
@@ -241,14 +240,15 @@ final class FollowEntity implements Observer {
         startY = entity.getY();
         tweenX.stop();
         tweenY.stop();
+        duration = 2.f / entity.getSpeed();
     }
 
     @Override
     public void update(Observable o, Object arg) {
         float offsetX = (entity.getX() - startX) * EntityRenderer.TILE_SIZE;
         float offsetY = (entity.getY() - startY) * EntityRenderer.TILE_SIZE;
-        tweenX.playWith(tweenX.getInterpolation(), offsetX, DURATION);
-        tweenY.playWith(tweenY.getInterpolation(), offsetY, DURATION);
+        tweenX.playWith(tweenX.getInterpolation(), offsetX, duration);
+        tweenY.playWith(tweenY.getInterpolation(), offsetY, duration);
     }
 
     float getOffsetX() {

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
-import javafx.scene.input.KeyCode;
 
 import java.util.HashMap;
 import java.util.Map;
