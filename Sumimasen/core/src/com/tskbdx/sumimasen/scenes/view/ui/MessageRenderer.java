@@ -85,6 +85,7 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
             currentBubble = direction.isHorizontal() ? bubbleHorizontal : bubbleVertical;
             if (receiver != null) {
                 follow = false;
+                execute(rotationCalculator, direction);
             } else {
                 follow = true;
                 followEntity.reset();
@@ -92,7 +93,6 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
                 direction = Direction.SOUTH;
             }
             execute(positionCalculator, direction);
-            execute(rotationCalculator, direction);
 
             // Set layout
             targetWidth = getTargetWidth(direction.isHorizontal());
