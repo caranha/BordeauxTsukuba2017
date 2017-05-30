@@ -54,7 +54,6 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
     private Map<Direction, Runnable> rotationCalculator = new HashMap<>();
     private Tween alphaTween = new Tween(Interpolation.smooth);
     private Tween bounceTween = new Tween(Interpolation.bounceOut);
-    private boolean firstTime = true;
     private float targetWidth;
     private float padding = 10.f;
     private boolean follow = false; // following sender ?
@@ -90,6 +89,7 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
                 follow = true;
                 followEntity.reset();
                 followEntity.update(null, null);
+                direction = Direction.SOUTH;
             }
             execute(positionCalculator, direction);
             execute(rotationCalculator, direction);
@@ -101,9 +101,8 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
 
             // Start tweens
             alphaTween.playWith(1, message.getTimeToAnswer() != 0.f ? 0 : 1, message.getTimeToAnswer(), message.getTimeToUnderstand(), true);
-            if (firstTime && !message.getSender().getName().equals("player")) {
+            if (message.isImportant()) {
                 bounceTween.playWith(0, 1, 0.5f, 0.f, true);
-                firstTime = false;
             }
         }
     }

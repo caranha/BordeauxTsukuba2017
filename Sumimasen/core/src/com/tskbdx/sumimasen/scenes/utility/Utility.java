@@ -94,4 +94,11 @@ abstract public class Utility {
     public static void setTimeout(Runnable callback, float delay) {
         setTimeout(callback, Math.round(delay * 1000));
     }
+
+    public static int getWordCount(String sentence) {
+        String trim = sentence.trim();
+        if (trim.isEmpty())
+            return 0;
+        return trim.split("\\s+").length;
+    }
 }

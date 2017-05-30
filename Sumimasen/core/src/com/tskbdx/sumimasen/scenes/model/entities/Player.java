@@ -36,7 +36,7 @@ public class Player extends Entity implements Serializable {
     public boolean tryInteract() {
         if (! super.tryInteract()) {
             setMessage("I don't want to be late...",
-                    2, 2, null);
+                    0.3f, null, true);
         }
         return false;
     }

@@ -5,6 +5,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 import com.tskbdx.sumimasen.scenes.story.Story;
+import com.tskbdx.sumimasen.scenes.utility.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,13 +189,19 @@ public class Entity extends Observable {
         return message;
     }
 
-    public void setMessage(String content, float timeToUnderstand,
+    public void setMessage(String content,
                            float timeToAnswer, Entity receiver) {
         message.setContent(content);
         message.setTimeToAnswer(timeToAnswer);
-        message.setTimeToUnderstand(timeToUnderstand);
+        message.setTimeToUnderstand(Utility.getWordCount(content) * .5f);
         message.setReceiver(receiver);
         message.notifyObservers();
+    }
+
+    public void setMessage(String content,
+                           float timeToAnswer, Entity receiver, boolean important) {
+        message.setImportant(important);
+        setMessage(content, timeToAnswer, receiver);
     }
 
     private boolean isInteractable() {

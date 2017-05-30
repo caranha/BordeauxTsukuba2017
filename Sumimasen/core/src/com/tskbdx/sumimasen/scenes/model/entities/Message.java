@@ -13,7 +13,7 @@ public class Message extends Observable {
     private float timeToAnswer;
     private final Entity sender;
     private Entity receiver;
-    private boolean think = false;
+    private boolean important = false;
 
     Message(Entity entity) {
         sender = entity;
@@ -67,11 +67,13 @@ public class Message extends Observable {
         return timeToAnswer + timeToUnderstand;
     }
 
-    public boolean isThink() {
-        return think;
+
+    public void setImportant(boolean important) {
+        this.important = important;
+        setChanged();
     }
 
-    public void setThink(boolean think) {
-        this.think = think;
+    public boolean isImportant() {
+        return important;
     }
 }
