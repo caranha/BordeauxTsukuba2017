@@ -58,7 +58,7 @@
   </object>
   <object id="13" name="To city ..." type="entity" x="104" y="88" width="16" height="8">
    <properties>
-    <property name="imagefile" value="down.png"/>
+    <property name="imageFile" value="down.png"/>
     <property name="onCollide" value="changeMap"/>
     <property name="toMap" value="map"/>
     <property name="toSpawn" value="player_home"/>
