@@ -4,15 +4,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.ChangeMap;
-import com.tskbdx.sumimasen.scenes.model.entities.interactions.Teleport;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.effects.Effect;
 import com.tskbdx.sumimasen.scenes.view.effects.Fade;
 import com.tskbdx.sumimasen.scenes.view.entities.animator.Animator;
-import com.tskbdx.sumimasen.scenes.view.entities.animator.DirectionSpriteSheetAnimator;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -58,16 +55,15 @@ public class EntityRenderer implements Observer {
     @Override
     public void update(Observable observable, Object o) {
 
-        if (o == Teleport.class || o == ChangeMap.class) {
+        if (o == ChangeMap.class) {
             if (worldRenderer != null) {
-
-                Effect fadeIn = new Fade(Teleport.DELAY, Fade.IN);
+                Effect fadeIn = new Fade(ChangeMap.DELAY, Fade.IN);
                 fadeIn.setCallback(() -> {
-                    worldRenderer.setEffect(new Fade(Teleport.DELAY, Fade.OUT));
+                    worldRenderer.setEffect(new Fade(ChangeMap.DELAY, Fade.OUT));
+                    worldRenderer.getCamera().setTo(entity.getX() * 8, entity.getY() * 8);
                 });
 
                 worldRenderer.setEffect(fadeIn);
-
             }
         }
 
@@ -83,18 +79,14 @@ public class EntityRenderer implements Observer {
 
     public void render(Batch batch) {
 
-        if (!positionSynced()) {
-            currentAnimator = walkingAnimator;
-            if (currentAnimator instanceof DirectionSpriteSheetAnimator) {
-                if (entity.getDirection() != Direction.NONE) {
-                    ((DirectionSpriteSheetAnimator) currentAnimator).setCurrentDirection(entity.getDirection());
-                }
+        if (entity.isWalking()) {
+            if (currentAnimator != walkingAnimator) {
+                currentAnimator = walkingAnimator;
             }
         } else {
-            currentAnimator = standingAnimator;
-            if (currentAnimator instanceof DirectionSpriteSheetAnimator) {
-                ((DirectionSpriteSheetAnimator) currentAnimator).setCurrentDirection(entity.getLastDirection());
-            }
+           if (currentAnimator != standingAnimator) {
+               currentAnimator = standingAnimator;
+           }
         }
 
         if (entity.getWorld() != null) {

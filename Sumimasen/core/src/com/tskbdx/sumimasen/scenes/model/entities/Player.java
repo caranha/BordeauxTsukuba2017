@@ -11,17 +11,33 @@ import java.util.List;
  */
 public class Player extends Entity implements Serializable {
 
-    List<String> tags = new ArrayList<>();
+    private List<String> tags = new ArrayList<>();
 
     public Player() {
+        super();
         setMovement(new Walk());
         setName("player");
         setWidth(2);
-        setHeight(2);
+        setHeight(1);
     }
 
     public void addTag(String tag) {
         assert ! tags.contains(tag) : "Player already has tag : " + tag;
         tags.add(tag);
+    }
+
+    /**
+     * Can only interact if there is a SceneObject
+     * in front of the entity
+     *
+     * Otherwise think about the current goal
+     */
+    @Override
+    public boolean tryInteract() {
+        if (! super.tryInteract()) {
+            setMessage("I don't want to be late...",
+                    2, 2, null);
+        }
+        return false;
     }
 }

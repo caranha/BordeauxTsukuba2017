@@ -4,7 +4,6 @@ package com.tskbdx.sumimasen.scenes.model.entities.movements;
  * Created by viet khang on 09/05/2017.
  */
 
-import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
@@ -29,7 +28,7 @@ public class Path implements Movement {
     }
 
     @Override
-    public MovementResult move(Entity entity) {
+    public void move(Entity entity) {
         if (directionQueue.isEmpty()) {
             entity.setMovement(null);
         } else if (ready) {
@@ -39,15 +38,12 @@ public class Path implements Movement {
              * but hasn't succeeded
              * In that cas, the direction has actually changed
              */
-            entity.notifyObservers();
             process(directionQueue.poll(), entity);
             Utility.setTimeout(() -> {
                 ready = true;
                 move(entity);
             }, 1.f / entity.getSpeed());
         }
-
-        return MovementResult.computeMovementResult(entity);
     }
 
     private void process(Direction direction, Entity entity) {
@@ -74,13 +70,10 @@ public class Path implements Movement {
                 break;
         }
 
-        Rectangle rect = entity.getRectangle(new Rectangle());
-        rect.setPosition(newX, newY);
-
-        List<Entity> entityColliding = entity.getWorld().getEntities(rect);
+        List<Entity> entityColliding = entity.getWorld().getEntities(newX, newY, entity.getWidth(), entity.getHeight());
         entityColliding.remove(entity);
 
-        if (!entity.getWorld().isWall(rect)
+        if (!entity.getWorld().isWall(newX, newY, entity.getWidth(), entity.getHeight())
                 &&  entityColliding.isEmpty()) {
             entity.moveTo(newX, newY);
             entity.notifyObservers();

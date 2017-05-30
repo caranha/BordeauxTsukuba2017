@@ -1,11 +1,9 @@
 package com.tskbdx.sumimasen.scenes.model.entities;
 
-import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
-import com.tskbdx.sumimasen.scenes.model.entities.movements.MovementResult;
 import com.tskbdx.sumimasen.scenes.story.Story;
 
 import java.util.ArrayList;
@@ -28,7 +26,6 @@ public class Entity extends Observable {
     private String name;
 
     private boolean isInteracting = false;
-    private Entity interactingWith = null;
 
     private Inventory inventory = new Inventory();
 
@@ -41,7 +38,7 @@ public class Entity extends Observable {
      * direction is the current direction movement state
      * lastDirection is like the static direction state
      */
-    private Direction direction;
+    private Direction direction = Direction.NONE;
     private Direction lastDirection = Direction.SOUTH; // by default
 
     //Number of cell per sec
@@ -54,7 +51,7 @@ public class Entity extends Observable {
      * Can only interact if there is a SceneObject
      * in front of the entity
      */
-    public void tryInteract() {
+    public boolean tryInteract() {
         List<Entity> neighbors = getInFrontOfNeighbors();
         for (Entity neighbour : neighbors) {
             if (neighbour != null) {
@@ -66,9 +63,10 @@ public class Entity extends Observable {
                     neighbour.getInteraction().start(neighbour, this);
                 }
 
-                return;
+                return true;
             }
         }
+        return false;
     }
 
     private List<Entity> getInFrontOfNeighbors() {
@@ -76,22 +74,22 @@ public class Entity extends Observable {
 
         switch (getLastDirection()) {
             case WEST:
-                for (int j = getY(); j != getY() + getHeight(); ++j) {
+                for (int j = getY(); j < getY() + getHeight(); ++j) {
                     neighbors.add(world.getEntity(getX() - 1, j));
                 }
                 break;
             case EAST:
-                for (int j = getY(); j != getY() + getHeight(); ++j) {
+                for (int j = getY(); j < getY() + getHeight(); ++j) {
                     neighbors.add(world.getEntity(getX() + getWidth() + 1, j));
                 }
                 break;
             case NORTH:
-                for (int i = getX(); i != getX() + getWidth(); ++i) {
+                for (int i = getX(); i < getX() + getWidth(); ++i) {
                     neighbors.add(world.getEntity(i, getY() + getHeight()));
                 }
                 break;
             case SOUTH:
-                for (int i = getX(); i != getX() + getWidth(); ++i) {
+                for (int i = getX(); i < getX() + getWidth(); ++i) {
                     neighbors.add(world.getEntity(i, getY() - 1));
                 }
                 break;
@@ -104,25 +102,21 @@ public class Entity extends Observable {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-        setChanged();
-    }
-
     public void moveTo(int x, int y) {
-        setX(x);
-        setY(y);
+
+        int prevX = this.x;
+        int prevY = this.y;
+
+        this.x = x;
+        this.y = y;
+
+        if (world != null) world.moveEntity(this, prevX, prevY);
 
         setChanged();
     }
 
     public int getY() {
         return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-        setChanged();
     }
 
     public int getWidth() {
@@ -177,11 +171,6 @@ public class Entity extends Observable {
         return speed;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
-        setChanged();
-    }
-
     public Direction getLastDirection() {
         return lastDirection;
     }
@@ -205,15 +194,14 @@ public class Entity extends Observable {
         message.setTimeToAnswer(timeToAnswer);
         message.setTimeToUnderstand(timeToUnderstand);
         message.setReceiver(receiver);
-        receiver.setChanged();
-        setChanged();
+        message.notifyObservers();
     }
 
-    public boolean isInteractable() {
+    private boolean isInteractable() {
         return interaction != null;
     }
 
-    public Interaction getInteraction() {
+    private Interaction getInteraction() {
         return interaction;
     }
 
@@ -231,29 +219,16 @@ public class Entity extends Observable {
         setChanged();
     }
 
-    public Entity getInteractingWith() {
-        return interactingWith;
-    }
-
-    public void setInteractingWith(Entity interactingWith) {
-        this.interactingWith = interactingWith;
-        setChanged();
-    }
-
     public void store(Entity entity) {
         inventory.store(entity);
         setChanged();
-    }
-
-    public Rectangle getRectangle(Rectangle rectangle) {
-        return rectangle.set(x, y, width, height);
     }
 
     public Inventory getInventory() {
         return inventory;
     }
 
-    public Interaction getOnCollide() {
+    private Interaction getOnCollide() {
         return onCollide;
     }
 
@@ -266,22 +241,26 @@ public class Entity extends Observable {
         setDirection(direction);
 
         if (movement != null) {
-            MovementResult move = movement.move(this);
-            if (!move.getEntitiesAround().isEmpty()) {
 
-                Entity entity = move.getEntitiesAround().get(0);
+            movement.move(this);
+            if (world != null) {
 
-                if (entity.getOnCollide() != null) {
+                List<Entity> entitiesAround = world.getEntitiesAround(this);
 
-                    entity.getOnCollide().start(entity, this);
+                if (!entitiesAround.isEmpty()) {
+
+                    for (Entity entity : entitiesAround) {
+                        if (entity != this && entity.getOnCollide() != null) {
+                            entity.getOnCollide().start(entity, this);
+                        }
+                    }
+
                 }
-
             }
         }
 
 
     }
-
 
     public boolean has(String object) {
         Entity entity = world.getEntitiesByName(object);
@@ -293,4 +272,9 @@ public class Entity extends Observable {
                 + Story.getSceneName()
                 + name));
     }
+
+    public boolean isWalking() {
+        return direction != Direction.NONE && movement != null ;
+    }
+
 }

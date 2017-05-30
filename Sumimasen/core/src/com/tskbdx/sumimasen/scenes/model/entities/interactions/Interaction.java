@@ -44,9 +44,6 @@ public abstract class Interaction {
         active.setMovement(null);
         passive.setMovement(null);
 
-        active.setInteractingWith(passive);
-        passive.setInteractingWith(active);
-
         active.notifyObservers(getClass());
         passive.notifyObservers(getClass());
     }
@@ -54,9 +51,6 @@ public abstract class Interaction {
     public void end() {
         active.setInteracting(false);
         passive.setInteracting(false);
-
-        active.setInteractingWith(null);
-        passive.setInteractingWith(null);
 
         active.setMovement(activeMovement);
         passive.setMovement(passiveMovement);

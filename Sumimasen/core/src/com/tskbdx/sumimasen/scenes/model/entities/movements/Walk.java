@@ -1,6 +1,5 @@
 package com.tskbdx.sumimasen.scenes.model.entities.movements;
 
-import com.badlogic.gdx.math.Rectangle;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
@@ -19,7 +18,7 @@ public class Walk implements Movement {
     private boolean canMove = true;
 
     @Override
-    public MovementResult move(Entity entity) {
+    public void move(Entity entity) {
         if (canMove && entity.getDirection() != Direction.NONE) {
             int newX = entity.getX(), newY = entity.getY();
             switch (entity.getDirection()) {
@@ -39,13 +38,10 @@ public class Walk implements Movement {
 
             canMove = false;
 
-            Rectangle rect = entity.getRectangle(new Rectangle());
-            rect.setPosition(newX, newY);
-
-            List<Entity> entityColliding = entity.getWorld().getEntities(rect);
+            List<Entity> entityColliding = entity.getWorld().getEntities(newX, newY, entity.getWidth(), entity.getHeight());
             entityColliding.remove(entity);
 
-            if (!entity.getWorld().isWall(rect)
+            if (!entity.getWorld().isWall(newX, newY, entity.getWidth(), entity.getHeight())
                     && entityColliding.isEmpty()) {
                 entity.moveTo(newX, newY);
                 entity.notifyObservers();
@@ -56,7 +52,5 @@ public class Walk implements Movement {
                 move(entity);
             }, 1.f / entity.getSpeed());
         }
-
-        return MovementResult.computeMovementResult(entity);
     }
 }

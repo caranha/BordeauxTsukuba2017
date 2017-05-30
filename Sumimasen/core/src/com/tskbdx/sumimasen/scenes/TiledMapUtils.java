@@ -30,7 +30,7 @@ public class TiledMapUtils {
         public Interaction onCollide;
 
         public String standingSpritesheet;
-        String walkingSpritesheet;
+        public String walkingSpritesheet;
 
         MapObjectMapping() {}
 
@@ -38,10 +38,10 @@ public class TiledMapUtils {
 
             name    = mapObject.getName();
 
-            x       = (int) Math.ceil(mapObject.getProperties().get("x", Float.class) / TILE_SIZE);
-            y       = (int) Math.ceil(mapObject.getProperties().get("y", Float.class) / TILE_SIZE);
-            width   = (int) Math.ceil(mapObject.getProperties().get("width", Float.class) / TILE_SIZE);
-            height  = (int) Math.ceil(mapObject.getProperties().get("height", Float.class) / TILE_SIZE);
+            x       = (int) Math.floor(mapObject.getProperties().get("x", Float.class) / TILE_SIZE);
+            y       = (int) Math.floor(mapObject.getProperties().get("y", Float.class) / TILE_SIZE);
+            width   = (int) Math.floor(mapObject.getProperties().get("width", Float.class) / TILE_SIZE);
+            height  = (int) Math.floor(mapObject.getProperties().get("height", Float.class) / TILE_SIZE);
 
 
             String defaultInteractionName  = mapObject.getProperties().get("defaultInteraction", String.class);
@@ -55,13 +55,7 @@ public class TiledMapUtils {
             }
 
             String onCollideName = mapObject.getProperties().get("onCollide", String.class);
-            if ("teleport".equals(onCollideName)) {
-
-                int toX = mapObject.getProperties().get("toX", Integer.class);
-                int toY = mapObject.getProperties().get("toY", Integer.class);
-
-                onCollide = new Teleport(toX, toY);
-            } else if ("changeMap".equals(onCollideName)) {
+            if ("changeMap".equals(onCollideName)) {
 
                 String toMap = mapObject.getProperties().get("toMap", String.class);
                 String toSpawn = mapObject.getProperties().get("toSpawn", String.class);

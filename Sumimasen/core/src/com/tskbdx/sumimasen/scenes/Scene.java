@@ -20,7 +20,7 @@ public abstract class Scene {
 
     public final static float SCALE_FACTOR = 4.f;
 
-    protected String currentMap = "maps/map.tmx";
+    protected String currentMap = "map";
     protected String spawn = "player_home";
 
     private World world;
@@ -42,7 +42,7 @@ public abstract class Scene {
         inputProcessor = new GameCommands();
         Gdx.input.setInputProcessor(inputProcessor);
 
-        world = new World();
+        world = new World(this);
         worldRenderer = new WorldRenderer(world, camera);
 
         story.setScene(this);
@@ -81,12 +81,16 @@ public abstract class Scene {
         return mapObjectMappings;
     }
 
-    protected final void loadMap(String map, String spawn) {
+    public void loadMap(String map, String spawn) {
 
-        if (map != null && map.endsWith(".tmx")) {
-            currentMap = map;
+        if (map != null) {
 
-            TiledMap tiledMap = new TmxMapLoader().load(map);
+            System.out.println("Loading map : " + map + " at " + spawn);
+
+            this.currentMap = map;
+            this.spawn = spawn;
+
+            TiledMap tiledMap = new TmxMapLoader().load("maps/" + map + ".tmx");
 
             mapObjectMappings = TiledMapUtils.mapObjectMappings(tiledMap);
 
