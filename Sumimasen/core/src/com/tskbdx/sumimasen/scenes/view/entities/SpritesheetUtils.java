@@ -58,6 +58,37 @@ public class SpritesheetUtils {
 
                 return new DirectionSpriteSheetAnimator(regions, 0.2f);
 
+            case "noname_standing.png" :
+
+                regions.put(Direction.NORTH , new TextureRegion[]{new TextureRegion(texture, 0, 0, 12, 16)});
+                regions.put(Direction.SOUTH , new TextureRegion[]{new TextureRegion(texture, 0, 16, 12, 16)});
+                regions.put(Direction.WEST  , new TextureRegion[]{new TextureRegion(texture, 0, 32, 12, 16)});
+                regions.put(Direction.EAST  , new TextureRegion[]{new TextureRegion(texture, 0, 48, 12, 16)});
+                regions.put(Direction.NONE  , new TextureRegion[]{new TextureRegion(texture, 0, 16, 12, 16)});
+
+                return new DirectionSpriteSheetAnimator(regions, 0.2f);
+
+            case "noname_walking.png" :
+
+                regions.put(Direction.NORTH , new TextureRegion[]{
+                        new TextureRegion(texture, 0, 0, 12, 16),
+                        new TextureRegion(texture, 12, 0, 12, 16)});
+                regions.put(Direction.SOUTH , new TextureRegion[]{
+                        new TextureRegion(texture, 0, 16, 12, 16),
+                        new TextureRegion(texture, 12, 16, 12, 16)});
+                regions.put(Direction.WEST  , new TextureRegion[]{
+                        new TextureRegion(texture, 0, 32, 12, 16),
+                        new TextureRegion(texture, 12, 32, 12, 16)});
+                regions.put(Direction.EAST  , new TextureRegion[]{
+                        new TextureRegion(texture, 0, 48, 12, 16),
+                        new TextureRegion(texture, 12, 48, 12, 16)});
+                regions.put(Direction.NONE  , new TextureRegion[]{
+                        new TextureRegion(texture, 0, 16, 12, 16),
+                        new TextureRegion(texture, 12, 16, 12, 16)});
+
+                return new DirectionSpriteSheetAnimator(regions, 0.2f);
+
+
             case "cat.png":
 
                 textureRegions = new TextureRegion[] {
