@@ -104,6 +104,7 @@ public class Dialogue extends Interaction {
             }, getActive().getMessage().getTimeToUnderstand());
         } else {
             if (!currentExchange.triggerWonder) {
+                System.out.println("Ayo t'es là");
                 getActive().setMessage(currentExchange.getText(), 2.f, getPassive());
             }
             end();
