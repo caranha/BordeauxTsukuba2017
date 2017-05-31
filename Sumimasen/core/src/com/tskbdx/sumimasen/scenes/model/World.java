@@ -38,7 +38,6 @@ public class World extends Observable implements Serializable {
     }
 
     public void init(TiledMap tiledMap, List<TiledMapUtils.MapObjectMapping> mappings, String playerSpawn) {
-        System.out.println(tiledMap);
         entitiesByName.clear();
         spawnByName.clear();
 

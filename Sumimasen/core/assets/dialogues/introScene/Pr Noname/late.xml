@@ -1,0 +1,50 @@
+<dialogue>
+    <exchange id="1" text="You are late !">
+        <answers>
+        	<answer idea="I should apologize" text="Sumimasen" nextExchange="2"/>
+        	<answer idea="Let's find an excuse quickly !" text="Sumimasen" nextExchange="2"/>
+        </answers>
+    </exchange>
+    <exchange id="2" text="What happened ?">
+    	<answers>
+    		<answer idea="Say the truth" text="I spent to much time at home. It won't happen again."
+    			nextExchange="3"/>
+    		<answer idea="Lie" text="The bus was late" nextExchange="4"/>
+    	</answers>
+    </exchange>
+    <exchange id="3" text="Ok ok, you seems well dressed to work at least.">
+    	<answers>
+    		<answer idea="Clear the air" text="This is actually my dressing gown."
+    			nextExchange="5"/>
+    		<answer idea="Let's look like a bootlicker" text="Yes ! I bought it especially for this job." nextExchange="5"/>
+    	</answers>
+    </exchange>
+    <exchange id="4" text="There is no bus in this city">
+    	<answers>
+    		<answer idea="Keep lying" text="I swear !" nextExchange="2222"/>
+    		<answer idea="Shit" text="..." nextExchange="2222"/>
+    	</answers>
+    </exchange>
+    <exchange id="5" text="At least it looks comfortable">
+    	<answers>
+    		<answer idea="He is boring and I want to work !" text="What shall I do ?" nextExchange="6"/>
+    		<answer idea="He is funny, let's joke" text="Not really, I should have put something under ..." nextExchange="7"/>
+    	</answers>
+    </exchange>
+    <exchange id="6" text="Today you have to take care of this machine over there.">
+    	<answers>
+    		<answer idea="Sure" text="Sure" nextExchange="222"/>
+    		<answer idea="What about no ?" text="I'm not your slave dude." nextExchange="2222"/>
+    	</answers>
+    </exchange>
+    <exchange id="7" text="Anyway, can you take care of this machine over there ?">
+    	<answers>
+    		<answer idea="Sure" text="Sure" nextExchange="222"/>
+    		<answer idea="What about no ?" text="I'm not your slave dude." nextExchange="2222"/>
+    	</answers>
+    </exchange>
+    <exchange id="2222" text="You are fired !">
+    	<answers>
+    	</answers>
+    </exchange>
+</dialogue>

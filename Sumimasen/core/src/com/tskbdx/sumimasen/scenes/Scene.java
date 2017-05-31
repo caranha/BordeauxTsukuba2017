@@ -85,10 +85,12 @@ public abstract class Scene {
         if (!loadedMaps.containsKey(map)) {
             tiledMap = new TmxMapLoader().load("maps/" + map + ".tmx");
             loadedMaps.put(map, tiledMap);
-            mapObjectMappings = TiledMapUtils.mapObjectMappings(tiledMap);
         } else {
             tiledMap = loadedMaps.get(map);
         }
+
+        mapObjectMappings = TiledMapUtils.mapObjectMappings(tiledMap);
+
         this.currentMap = map;
         this.spawn = spawn;
 
