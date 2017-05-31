@@ -11,7 +11,6 @@ import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Path;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -68,43 +67,8 @@ class ScriptLateOnFirstDay {
         @Override
         public State nextState(Event event) {
             if (event.is(Dialogue.class, "Pr. Noname")) {
-                return new LetsWork();
+                return new ScriptWorkToBreakMachine.Setup();
             }
-            return null;
-        }
-    }
-
-    static private class LetsWork implements State {
-
-        @Override
-        public void process(Scene scene) {
-            World world = scene.getWorld();
-            world.removeEntity(world.getEntityByName("late sensor"));
-
-            Entity noname = world.getEntityByName("Pr. Noname");
-            noname.setSpeed(4);
-
-            List<Direction> path = new LinkedList<>();
-            Utility.repeat(() -> path.add(Direction.NORTH), 6);
-            Utility.repeat(() -> path.add(Direction.WEST), 5);
-
-            List<Direction> patrol = new LinkedList<>();
-            Utility.repeat(() -> patrol.add(Direction.WEST), 3);
-            Utility.repeat(() -> patrol.add(Direction.NONE), 6);
-            Utility.repeat(() -> patrol.add(Direction.EAST), 3);
-            Utility.repeat(() -> patrol.add(Direction.NONE), 6);
-
-            new Path(() ->
-                    new Path(true,
-                            patrol.toArray(new Direction[patrol.size()])).move(noname),
-                    path.toArray(new Direction[path.size()])).move(noname);
-
-            Entity machine = world.getEntityByName("Machine");
-            machine.setInteraction(new Dialogue("letsWork.xml"));
-        }
-
-        @Override
-        public State nextState(Event event) {
             return null;
         }
     }

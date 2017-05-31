@@ -18,7 +18,7 @@
     		<answer idea="What about no ?" text="I'm not your slave dude." nextExchange="2222"/>
     	</answers>
     </exchange>
-    <exchange id="7" text="Anyway, can you take care of this machine over there ?"
+    <exchange id="7" text="Can you take care of this machine over there ?"
      nextDialogue="default.xml">
     	<answers>
     		<answer idea="Sure" text="Sure" nextExchange="222"/>
