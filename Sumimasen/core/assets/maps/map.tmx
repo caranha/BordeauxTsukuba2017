@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="64" height="48" tilewidth="8" tileheight="8" nextobjectid="14">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="64" height="48" tilewidth="8" tileheight="8" nextobjectid="15">
  <tileset firstgid="1" name="tileset" tilewidth="8" tileheight="8" tilecount="4096" columns="64">
   <image source="tileset.png" width="512" height="512"/>
  </tileset>
@@ -135,6 +135,14 @@
     <property name="onCollide" value="changeMap"/>
     <property name="toMap" value="lab"/>
     <property name="toSpawn" value="right_entrance"/>
+   </properties>
+  </object>
+  <object id="14" name="To Progress ..." type="entity" x="456" y="96" width="16" height="8">
+   <properties>
+    <property name="imageFile" value="up.png"/>
+    <property name="onCollide" value="changeMap"/>
+    <property name="toMap" value="progress"/>
+    <property name="toSpawn" value="entrance"/>
    </properties>
   </object>
  </objectgroup>
