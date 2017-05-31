@@ -1,5 +1,6 @@
 package com.tskbdx.sumimasen.scenes.story.scriptIntroScene;
 
+import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.Scene;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
@@ -24,8 +25,15 @@ public class FirstState implements State {
 
     @Override
     public State nextState(Event event) {
-        if (event.is(ChangeMap.class, "Lab")) {
-            return new MeetNoname();
+        if (event.is(ChangeMap.class, "To lab from left...") ||
+                event.is(ChangeMap.class, "To lab fom right ...")) {
+
+            if (GameScreen.getPlayer().hasTag("late")) {
+                return new LateOnFirstDay();
+            } else {
+                return new OnTimeOnFirstDay();
+            }
+
         }
 
         return null;
