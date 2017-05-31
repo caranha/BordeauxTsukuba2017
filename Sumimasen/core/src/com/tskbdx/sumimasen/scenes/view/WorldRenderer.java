@@ -141,26 +141,29 @@ public class WorldRenderer implements Observer {
 
     private void buildEntityRendererFromMapObjectMapping(TiledMapUtils.MapObjectMapping mo) {
 
-        Entity entity = world.getEntitiesByName(mo.name);
+        Entity entity = world.getEntityByName(mo.name);
 
-        EntityRenderer entityRenderer = new EntityRenderer(entity);
-        entityRenderer.setWorldRenderer(this);
+        EntityRenderer renderer = rendererByEntity.get(entity);
+        if (renderer == null) {
+            EntityRenderer entityRenderer = new EntityRenderer(entity);
+            entityRenderer.setWorldRenderer(this);
 
-        Animator standingAnimator = SpritesheetUtils.getAnimatorFromSpritesheet(mo.standingSpritesheet);
-        if (standingAnimator instanceof DirectionSpriteSheetAnimator) {
-            ((DirectionSpriteSheetAnimator) standingAnimator).setEntity(entity);
+            Animator standingAnimator = SpritesheetUtils.getAnimatorFromSpritesheet(mo.standingSpritesheet);
+            if (standingAnimator instanceof DirectionSpriteSheetAnimator) {
+                ((DirectionSpriteSheetAnimator) standingAnimator).setEntity(entity);
+            }
+
+            Animator walkingAnimator = SpritesheetUtils.getAnimatorFromSpritesheet(mo.walkingSpritesheet);
+            if (walkingAnimator instanceof DirectionSpriteSheetAnimator) {
+                ((DirectionSpriteSheetAnimator) walkingAnimator).setEntity(entity);
+            }
+
+
+            entityRenderer.setStandingAnimator(standingAnimator);
+            entityRenderer.setWalkingAnimator(walkingAnimator);
+
+            rendererByEntity.put(entity, entityRenderer);
         }
-
-        Animator walkingAnimator = SpritesheetUtils.getAnimatorFromSpritesheet(mo.walkingSpritesheet);
-        if (walkingAnimator instanceof DirectionSpriteSheetAnimator) {
-            ((DirectionSpriteSheetAnimator) walkingAnimator).setEntity(entity);
-        }
-
-
-        entityRenderer.setStandingAnimator(standingAnimator);
-        entityRenderer.setWalkingAnimator(walkingAnimator);
-
-        rendererByEntity.put(entity, entityRenderer);
     }
 
     public SmoothCamera getCamera() {

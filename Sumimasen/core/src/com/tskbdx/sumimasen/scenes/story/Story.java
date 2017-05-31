@@ -34,7 +34,7 @@ final public class Story {
 
     public static String getSceneName() {
         assert instance != null : "story isn't set up with a scene";
-        return instance.getClass().getSimpleName();
+        return getInstance().scene  .getClass().getSimpleName();
     }
 
     /**

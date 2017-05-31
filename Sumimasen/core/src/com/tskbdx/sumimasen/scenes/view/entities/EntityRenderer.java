@@ -54,7 +54,7 @@ public class EntityRenderer implements Observer {
      */
     @Override
     public void update(Observable observable, Object o) {
-
+        System.out.println("!!!");
         if (o == ChangeMap.class) {
             if (worldRenderer != null) {
                 Effect fadeIn = new Fade(ChangeMap.DELAY, Fade.IN);

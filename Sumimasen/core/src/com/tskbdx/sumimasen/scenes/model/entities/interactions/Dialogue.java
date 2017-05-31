@@ -3,6 +3,7 @@ package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Message;
+import com.tskbdx.sumimasen.scenes.story.Story;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,6 +31,7 @@ public class Dialogue extends Interaction {
     private Map<Integer, DialogueExchange> exchanges = new HashMap<>();
     private DialogueExchange currentExchange = new DialogueExchange();
     private String xmlFile;
+
     public Dialogue(String xmlFile) {
         super();
         this.xmlFile = xmlFile;
@@ -39,7 +41,10 @@ public class Dialogue extends Interaction {
     public void start(Entity active, Entity passive) {
         super.start(active, passive);
 
-        buildDialogue(FOLDER + active.getName() + '/' + xmlFile); // by convention
+        buildDialogue(FOLDER +
+                Story.getSceneName() +
+                '/' + active.getName() + '/' + xmlFile); // by convention
+        System.out.println(currentExchange);
         currentExchange = exchanges.get(1);
 
         printCurrentState();
@@ -54,7 +59,7 @@ public class Dialogue extends Interaction {
             answer.notifyObservers();
 
             // when passive talk, active stop
-            getActive().setMessage("",  0.f, getPassive());
+            getActive().setMessage("", 0.f, getPassive());
             getActive().getMessage().notifyObservers();
 
             if (dialogueAnswer.getNextExchange() != null) {
@@ -75,18 +80,19 @@ public class Dialogue extends Interaction {
     }
 
     private void printCurrentState() { // active entity talks
-        getActive().setMessage(currentExchange.getText(),  0.f, getPassive());
+        getActive().setMessage(currentExchange.getText(), 0.f, getPassive());
         getActive().getMessage().notifyObservers();
-
         List<DialogueAnswer> answers = currentExchange.getAnswers();
 
         if (!answers.isEmpty()) {
+            System.out.println(getActive().getMessage().getTimeToUnderstand());
             Utility.setTimeout(() -> {
+
                 getActive().notifyObservers(this);
                 getPassive().notifyObservers(this);
             }, getActive().getMessage().getTimeToUnderstand());
         } else {
-            getActive().setMessage(currentExchange.getText(),  2.f, getPassive());
+            getActive().setMessage(currentExchange.getText(), 2.f, getPassive());
             getActive().getMessage().notifyObservers();
             end();
         }

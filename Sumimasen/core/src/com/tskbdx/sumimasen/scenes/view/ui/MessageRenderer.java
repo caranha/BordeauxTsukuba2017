@@ -43,7 +43,7 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
     private final Camera camera;
     private final Sprite bubbleHorizontal = new Sprite(Sumimasen.getAssetManager().get("images/bubbleHorizontal.png", Texture.class));
     private final Sprite bubbleVertical = new Sprite(Sumimasen.getAssetManager().get("images/bubbleVertical.png", Texture.class));
-    private final FollowEntity followEntity;
+    private final OffsetEntity followEntity;
     private Sprite currentBubble;
     private String content;
     private Direction direction;
@@ -59,7 +59,7 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
     private boolean follow = false; // following sender ?
 
     MessageRenderer(Message message, Camera camera) {
-        followEntity = new FollowEntity(message.getSender());
+        followEntity = new OffsetEntity(message.getSender());
         this.message = message;
         this.camera = camera;
         message.addObserver(this);
@@ -220,41 +220,3 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
     }
 }
 
-final class FollowEntity implements Observer {
-    private final Entity entity;
-    private final Tween tweenX = new Tween(Interpolation.linear),
-            tweenY = new Tween(Interpolation.linear);
-    private int startX;
-    private int startY;
-    private float duration;
-
-    FollowEntity(Entity entity) {
-        this.entity = entity;
-        reset();
-        entity.addObserver(this);
-    }
-
-    void reset() {
-        startX = entity.getX();
-        startY = entity.getY();
-        tweenX.stop();
-        tweenY.stop();
-        duration = 2.f / entity.getSpeed();
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        float offsetX = (entity.getX() - startX) * EntityRenderer.TILE_SIZE;
-        float offsetY = (entity.getY() - startY) * EntityRenderer.TILE_SIZE;
-        tweenX.playWith(tweenX.getInterpolation(), offsetX, duration);
-        tweenY.playWith(tweenY.getInterpolation(), offsetY, duration);
-    }
-
-    float getOffsetX() {
-        return tweenX.getInterpolation();
-    }
-
-    float getOffsetY() {
-        return tweenY.getInterpolation();
-    }
-}

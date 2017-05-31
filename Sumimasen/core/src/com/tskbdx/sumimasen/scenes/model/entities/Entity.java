@@ -197,6 +197,7 @@ public class Entity extends Observable implements Serializable {
         message.setTimeToUnderstand(Utility.getWordCount(content) * .5f);
         message.setReceiver(receiver);
         message.notifyObservers();
+        setChanged();
     }
 
     public void setMessage(String content,
@@ -275,7 +276,7 @@ public class Entity extends Observable implements Serializable {
     }
 
     public boolean has(String object) {
-        Entity entity = world.getEntitiesByName(object);
+        Entity entity = world.getEntityByName(object);
         return getInventory().contains(entity);
     }
 
