@@ -41,7 +41,6 @@ public class Dialogue extends Interaction {
     public void start(Entity active, Entity passive) {
         super.start(active, passive);
 
-        System.out.println("!!!!! START " + " " + active.getName() + " " + passive.getName());
         buildDialogue(FOLDER +
                 Story.getSceneName() +
                 '/' + active.getName() + '/' + xmlFile); // by convention
@@ -52,8 +51,6 @@ public class Dialogue extends Interaction {
 
     public void pickAnswer(int index) { // passive entity answers
         try {
-            System.out.println("active " + getActive().getName());
-            System.out.println(currentExchange.getText());
             DialogueAnswer dialogueAnswer = currentExchange.getAnswers().get(index);
             dialogueAnswer.processCallbacks();
             getPassive().setMessage(dialogueAnswer.getText(), 1.f, getActive());
@@ -94,6 +91,7 @@ public class Dialogue extends Interaction {
             getPassive().think(currentExchange.getText());
         } else {
             getActive().setMessage(currentExchange.getText(), 0.f, getPassive());
+            System.out.println(getActive().getMessage());
         }
         List<DialogueAnswer> answers = currentExchange.getAnswers();
 
@@ -104,8 +102,9 @@ public class Dialogue extends Interaction {
             }, getActive().getMessage().getTimeToUnderstand());
         } else {
             if (!currentExchange.triggerWonder) {
-                System.out.println("Ayo t'es là");
+                System.out.println("Ayo t'es là " + currentExchange.getText());
                 getActive().setMessage(currentExchange.getText(), 2.f, getPassive());
+                System.out.println(getActive().getMessage());
             }
             end();
         }

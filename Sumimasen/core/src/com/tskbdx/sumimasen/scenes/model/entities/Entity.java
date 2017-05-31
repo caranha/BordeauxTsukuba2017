@@ -34,7 +34,7 @@ public class Entity extends Observable implements Serializable {
     /**
      * Message
      */
-    private Message message = new Message(this);
+    private final Message message = new Message(this);
     /**
      * dd
      * direction is the current direction movement state

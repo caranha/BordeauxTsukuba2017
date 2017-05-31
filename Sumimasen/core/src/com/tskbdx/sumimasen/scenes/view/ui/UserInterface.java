@@ -32,6 +32,8 @@ public class UserInterface extends Stage implements Disposable, Observer {
         inventoryRenderer = new InventoryRenderer(entity.getInventory(), scene);
         messageRendererByEntity.put(entity,
                 new MessageRenderer(entity.getMessage(), scene.getCamera()));
+
+        scene.getWorld().addObserver(this);
     }
 
     @Override

@@ -101,7 +101,6 @@ public class World extends Observable implements Serializable {
             entity.setHeight(mapping.height);
 
             entity.setOnCollide(mapping.onCollide);
-            System.out.println(mapping.defaultInteraction);
             entity.setInteraction(mapping.defaultInteraction);
 
             entity.setWorld(this);
