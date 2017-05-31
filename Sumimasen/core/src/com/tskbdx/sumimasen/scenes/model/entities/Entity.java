@@ -195,7 +195,7 @@ public class Entity extends Observable implements Serializable {
         message.setContent(content);
         message.setTimeToAnswer(timeToAnswer);
         message.setTimeToUnderstand(
-                Math.min(Utility.getWordCount(content) * 1.3f, 4.2f));
+                Math.min(Utility.getWordCount(content) * 1.3f, 3.2f));
         message.setReceiver(receiver);
         message.notifyObservers();
         setChanged();

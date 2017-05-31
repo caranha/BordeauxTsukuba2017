@@ -219,6 +219,13 @@ public class World extends Observable implements Serializable {
         return entitiesByName.get(name);
     }
 
+    public void addEntity(String name, Entity entity) {
+        entitiesByName.put(name, entity);
+        entity.setName(name);
+        setChanged();
+    }
+
+
     public List<Entity> getEntities() {
         return new ArrayList<>(entitiesByName.values());
     }

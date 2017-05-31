@@ -6,6 +6,7 @@ import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.TriggerThought;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Path;
@@ -26,11 +27,11 @@ class ScriptLateOnFirstDay {
             World world = scene.getWorld();
 
             Entity sensor = new Entity();
-            sensor.setName("late sensor");
             sensor.setWorld(world);
             sensor.moveTo(11, 4);
             sensor.setWidth(4);
             sensor.setHeight(1);
+            world.addEntity("late sensor", sensor);
             world.moveEntity(sensor, sensor.getX(), sensor.getY());
             sensor.setOnCollide(new TriggerThought("!"));
         }
@@ -62,6 +63,23 @@ class ScriptLateOnFirstDay {
                 player.setMovement(playerMovement);
                 new Dialogue("playerLate.xml").start(noname, player);
             }, path.toArray(new Direction[path.size()])).move(noname);
+        }
+
+        @Override
+        public State nextState(Event event) {
+            if (event.is(Interaction.class, "Pr. Noname")) {
+                return new LetsWork();
+            }
+            return null;
+        }
+    }
+
+    static private class LetsWork implements State {
+
+        @Override
+        public void process(Scene scene) {
+            World world = scene.getWorld();
+            world.removeEntity(world.getEntityByName("late sensor"));
         }
 
         @Override
