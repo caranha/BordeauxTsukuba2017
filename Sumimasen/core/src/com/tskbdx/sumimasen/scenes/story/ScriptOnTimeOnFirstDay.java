@@ -28,8 +28,9 @@ class ScriptOnTimeOnFirstDay {
             Utility.repeat(() -> patrol.add(Direction.EAST), 3);
             Utility.repeat(() -> patrol.add(Direction.NONE), 6);
 
-            new Path(true,
-                    patrol.toArray(new Direction[patrol.size()])).move(noname);
+            noname.setMovement(new Path(true,
+                    patrol.toArray(new Direction[patrol.size()])));
+            noname.getMovement().move(noname); // // 
 
             noname.setInteraction(new Dialogue("welcome.xml"));
         }

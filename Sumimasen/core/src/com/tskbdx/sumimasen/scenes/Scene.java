@@ -28,6 +28,8 @@ public abstract class Scene {
     private WorldRenderer worldRenderer;
     private SmoothCamera camera;
     private InputProcessor inputProcessor;
+
+    // to prevent extra loads
     private Map<String, TiledMap> loadedMaps = new HashMap<>();
 
     private List<TiledMapUtils.MapObjectMapping> mapObjectMappings;
