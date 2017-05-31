@@ -45,7 +45,6 @@ public abstract class Scene {
         world = new World();
         worldRenderer = new WorldRenderer(world, camera);
 
-        story.setScene(this);
     }
 
     public abstract void init();
