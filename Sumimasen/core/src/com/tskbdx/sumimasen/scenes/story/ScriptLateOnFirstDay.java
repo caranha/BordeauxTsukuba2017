@@ -32,7 +32,6 @@ class ScriptLateOnFirstDay {
             sensor.setWidth(4);
             sensor.setHeight(1);
             world.moveEntity(sensor, sensor.getX(), sensor.getY());
-
             sensor.setOnCollide(new TriggerThought("!"));
         }
 

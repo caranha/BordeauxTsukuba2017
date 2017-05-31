@@ -15,7 +15,6 @@ import java.util.*;
 /**
  * UserInterface
  */
-//TODO: Rethink this class
 public class UserInterface extends Stage implements Disposable, Observer {
 
     private final Map<Entity, MessageRenderer> messageRendererByEntity = new HashMap<>();

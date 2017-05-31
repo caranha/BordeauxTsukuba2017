@@ -49,26 +49,22 @@ final class AnswersSelector extends Group implements Observer {
         if (entity.isInteracting() && dialogue != null) {
             setAnswersButtons(dialogue);
         } else {
-            getChildren().forEach(actor -> actor.setVisible(false));
+            getChildren().forEach(actor -> {
+                actor.setVisible(false);
+            });
+            getChildren().clear();
         }
     }
 
     private void setAnswersButtons(Dialogue dialogue) {
         DialogueExchange exchange = dialogue.getCurrentExchange();
         List<DialogueAnswer> answers = exchange.getAnswers();
-        Array<Actor> children = getChildren();
         for (int i = 0; i != answers.size(); ++i) {
             Button button;
             final int finalI = i;
             String text = answers.get(i).getIdea();
-            // If not enough buttons created :
-            if (i >= children.size) {
-                button = new TextButton(text, skin);
-                addActor(button);
-            } else {
-                button = (TextButton) children.get(i);
-                ((TextButton) button).setText(text);
-            }
+            button = new TextButton(text, skin);
+            addActor(button);
             button.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {

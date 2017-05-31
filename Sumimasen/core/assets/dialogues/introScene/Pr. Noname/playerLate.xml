@@ -1,8 +1,8 @@
 <dialogue>
     <exchange id="1" text="You are late !">
         <answers>
-        	<answer idea="I should apologize" text="Sumimasen" nextExchange="2"/>
-        	<answer idea="Let's find an excuse quickly !" text="Sumimasen" nextExchange="2"/>
+        	<answer idea="I should apologize" text="Sumimasen !" nextExchange="2"/>
+        	<answer idea="I don't know what to answer..." text="Sumimasen !" nextExchange="2"/>
         </answers>
     </exchange>
     <exchange id="2" text="What happened ?">
@@ -33,15 +33,19 @@
     </exchange>
     <exchange id="6" text="Today you have to take care of this machine over there.">
     	<answers>
-    		<answer idea="Sure" text="Sure" nextExchange="222"/>
+    		<answer idea="Sure" text="Sure" nextExchange="222" nextDialogue="default.xml"/>
     		<answer idea="What about no ?" text="I'm not your slave dude." nextExchange="2222"/>
     	</answers>
     </exchange>
     <exchange id="7" text="Anyway, can you take care of this machine over there ?">
     	<answers>
-    		<answer idea="Sure" text="Sure" nextExchange="222"/>
+    		<answer idea="Sure" text="Sure" nextExchange="222" nextDialogue="default.xml"/>
     		<answer idea="What about no ?" text="I'm not your slave dude." nextExchange="2222"/>
     	</answers>
+    </exchange>
+    <exchange id="222" text="Thanks">
+        <answers>
+        </answers>
     </exchange>
     <exchange id="2222" text="You are fired !">
     	<answers>
