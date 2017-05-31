@@ -137,6 +137,9 @@ public class World extends Observable implements Serializable {
                 entitiesMap[i][j] = entity;
             }
         }
+
+        setChanged();
+        notifyObservers();
     }
 
     private void setVoid(int i, int j) {

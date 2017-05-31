@@ -8,10 +8,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * Implements entity movement scripting
@@ -21,9 +18,16 @@ public class Path implements Movement {
     private final Queue<Direction> directionQueue = new LinkedList<>();
     private boolean ready = true;
     private final boolean loop;
+    private Runnable onFinished;
 
     public Path(boolean loop, Direction... directions) {
         this.loop = loop;
+        Collections.addAll(directionQueue, directions);
+    }
+
+    public Path(Runnable onFinished, Direction... directions) {
+        loop = false;
+        this.onFinished = onFinished;
         Collections.addAll(directionQueue, directions);
     }
 
@@ -31,6 +35,9 @@ public class Path implements Movement {
     public void move(Entity entity) {
         if (directionQueue.isEmpty()) {
             entity.setMovement(null);
+            if (onFinished != null) {
+                onFinished.run();
+            }
         } else if (ready) {
             ready = false;
             /*
