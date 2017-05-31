@@ -57,6 +57,7 @@ public class Path implements Movement {
         entity.setDirection(direction);
         if (loop) {
             directionQueue.add(direction);
+            System.out.println(directionQueue.size());
         }
         int newX = entity.getX(), newY = entity.getY();
         switch (direction) {
@@ -71,9 +72,6 @@ public class Path implements Movement {
                 break;
             case SOUTH:
                 --newY; //++newY;
-                break;
-            case NONE:
-                ready = false;
                 break;
         }
 

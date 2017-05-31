@@ -1,19 +1,17 @@
 package com.tskbdx.sumimasen.scenes.story;
 
-import com.badlogic.gdx.Gdx;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.Scene;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
-import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.TriggerThought;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Path;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
-import java.awt.*;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -89,7 +87,17 @@ class ScriptLateOnFirstDay {
             List<Direction> path = new LinkedList<>();
             Utility.repeat(() -> path.add(Direction.NORTH), 6);
             Utility.repeat(() -> path.add(Direction.WEST), 5);
-            new Path(false, path.toArray(new Direction[path.size()])).move(noname);
+
+            List<Direction> patrol = new LinkedList<>();
+            Utility.repeat(() -> patrol.add(Direction.WEST), 3);
+            Utility.repeat(() -> patrol.add(Direction.EAST), 3);
+            Utility.repeat(() -> patrol.add(Direction.NONE), 10);
+            Collections.shuffle(patrol);
+
+            new Path(() ->
+                    new Path(true,
+                            patrol.toArray(new Direction[patrol.size()])).move(noname),
+                    path.toArray(new Direction[path.size()])).move(noname);
         }
 
         @Override
