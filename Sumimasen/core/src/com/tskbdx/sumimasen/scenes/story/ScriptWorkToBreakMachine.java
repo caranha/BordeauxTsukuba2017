@@ -24,11 +24,11 @@ class ScriptWorkToBreakMachine {
         public void process(Scene scene) {
             World world = scene.getWorld();
             Player player = GameScreen.getPlayer();
-            Entity noname = world.getEntityByName("Pr. Noname");
-            noname.setSpeed(4);
-            List<Direction> patrol = new LinkedList<>();
-            List<Direction> path = new LinkedList<>();
             if (player.hasTag("late")) {
+                Entity noname = world.getEntityByName("Pr. Noname");
+                noname.setSpeed(4);
+                List<Direction> patrol = new LinkedList<>();
+                List<Direction> path = new LinkedList<>();
                 world.removeEntity(world.getEntityByName("late sensor"));
                 Utility.repeat(() -> path.add(Direction.NORTH), 6);
                 Utility.repeat(() -> path.add(Direction.WEST), 5);
@@ -36,18 +36,11 @@ class ScriptWorkToBreakMachine {
                 Utility.repeat(() -> patrol.add(Direction.NONE), 6);
                 Utility.repeat(() -> patrol.add(Direction.EAST), 3);
                 Utility.repeat(() -> patrol.add(Direction.NONE), 6);
-            } else {
-                Utility.repeat(() -> path.add(Direction.WEST), 7);
-                Utility.repeat(() -> patrol.add(Direction.WEST), 2);
-                Utility.repeat(() -> patrol.add(Direction.NONE), 5);
-                Utility.repeat(() -> patrol.add(Direction.EAST), 2);
-                Utility.repeat(() -> patrol.add(Direction.NONE), 5);
+                new Path(() ->
+                        new Path(true,
+                                patrol.toArray(new Direction[patrol.size()])).move(noname),
+                        path.toArray(new Direction[path.size()])).move(noname);
             }
-
-            new Path(() ->
-                    new Path(true,
-                            patrol.toArray(new Direction[patrol.size()])).move(noname),
-                    path.toArray(new Direction[path.size()])).move(noname);
             Entity machine = world.getEntityByName("Machine");
             machine.setInteraction(new Dialogue("letsWork.xml"));
         }
