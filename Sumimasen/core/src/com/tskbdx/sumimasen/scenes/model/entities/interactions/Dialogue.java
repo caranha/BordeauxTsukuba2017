@@ -76,7 +76,7 @@ public class Dialogue extends Interaction {
                 Utility.setTimeout(this::printCurrentState, answer.getTimeToUnderstand());
             }
         } catch (IndexOutOfBoundsException ignored) {
-            System.out.println("execptio !!");
+            end();
         }
     }
 
