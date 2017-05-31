@@ -31,8 +31,6 @@ public class Dialogue extends Interaction {
     private Map<Integer, DialogueExchange> exchanges = new HashMap<>();
     private DialogueExchange currentExchange = new DialogueExchange();
     private String xmlFile;
-    private Dialogue nextDialogue = this;
-    private boolean built = false;
 
     public Dialogue(String xmlFile) {
         super();
@@ -43,12 +41,10 @@ public class Dialogue extends Interaction {
     public void start(Entity active, Entity passive) {
         super.start(active, passive);
 
-        if (!built) {
-            buildDialogue(FOLDER +
-                    Story.getSceneName() +
-                    '/' + active.getName() + '/' + xmlFile); // by convention
-            built = true;
-        }
+        System.out.println("!!!!! START " + " " + active.getName() + " " + passive.getName());
+        buildDialogue(FOLDER +
+                Story.getSceneName() +
+                '/' + active.getName() + '/' + xmlFile); // by convention
         currentExchange = exchanges.get(1);
 
         printCurrentState();
@@ -56,6 +52,8 @@ public class Dialogue extends Interaction {
 
     public void pickAnswer(int index) { // passive entity answers
         try {
+            System.out.println("active " + getActive().getName());
+            System.out.println(currentExchange.getText());
             DialogueAnswer dialogueAnswer = currentExchange.getAnswers().get(index);
             dialogueAnswer.processCallbacks();
             getPassive().setMessage(dialogueAnswer.getText(), 1.f, getActive());
@@ -76,19 +74,20 @@ public class Dialogue extends Interaction {
                 Utility.setTimeout(this::printCurrentState, answer.getTimeToUnderstand());
             }
         } catch (IndexOutOfBoundsException ignored) {
-            end();
+
         }
     }
 
     @Override
     public void end() {
         super.end();
-        getActive().setInteraction(nextDialogue);
+        Interaction nextInteraction = getActive().getNextInteraction();
+        getActive().setInteraction(nextInteraction != null ? nextInteraction : this);
     }
 
     private void printCurrentState() { // active entity talks
-        if (! currentExchange.nextDialogue.equals("")) {
-            nextDialogue = new Dialogue(currentExchange.nextDialogue);
+        if (!currentExchange.nextDialogue.equals("")) {
+            getActive().setNextInteraction(new Dialogue(currentExchange.nextDialogue));
         }
 
         if (currentExchange.triggerWonder) {
@@ -104,7 +103,9 @@ public class Dialogue extends Interaction {
                 getPassive().notifyObservers(this);
             }, getActive().getMessage().getTimeToUnderstand());
         } else {
-//            getActive().setMessage(currentExchange.getText(), 2.f, getPassive());
+            if (!currentExchange.triggerWonder) {
+                getActive().setMessage(currentExchange.getText(), 2.f, getPassive());
+            }
             end();
         }
     }
@@ -145,7 +146,7 @@ public class Dialogue extends Interaction {
                 } catch (Exception ignored) {
                 }
                 exchange.nextDialogue = exchangeNode.getAttribute("nextDialogue");
-                
+
                 buildAnswers(exchangeNode, exchange);
 
                 exchanges.put(id, exchange);

@@ -45,6 +45,7 @@ public class Entity extends Observable implements Serializable {
 
     //Number of cell per sec
     private int speed = 8;
+    private Dialogue nextInteraction;
 
     public Entity() {
     }
@@ -284,12 +285,6 @@ public class Entity extends Observable implements Serializable {
         return getInventory().contains(entity);
     }
 
-    public void changeDialogue(String name) {
-        setInteraction(new Dialogue("dialogues/"
-                + Story.getSceneName()
-                + name));
-    }
-
     public boolean isWalking() {
         return direction != Direction.NONE && movement != null ;
     }
@@ -297,5 +292,13 @@ public class Entity extends Observable implements Serializable {
     public void think(String content) {
         setMessage(content,
                 0.3f, null, true);
+    }
+
+    public Interaction getNextInteraction() {
+        return nextInteraction;
+    }
+
+    public void setNextInteraction(Dialogue nextInteraction) {
+        this.nextInteraction = nextInteraction;
     }
 }
