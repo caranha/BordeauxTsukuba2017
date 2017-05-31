@@ -24,9 +24,10 @@ class LateOnFirstDay implements State {
 
         List<Direction> path = new LinkedList<>();
         Utility.repeat(() -> path.add(Direction.WEST), 7);
-        Utility.repeat(() -> path.add(Direction.SOUTH), 4);
+        Utility.repeat(() -> path.add(Direction.SOUTH), 5);
 
-        noname.setMovement(new Path(false, Direction.WEST));
+        Direction[] directions = new Direction[path.size()];
+        new Path(false, path.toArray(directions)).move(noname);
 
         System.out.println("LATE !");
     }
