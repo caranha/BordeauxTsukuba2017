@@ -6,9 +6,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.tskbdx.sumimasen.scenes.Scene;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /*
  * Created by viet khang on 15/05/2017.
@@ -18,7 +16,7 @@ import java.util.Map;
  * UserInterface
  */
 //TODO: Rethink this class
-public class UserInterface extends Stage implements Disposable {
+public class UserInterface extends Stage implements Disposable, Observer {
 
     private final Map<Entity, MessageRenderer> messageRendererByEntity = new HashMap<>();
     private final Group textButtons;
@@ -32,6 +30,8 @@ public class UserInterface extends Stage implements Disposable {
 
         textButtons = new AnswersSelector(entity, this);
         inventoryRenderer = new InventoryRenderer(entity.getInventory(), scene);
+        messageRendererByEntity.put(entity,
+                new MessageRenderer(entity.getMessage(), scene.getCamera()));
     }
 
     @Override
@@ -66,11 +66,18 @@ public class UserInterface extends Stage implements Disposable {
     }
 
     public void init() {
+        scene.getWorld().addObserver(this);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
         List<Entity> entities = scene.getWorld().getEntities();
 
         for (Entity e : entities) {
-            messageRendererByEntity.put(e, new MessageRenderer(e.getMessage(), scene.getCamera()));
+            if (! messageRendererByEntity.containsKey(e)) {
+                messageRendererByEntity.put(e, new MessageRenderer(e.getMessage(), scene.getCamera()));
+            }
         }
-
     }
 }

@@ -3,6 +3,7 @@ package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Message;
+import com.tskbdx.sumimasen.scenes.story.Story;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,6 +31,7 @@ public class Dialogue extends Interaction {
     private Map<Integer, DialogueExchange> exchanges = new HashMap<>();
     private DialogueExchange currentExchange = new DialogueExchange();
     private String xmlFile;
+
     public Dialogue(String xmlFile) {
         super();
         this.xmlFile = xmlFile;
@@ -39,7 +41,10 @@ public class Dialogue extends Interaction {
     public void start(Entity active, Entity passive) {
         super.start(active, passive);
 
-        buildDialogue(FOLDER + active.getName() + '/' + xmlFile); // by convention
+        System.out.println("!!!!! START " + " " + active.getName() + " " + passive.getName());
+        buildDialogue(FOLDER +
+                Story.getSceneName() +
+                '/' + active.getName() + '/' + xmlFile); // by convention
         currentExchange = exchanges.get(1);
 
         printCurrentState();
@@ -47,15 +52,15 @@ public class Dialogue extends Interaction {
 
     public void pickAnswer(int index) { // passive entity answers
         try {
+            System.out.println("active " + getActive().getName());
+            System.out.println(currentExchange.getText());
             DialogueAnswer dialogueAnswer = currentExchange.getAnswers().get(index);
             dialogueAnswer.processCallbacks();
             getPassive().setMessage(dialogueAnswer.getText(), 1.f, getActive());
             Message answer = getPassive().getMessage();
-            answer.notifyObservers();
 
             // when passive talk, active stop
-            getActive().setMessage("",  0.f, getPassive());
-            getActive().getMessage().notifyObservers();
+            getActive().setMessage("", 0.f, getPassive());
 
             if (dialogueAnswer.getNextExchange() != null) {
                 currentExchange = exchanges.get(dialogueAnswer.getNextExchange());
@@ -63,21 +68,33 @@ public class Dialogue extends Interaction {
 
             getActive().notifyObservers();
             getPassive().notifyObservers();
-            Utility.setTimeout(this::printCurrentState, answer.getTimeToUnderstand());
+            if (currentExchange.text.equals("")) {
+                printCurrentState();
+            } else {
+                Utility.setTimeout(this::printCurrentState, answer.getTimeToUnderstand());
+            }
         } catch (IndexOutOfBoundsException ignored) {
+
         }
     }
 
     @Override
     public void end() {
         super.end();
-        getActive().setInteraction(new Dialogue("default.xml"));
+        Interaction nextInteraction = getActive().getNextInteraction();
+        getActive().setInteraction(nextInteraction != null ? nextInteraction : this);
     }
 
     private void printCurrentState() { // active entity talks
-        getActive().setMessage(currentExchange.getText(),  0.f, getPassive());
-        getActive().getMessage().notifyObservers();
+        if (!currentExchange.nextDialogue.equals("")) {
+            getActive().setNextInteraction(new Dialogue(currentExchange.nextDialogue));
+        }
 
+        if (currentExchange.triggerWonder) {
+            getPassive().think(currentExchange.getText());
+        } else {
+            getActive().setMessage(currentExchange.getText(), 0.f, getPassive());
+        }
         List<DialogueAnswer> answers = currentExchange.getAnswers();
 
         if (!answers.isEmpty()) {
@@ -86,8 +103,9 @@ public class Dialogue extends Interaction {
                 getPassive().notifyObservers(this);
             }, getActive().getMessage().getTimeToUnderstand());
         } else {
-            getActive().setMessage(currentExchange.getText(),  2.f, getPassive());
-            getActive().getMessage().notifyObservers();
+            if (!currentExchange.triggerWonder) {
+                getActive().setMessage(currentExchange.getText(), 2.f, getPassive());
+            }
             end();
         }
     }
@@ -119,8 +137,15 @@ public class Dialogue extends Interaction {
                 Integer id = Integer.valueOf(exchangeNode.getAttribute("id"));
                 String text = exchangeNode.getAttribute("text");
 
+
                 DialogueExchange exchange = new DialogueExchange();
                 exchange.setText(text);
+                try {
+                    Integer triggerWonder = Integer.valueOf(exchangeNode.getAttribute("triggerWonder"));
+                    exchange.setTriggerWonder(triggerWonder != null && triggerWonder.equals(1));
+                } catch (Exception ignored) {
+                }
+                exchange.nextDialogue = exchangeNode.getAttribute("nextDialogue");
 
                 buildAnswers(exchangeNode, exchange);
 
@@ -141,9 +166,11 @@ public class Dialogue extends Interaction {
 
                     Integer nextExchange = Integer.valueOf(answerNode.getAttribute("nextExchange"));
                     String answerText = answerNode.getAttribute("text");
+                    String answerIdea = answerNode.getAttribute("idea");
 
                     DialogueAnswer answer = new DialogueAnswer();
                     answer.setText(answerText);
+                    answer.idea = answerIdea;
                     answer.setNextExchange(nextExchange);
 
                     exchange.addAnswer(answer);
@@ -165,7 +192,12 @@ public class Dialogue extends Interaction {
 
         String text = "";
         Integer nextExchange;
+        String idea;
         private NodeList callbacks;
+
+        public String getIdea() {
+            return idea;
+        }
 
         public String getText() {
             return text;
@@ -206,9 +238,8 @@ public class Dialogue extends Interaction {
                 NodeList arguments = callback.getElementsByTagName("arg");
                 List<Class> argsType = new ArrayList<>();
                 List<Object> argsValue = new ArrayList<>();
-
                 for (int j = 0; j != arguments.getLength(); ++j) {
-                    Element argument = (Element) arguments.item(i);
+                    Element argument = (Element) arguments.item(j);
                     /*
                      * for each argument we store its type and value
                      */
@@ -248,12 +279,16 @@ public class Dialogue extends Interaction {
                 }
             }
         }
+
     }
 
     public class DialogueExchange implements Serializable {
         private String text = "";
 
         private List<DialogueAnswer> answers = new ArrayList<>();
+        private boolean triggerWonder = false;
+        private String nextDialogue = "";
+
 
         public String getText() {
             return text;
@@ -276,6 +311,10 @@ public class Dialogue extends Interaction {
         }
 
         public void setCallbacks(NodeList callbacks) {
+        }
+
+        public void setTriggerWonder(boolean triggerWonder) {
+            this.triggerWonder = triggerWonder;
         }
     }
 }

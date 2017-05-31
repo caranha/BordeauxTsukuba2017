@@ -20,7 +20,7 @@ class AfterTeleport implements State {
     @Override
     public void process(Scene scene) {
         World world = scene.getWorld();
-        Entity entity = world.getEntitiesByName("entity");
+        Entity entity = world.getEntityByName("entity");
         new Path(false,
                 WEST, WEST, WEST, WEST, WEST, WEST, WEST, WEST, WEST
                 , WEST, WEST, WEST, WEST, WEST, WEST, WEST, WEST, NORTH,

@@ -30,18 +30,17 @@ public class Player extends Entity {
     /**
      * Can only interact if there is a SceneObject
      * in front of the entity
-     * <p>
      * Otherwise think about the current goal
      */
     @Override
     public boolean tryInteract() {
         if (!super.tryInteract() && canTalkAlone) {
-            setMessage("I don't want to be late...",
-                    0.3f, null, true);
+            think("I don't want to be late...");
             canTalkAlone = false;
-            Utility.setTimeout(() -> canTalkAlone = true, 4.f);
+            Utility.setTimeout(() -> canTalkAlone = true, getMessage().getTotalDuration());
             return true;
         }
         return false;
     }
+
 }

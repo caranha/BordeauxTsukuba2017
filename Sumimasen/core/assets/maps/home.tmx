@@ -48,11 +48,15 @@
   </object>
   <object id="10" name="Cat" type="entity" x="56" y="64" width="16" height="8">
    <properties>
+    <property name="defaultInteraction" value="dialogue"/>
+    <property name="dialogueName" value="feedornot.xml"/>
     <property name="imageFile" value="cat.png"/>
    </properties>
   </object>
-  <object id="12" name="Coffee Machina" type="entity" x="8" y="32" width="16" height="8">
+  <object id="12" name="Coffee Machine" type="entity" x="8" y="32" width="16" height="8">
    <properties>
+    <property name="defaultInteraction" value="dialogue"/>
+    <property name="dialogueName" value="drinkornot.xml"/>
     <property name="imageFile" value="coffee_machine.png"/>
    </properties>
   </object>

@@ -30,6 +30,7 @@ abstract public class Utility {
         nativeTypes.put("byte", Byte.TYPE);
         nativeTypes.put("void", Void.TYPE);
         nativeTypes.put("short", Short.TYPE);
+        nativeTypes.put("string", String.class);
     }
 
     public static Class getPrimitiveType(String name) {

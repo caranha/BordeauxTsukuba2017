@@ -36,7 +36,7 @@ public class World extends Observable implements Serializable {
     public World() {
     }
 
-    public void init(TiledMap tiledMap, List<TiledMapUtils.MapObjectMapping> mappings, String playerSpawn ) {
+    public void init(TiledMap tiledMap, List<TiledMapUtils.MapObjectMapping> mappings, String playerSpawn) {
 
         entitiesByName.clear();
         spawnByName.clear();
@@ -48,7 +48,7 @@ public class World extends Observable implements Serializable {
 
         for (int i = 0; i < collisionLayer.getWidth(); i++) {
             for (int j = 0; j < collisionLayer.getHeight(); j++) {
-                if (collisionLayer.getCell(i, j) != null ) {
+                if (collisionLayer.getCell(i, j) != null) {
                     setWall(i, j);
                 } else {
                     setVoid(i, j);
@@ -81,7 +81,7 @@ public class World extends Observable implements Serializable {
         }
 
         for (TiledMapUtils.MapObjectMapping mapping : mappings) {
-            if(mapping.name != null && !mapping.name.equals(GameScreen.getPlayer().getName()))
+            if (mapping.name != null && !mapping.name.equals(GameScreen.getPlayer().getName()))
                 createEntity(mapping);
         }
 
@@ -89,20 +89,27 @@ public class World extends Observable implements Serializable {
 
     private void createEntity(TiledMapUtils.MapObjectMapping mapping) {
 
-        Entity entity = new Entity();
+        Entity entity = entitiesByName.get(mapping.name);
 
-        entity.setName(mapping.name);
+        if (entity == null) {
+            entity = new Entity();
 
-        entity.moveTo(mapping.x, mapping.y);
-        entity.setWidth(mapping.width);
-        entity.setHeight(mapping.height);
+            entity.setName(mapping.name);
 
-        entity.setOnCollide(mapping.onCollide);
-        entity.setInteraction(mapping.defaultInteraction);
+            entity.moveTo(mapping.x, mapping.y);
+            entity.setWidth(mapping.width);
+            entity.setHeight(mapping.height);
 
-        entity.setWorld(this);
-        moveEntity(entity, entity.getX(), entity.getY());
-        entitiesByName.put(mapping.name, entity);
+            entity.setOnCollide(mapping.onCollide);
+            System.out.println(mapping.defaultInteraction);
+            entity.setInteraction(mapping.defaultInteraction);
+
+            entity.setWorld(this);
+            moveEntity(entity, entity.getX(), entity.getY());
+            entitiesByName.put(mapping.name, entity);
+            setChanged();
+            notifyObservers();
+        }
     }
 
     public void removeEntity(Entity entity) {
@@ -136,18 +143,20 @@ public class World extends Observable implements Serializable {
     private void setVoid(int i, int j) {
         try {
             wallsMap[i][j] = false;
-        } catch (ArrayIndexOutOfBoundsException ignored){}
+        } catch (ArrayIndexOutOfBoundsException ignored) {
+        }
     }
 
     public void setWall(int x, int y) {
         try {
             wallsMap[x][y] = true;
-        } catch (ArrayIndexOutOfBoundsException ignored){}
+        } catch (ArrayIndexOutOfBoundsException ignored) {
+        }
     }
 
     public boolean isWall(int x, int y, int width, int height) {
-        for(int i = x; i < x + width; i++) {
-            for(int j = y; j < y + height; j++) {
+        for (int i = x; i < x + width; i++) {
+            for (int j = y; j < y + height; j++) {
                 if (wallsMap[i][j]) return true;
             }
         }
@@ -156,20 +165,23 @@ public class World extends Observable implements Serializable {
     }
 
     public Entity getEntity(int x, int y) {
-
-        return entitiesMap[x][y];
+        try {
+            return entitiesMap[x][y];
+        } catch(ArrayIndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
     public List<Entity> getEntities(int x, int y, int width, int height) {
 
         List<Entity> colliding = new ArrayList<>();
 
-        for(int i = x; i < x + width; i++) {
-            for(int j = y; j < y + height; j++) {
+        for (int i = x; i < x + width; i++) {
+            for (int j = y; j < y + height; j++) {
 
                 Entity entity = entitiesMap[i][j];
 
-                if(entity != null && !colliding.contains(entity)) {
+                if (entity != null && !colliding.contains(entity)) {
                     colliding.add(entity);
                 }
             }
@@ -200,7 +212,7 @@ public class World extends Observable implements Serializable {
         return entities;
     }
 
-    public final Entity getEntitiesByName(String name) {
+    public final Entity getEntityByName(String name) {
 
         return entitiesByName.get(name);
     }
