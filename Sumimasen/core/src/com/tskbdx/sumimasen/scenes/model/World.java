@@ -5,7 +5,6 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.tskbdx.sumimasen.GameScreen;
-import com.tskbdx.sumimasen.scenes.Scene;
 import com.tskbdx.sumimasen.scenes.TiledMapUtils;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Spawn;
@@ -33,10 +32,8 @@ public class World extends Observable implements Serializable {
     private Map<String, Entity> entitiesByName = new HashMap<>();
     private Map<String, Spawn> spawnByName = new HashMap<>();
 
-    private Scene scene;
 
-    public World(Scene scene) {
-        this.scene = scene;
+    public World() {
     }
 
     public void init(TiledMap tiledMap, List<TiledMapUtils.MapObjectMapping> mappings, String playerSpawn) {
@@ -224,7 +221,4 @@ public class World extends Observable implements Serializable {
         return new ArrayList<>(entitiesByName.values());
     }
 
-    public Scene getScene() {
-        return scene;
-    }
 }

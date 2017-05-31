@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="64" height="48" tilewidth="8" tileheight="8" nextobjectid="12">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="64" height="48" tilewidth="8" tileheight="8" nextobjectid="14">
  <tileset firstgid="1" name="tileset" tilewidth="8" tileheight="8" tilecount="4096" columns="64">
   <image source="tileset.png" width="512" height="512"/>
  </tileset>
@@ -119,6 +119,22 @@
     <property name="onCollide" value="changeMap"/>
     <property name="toMap" value="home"/>
     <property name="toSpawn" value="entrance"/>
+   </properties>
+  </object>
+  <object id="12" name="To lab from left..." type="entity" x="328" y="264" width="24" height="8">
+   <properties>
+    <property name="imageFile" value="up.png"/>
+    <property name="onCollide" value="changeMap"/>
+    <property name="toMap" value="lab"/>
+    <property name="toSpawn" value="left_entrance"/>
+   </properties>
+  </object>
+  <object id="13" name="To lab fom right ..." type="entity" x="424" y="264" width="24" height="8">
+   <properties>
+    <property name="imageFile" value="up.png"/>
+    <property name="onCollide" value="changeMap"/>
+    <property name="toMap" value="lab"/>
+    <property name="toSpawn" value="right_entrance"/>
    </properties>
   </object>
  </objectgroup>
