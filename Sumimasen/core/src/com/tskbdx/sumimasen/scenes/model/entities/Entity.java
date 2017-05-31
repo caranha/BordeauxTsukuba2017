@@ -198,6 +198,9 @@ public class Entity extends Observable implements Serializable {
         message.setReceiver(receiver);
         message.notifyObservers();
         setChanged();
+        if (receiver != null) {
+            receiver.setChanged();
+        }
     }
 
     public void setMessage(String content,

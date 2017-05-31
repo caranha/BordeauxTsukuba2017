@@ -45,6 +45,7 @@ final class AnswersSelector extends Group implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+        System.out.println("non mais allo quoi");
         Dialogue dialogue = arg instanceof Dialogue ? (Dialogue) arg : null;
         if (entity.isInteracting() && dialogue != null) {
             setAnswersButtons(dialogue);
@@ -59,9 +60,10 @@ final class AnswersSelector extends Group implements Observer {
         Array<Actor> children = getChildren();
         for (int i = 0; i != answers.size(); ++i) {
             Button button;
+            String text = answers.get(i).getIdea();
             // If not enough buttons created :
             if (i >= children.size) {
-                button = new TextButton(answers.get(i).getText(), skin);
+                button = new TextButton(text, skin);
                 final int finalI = i;
                 button.addListener(new ChangeListener() {
                     @Override
@@ -72,7 +74,7 @@ final class AnswersSelector extends Group implements Observer {
                 addActor(button);
             } else {
                 button = (TextButton) children.get(i);
-                ((TextButton) button).setText(answers.get(i).getText());
+                ((TextButton) button).setText(text);
             }
             button.setSize(Gdx.graphics.getWidth() / answers.size(), Gdx.graphics.getHeight() * 0.1f);
             button.setPosition(i * button.getWidth(), 0);

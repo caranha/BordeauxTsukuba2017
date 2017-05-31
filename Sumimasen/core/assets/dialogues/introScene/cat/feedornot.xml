@@ -1,0 +1,23 @@
+<dialogue>
+    <exchange id="1" text="Meow">
+        <answers>
+            <answer idea="Give him food." text="Here you are Jorge !" nextExchange="2">
+            	<callback methodName="changeDialogue" on="cat">
+            		<arg type="string" value="happy"/>
+            	</callback>
+            	<callback methodName="addTag">
+            		<arg type="string" value="late" />
+            	</callback>
+            </answer>
+            <answer idea="Ignore it." text="" nextExchange="3"/>
+        </answers>
+    </exchange>
+    <exchange id="2" text="Meowww !">
+    	<answers>
+    	</answers>
+    </exchange>
+    <exchange id="3" text="Hisss">
+    	<answers>
+    	</answers>
+    </exchange>
+</dialogue>

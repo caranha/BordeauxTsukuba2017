@@ -87,7 +87,6 @@ public class Dialogue extends Interaction {
         if (!answers.isEmpty()) {
             System.out.println(getActive().getMessage().getTimeToUnderstand());
             Utility.setTimeout(() -> {
-
                 getActive().notifyObservers(this);
                 getPassive().notifyObservers(this);
             }, getActive().getMessage().getTimeToUnderstand());
@@ -147,9 +146,11 @@ public class Dialogue extends Interaction {
 
                     Integer nextExchange = Integer.valueOf(answerNode.getAttribute("nextExchange"));
                     String answerText = answerNode.getAttribute("text");
+                    String answerIdea = answerNode.getAttribute("idea");
 
                     DialogueAnswer answer = new DialogueAnswer();
                     answer.setText(answerText);
+                    answer.idea = answerIdea;
                     answer.setNextExchange(nextExchange);
 
                     exchange.addAnswer(answer);
@@ -172,7 +173,11 @@ public class Dialogue extends Interaction {
         String text = "";
         Integer nextExchange;
         private NodeList callbacks;
+        String idea;
 
+        public String getIdea() {
+            return idea;
+        }
         public String getText() {
             return text;
         }
@@ -254,6 +259,7 @@ public class Dialogue extends Interaction {
                 }
             }
         }
+
     }
 
     public class DialogueExchange implements Serializable {
