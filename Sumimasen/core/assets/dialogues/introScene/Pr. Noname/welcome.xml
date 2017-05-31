@@ -1,0 +1,30 @@
+<dialogue>
+    <exchange id="1" text="Hi ! Right on time ! Do you want some coffee ?">
+    	<answers>
+    		<answer idea="He is boring and I want to work !" text="What shall I do ?" nextExchange="6"/>
+    		<answer idea="He is funny, let's joke" text="Not really, I should have put something under ..." nextExchange="7"/>
+    	</answers>
+    </exchange>
+    <exchange id="6" text="Today you have to take care of this machine over there." 
+        nextDialogue="default.xml">
+    	<answers>
+    		<answer idea="Sure" text="Sure" nextExchange="222"/>
+    		<answer idea="What about no ?" text="I'm not your slave dude." nextExchange="2222"/>
+    	</answers>
+    </exchange>
+    <exchange id="7" text="Anyway, can you take care of this machine over there ?"
+     nextDialogue="default.xml">
+    	<answers>
+    		<answer idea="Sure" text="Sure" nextExchange="222"/>
+    		<answer idea="What about no ?" text="I'm not your slave dude." nextExchange="2222"/>
+    	</answers>
+    </exchange>
+    <exchange id="222" text="">
+        <answers>
+        </answers>
+    </exchange>
+    <exchange id="2222" text="You are fired !">
+    	<answers>
+    	</answers>
+    </exchange>
+</dialogue>

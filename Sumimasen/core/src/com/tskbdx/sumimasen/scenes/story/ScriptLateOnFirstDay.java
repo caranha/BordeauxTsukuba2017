@@ -90,14 +90,17 @@ class ScriptLateOnFirstDay {
 
             List<Direction> patrol = new LinkedList<>();
             Utility.repeat(() -> patrol.add(Direction.WEST), 3);
+            Utility.repeat(() -> patrol.add(Direction.NONE), 6);
             Utility.repeat(() -> patrol.add(Direction.EAST), 3);
-            Utility.repeat(() -> patrol.add(Direction.NONE), 10);
-            Collections.shuffle(patrol);
+            Utility.repeat(() -> patrol.add(Direction.NONE), 6);
 
             new Path(() ->
                     new Path(true,
                             patrol.toArray(new Direction[patrol.size()])).move(noname),
                     path.toArray(new Direction[path.size()])).move(noname);
+
+            Entity machine = world.getEntityByName("Machine");
+            machine.setInteraction(new Dialogue("letsWork.xml"));
         }
 
         @Override
