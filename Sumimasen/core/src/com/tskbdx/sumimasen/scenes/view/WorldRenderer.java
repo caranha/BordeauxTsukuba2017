@@ -70,35 +70,6 @@ public class WorldRenderer implements Observer {
 
         TiledMapTileLayer floating = (TiledMapTileLayer) tiledMapRenderer.getMap().getLayers().get("Floating");
 
-        List<EntityRenderer> beforeFloating = new ArrayList<>();
-        List<EntityRenderer> afterFloating = new ArrayList<>();
-
-        for (EntityRenderer renderer : renderers) {
-            if (floating.getCell((int) renderer.getX() / 8, (int) renderer.getY() / 8) != null
-                    || floating.getCell((int) (renderer.getX() + renderer.getWidth()) / 8, (int) renderer.getY() / 8) != null) {
-                beforeFloating.add(renderer);
-            } else {
-                afterFloating.add(renderer);
-            }
-        }
-
-        for (int i = 0; i < afterFloating.size(); i++) {
-
-            EntityRenderer afterFloatingRenderer = afterFloating.get(i);
-
-            for (EntityRenderer beforeFloatingRenderer : beforeFloating) {
-
-                if (afterFloatingRenderer.getY() > beforeFloatingRenderer.getY()
-                        && afterFloatingRenderer.getRectangle().overlaps(beforeFloatingRenderer.getRectangle())) {
-
-                    beforeFloating.add(0, afterFloatingRenderer);
-                    afterFloating.remove(i);
-                    i--;
-                    break;
-                }
-            }
-        }
-
         for (MapLayer layer : tiledMapRenderer.getMap().getLayers()) {
 
             if (layer.isVisible()) {
@@ -106,14 +77,32 @@ public class WorldRenderer implements Observer {
 
                     if (layer.getName().equals("Floating")) {
 
-                        for (EntityRenderer beforeFloatingRenderer : beforeFloating) {
-                            beforeFloatingRenderer.render(batch);
-                        }
+                        for (int i = floating.getHeight() - 1; i >= 0; i--) {
 
-                        tiledMapRenderer.renderTileLayer((TiledMapTileLayer) layer);
+                            for (int ri = 0; ri < renderers.size(); ri++) {
+                                EntityRenderer entityRenderer = renderers.get(ri);
+                                if (entityRenderer.getEntity().getY() < i) break;
 
-                        for (EntityRenderer entityRenderer : afterFloating) {
-                            entityRenderer.render(batch);
+                                if (entityRenderer.getEntity().getY() == i) {
+                                    entityRenderer.render(batch);
+                                    renderers.remove(ri);
+                                    ri--;
+                                }
+                            }
+
+                            for (int j = 0; j < floating.getWidth(); j++) {
+
+                                int i2 = i;
+
+                                TiledMapTileLayer.Cell cell = floating.getCell(j,i2);
+                                while (cell != null) {
+                                    batch.draw(cell.getTile().getTextureRegion(), j * 8, i2 * 8);
+                                    i2++;
+                                    if (i2 >= floating.getHeight()) break;
+                                    cell = floating.getCell(j,i2);
+                                }
+
+                            }
                         }
 
                     } else {

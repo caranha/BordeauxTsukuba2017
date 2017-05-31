@@ -1,7 +1,7 @@
 <dialogue>
     <exchange id="1" text="My cats seems starving" triggerWonder="1">
         <answers>
-            <answer idea="Give him food." text="Here you are Famiral !" nextExchange="2">
+            <answer idea="Give him food." text="Here you are my friend !" nextExchange="2">
             	<callback methodName="addTag">
             		<arg type="string" value="late" />
             	</callback>
