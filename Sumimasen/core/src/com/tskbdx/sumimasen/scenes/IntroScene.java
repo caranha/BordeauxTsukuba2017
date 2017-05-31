@@ -25,7 +25,7 @@ public class IntroScene extends Scene {
     public void init() {
 
         loadMap(currentMap, spawn);
-        userInterface.update();
+        userInterface.init();
 
         getCamera().setTo(GameScreen.getPlayer().getX() * 8.f, GameScreen.getPlayer().getY() * 8.f);
     }

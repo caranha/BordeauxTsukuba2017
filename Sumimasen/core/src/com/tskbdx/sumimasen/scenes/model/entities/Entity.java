@@ -1,8 +1,11 @@
 package com.tskbdx.sumimasen.scenes.model.entities;
 
 import com.tskbdx.sumimasen.scenes.model.World;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
+import com.tskbdx.sumimasen.scenes.story.Story;
+import com.tskbdx.sumimasen.scenes.utility.Utility;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ public class Entity extends Observable implements Serializable {
      */
     private Message message = new Message(this);
     /**
+     * dd
      * direction is the current direction movement state
      * lastDirection is like the static direction state
      */
@@ -42,13 +46,14 @@ public class Entity extends Observable implements Serializable {
     //Number of cell per sec
     private int speed = 8;
 
-    public Entity() {}
+    public Entity() {
+    }
 
     /**
      * Can only interact if there is a SceneObject
      * in front of the entity
      */
-    public void tryInteract() {
+    public boolean tryInteract() {
         List<Entity> neighbors = getInFrontOfNeighbors();
         for (Entity neighbour : neighbors) {
             if (neighbour != null) {
@@ -60,9 +65,10 @@ public class Entity extends Observable implements Serializable {
                     neighbour.getInteraction().start(neighbour, this);
                 }
 
-                return;
+                return true;
             }
         }
+        return false;
     }
 
     private List<Entity> getInFrontOfNeighbors() {
@@ -184,14 +190,19 @@ public class Entity extends Observable implements Serializable {
         return message;
     }
 
-    public void setMessage(String content, float timeToUnderstand,
+    public void setMessage(String content,
                            float timeToAnswer, Entity receiver) {
         message.setContent(content);
         message.setTimeToAnswer(timeToAnswer);
-        message.setTimeToUnderstand(timeToUnderstand);
+        message.setTimeToUnderstand(Utility.getWordCount(content) * .5f);
         message.setReceiver(receiver);
-        receiver.setChanged();
-        setChanged();
+        message.notifyObservers();
+    }
+
+    public void setMessage(String content,
+                           float timeToAnswer, Entity receiver, boolean important) {
+        message.setImportant(important);
+        setMessage(content, timeToAnswer, receiver);
     }
 
     private boolean isInteractable() {
@@ -261,12 +272,17 @@ public class Entity extends Observable implements Serializable {
         }
 
 
-
     }
 
     public boolean has(String object) {
         Entity entity = world.getEntitiesByName(object);
         return getInventory().contains(entity);
+    }
+
+    public void changeDialogue(String name) {
+        setInteraction(new Dialogue("dialogues/"
+                + Story.getSceneName()
+                + name));
     }
 
     public boolean isWalking() {

@@ -14,6 +14,7 @@ public class Message extends Observable implements Serializable {
     private float timeToAnswer;
     private final Entity sender;
     private Entity receiver;
+    private boolean important = false;
 
     Message(Entity entity) {
         sender = entity;
@@ -65,5 +66,15 @@ public class Message extends Observable implements Serializable {
 
     public float getTotalDuration() {
         return timeToAnswer + timeToUnderstand;
+    }
+
+
+    public void setImportant(boolean important) {
+        this.important = important;
+        setChanged();
+    }
+
+    public boolean isImportant() {
+        return important;
     }
 }

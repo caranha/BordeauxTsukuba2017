@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.TiledMapUtils;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
@@ -53,6 +54,8 @@ public class WorldRenderer implements Observer {
 
         }
 
+        getCamera().setTo(GameScreen.getPlayer().getX() * 8,
+                GameScreen.getPlayer().getY() * 8);
     }
 
     //TODO: Maybe to ptimize

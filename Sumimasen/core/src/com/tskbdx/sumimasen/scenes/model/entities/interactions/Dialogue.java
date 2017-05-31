@@ -49,12 +49,12 @@ public class Dialogue extends Interaction {
         try {
             DialogueAnswer dialogueAnswer = currentExchange.getAnswers().get(index);
             dialogueAnswer.processCallbacks();
-            getPassive().setMessage(dialogueAnswer.getText(), 1.5f, 1.f, getActive());
+            getPassive().setMessage(dialogueAnswer.getText(), 1.f, getActive());
             Message answer = getPassive().getMessage();
             answer.notifyObservers();
 
             // when passive talk, active stop
-            getActive().setMessage("", 0.f, 0.f, getPassive());
+            getActive().setMessage("",  0.f, getPassive());
             getActive().getMessage().notifyObservers();
 
             if (dialogueAnswer.getNextExchange() != null) {
@@ -75,7 +75,7 @@ public class Dialogue extends Interaction {
     }
 
     private void printCurrentState() { // active entity talks
-        getActive().setMessage(currentExchange.getText(), 2.f, 0.f, getPassive());
+        getActive().setMessage(currentExchange.getText(),  0.f, getPassive());
         getActive().getMessage().notifyObservers();
 
         List<DialogueAnswer> answers = currentExchange.getAnswers();
@@ -86,7 +86,7 @@ public class Dialogue extends Interaction {
                 getPassive().notifyObservers(this);
             }, getActive().getMessage().getTimeToUnderstand());
         } else {
-            getActive().setMessage(currentExchange.getText(), 2.f, 2.f, getPassive());
+            getActive().setMessage(currentExchange.getText(),  2.f, getPassive());
             getActive().getMessage().notifyObservers();
             end();
         }

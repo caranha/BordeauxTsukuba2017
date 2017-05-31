@@ -73,7 +73,9 @@ public class GameCommands extends InputAdapter {
     @Override
     public boolean keyDown(int keycode) {
         if (execute(keyDownCommands, keycode)) {
-            currentKeycode = keycode;
+            if(keycode != Input.Keys.SPACE) {
+                currentKeycode = keycode;
+            }
             return true;
         }
         return false;

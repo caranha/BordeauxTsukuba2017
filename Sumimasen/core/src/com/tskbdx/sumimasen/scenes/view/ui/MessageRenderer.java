@@ -31,7 +31,7 @@ import java.util.Observer;
  * Else, it shows in the other side of his interlocutor
  * <p>
  * Public method :
- * + update() (from Obserrver)
+ * + init() (from Obserrver)
  * + render(Batch) (Main method)
  * + dispose() (from disposable)
  */
@@ -43,6 +43,7 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
     private final Camera camera;
     private final Sprite bubbleHorizontal = new Sprite(Sumimasen.getAssetManager().get("images/bubbleHorizontal.png", Texture.class));
     private final Sprite bubbleVertical = new Sprite(Sumimasen.getAssetManager().get("images/bubbleVertical.png", Texture.class));
+    private final FollowEntity followEntity;
     private Sprite currentBubble;
     private String content;
     private Direction direction;
@@ -53,11 +54,12 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
     private Map<Direction, Runnable> rotationCalculator = new HashMap<>();
     private Tween alphaTween = new Tween(Interpolation.smooth);
     private Tween bounceTween = new Tween(Interpolation.bounceOut);
-    private boolean firstTime = true;
     private float targetWidth;
     private float padding = 10.f;
+    private boolean follow = false; // following sender ?
 
     MessageRenderer(Message message, Camera camera) {
+        followEntity = new FollowEntity(message.getSender());
         this.message = message;
         this.camera = camera;
         message.addObserver(this);
@@ -76,30 +78,31 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
         // Get message content
         Entity receiver = message.getReceiver();
         content = message.getContent();
+        direction = message.getSender().getLastDirection();
 
         if (!content.equals("")) {
+            // Calculate position and bubble rotation
+            if (receiver != null) {
+                follow = false;
+            } else {
+                follow = true;
+                followEntity.reset();
+                followEntity.update(null, null);
+                direction = Direction.SOUTH;
+            }
+            currentBubble = direction.isHorizontal() ? bubbleHorizontal : bubbleVertical;
+            execute(positionCalculator, direction);
+            execute(rotationCalculator, direction);
+
             // Set layout
-            direction = message.getSender().getLastDirection();
             targetWidth = getTargetWidth(direction.isHorizontal());
             layout.setText(font, content, Color.BLACK, targetWidth,
                     Align.center, true);
 
-            // Calculate position and bubble rotation
-            if (receiver != null) {
-                execute(positionCalculator, direction);
-                execute(rotationCalculator, direction);
-                currentBubble = direction.isHorizontal() ? bubbleHorizontal : bubbleVertical;
-            } else { // speaking alone, bubble above => same fx than :
-                execute(positionCalculator, Direction.SOUTH);
-                execute(rotationCalculator, Direction.SOUTH);
-                currentBubble = bubbleVertical;
-            }
-
             // Start tweens
             alphaTween.playWith(1, message.getTimeToAnswer() != 0.f ? 0 : 1, message.getTimeToAnswer(), message.getTimeToUnderstand(), true);
-            if (firstTime && !message.getSender().getName().equals("player")) {
+            if (message.isImportant()) {
                 bounceTween.playWith(0, 1, 0.5f, 0.f, true);
-                firstTime = false;
             }
         }
     }
@@ -118,7 +121,6 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
         }
     }
 
-
     private float getTargetWidth(boolean horizontal) {
         float scale = horizontal ? 0.4f : 1.f;
         return 400.f * scale;
@@ -136,7 +138,7 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
                 y = onScreenPosition.y - layout.height - padding + (1 - interpolation) * (padding + layout.height / 2),
                 w = (layout.width + padding * 2) * interpolation,
                 h = (layout.height + padding * 2) * interpolation;
-        screenBatch.draw(currentBubble, x, y,w * .5f,h * .5f, w, h,
+        screenBatch.draw(currentBubble, x, y, w * .5f, h * .5f, w, h,
                 1, 1, currentBubble.getRotation());
     }
 
@@ -145,7 +147,8 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
         if (direction.equals(Direction.WEST)) {
             deltaX = padding * .5f;
         }
-        font.draw(screenBatch, layout, onScreenPosition.x + deltaX, onScreenPosition.y);
+        font.draw(screenBatch, layout, onScreenPosition.x + deltaX,
+                onScreenPosition.y);
     }
 
     private boolean update() {
@@ -154,7 +157,14 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
             Color processedColor = new Color(0, 0, 0, alphaTween.getInterpolation());
             layout.setText(font, content, processedColor,
                     getTargetWidth(direction.isHorizontal()), Align.center, true);
-            onScreenPosition = toScreenPosition(startingPosition.x, startingPosition.y);
+            if (follow) {
+                onScreenPosition = toScreenPosition(startingPosition.x + followEntity.getOffsetX(),
+                        startingPosition.y + followEntity.getOffsetY());
+            } else {
+                onScreenPosition = toScreenPosition(startingPosition.x,
+                        startingPosition.y);
+            }
+
             padding = content.length() < 10 && direction.equals(Direction.EAST) ? 20.f : 10.f;
             execute(offsetCalculator, direction);
             return true;
@@ -203,9 +213,48 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
     }
 
     private void initRotationCalculator() {
-        rotationCalculator.put(Direction.SOUTH, () -> bubbleVertical.setRotation(0));
-        rotationCalculator.put(Direction.EAST, () -> bubbleHorizontal.setRotation(0));
-        rotationCalculator.put(Direction.NORTH, () -> bubbleVertical.setRotation(180));
-        rotationCalculator.put(Direction.WEST, () -> bubbleHorizontal.setRotation(180));
+        rotationCalculator.put(Direction.SOUTH, () -> currentBubble.setRotation(0));
+        rotationCalculator.put(Direction.EAST, () -> currentBubble.setRotation(0));
+        rotationCalculator.put(Direction.NORTH, () -> currentBubble.setRotation(180));
+        rotationCalculator.put(Direction.WEST, () -> currentBubble.setRotation(180));
+    }
+}
+
+final class FollowEntity implements Observer {
+    private final Entity entity;
+    private final Tween tweenX = new Tween(Interpolation.linear),
+            tweenY = new Tween(Interpolation.linear);
+    private int startX;
+    private int startY;
+    private float duration;
+
+    FollowEntity(Entity entity) {
+        this.entity = entity;
+        reset();
+        entity.addObserver(this);
+    }
+
+    void reset() {
+        startX = entity.getX();
+        startY = entity.getY();
+        tweenX.stop();
+        tweenY.stop();
+        duration = 2.f / entity.getSpeed();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        float offsetX = (entity.getX() - startX) * EntityRenderer.TILE_SIZE;
+        float offsetY = (entity.getY() - startY) * EntityRenderer.TILE_SIZE;
+        tweenX.playWith(tweenX.getInterpolation(), offsetX, duration);
+        tweenY.playWith(tweenY.getInterpolation(), offsetY, duration);
+    }
+
+    float getOffsetX() {
+        return tweenX.getInterpolation();
+    }
+
+    float getOffsetY() {
+        return tweenY.getInterpolation();
     }
 }
