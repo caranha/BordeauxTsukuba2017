@@ -98,5 +98,6 @@ public abstract class Scene {
         world.init(tiledMap, mapObjectMappings, spawn);
         worldRenderer.init(tiledMap, mapObjectMappings);
     }
+
 }
 

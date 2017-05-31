@@ -1,5 +1,6 @@
 package com.tskbdx.sumimasen.scenes.story;
 
+import com.badlogic.gdx.Gdx;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.Scene;
 import com.tskbdx.sumimasen.scenes.model.World;
@@ -12,6 +13,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Path;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -60,14 +62,13 @@ class ScriptLateOnFirstDay {
             Utility.repeat(() -> path.add(Direction.SOUTH), 6);
 
             new Path(() -> {
-                player.setMovement(playerMovement);
                 new Dialogue("playerLate.xml").start(noname, player);
             }, path.toArray(new Direction[path.size()])).move(noname);
         }
 
         @Override
         public State nextState(Event event) {
-            if (event.is(Interaction.class, "Pr. Noname")) {
+            if (event.is(Dialogue.class, "Pr. Noname")) {
                 return new LetsWork();
             }
             return null;
@@ -80,6 +81,7 @@ class ScriptLateOnFirstDay {
         public void process(Scene scene) {
             World world = scene.getWorld();
             world.removeEntity(world.getEntityByName("late sensor"));
+            System.out.println("LETS WORK !");
         }
 
         @Override
