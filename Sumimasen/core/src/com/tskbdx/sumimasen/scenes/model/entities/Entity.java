@@ -194,7 +194,8 @@ public class Entity extends Observable implements Serializable {
                            float timeToAnswer, Entity receiver) {
         message.setContent(content);
         message.setTimeToAnswer(timeToAnswer);
-        message.setTimeToUnderstand(Utility.getWordCount(content) * .5f);
+        message.setTimeToUnderstand(
+                Math.min(Utility.getWordCount(content) * 1.3f, 4.2f));
         message.setReceiver(receiver);
         message.notifyObservers();
         setChanged();
@@ -293,4 +294,8 @@ public class Entity extends Observable implements Serializable {
         return direction != Direction.NONE && movement != null ;
     }
 
+    public void think(String content) {
+        setMessage(content,
+                0.3f, null, true);
+    }
 }

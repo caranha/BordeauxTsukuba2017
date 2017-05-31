@@ -168,8 +168,11 @@ public class World extends Observable implements Serializable {
     }
 
     public Entity getEntity(int x, int y) {
-
-        return entitiesMap[x][y];
+        try {
+            return entitiesMap[x][y];
+        } catch(ArrayIndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
     public List<Entity> getEntities(int x, int y, int width, int height) {
