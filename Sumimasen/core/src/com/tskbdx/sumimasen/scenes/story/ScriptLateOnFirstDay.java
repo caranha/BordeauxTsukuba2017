@@ -61,7 +61,7 @@ class ScriptLateOnFirstDay {
             Direction[] directions = new Direction[path.size()];
             new Path(false, path.toArray(directions)).move(noname);
 
-            noname.setInteraction(new Dialogue("playerlate.xml"));
+            noname.setInteraction(new Dialogue("playerLate.xml"));
             noname.getInteraction().start(noname, player);
         }
 

@@ -20,8 +20,8 @@ class ScriptIntroScene {
             Entity cat = world.getEntityByName("Cat"),
                     coffee = world.getEntityByName("Coffee Machine");
 
-            cat.setInteraction(new Dialogue("feedornot.xml"));
-            coffee.setInteraction(new Dialogue("drinkornot.xml"));
+            cat.setInteraction(new Dialogue("feedOrNot.xml"));
+            coffee.setInteraction(new Dialogue("drinkOrNot.xml"));
         }
 
         @Override
