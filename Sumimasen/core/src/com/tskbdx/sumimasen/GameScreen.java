@@ -22,7 +22,7 @@ public class GameScreen implements Screen {
 
     private static Player player = new Player();
 
-    private Scene currentScene;
+    private static Scene currentScene;
 
     public GameScreen(final Sumimasen game) {
         this(game, false);
@@ -154,5 +154,9 @@ public class GameScreen implements Screen {
 
     public static Player getPlayer() {
         return player;
+    }
+
+    public static Scene getCurrentScene() {
+        return currentScene;
     }
 }

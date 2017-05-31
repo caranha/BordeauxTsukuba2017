@@ -1,5 +1,6 @@
 package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
+import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
@@ -32,7 +33,7 @@ public class ChangeMap extends Interaction {
         passive.notifyObservers(ChangeMap.class);
 
         Utility.setTimeout(() -> {
-            passive.getWorld().getScene().loadMap(mapName, spawnName);
+            GameScreen.getCurrentScene().loadMap(mapName, spawnName);
             passive.setMovement(backup);
             passive.notifyObservers();
             end();

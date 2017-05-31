@@ -1,9 +1,11 @@
 package com.tskbdx.sumimasen.scenes.model.entities;
 
+import java.io.Serializable;
+
 /**
  * Created by Sydpy on 5/26/17.
  */
-public class Spawn {
+public class Spawn implements Serializable {
 
     private String name;
     private int x, y;

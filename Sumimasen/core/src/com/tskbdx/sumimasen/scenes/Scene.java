@@ -5,7 +5,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.inputprocessors.GameCommands;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.story.Story;
@@ -43,7 +42,7 @@ public abstract class Scene {
         inputProcessor = new GameCommands();
         Gdx.input.setInputProcessor(inputProcessor);
 
-        world = new World(this);
+        world = new World();
         worldRenderer = new WorldRenderer(world, camera);
 
         story.setScene(this);
@@ -97,8 +96,6 @@ public abstract class Scene {
 
             world.init(tiledMap, mapObjectMappings, spawn);
             worldRenderer.init(tiledMap, mapObjectMappings);
-
-            System.out.println(GameScreen.getPlayer().getMovement());
 
         }
     }
