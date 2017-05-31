@@ -17,8 +17,8 @@ public class IntroScene extends Scene {
     public IntroScene() {
         super();
         userInterface = new UserInterface(this, GameScreen.getPlayer());
-        currentMap = "map";
-        spawn = "player_home";
+        currentMap = "home";
+        spawn = "entrance";
     }
 
     @Override
