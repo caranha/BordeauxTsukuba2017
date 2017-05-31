@@ -32,6 +32,7 @@ public class IntroScene extends Scene {
 
     @Override
     public void update(float dt) {
+
         Tween.updateAll(dt);
 
         getCamera().translate(

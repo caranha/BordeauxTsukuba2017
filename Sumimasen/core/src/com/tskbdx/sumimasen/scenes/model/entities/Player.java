@@ -3,14 +3,13 @@ package com.tskbdx.sumimasen.scenes.model.entities;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Walk;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /*Z
  * Created by Sydpy on 4/27/17.
  */
-public class Player extends Entity implements Serializable {
+public class Player extends Entity {
 
     private List<String> tags = new ArrayList<>();
     private boolean canTalkAlone = true;

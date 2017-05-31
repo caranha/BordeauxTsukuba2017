@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.tskbdx.sumimasen.scenes.IntroScene;
 import com.tskbdx.sumimasen.scenes.Scene;
+import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
 
 import java.io.*;
@@ -55,7 +56,6 @@ public class GameScreen implements Screen {
         currentScene.render(game.getBatch());
         game.getBatch().end();
 
-
         if (currentScene.isFinished()) {
             Scene nextScene = currentScene.getNextScene();
 
@@ -96,10 +96,12 @@ public class GameScreen implements Screen {
             out1.close();
             fout1.close();
 
-            System.out.println("Serializing player");
+            System.out.println("Serializing player'");
             FileOutputStream fout2 = new FileOutputStream(SAVE_DIR + "player.save");
             ObjectOutputStream out2 = new ObjectOutputStream(fout2);
+            player.setWorld(null);
             out2.writeObject(player);
+            out2.close();
             fout2.close();
 
         } catch (IOException e) {
@@ -108,9 +110,10 @@ public class GameScreen implements Screen {
         }
     }
 
-    public void loadFromSave() {
+    private void loadFromSave() {
 
         try {
+
             System.out.println("Deserializing current scene");
             FileInputStream fin1                = new FileInputStream(SAVE_DIR + "scene.save");
             ObjectInputStream in1               = new ObjectInputStream(fin1);
@@ -121,12 +124,22 @@ public class GameScreen implements Screen {
             System.out.println("Deserializing player");
             FileInputStream fin2    = new FileInputStream(SAVE_DIR + "player.save");
             ObjectInputStream in2   = new ObjectInputStream(fin2);
-            Player player           = (Player) in2.readObject();
+            Entity player           = (Entity) in2.readObject();
             in2.close();
             fin2.close();
 
+            GameScreen.player.setHeight(player.getHeight());
+            GameScreen.player.setWidth(player.getWidth());
+            GameScreen.player.setName(player.getName());
+            GameScreen.player.setDirection(player.getDirection());
+            GameScreen.player.setOnCollide(player.getOnCollide());
+            GameScreen.player.setInventory(player.getInventory());
+            GameScreen.player.setMovement(player.getMovement());
+            GameScreen.player.setInteraction(player.getInteraction());
+
+
             this.currentScene = sceneClass.getConstructor().newInstance();
-            GameScreen.player = player;
+            this.currentScene.init();
 
         } catch (IOException |
                 ClassNotFoundException |

@@ -7,6 +7,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 import com.tskbdx.sumimasen.scenes.story.Story;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -14,7 +15,7 @@ import java.util.Observable;
 /**
  * Created by Sydpy on 4/28/17.
  */
-public class Entity extends Observable {
+public class Entity extends Observable implements Serializable {
 
     private World world;
 
@@ -208,7 +209,7 @@ public class Entity extends Observable {
         return interaction != null;
     }
 
-    private Interaction getInteraction() {
+    public Interaction getInteraction() {
         return interaction;
     }
 
@@ -231,11 +232,15 @@ public class Entity extends Observable {
         setChanged();
     }
 
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
     public Inventory getInventory() {
         return inventory;
     }
 
-    private Interaction getOnCollide() {
+    public Interaction getOnCollide() {
         return onCollide;
     }
 
