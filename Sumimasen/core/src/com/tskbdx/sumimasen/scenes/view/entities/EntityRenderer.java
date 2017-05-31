@@ -60,7 +60,6 @@ public class EntityRenderer implements Observer {
                 Effect fadeIn = new Fade(ChangeMap.DELAY, Fade.IN);
                 fadeIn.setCallback(() -> {
                     worldRenderer.setEffect(new Fade(ChangeMap.DELAY, Fade.OUT));
-                    worldRenderer.getCamera().setTo(entity.getX() * 8, entity.getY() * 8);
                 });
 
                 worldRenderer.setEffect(fadeIn);

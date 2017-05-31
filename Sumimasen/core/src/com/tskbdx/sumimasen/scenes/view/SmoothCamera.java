@@ -14,9 +14,9 @@ import com.badlogic.gdx.math.Interpolation;
 public class SmoothCamera extends OrthographicCamera {
     private final Interpolation interpolation = Interpolation.linear;
     private final float duration;
-    private float targetX, targetY;
     private final Tween tweenX = new Tween(interpolation),
             tweenY = new Tween(interpolation);
+    private float targetX, targetY;
 
     public SmoothCamera(float transitionInSec) {
         //   camera.translate(player.getX()*8 - camera.position.x, player.getY()*8 - camera.position.y);
@@ -54,8 +54,7 @@ public class SmoothCamera extends OrthographicCamera {
     }
 
     public void setTo(float x, float y) {
-        position.x = x;
-        position.y = y;
-        update();
+        targetX = position.x = x;
+        targetY = position.y = y;
     }
 }

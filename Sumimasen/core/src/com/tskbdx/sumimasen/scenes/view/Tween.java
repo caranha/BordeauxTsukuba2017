@@ -88,8 +88,8 @@ public class Tween {
      * Pause and restart the tween.
      */
     public void stop() {
-        pause();
         playWith(0, 0, 0, 0);
+        pause();
     }
 
     public boolean isPlaying() {
