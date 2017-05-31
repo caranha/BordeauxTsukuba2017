@@ -91,8 +91,6 @@ public class Dialogue extends Interaction {
             nextDialogue = new Dialogue(currentExchange.nextDialogue);
         }
 
-        System.out.println(currentExchange.getText());
-
         if (currentExchange.triggerWonder) {
             getPassive().think(currentExchange.getText());
         } else {
@@ -106,7 +104,7 @@ public class Dialogue extends Interaction {
                 getPassive().notifyObservers(this);
             }, getActive().getMessage().getTimeToUnderstand());
         } else {
-            getActive().setMessage(currentExchange.getText(), 2.f, getPassive());
+//            getActive().setMessage(currentExchange.getText(), 2.f, getPassive());
             end();
         }
     }
