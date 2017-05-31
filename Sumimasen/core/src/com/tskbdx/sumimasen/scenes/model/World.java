@@ -220,5 +220,4 @@ public class World extends Observable implements Serializable {
     public List<Entity> getEntities() {
         return new ArrayList<>(entitiesByName.values());
     }
-
 }

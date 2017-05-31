@@ -4,6 +4,7 @@ import com.tskbdx.sumimasen.scenes.Scene;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.TriggerThought;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Path;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
@@ -20,6 +21,14 @@ class ScriptLateOnFirstDay {
         @Override
         public void process(Scene scene) {
             World world = scene.getWorld();
+
+            Entity sensor = new Entity();
+            sensor.setWorld(world);
+            sensor.moveTo(11, 4);
+            sensor.setWidth(4);
+            sensor.setHeight(1);
+            sensor.setOnCollide(new TriggerThought("!"));
+
             Entity noname = world.getEntityByName("Pr. Noname");
 
             List<Direction> path = new LinkedList<>();
