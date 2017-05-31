@@ -16,6 +16,7 @@ public class Player extends Entity {
     private Set<String> tags = new HashSet<>();
     private boolean canTalkAlone = true;
 
+
     public Player() {
         super();
         setMovement(new Walk());

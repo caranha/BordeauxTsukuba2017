@@ -114,7 +114,6 @@ public class Entity extends Observable implements Serializable {
         this.y = y;
 
         if (world != null) world.moveEntity(this, prevX, prevY);
-
         setChanged();
     }
 

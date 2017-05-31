@@ -45,7 +45,7 @@ final public class Story {
      */
     private static State getFirstState(Scene scene) {
         String name = Story.class.getPackage().getName() +
-                ".script" + scene.getClass().getSimpleName() + ".FirstState";
+                ".Script" + scene.getClass().getSimpleName() + "$Setup";
         try {
             return (State) Class.forName(name).newInstance();
         } catch (ClassNotFoundException e) {

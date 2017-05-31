@@ -12,7 +12,7 @@ import com.tskbdx.sumimasen.scenes.Scene;
  * It knows its successor according to an Event.
  * @see Event
  */
-public interface State {
+interface State {
     void process(Scene scene);
     State nextState(Event event);
 }
