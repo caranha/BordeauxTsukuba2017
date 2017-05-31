@@ -20,10 +20,7 @@ import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 /**
  * When a entity talk, display a chat bubble
@@ -39,7 +36,7 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
 
     private final Message message;
     private final GlyphLayout layout = new GlyphLayout();
-    private final BitmapFont font = Sumimasen.getFont(19, "OpenSans");
+    private static final BitmapFont font = Sumimasen.getFont(19, "OpenSans");
     private final Camera camera;
     private final Sprite bubbleHorizontal = new Sprite(Sumimasen.getAssetManager().get("images/bubbleHorizontal.png", Texture.class));
     private final Sprite bubbleVertical = new Sprite(Sumimasen.getAssetManager().get("images/bubbleVertical.png", Texture.class));
