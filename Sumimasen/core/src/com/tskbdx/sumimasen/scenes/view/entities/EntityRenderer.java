@@ -155,4 +155,7 @@ public class EntityRenderer implements Observer {
         if (currentAnimator == null) currentAnimator = standingAnimator;
     }
 
+    public Entity getEntity() {
+        return entity;
+    }
 }
