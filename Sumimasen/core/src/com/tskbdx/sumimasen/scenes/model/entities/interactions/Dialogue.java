@@ -217,9 +217,8 @@ public class Dialogue extends Interaction {
                 NodeList arguments = callback.getElementsByTagName("arg");
                 List<Class> argsType = new ArrayList<>();
                 List<Object> argsValue = new ArrayList<>();
-
                 for (int j = 0; j != arguments.getLength(); ++j) {
-                    Element argument = (Element) arguments.item(i);
+                    Element argument = (Element) arguments.item(j);
                     /*
                      * for each argument we store its type and value
                      */

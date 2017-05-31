@@ -45,7 +45,6 @@ final class AnswersSelector extends Group implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("non mais allo quoi");
         Dialogue dialogue = arg instanceof Dialogue ? (Dialogue) arg : null;
         if (entity.isInteracting() && dialogue != null) {
             setAnswersButtons(dialogue);

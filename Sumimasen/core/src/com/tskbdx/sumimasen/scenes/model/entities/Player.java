@@ -36,11 +36,15 @@ public class Player extends Entity {
     @Override
     public boolean tryInteract() {
         if (!super.tryInteract() && canTalkAlone) {
+            System.out.println("yes");
             setMessage("I don't want to be late...",
                     0.3f, null, true);
             canTalkAlone = false;
             Utility.setTimeout(() -> canTalkAlone = true, 4.f);
             return true;
+        } else {
+
+            System.out.println("cant");
         }
         return false;
     }

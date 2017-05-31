@@ -30,6 +30,8 @@ public class UserInterface extends Stage implements Disposable, Observer {
 
         textButtons = new AnswersSelector(entity, this);
         inventoryRenderer = new InventoryRenderer(entity.getInventory(), scene);
+        messageRendererByEntity.put(entity,
+                new MessageRenderer(entity.getMessage(), scene.getCamera()));
     }
 
     @Override
@@ -73,7 +75,9 @@ public class UserInterface extends Stage implements Disposable, Observer {
         List<Entity> entities = scene.getWorld().getEntities();
 
         for (Entity e : entities) {
-            messageRendererByEntity.put(e, new MessageRenderer(e.getMessage(), scene.getCamera()));
+            if (! messageRendererByEntity.containsKey(e)) {
+                messageRendererByEntity.put(e, new MessageRenderer(e.getMessage(), scene.getCamera()));
+            }
         }
     }
 }
