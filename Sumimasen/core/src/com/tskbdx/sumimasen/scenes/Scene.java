@@ -11,7 +11,9 @@ import com.tskbdx.sumimasen.scenes.story.Story;
 import com.tskbdx.sumimasen.scenes.view.SmoothCamera;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Sydpy on 4/27/17.
@@ -19,17 +21,14 @@ import java.util.List;
 public abstract class Scene {
 
     public final static float SCALE_FACTOR = 4.f;
-
+    protected final Story story = Story.getInstance();
     protected String currentMap = "map";
     protected String spawn = "player_home";
-
     private World world;
     private WorldRenderer worldRenderer;
-
-    protected final Story story = Story.getInstance();
-
     private SmoothCamera camera;
     private InputProcessor inputProcessor;
+    private Map<String, TiledMap> loadedMaps = new HashMap<>();
 
     private List<TiledMapUtils.MapObjectMapping> mapObjectMappings;
 
@@ -44,7 +43,6 @@ public abstract class Scene {
 
         world = new World();
         worldRenderer = new WorldRenderer(world, camera);
-
     }
 
     public abstract void init();
@@ -82,20 +80,21 @@ public abstract class Scene {
 
     public void loadMap(String map, String spawn) {
 
-        if (map != null) {
+        TiledMap tiledMap;
 
-            System.out.println("Loading map : " + map + " at " + spawn);
-
-            this.currentMap = map;
-            this.spawn = spawn;
-
-            TiledMap tiledMap = new TmxMapLoader().load("maps/" + map + ".tmx");
-
-            mapObjectMappings = TiledMapUtils.mapObjectMappings(tiledMap);
-
-            world.init(tiledMap, mapObjectMappings, spawn);
-            worldRenderer.init(tiledMap, mapObjectMappings);
-
+        if (!loadedMaps.containsKey(map)) {
+            tiledMap = new TmxMapLoader().load("maps/" + map + ".tmx");
+            loadedMaps.put(map, tiledMap);
+        } else {
+            tiledMap = loadedMaps.get(map);
         }
+        this.currentMap = map;
+        this.spawn = spawn;
+
+        mapObjectMappings = TiledMapUtils.mapObjectMappings(tiledMap);
+
+        world.init(tiledMap, mapObjectMappings, spawn);
+        worldRenderer.init(tiledMap, mapObjectMappings);
     }
 }
+

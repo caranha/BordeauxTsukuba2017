@@ -104,9 +104,6 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
             if (message.isImportant()) {
                 bounceTween.playWith(0, 1, 0.5f, 0.f, true);
             }
-            System.out.println(" >> " + content);
-        } else {
-            System.out.println("bah non !");
         }
     }
 

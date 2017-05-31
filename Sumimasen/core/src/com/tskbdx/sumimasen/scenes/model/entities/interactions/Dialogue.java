@@ -91,7 +91,6 @@ public class Dialogue extends Interaction {
             getPassive().think(currentExchange.getText());
         } else {
             getActive().setMessage(currentExchange.getText(), 0.f, getPassive());
-            System.out.println(getActive().getMessage());
         }
         List<DialogueAnswer> answers = currentExchange.getAnswers();
 
@@ -102,9 +101,7 @@ public class Dialogue extends Interaction {
             }, getActive().getMessage().getTimeToUnderstand());
         } else {
             if (!currentExchange.triggerWonder) {
-                System.out.println("Ayo t'es là " + currentExchange.getText());
                 getActive().setMessage(currentExchange.getText(), 2.f, getPassive());
-                System.out.println(getActive().getMessage());
             }
             end();
         }

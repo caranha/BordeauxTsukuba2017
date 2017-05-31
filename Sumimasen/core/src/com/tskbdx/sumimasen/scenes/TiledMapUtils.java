@@ -37,7 +37,6 @@ public class TiledMapUtils {
         MapObjectMapping(MapObject mapObject) {
 
             name    = mapObject.getName();
-
             x       = (int) Math.floor(mapObject.getProperties().get("x", Float.class) / TILE_SIZE);
             y       = (int) Math.floor(mapObject.getProperties().get("y", Float.class) / TILE_SIZE);
             width   = (int) Math.floor(mapObject.getProperties().get("width", Float.class) / TILE_SIZE);

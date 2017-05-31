@@ -32,12 +32,13 @@ public class World extends Observable implements Serializable {
     private Map<String, Entity> entitiesByName = new HashMap<>();
     private Map<String, Spawn> spawnByName = new HashMap<>();
 
+    private Map<String, Object> backups = new HashMap<>();
 
     public World() {
     }
 
     public void init(TiledMap tiledMap, List<TiledMapUtils.MapObjectMapping> mappings, String playerSpawn) {
-
+        System.out.println(tiledMap);
         entitiesByName.clear();
         spawnByName.clear();
 
@@ -166,7 +167,7 @@ public class World extends Observable implements Serializable {
     public Entity getEntity(int x, int y) {
         try {
             return entitiesMap[x][y];
-        } catch(ArrayIndexOutOfBoundsException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             return null;
         }
     }
