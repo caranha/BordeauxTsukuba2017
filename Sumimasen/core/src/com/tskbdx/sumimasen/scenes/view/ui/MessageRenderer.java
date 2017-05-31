@@ -40,6 +40,8 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
     private final Camera camera;
     private final Sprite bubbleHorizontal = new Sprite(Sumimasen.getAssetManager().get("images/bubbleHorizontal.png", Texture.class));
     private final Sprite bubbleVertical = new Sprite(Sumimasen.getAssetManager().get("images/bubbleVertical.png", Texture.class));
+    private final Sprite thoughtBubbleHorizontal = new Sprite(Sumimasen.getAssetManager().get("images/thoughtHorizontal.png", Texture.class));
+    private final Sprite thoughtBubbleVertical = new Sprite(Sumimasen.getAssetManager().get("images/thoughtVertical.png", Texture.class));
     private final OffsetEntity followEntity;
     private Sprite currentBubble;
     private String content;
@@ -81,13 +83,14 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
             // Calculate position and bubble rotation
             if (receiver != null) {
                 follow = false;
+                currentBubble = direction.isHorizontal() ? bubbleHorizontal : bubbleVertical;
             } else {
                 follow = true;
                 followEntity.reset();
                 followEntity.update(null, null);
                 direction = Direction.SOUTH;
+                currentBubble = direction.isHorizontal() ? thoughtBubbleHorizontal : thoughtBubbleVertical;
             }
-            currentBubble = direction.isHorizontal() ? bubbleHorizontal : bubbleVertical;
             execute(positionCalculator, direction);
             execute(rotationCalculator, direction);
 
