@@ -1,6 +1,5 @@
 package com.tskbdx.sumimasen.scenes.story;
 
-import com.badlogic.gdx.Game;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.Scene;
 import com.tskbdx.sumimasen.scenes.model.World;
@@ -8,6 +7,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.TriggerThought;
+import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Path;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
@@ -51,15 +51,17 @@ class ScriptLateOnFirstDay {
             World world = scene.getWorld();
             Entity noname = world.getEntityByName("Pr. Noname");
             Entity player = GameScreen.getPlayer();
+            Movement playerMovement = player.getMovement();
             player.setMovement(null);
 
             List<Direction> path = new LinkedList<>();
             Utility.repeat(() -> path.add(Direction.WEST), 7);
             Utility.repeat(() -> path.add(Direction.SOUTH), 6);
 
-            Direction[] directions = new Direction[path.size()];
-            new Path(() -> new Dialogue("playerLate.xml").start(noname, player),
-                    path.toArray(directions)).move(noname);
+            new Path(() -> {
+                player.setMovement(playerMovement);
+                new Dialogue("playerLate.xml").start(noname, player);
+            }, path.toArray(new Direction[path.size()])).move(noname);
         }
 
         @Override
