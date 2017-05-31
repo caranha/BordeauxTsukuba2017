@@ -62,6 +62,7 @@ class ScriptLateOnFirstDay {
             Utility.repeat(() -> path.add(Direction.SOUTH), 6);
 
             new Path(() -> {
+                player.setMovement(playerMovement);
                 new Dialogue("playerLate.xml").start(noname, player);
             }, path.toArray(new Direction[path.size()])).move(noname);
         }
@@ -81,7 +82,14 @@ class ScriptLateOnFirstDay {
         public void process(Scene scene) {
             World world = scene.getWorld();
             world.removeEntity(world.getEntityByName("late sensor"));
-            System.out.println("LETS WORK !");
+
+            Entity noname = world.getEntityByName("Pr. Noname");
+            noname.setSpeed(4);
+
+            List<Direction> path = new LinkedList<>();
+            Utility.repeat(() -> path.add(Direction.NORTH), 6);
+            Utility.repeat(() -> path.add(Direction.WEST), 5);
+            new Path(false, path.toArray(new Direction[path.size()])).move(noname);
         }
 
         @Override

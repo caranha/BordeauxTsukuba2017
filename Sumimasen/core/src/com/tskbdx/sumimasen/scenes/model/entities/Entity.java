@@ -195,7 +195,7 @@ public class Entity extends Observable implements Serializable {
         message.setContent(content);
         message.setTimeToAnswer(timeToAnswer);
         message.setTimeToUnderstand(
-                Math.min(Utility.getWordCount(content) * .33f, 3.2f));
+                Math.min(Utility.getWordCount(content) * .44f, 3.2f));
         message.setReceiver(receiver);
         message.notifyObservers();
         setChanged();
@@ -299,5 +299,9 @@ public class Entity extends Observable implements Serializable {
 
     public void setNextInteraction(Dialogue nextInteraction) {
         this.nextInteraction = nextInteraction;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }
