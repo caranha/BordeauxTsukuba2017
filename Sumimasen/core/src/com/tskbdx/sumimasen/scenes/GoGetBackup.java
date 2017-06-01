@@ -17,7 +17,7 @@ public class GoGetBackup extends Scene {
     @Override
     public boolean isFinished() {
         Entity player = GameScreen.getPlayer();
-        return player.hasInteractedWith("To Progress");
+        return player.hasInteractedWith("To Progress ...");
     }
 
     @Override
@@ -44,6 +44,5 @@ public class GoGetBackup extends Scene {
     public String description() {
         boolean randomBool = ThreadLocalRandom.current().nextBoolean();
         return randomBool ? "Hum I feel so hungry..." : "I heard that a new restaurant opened recently";
-
     }
 }

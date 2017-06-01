@@ -42,7 +42,6 @@ public class Restaurant extends Scene {
 
     @Override
     public String description() {
-        boolean randomBool = ThreadLocalRandom.current().nextBoolean();
-        return randomBool ? "Hum I feel so hungry..." : "I heard that a new restaurant opened recently";
+        return "Finally at the restaurant ! Oh I don't have money on me...";
     }
 }
