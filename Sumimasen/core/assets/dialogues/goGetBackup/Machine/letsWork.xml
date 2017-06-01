@@ -1,0 +1,6 @@
+<dialogue>
+    <exchange id="1" text="I can't make any mistake now..." triggerWonder="1">
+        <answers>
+        </answers>
+    </exchange>
+</dialogue>
