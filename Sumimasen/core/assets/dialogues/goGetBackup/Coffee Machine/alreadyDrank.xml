@@ -1,6 +1,0 @@
-<dialogue>
-    <exchange id="1" text="This coffee was good, let's go to the lab !" triggerWonder="1">
-        <answers>
-        </answers>
-    </exchange>
-</dialogue>

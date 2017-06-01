@@ -7,7 +7,6 @@ import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Path;
-import com.tskbdx.sumimasen.scenes.model.entities.movements.Walk;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
 import java.util.LinkedList;
