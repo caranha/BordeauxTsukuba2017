@@ -23,12 +23,13 @@ public class SpritesheetUtils {
 
     public static Animator getAnimatorFromSpritesheet(String spritesheetFile) {
 
+        if (spritesheetFile == null || spritesheetFile.equals(""))
+            return getAnimatorFromSpritesheet("entity.png");
+
         if (animatorsFromSpritesheets.containsKey(spritesheetFile))
             return animatorsFromSpritesheets.get(spritesheetFile);
 
         Texture texture = Sumimasen.getAssetManager().get(IMAGES_DIR + spritesheetFile, Texture.class);
-
-        if (texture == null) return null;
 
         Animator animator;
 

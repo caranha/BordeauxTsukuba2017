@@ -81,7 +81,6 @@ public class EntityRenderer implements Observer {
         if (entity.isWalking()) {
             currentAnimator = SpritesheetUtils.getAnimatorFromSpritesheet(descriptor.walkingSpritesheet);
             currentAnimator.setDirection(entity.getDirection());
-
         } else {
             currentAnimator = SpritesheetUtils.getAnimatorFromSpritesheet(descriptor.standingSpritesheet);
             currentAnimator.setDirection(entity.getLastDirection());
