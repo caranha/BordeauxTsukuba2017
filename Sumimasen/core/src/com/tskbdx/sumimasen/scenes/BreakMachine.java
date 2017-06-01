@@ -61,7 +61,7 @@ public class BreakMachine extends Scene {
 
     @Override
     public Scene getNextScene() {
-        return new Restaurant();
+        return new GoGetBackup();
     }
 
     @Override
