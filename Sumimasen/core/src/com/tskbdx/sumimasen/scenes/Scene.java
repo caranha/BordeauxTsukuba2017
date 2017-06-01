@@ -31,7 +31,7 @@ public abstract class Scene {
     private SmoothCamera camera;
     private InputProcessor inputProcessor;
 
-    private List<TiledMapUtils.MapObjectMapping> mapObjectMappings;
+    private List<TiledMapUtils.MapObjectDescriptor> mapObjectDescriptors;
 
     public Scene() {
 
@@ -77,8 +77,8 @@ public abstract class Scene {
         return inputProcessor;
     }
 
-    public final List<TiledMapUtils.MapObjectMapping> getMapObjectMappings() {
-        return mapObjectMappings;
+    public final List<TiledMapUtils.MapObjectDescriptor> getMapObjectDescriptors() {
+        return mapObjectDescriptors;
     }
 
     public void loadMap(String map, String spawn) {
@@ -92,10 +92,28 @@ public abstract class Scene {
 
             TiledMap tiledMap = new TmxMapLoader().load("maps/" + map + ".tmx");
 
-            mapObjectMappings = TiledMapUtils.mapObjectMappings(tiledMap);
+            mapObjectDescriptors = TiledMapUtils.mapObjectMappings(tiledMap, spawn != null);
 
-            world.init(tiledMap, mapObjectMappings, spawn);
-            worldRenderer.init(tiledMap, mapObjectMappings);
+            world.load(tiledMap, mapObjectDescriptors, spawn);
+            worldRenderer.load(tiledMap, mapObjectDescriptors);
+
+        }
+    }
+
+    public void loadMap(String map, int playerX, int playerY) {
+        if (map != null) {
+
+            System.out.println("Loading map : " + map + " at " + spawn);
+
+            this.currentMap = map;
+            this.spawn = spawn;
+
+            TiledMap tiledMap = new TmxMapLoader().load("maps/" + map + ".tmx");
+
+            mapObjectDescriptors = TiledMapUtils.mapObjectMappings(tiledMap, true);
+
+            world.load(tiledMap, mapObjectDescriptors, spawn);
+            worldRenderer.load(tiledMap, mapObjectDescriptors);
 
         }
     }

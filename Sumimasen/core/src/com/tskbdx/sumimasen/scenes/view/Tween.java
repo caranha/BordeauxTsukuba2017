@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 /**
- * You'd want to call updateAll in main loop to init all tweens.
+ * You'd want to call updateAll in main loop to load all tweens.
  */
 public class Tween {
     /**

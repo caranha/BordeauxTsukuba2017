@@ -3,6 +3,7 @@ package com.tskbdx.sumimasen.scenes.view.entities.animator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 
 /**
  * Created by Sydpy on 5/29/17.
@@ -23,5 +24,10 @@ public class StandardAnimator implements Animator {
         stateTime += Gdx.graphics.getDeltaTime();
 
         return animation.getKeyFrame(stateTime, true);
+    }
+
+    @Override
+    public void setDirection(Direction direction) {
+
     }
 }

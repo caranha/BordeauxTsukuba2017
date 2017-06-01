@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
-import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,8 +16,6 @@ public class DirectionSpriteSheetAnimator implements Animator {
     private Map<Direction, Animation<TextureRegion>> animations = new HashMap<>();
 
     private Animation currentAnimation;
-
-    private Entity entity = null;
 
     private float stateTime = 0.f;
 
@@ -34,16 +31,13 @@ public class DirectionSpriteSheetAnimator implements Animator {
     @Override
     public TextureRegion update() {
 
-        if (entity != null) {
-            currentAnimation = animations.get(entity.isWalking() ? entity.getDirection() : entity.getLastDirection());
-        }
-
         stateTime += Gdx.graphics.getDeltaTime();
 
         return (TextureRegion) currentAnimation.getKeyFrame(stateTime, true);
     }
 
-    public void setEntity(Entity entity) {
-        this.entity = entity;
+    @Override
+    public void setDirection(Direction direction) {
+        this.currentAnimation = animations.get(direction);
     }
 }

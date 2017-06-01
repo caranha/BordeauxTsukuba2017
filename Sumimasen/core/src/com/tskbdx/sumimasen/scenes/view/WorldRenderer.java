@@ -40,17 +40,16 @@ public class WorldRenderer implements Observer {
         this.camera = camera;
     }
 
-    public void init(TiledMap tiledMap, List<TiledMapUtils.MapObjectMapping> mappings) {
+    public void load(TiledMap tiledMap, List<TiledMapUtils.MapObjectDescriptor> mappings) {
 
         rendererByEntity.clear();
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, batch);
 
         tiledMap.getLayers().get("Collision").setVisible(false);
 
+        for (TiledMapUtils.MapObjectDescriptor mapObjectDescriptor : mappings) {
 
-        for (TiledMapUtils.MapObjectMapping mapObjectMapping : mappings) {
-
-            buildEntityRendererFromMapObjectMapping(mapObjectMapping);
+            buildEntityRendererFromDescriptor(mapObjectDescriptor);
 
         }
 
@@ -66,6 +65,8 @@ public class WorldRenderer implements Observer {
         tiledMapRenderer.setView(camera);
 
         List<EntityRenderer> renderers = new ArrayList<>(rendererByEntity.values());
+        renderers.removeIf(r -> !world.isEntityInCurrentMap(r.getEntity()));
+
         Collections.sort(renderers, new EntityRendererDrawOrderer());
 
         TiledMapTileLayer floating = (TiledMapTileLayer) tiledMapRenderer.getMap().getLayers().get("Floating");
@@ -128,34 +129,20 @@ public class WorldRenderer implements Observer {
 
     }
 
-    private void buildEntityRendererFromMapObjectMapping(TiledMapUtils.MapObjectMapping mo) {
+    private void buildEntityRendererFromDescriptor(TiledMapUtils.MapObjectDescriptor mo) {
 
         Entity entity = world.getEntityByName(mo.name);
 
         EntityRenderer renderer = rendererByEntity.get(entity);
         if (renderer == null) {
-            EntityRenderer entityRenderer = new EntityRenderer(entity);
-            entityRenderer.setWorldRenderer(this);
+            renderer = new EntityRenderer(entity, mo);
+            renderer.setWorldRenderer(this);
 
-            Animator standingAnimator = SpritesheetUtils.getAnimatorFromSpritesheet(mo.standingSpritesheet);
-            if (standingAnimator instanceof DirectionSpriteSheetAnimator) {
-                ((DirectionSpriteSheetAnimator) standingAnimator).setEntity(entity);
-            }
-
-            Animator walkingAnimator = SpritesheetUtils.getAnimatorFromSpritesheet(mo.walkingSpritesheet);
-            if (walkingAnimator instanceof DirectionSpriteSheetAnimator) {
-                ((DirectionSpriteSheetAnimator) walkingAnimator).setEntity(entity);
-            }
-
-
-            entityRenderer.setStandingAnimator(standingAnimator);
-            entityRenderer.setWalkingAnimator(walkingAnimator);
-
-            rendererByEntity.put(entity, entityRenderer);
+            rendererByEntity.put(entity, renderer);
         }
     }
 
-    public SmoothCamera getCamera() {
+    private SmoothCamera getCamera() {
         return camera;
     }
 }

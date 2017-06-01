@@ -72,7 +72,7 @@ public class UserInterface extends Stage implements Disposable, Observer {
     @Override
     public void update(Observable o, Object arg) {
 
-        List<Entity> entities = scene.getWorld().getEntities();
+        List<Entity> entities = scene.getWorld().getEntitiesInCurrentMap();
 
         for (Entity e : entities) {
             if (! messageRendererByEntity.containsKey(e)) {

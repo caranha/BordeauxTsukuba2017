@@ -28,7 +28,7 @@ import java.util.*;
  * Else, it shows in the other side of his interlocutor
  * <p>
  * Public method :
- * + init() (from Obserrver)
+ * + load() (from Obserrver)
  * + render(Batch) (Main method)
  * + dispose() (from disposable)
  */

@@ -19,12 +19,20 @@ public class SpritesheetUtils {
 
     private static String IMAGES_DIR = "images/";
 
+    private static Map<String, Animator> animatorsFromSpritesheets = new HashMap<>();
+
     public static Animator getAnimatorFromSpritesheet(String spritesheetFile) {
+
+        if (animatorsFromSpritesheets.containsKey(spritesheetFile))
+            return animatorsFromSpritesheets.get(spritesheetFile);
 
         Texture texture = Sumimasen.getAssetManager().get(IMAGES_DIR + spritesheetFile, Texture.class);
 
-        Map<Direction, TextureRegion[]> regions = new HashMap<>();
+        if (texture == null) return null;
 
+        Animator animator;
+
+        Map<Direction, TextureRegion[]> regions = new HashMap<>();
         TextureRegion[] textureRegions;
 
         switch (spritesheetFile) {
@@ -36,7 +44,8 @@ public class SpritesheetUtils {
                 regions.put(Direction.EAST  , new TextureRegion[]{new TextureRegion(texture, 0, 48, 12, 16)});
                 regions.put(Direction.NONE  , new TextureRegion[]{new TextureRegion(texture, 0, 16, 12, 16)});
 
-                return new DirectionSpriteSheetAnimator(regions, 0.2f);
+                animator = new DirectionSpriteSheetAnimator(regions, 0.2f);
+                break;
 
             case "player_walking.png" :
 
@@ -56,7 +65,8 @@ public class SpritesheetUtils {
                         new TextureRegion(texture, 0, 16, 12, 16),
                         new TextureRegion(texture, 12, 16, 12, 16)});
 
-                return new DirectionSpriteSheetAnimator(regions, 0.2f);
+                animator = new DirectionSpriteSheetAnimator(regions, 0.2f);
+                break;
 
             case "noname_standing.png" :
 
@@ -66,7 +76,8 @@ public class SpritesheetUtils {
                 regions.put(Direction.EAST  , new TextureRegion[]{new TextureRegion(texture, 0, 48, 12, 16)});
                 regions.put(Direction.NONE  , new TextureRegion[]{new TextureRegion(texture, 0, 16, 12, 16)});
 
-                return new DirectionSpriteSheetAnimator(regions, 0.2f);
+                animator = new DirectionSpriteSheetAnimator(regions, 0.2f);
+                break;
 
             case "noname_walking.png" :
 
@@ -86,8 +97,8 @@ public class SpritesheetUtils {
                         new TextureRegion(texture, 0, 16, 12, 16),
                         new TextureRegion(texture, 12, 16, 12, 16)});
 
-                return new DirectionSpriteSheetAnimator(regions, 0.2f);
-
+                animator = new DirectionSpriteSheetAnimator(regions, 0.2f);
+                break;
 
             case "cat.png":
 
@@ -96,7 +107,8 @@ public class SpritesheetUtils {
                         new TextureRegion(texture, 0,16,16,16)
                 };
 
-                return new StandardAnimator(textureRegions, 0.4f);
+                animator = new StandardAnimator(textureRegions, 0.4f);
+                break;
 
             case "tv.png":
 
@@ -105,8 +117,8 @@ public class SpritesheetUtils {
                         new TextureRegion(texture, 0, 16, 24, 16)
                 };
 
-                return new StandardAnimator(textureRegions, 0.4f);
-
+                animator = new StandardAnimator(textureRegions, 0.4f);
+                break;
 
             case "machine.png":
 
@@ -115,7 +127,8 @@ public class SpritesheetUtils {
                         new TextureRegion(texture, 16, 0, 16, 24)
                 };
 
-                return new StandardAnimator(textureRegions, 0.4f);
+                animator = new StandardAnimator(textureRegions, 0.4f);
+                break;
 
             case "machine_broken.png":
 
@@ -124,13 +137,17 @@ public class SpritesheetUtils {
                         new TextureRegion(texture, 16, 0, 16, 24)
                 };
 
-                return new StandardAnimator(textureRegions, 0.4f);
+                animator = new StandardAnimator(textureRegions, 0.4f);
+                break;
 
             default :
+                animator = new FixedAnimator(texture);
                 break;
         }
 
-        return texture == null ? null : new FixedAnimator(texture);
+        animatorsFromSpritesheets.put(spritesheetFile, animator);
+
+        return animator;
     }
 
 }

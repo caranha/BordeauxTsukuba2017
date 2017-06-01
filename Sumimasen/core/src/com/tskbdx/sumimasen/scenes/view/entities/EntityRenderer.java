@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.tskbdx.sumimasen.scenes.TiledMapUtils;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.ChangeMap;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
@@ -26,27 +27,29 @@ public class EntityRenderer implements Observer {
     public static int TILE_SIZE = 8;
 
     private Entity entity;
+    private TiledMapUtils.MapObjectDescriptor descriptor;
     private PositionSyncer positionSyncer;
 
     private Rectangle rectangle = new Rectangle();
 
-    private Animator walkingAnimator;
-    private Animator standingAnimator;
-
     private Animator currentAnimator;
 
-    private WorldRenderer worldRenderer;
+    private boolean walkingAnimation = false;
 
-    public EntityRenderer(Entity entity) {
+    public EntityRenderer(Entity entity, TiledMapUtils.MapObjectDescriptor descriptor) {
         this.entity = entity;
+        this.descriptor = descriptor;
+
         rectangle.x = entity.getX() * TILE_SIZE;
         rectangle.y = entity.getY() * TILE_SIZE;
         rectangle.width = entity.getWidth() * TILE_SIZE;
+
         entity.addObserver(this);
     }
+    private WorldRenderer worldRenderer;
 
     /**
-     * On init, calculate observable location and
+     * On load, calculate observable location and
      * prepare the positionSyncer to reach it
      *
      * @param observable
@@ -78,13 +81,12 @@ public class EntityRenderer implements Observer {
     public void render(Batch batch) {
 
         if (entity.isWalking()) {
-            if (currentAnimator != walkingAnimator) {
-                currentAnimator = walkingAnimator;
-            }
+            currentAnimator = SpritesheetUtils.getAnimatorFromSpritesheet(descriptor.walkingSpritesheet);
+            currentAnimator.setDirection(entity.getDirection());
+
         } else {
-           if (currentAnimator != standingAnimator) {
-               currentAnimator = standingAnimator;
-           }
+            currentAnimator = SpritesheetUtils.getAnimatorFromSpritesheet(descriptor.standingSpritesheet);
+            currentAnimator.setDirection(entity.getLastDirection());
         }
 
         if (entity.getWorld() != null) {
@@ -140,18 +142,6 @@ public class EntityRenderer implements Observer {
 
     public void setWorldRenderer(WorldRenderer worldRenderer) {
         this.worldRenderer = worldRenderer;
-    }
-
-    public void setWalkingAnimator(Animator walkingAnimator) {
-        this.walkingAnimator = walkingAnimator;
-
-        if (currentAnimator == null) currentAnimator = walkingAnimator;
-    }
-
-    public void setStandingAnimator(Animator standingAnimator) {
-        this.standingAnimator = standingAnimator;
-
-        if (currentAnimator == null) currentAnimator = standingAnimator;
     }
 
     public Entity getEntity() {
