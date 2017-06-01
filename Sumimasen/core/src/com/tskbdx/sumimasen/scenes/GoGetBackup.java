@@ -24,8 +24,6 @@ public class GoGetBackup extends Scene {
         Player player = GameScreen.getPlayer();
         Entity noname = world.getEntityByName("Pr. Noname");
 
-        noname.setInteraction(new Dialogue("default.xml"));
-
         if (player.hasTag("late")) {
             world.removeSensor(world.getSensorByName("late sensor"));
             noname.moveTo(13, 4);
@@ -35,12 +33,14 @@ public class GoGetBackup extends Scene {
             Utility.repeat(() -> path.add(Direction.EAST), 7);
             new Path(() -> noname.setDirection(Direction.SOUTH),
                     path.toArray(new Direction[path.size()])).move(noname);
+            noname.setInteraction(new Dialogue("default.xml"));
         } else {
             Gdx.input.setInputProcessor(null);
             new Path(() -> {
                 noname.setInteraction(new Dialogue("brokenMachine.xml"));
-                noname.getInteraction().start(player, noname);
-            }, Direction.WEST, Direction.WEST);
+                player.setDirection(Direction.WEST);
+                noname.getInteraction().start(noname, player);
+            }, Direction.EAST, Direction.EAST).move(noname);
         }
     }
 

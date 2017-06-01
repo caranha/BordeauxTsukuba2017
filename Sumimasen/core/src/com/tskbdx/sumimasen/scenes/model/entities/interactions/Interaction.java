@@ -42,6 +42,8 @@ public abstract class Interaction implements Serializable {
 
         active.notifyObservers();
 
+        System.out.println("start -> " + active.getDirection() + " " + activeDirection);
+
         active.setInteracting(true);
         passive.setInteracting(true);
 

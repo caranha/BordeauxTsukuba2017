@@ -34,8 +34,6 @@ public class LateOnFirstDay extends Scene {
         // TO DO change machine sprite to broken
         machine.setInteraction(new Dialogue("broken.xml"));
         machine.addTag("broken");
-
-        GameScreen.getPlayer().think(description());
     }
 
     @Override
