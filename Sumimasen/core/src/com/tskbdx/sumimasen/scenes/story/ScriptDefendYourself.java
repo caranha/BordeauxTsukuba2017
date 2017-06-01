@@ -8,6 +8,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Path;
+import com.tskbdx.sumimasen.scenes.model.entities.movements.Walk;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
 import java.util.LinkedList;
@@ -24,7 +25,6 @@ class ScriptDefendYourself {
             World world = scene.getWorld();
             Entity noname = world.getEntityByName("Pr. Noname");
             Entity player = GameScreen.getPlayer();
-            Movement playerMovement = player.getMovement();
             player.setMovement(null);
             player.setInteracting(true);
 
@@ -33,8 +33,7 @@ class ScriptDefendYourself {
             Utility.repeat(() -> path.add(Direction.SOUTH), 6);
 
             new Path(() -> {
-                player.setMovement(playerMovement);
-                player.setDirection(Direction.NONE);
+                player.setMovement(new Walk());
                 new Dialogue("playerLate.xml").start(noname, player);
             }, path.toArray(new Direction[path.size()])).move(noname);
         }

@@ -25,21 +25,6 @@ class ScriptWorkToBreakMachine {
             World world = scene.getWorld();
             Player player = GameScreen.getPlayer();
             if (player.hasTag("late")) {
-                Entity noname = world.getEntityByName("Pr. Noname");
-                noname.setSpeed(4);
-                List<Direction> patrol = new LinkedList<>();
-                List<Direction> path = new LinkedList<>();
-                world.removeEntity(world.getEntityByName("late sensor"));
-                Utility.repeat(() -> path.add(Direction.NORTH), 6);
-                Utility.repeat(() -> path.add(Direction.WEST), 5);
-                Utility.repeat(() -> patrol.add(Direction.WEST), 3);
-                Utility.repeat(() -> patrol.add(Direction.NONE), 6);
-                Utility.repeat(() -> patrol.add(Direction.EAST), 3);
-                Utility.repeat(() -> patrol.add(Direction.NONE), 6);
-                new Path(() ->
-                        new Path(true,
-                                patrol.toArray(new Direction[patrol.size()])).move(noname),
-                        path.toArray(new Direction[path.size()])).move(noname);
             }
             Entity machine = world.getEntityByName("Machine");
             machine.setInteraction(new Dialogue("letsWork.xml"));
