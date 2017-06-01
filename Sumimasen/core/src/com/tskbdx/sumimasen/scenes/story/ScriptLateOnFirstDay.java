@@ -11,6 +11,10 @@ import com.tskbdx.sumimasen.scenes.model.entities.interactions.TriggerThought;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Path;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
+import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
+import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
+import com.tskbdx.sumimasen.scenes.view.entities.SpritesheetUtils;
+import com.tskbdx.sumimasen.scenes.view.entities.animator.DirectionSpriteSheetAnimator;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -34,6 +38,14 @@ class ScriptLateOnFirstDay {
             world.addEntity("late sensor", sensor);
             world.moveEntity(sensor, sensor.getX(), sensor.getY());
             sensor.setOnCollide(new TriggerThought("!"));
+
+            WorldRenderer worldRenderer = scene.getWorldRenderer();
+            Entity machine = world.getEntityByName("Machine");
+            EntityRenderer machineSprite = worldRenderer.getRendererByEntity(machine);
+            machine.addTag("broken");
+            machineSprite.setStandingAnimator(
+                    SpritesheetUtils.getAnimatorFromSpritesheet("machine_broken.png"));
+
         }
 
         @Override

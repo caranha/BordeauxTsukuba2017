@@ -31,14 +31,14 @@
     		<answer idea="He is funny, let's joke" text="Not really, I should have put something under ..." nextExchange="7"/>
     	</answers>
     </exchange>
-    <exchange id="6" text="Today you have to take care of this machine over there." 
+    <exchange id="6" text="By your fault the machine is broken. You have to get the backup at Noodle Company." 
         nextDialogue="default.xml">
     	<answers>
     		<answer idea="Sure" text="Sure" nextExchange="222"/>
     		<answer idea="What about no ?" text="I'm not your slave dude." nextExchange="2222"/>
     	</answers>
     </exchange>
-    <exchange id="7" text="Anyway, can you take care of this machine over there ?"
+    <exchange id="7" text="Anyway, the machine is broken. You have to get the backup at Noodle Company."
      nextDialogue="default.xml">
     	<answers>
     		<answer idea="Sure" text="Sure" nextExchange="222"/>

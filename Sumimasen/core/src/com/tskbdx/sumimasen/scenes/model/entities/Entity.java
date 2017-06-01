@@ -8,9 +8,7 @@ import com.tskbdx.sumimasen.scenes.story.Story;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
+import java.util.*;
 
 /**
  * Created by Sydpy on 4/28/17.
@@ -47,9 +45,18 @@ public class Entity extends Observable implements Serializable {
     private int speed = 8;
     private Dialogue nextInteraction;
 
+    private Set<String> tags = new HashSet<>();
+
     public Entity() {
     }
 
+    public void addTag(String tag) {
+        tags.add(tag);
+    }
+
+    public boolean hasTag(String tag) {
+        return tags.contains(tag);
+    }
     /**
      * Can only interact if there is a SceneObject
      * in front of the entity

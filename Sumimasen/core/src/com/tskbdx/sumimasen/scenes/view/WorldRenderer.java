@@ -158,4 +158,8 @@ public class WorldRenderer implements Observer {
     public SmoothCamera getCamera() {
         return camera;
     }
+
+    public EntityRenderer getRendererByEntity(Entity entity) {
+        return rendererByEntity.get(entity);
+    }
 }

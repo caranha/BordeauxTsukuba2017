@@ -13,7 +13,6 @@ import java.util.Set;
  */
 public class Player extends Entity {
 
-    private Set<String> tags = new HashSet<>();
     private boolean canTalkAlone = true;
 
     @Override
@@ -29,13 +28,6 @@ public class Player extends Entity {
         setHeight(1);
     }
 
-    public void addTag(String tag) {
-        tags.add(tag);
-    }
-
-    public boolean hasTag(String tag) {
-        return tags.contains(tag);
-    }
 
     /**
      * Can only interact if there is a SceneObject
