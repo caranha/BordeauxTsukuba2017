@@ -47,7 +47,7 @@ public class Dialogue extends Interaction {
         Gdx.input.setInputProcessor(UserInterface.getInstance());
 
         buildDialogue(FOLDER +
-                Story.getSceneName() +
+                GameScreen.getCurrentScene().getName() +
                 '/' + active.getName() + '/' + xmlFile); // by convention
         currentExchange = exchanges.get(1);
 

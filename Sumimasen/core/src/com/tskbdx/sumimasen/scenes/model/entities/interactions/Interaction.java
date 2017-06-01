@@ -32,7 +32,6 @@ public abstract class Interaction implements Serializable {
     Interaction() {}
 
     public void start(Entity active, Entity passive) {
-
         this.active = active;
         this.active = active;
         this.passive = passive;
@@ -68,8 +67,8 @@ public abstract class Interaction implements Serializable {
         active.setDirection(activeDirection);
         active.notifyObservers();
 
-
-        Story.getInstance().update(this, active, passive);
+        active.addInteracted(passive.getName());
+        passive.addInteracted(active.getName());
     }
 
     public final Entity getActive() {

@@ -15,11 +15,6 @@ public class Player extends Entity {
 
     private boolean canTalkAlone = true;
 
-    @Override
-    public void moveTo(int x, int y) {
-        super.moveTo(x, y);
-    }
-
     public Player() {
         super();
         setMovement(new Walk());

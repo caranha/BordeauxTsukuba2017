@@ -22,20 +22,6 @@ class ScriptDefendYourself {
     static class Setup implements State {
         @Override
         public void process(Scene scene) {
-            World world = scene.getWorld();
-            Entity noname = world.getEntityByName("Pr. Noname");
-            Entity player = GameScreen.getPlayer();
-            player.setMovement(null);
-            player.setInteracting(true);
-
-            List<Direction> path = new LinkedList<>();
-            Utility.repeat(() -> path.add(Direction.WEST), 7);
-            Utility.repeat(() -> path.add(Direction.SOUTH), 6);
-
-            new Path(() -> {
-                player.setMovement(new Walk());
-                new Dialogue("playerLate.xml").start(noname, player);
-            }, path.toArray(new Direction[path.size()])).move(noname);
         }
 
         @Override

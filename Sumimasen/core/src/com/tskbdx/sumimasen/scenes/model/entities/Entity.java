@@ -28,7 +28,6 @@ public class Entity extends Observable implements Serializable {
     private boolean isInteracting = false;
     private Inventory inventory = new Inventory();
     /**
-     * dd
      * direction is the current direction movement state
      * lastDirection is like the static direction state
      */
@@ -40,6 +39,7 @@ public class Entity extends Observable implements Serializable {
     private Dialogue nextInteraction;
 
     private Set<String> tags = new HashSet<>();
+    private Set<String> interactedEntities = new HashSet<>();
 
     public Entity() {
     }
@@ -302,5 +302,17 @@ public class Entity extends Observable implements Serializable {
 
     public void setNextInteraction(Dialogue nextInteraction) {
         this.nextInteraction = nextInteraction;
+    }
+
+    public boolean hasInteractedWith(String name) {
+        return interactedEntities.contains(name);
+    }
+
+    public void clearInteracted() {
+        interactedEntities.clear();
+    }
+
+    public void addInteracted(String name) {
+        interactedEntities.add(name);
     }
 }

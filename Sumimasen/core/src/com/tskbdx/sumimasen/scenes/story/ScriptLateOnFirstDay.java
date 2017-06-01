@@ -25,7 +25,6 @@ import java.util.List;
 class ScriptLateOnFirstDay {
 
     static class Setup implements State {
-
         @Override
         public void process(Scene scene) {
             World world = scene.getWorld();

@@ -6,12 +6,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.tskbdx.sumimasen.GameScreen;
-import com.tskbdx.sumimasen.scenes.inputprocessors.GameCommands;
 import com.tskbdx.sumimasen.scenes.model.World;
-import com.tskbdx.sumimasen.scenes.story.Story;
 import com.tskbdx.sumimasen.scenes.view.SmoothCamera;
 import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
+import com.tskbdx.sumimasen.scenes.view.ui.UserInterface;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +22,6 @@ import java.util.Map;
 public abstract class Scene {
 
     public final static float SCALE_FACTOR = 4.f;
-    protected final Story story = Story.getInstance();
     protected String currentMap = "map";
     protected String spawn = "player_home";
     private World world;
@@ -36,6 +34,7 @@ public abstract class Scene {
     private List<TiledMapUtils.MapObjectMapping> mapObjectMappings;
 
     public Scene() {
+        GameScreen.getPlayer().clearInteracted();
 
         camera = new SmoothCamera(0.5f);
         camera.setToOrtho(false, 800, 480);
@@ -43,6 +42,8 @@ public abstract class Scene {
 
         world = new World();
         worldRenderer = new WorldRenderer(world, camera);
+
+        UserInterface.init(this, GameScreen.getPlayer());
     }
 
     public abstract void init();
@@ -103,6 +104,11 @@ public abstract class Scene {
 
         world.init(tiledMap, mapObjectMappings, spawn);
         worldRenderer.init(tiledMap, mapObjectMappings);
+    }
+
+    public String getName() {
+        String name = getClass().getSimpleName();
+        return name.substring(0, 1).toLowerCase() + name.substring(1);
     }
 }
 

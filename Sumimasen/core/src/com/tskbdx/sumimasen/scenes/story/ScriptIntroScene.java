@@ -16,12 +16,6 @@ class ScriptIntroScene {
     static class Setup implements State {
         @Override
         public void process(Scene scene) {
-            World world = scene.getWorld();
-            Entity cat = world.getEntityByName("Cat"),
-                    coffee = world.getEntityByName("Coffee Machine");
-
-            cat.setInteraction(new Dialogue("feedOrNot.xml"));
-            coffee.setInteraction(new Dialogue("drinkOrNot.xml"));
         }
 
         @Override
