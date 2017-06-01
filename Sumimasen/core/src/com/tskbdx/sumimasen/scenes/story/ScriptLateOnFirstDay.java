@@ -74,7 +74,7 @@ class ScriptLateOnFirstDay {
 
             new Path(() -> {
                 player.setMovement(playerMovement);
-                player.setDirection(Direction.NONEa);
+                player.setDirection(Direction.NONE);
                 new Dialogue("playerLate.xml").start(noname, player);
             }, path.toArray(new Direction[path.size()])).move(noname);
         }
@@ -82,7 +82,7 @@ class ScriptLateOnFirstDay {
         @Override
         public State nextState(Event event) {
             if (event.is(Dialogue.class, "Pr. Noname")) {
-                return new ScriptWorkToBreakMachine.Setup();
+                return new ScriptGoGetBackup.Setup();
             }
             return null;
         }
