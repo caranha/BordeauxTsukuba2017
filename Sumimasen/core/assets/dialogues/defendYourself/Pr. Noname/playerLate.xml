@@ -21,8 +21,16 @@
     </exchange>
     <exchange id="4" text="There is no bus in this city">
     	<answers>
-    		<answer idea="Keep lying" text="I swear !" nextExchange="2222"/>
-    		<answer idea="Shit" text="..." nextExchange="2222"/>
+    		<answer idea="Keep lying" text="I swear !" nextExchange="2222">
+                <callback methodName="addTag">
+                    <arg type="string" value="fired" />
+                </callback>
+            </answer>
+    		<answer idea="Shit" text="..." nextExchange="2222">
+                <callback methodName="addTag">
+                    <arg type="string" value="fired" />
+                </callback>
+            </answer>
     	</answers>
     </exchange>
     <exchange id="5" text="It looks comfortable">
@@ -35,14 +43,22 @@
         nextDialogue="default.xml">
     	<answers>
     		<answer idea="Sure" text="Sure" nextExchange="222"/>
-    		<answer idea="What about no ?" text="I'm not your slave dude." nextExchange="2222"/>
+            <answer idea="What about no ?" text="I'm not your slave dude." nextExchange="2222">
+                <callback methodName="addTag">
+                    <arg type="string" value="fired" />
+                </callback>
+            </answer>
     	</answers>
     </exchange>
     <exchange id="7" text="Anyway, the machine is broken. You have to get the backup at Noodle Company."
      nextDialogue="default.xml">
     	<answers>
     		<answer idea="Sure" text="Sure" nextExchange="222"/>
-    		<answer idea="What about no ?" text="I'm not your slave dude." nextExchange="2222"/>
+    		<answer idea="What about no ?" text="I'm not your slave dude." nextExchange="2222">
+                <callback methodName="addTag">
+                    <arg type="string" value="fired" />
+                </callback>
+            </answer>
     	</answers>
     </exchange>
     <exchange id="222" text="">
