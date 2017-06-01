@@ -193,7 +193,7 @@ public class Entity extends Observable implements Serializable {
         return message;
     }
 
-    public void setMessage(String content,
+    private void setMessage(String content,
                            float timeToAnswer, Entity receiver) {
         message.setContent(content);
         message.setTimeToAnswer(timeToAnswer);
