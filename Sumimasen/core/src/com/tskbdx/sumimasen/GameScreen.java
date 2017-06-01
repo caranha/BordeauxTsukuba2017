@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.tskbdx.sumimasen.scenes.IntroScene;
 import com.tskbdx.sumimasen.scenes.Scene;
+import com.tskbdx.sumimasen.scenes.inputprocessors.GameCommands;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
 import com.tskbdx.sumimasen.scenes.view.ui.UserInterface;
@@ -43,6 +44,8 @@ public class GameScreen implements Screen {
 
         UserInterface.init(currentScene, GameScreen.getPlayer());
         userInterface = UserInterface.getInstance();
+
+        Gdx.input.setInputProcessor(GameCommands.getInstance());
     }
 
     public static Player getPlayer() {

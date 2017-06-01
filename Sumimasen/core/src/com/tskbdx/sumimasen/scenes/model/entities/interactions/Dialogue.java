@@ -7,6 +7,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Message;
 import com.tskbdx.sumimasen.scenes.story.Story;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
+import com.tskbdx.sumimasen.scenes.view.ui.UserInterface;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -43,7 +44,7 @@ public class Dialogue extends Interaction {
     public void start(Entity active, Entity passive) {
         super.start(active, passive);
 
-        Gdx.input.setInputProcessor(GameCommands.getInstance());
+        Gdx.input.setInputProcessor(UserInterface.getInstance());
 
         buildDialogue(FOLDER +
                 Story.getSceneName() +
