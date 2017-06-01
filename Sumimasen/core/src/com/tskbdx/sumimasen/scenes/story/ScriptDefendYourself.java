@@ -26,6 +26,7 @@ class ScriptDefendYourself {
             Entity player = GameScreen.getPlayer();
             Movement playerMovement = player.getMovement();
             player.setMovement(null);
+            player.setInteracting(true);
 
             List<Direction> path = new LinkedList<>();
             Utility.repeat(() -> path.add(Direction.WEST), 7);
@@ -33,6 +34,7 @@ class ScriptDefendYourself {
 
             new Path(() -> {
                 player.setMovement(playerMovement);
+                player.setDirection(Direction.NONE);
                 new Dialogue("playerLate.xml").start(noname, player);
             }, path.toArray(new Direction[path.size()])).move(noname);
         }
