@@ -5,6 +5,7 @@ import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Path;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
@@ -18,12 +19,14 @@ public class GoGetBackup extends Scene {
 
     @Override
     public void init() {
-        Player player = GameScreen.getPlayer();
         World world = getWorld();
+        Player player = GameScreen.getPlayer();
+        Entity noname = world.getEntityByName("Pr. Noname");
+
+        noname.setInteraction(new Dialogue("default.xml"));
 
         if (player.hasTag("late")) {
             world.removeEntity(world.getEntityByName("late sensor"));
-            Entity noname = world.getEntityByName("Pr. Noname");
             noname.moveTo(13, 4);
             noname.setSpeed(4);
             List<Direction> path = new LinkedList<>();
