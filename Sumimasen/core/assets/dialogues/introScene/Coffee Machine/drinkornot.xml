@@ -1,7 +1,7 @@
 <dialogue>
     <exchange id="1" text="Do I have time for coffee ?" triggerWonder="1">
         <answers>
-            <answer idea="Yes, coffee is mandatory !" text="Feels good." nextExchange="2">
+            <answer idea="Yes, coffee is mandatory !" text="Feels good." nextExchange="2" important="1">
             	<callback methodName="addTag">
             		<arg type="string" value="late" />
             	</callback>

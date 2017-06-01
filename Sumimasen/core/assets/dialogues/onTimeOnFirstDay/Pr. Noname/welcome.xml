@@ -1,14 +1,14 @@
 <dialogue>
-    <exchange id="1" text="Hi ! Right on time ! Do you want some coffee ?">
+    <exchange id="1" text="Hi ! Right on time ! Do you want some coffee ?" important="1">
         <answers>
-            <answer idea="Coffeeeee" text="With pleasure !" nextExchange="2"/>
+            <answer idea="Coffeeeee" text="With pleasure !" nextExchange="2" important="1"/>
             <answer idea="No" text="Did I ask for a coffee ?" nextExchange="2"/>
         </answers>
     </exchange>
     <exchange id="2" text="Cool clothes">
         <answers>
             <answer idea="He is boring and I want to work !" text="What shall I do ?" nextExchange="6"/>
-            <answer idea="That's true" text="I know !" nextExchange="7"/>
+            <answer idea="That's true" text="I know !" nextExchange="7" important="1"/>
         </answers>
     </exchange>
     <exchange id="6" text="Today you have to take care of this machine over there. You have to push the right button as a test." 
@@ -29,7 +29,7 @@
         <answers>
         </answers>
     </exchange>
-    <exchange id="2222" text="You are fired !">
+    <exchange id="2222" text="You are fired !" important="1">
     	<answers>
     	</answers>
     </exchange>

@@ -2,13 +2,13 @@
     <exchange id="1" text="How is it going on with the machine ?">
         <answers>
             <answer idea="Ask about it" text="Fine, what is its purpose ?" nextExchange="2"/>
-            <answer idea="I don't want to debauch late, let's work" text="Good, I'm on it !" nextExchange="3"/>
+            <answer idea="I don't want to debauch late, let's work" text="Good, I'm on it !" nextExchange="3" important="1"/>
         </answers>
     </exchange>
     <exchange id="2" text="It is a machine that makes things disappear.">
         <answers>
             <answer idea="Wow ! How ?" text="How does it work ?" nextExchange="4"/>
-            <answer idea="Exciting, let's take care of it then" text="Cool ! I'm ont it !" nextExchange="3"/>
+            <answer idea="Exciting, let's take care of it then" text="Cool ! I'm ont it !" nextExchange="3" important="1"/>
         </answers>
     </exchange>
     <exchange id="3" text="Great.">

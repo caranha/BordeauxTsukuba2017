@@ -19,7 +19,6 @@ public class GoGetBackup extends Scene {
 
     @Override
     public void init() {
-        System.out.println("Get back up");
         World world = getWorld();
         Player player = GameScreen.getPlayer();
         Entity noname = world.getEntityByName("Pr. Noname");

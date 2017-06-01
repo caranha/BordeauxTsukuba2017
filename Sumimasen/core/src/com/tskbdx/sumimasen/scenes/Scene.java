@@ -41,6 +41,8 @@ public abstract class Scene {
         worldRenderer = new WorldRenderer(world, camera);
 
         UserInterface.setScene(this);
+
+        GameScreen.getPlayer().think(description());
     }
 
     public abstract void init();

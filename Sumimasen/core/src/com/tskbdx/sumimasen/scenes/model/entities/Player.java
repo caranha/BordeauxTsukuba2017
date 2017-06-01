@@ -4,17 +4,12 @@ import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Walk;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 /*Z
  * Created by Sydpy on 4/27/17.
  */
 public class Player extends Entity {
 
-    private boolean canTalkAlone = true;
+    private boolean canThink = true;
 
     public Player() {
         super();
@@ -32,10 +27,10 @@ public class Player extends Entity {
      */
     @Override
     public boolean tryInteract() {
-        if (!super.tryInteract() && canTalkAlone) {
+        if (!super.tryInteract() && canThink) {
             think(GameScreen.getCurrentScene().description());
-            canTalkAlone = false;
-            Utility.setTimeout(() -> canTalkAlone = true, getMessage().getTotalDuration());
+            canThink = false;
+            Utility.setTimeout(() -> canThink = true, getMessage().getTotalDuration());
             return true;
         }
         return false;
