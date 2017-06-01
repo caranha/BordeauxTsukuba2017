@@ -104,7 +104,9 @@ public abstract class Scene {
     public void loadMap(String map, String spawn) {
         TiledMap tiledMap = new TmxMapLoader().load("maps/" + map + ".tmx");
 
-        entityDescriptors = TiledMapUtils.entityDescriptors(tiledMap, spawn != null);
+        System.out.println("loading " + map + " " + spawn);
+
+        entityDescriptors = TiledMapUtils.entityDescriptors(tiledMap, true);
         sensorDescriptors = TiledMapUtils.sensorDescriptors(tiledMap);
 
         world.load(tiledMap, entityDescriptors, sensorDescriptors, spawn);
