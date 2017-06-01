@@ -1,16 +1,9 @@
 package com.tskbdx.sumimasen.scenes;
 
-import com.badlogic.gdx.Gdx;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.World;
-import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
-import com.tskbdx.sumimasen.scenes.model.entities.movements.Path;
-import com.tskbdx.sumimasen.scenes.utility.Utility;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /*
  * Created by viet khang on 01/06/2017.
@@ -25,12 +18,13 @@ public class OnTimeOnFirstDay extends Scene {
 
     @Override
     public boolean isFinished() {
-        return false;
+        Entity player = GameScreen.getPlayer();
+        return player.hasInteractedWith("Pr. Noname");
     }
 
     @Override
     public Scene getNextScene() {
-        return null;
+        return new LetsWork();
     }
 
     @Override
