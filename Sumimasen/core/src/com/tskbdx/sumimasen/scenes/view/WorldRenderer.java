@@ -45,6 +45,7 @@ public class WorldRenderer implements Observer {
                      List<TiledMapUtils.SensorDescriptor> sensorDescriptors) {
 
         rendererByEntity.clear();
+        rendererBySensor.clear();
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, batch);
 
         tiledMap.getLayers().get("Collision").setVisible(false);

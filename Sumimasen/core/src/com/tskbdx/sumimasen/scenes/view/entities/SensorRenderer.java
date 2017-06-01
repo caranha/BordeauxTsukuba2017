@@ -1,6 +1,7 @@
 package com.tskbdx.sumimasen.scenes.view.entities;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.TiledMapUtils;
 import com.tskbdx.sumimasen.scenes.model.entities.Sensor;
 import com.tskbdx.sumimasen.scenes.view.entities.animator.Animator;
@@ -31,7 +32,10 @@ public class SensorRenderer {
 
     public void render(Batch batch) {
 
-        batch.draw(animator.update(), rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+        double distance = Math.sqrt( Math.pow(sensor.getX() - GameScreen.getPlayer().getX(), 2) + Math.pow(sensor.getY() - GameScreen.getPlayer().getY(), 2) );
+
+        if (distance < 3)
+            batch.draw(animator.update(), rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 
     }
 }
