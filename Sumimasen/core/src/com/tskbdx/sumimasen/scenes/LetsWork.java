@@ -27,7 +27,7 @@ public class LetsWork extends Scene {
 
     @Override
     public Scene getNextScene() {
-        return new GoGetBackup();
+        return new BreakMachine();
     }
 
     @Override
