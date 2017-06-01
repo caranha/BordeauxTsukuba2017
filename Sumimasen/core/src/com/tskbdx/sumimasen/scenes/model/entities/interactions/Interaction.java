@@ -63,6 +63,7 @@ public abstract class Interaction implements Serializable {
         passive.setMovement(passiveMovement);
 
         active.setDirection(activeDirection);
+        active.notifyObservers();
 
         Story.getInstance().update(this, active, passive);
     }
