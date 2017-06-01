@@ -110,10 +110,10 @@ public class Entity extends Observable implements Serializable {
         int prevX = this.x;
         int prevY = this.y;
 
-        if (x < world.getWidth() && x >= 0)
+        if (x + width  - 1 < world.getWidth() && x >= 0)
             this.x = x;
 
-        if (y < world.getHeight() && y >= 0)
+        if (y + height - 1< world.getHeight() && y >= 0)
             this.y = y;
 
         if (prevX == this.x && prevY == this.y) return;

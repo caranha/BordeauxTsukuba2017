@@ -64,6 +64,29 @@ public class World extends Observable implements Serializable {
         buildSensors(sensorDescriptors);
     }
 
+    public void load(TiledMap tiledMap,
+                     List<TiledMapUtils.EntityDescriptor> entityDescriptors,
+                     List<TiledMapUtils.SensorDescriptor> sensorDescriptors,
+                     int playerX, int playerY) {
+
+        TiledMapTileLayer collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Collision");
+
+        width   = collisionLayer.getWidth();
+        height  = collisionLayer.getHeight();
+
+        wallsMap    = new boolean[collisionLayer.getWidth()][collisionLayer.getHeight()];
+        entitiesMap = new Entity[collisionLayer.getWidth()][collisionLayer.getHeight()];
+        sensorsMap  = new Sensor[collisionLayer.getWidth()][collisionLayer.getHeight()];
+        entitiesInCurrentMap.clear();
+
+        buildWalls(collisionLayer);
+        spawnPlayer(playerX, playerY);
+        spawnEntities(entityDescriptors);
+
+        buildSensors(sensorDescriptors);
+
+    }
+
     private void buildSensors(List<TiledMapUtils.SensorDescriptor> sensorDescriptors) {
         for (TiledMapUtils.SensorDescriptor sensorDescriptor : sensorDescriptors) {
 
@@ -126,9 +149,9 @@ public class World extends Observable implements Serializable {
                             mapObject.getProperties().get("x", Float.class).intValue(),
                             mapObject.getProperties().get("y", Float.class).intValue());
 
-                    GameScreen.getPlayer().setWorld(this);
                     GameScreen.getPlayer().moveTo(spawn.getX() / TiledMapUtils.TILE_SIZE, spawn.getY() / TiledMapUtils.TILE_SIZE);
                     moveEntity(GameScreen.getPlayer(), GameScreen.getPlayer().getX(), GameScreen.getPlayer().getY());
+                    GameScreen.getPlayer().setWorld(this);
 
                     entitiesByName.put(GameScreen.getPlayer().getName(), GameScreen.getPlayer());
                     entitiesInCurrentMap.add(GameScreen.getPlayer().getName());
@@ -138,6 +161,18 @@ public class World extends Observable implements Serializable {
             }
         }
     }
+
+    private void spawnPlayer(int playerX, int playerY) {
+        GameScreen.getPlayer().moveTo(playerX, playerY);
+        moveEntity(GameScreen.getPlayer(), GameScreen.getPlayer().getX(), GameScreen.getPlayer().getY());
+        GameScreen.getPlayer().setWorld(this);
+
+        entitiesByName.put(GameScreen.getPlayer().getName(), GameScreen.getPlayer());
+        entitiesInCurrentMap.add(GameScreen.getPlayer().getName());
+
+    }
+
+
 
     private void buildWalls(TiledMapTileLayer collisionLayer) {
         for (int i = 0; i < collisionLayer.getWidth(); i++) {
@@ -197,8 +232,8 @@ public class World extends Observable implements Serializable {
 
         setNone(prevX, prevY, entity.getWidth(), entity.getHeight());
 
-        for (int i = entity.getX(); i < entity.getX() + entity.getWidth(); i++) {
-            for (int j = entity.getY(); j < entity.getY() + entity.getHeight(); j++) {
+        for (int i = entity.getX(); i < Math.min(width - 1, entity.getX() + entity.getWidth()); i++) {
+            for (int j = entity.getY(); j < Math.min(height - 1, entity.getY() + entity.getHeight()); j++) {
                 entitiesMap[i][j] = entity;
             }
         }
@@ -285,8 +320,8 @@ public class World extends Observable implements Serializable {
 
         List<Sensor> colliding = new ArrayList<>();
 
-        for (int i = x; i < x + width; i++) {
-            for (int j = y; j < y + height; j++) {
+        for (int i = x; i < Math.min(this.width - 1, x + width); i++) {
+            for (int j = y; j < y + Math.min(this.height - 1, height); j++) {
 
                 Sensor sensor = sensorsMap[i][j];
 
