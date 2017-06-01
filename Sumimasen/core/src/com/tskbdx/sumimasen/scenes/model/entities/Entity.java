@@ -4,7 +4,6 @@ import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
-import com.tskbdx.sumimasen.scenes.story.Story;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
 import java.io.Serializable;
@@ -15,24 +14,19 @@ import java.util.*;
  */
 public class Entity extends Observable implements Serializable {
 
-    private World world;
-
-    private Movement movement;
-    private Interaction interaction;
-    private Interaction onCollide;
-
-    private int x, y;
-    private int width, height;
-    private String name;
-
-    private boolean isInteracting = false;
-
-    private Inventory inventory = new Inventory();
-
     /**
      * Message
      */
     private final Message message = new Message(this);
+    private World world;
+    private Movement movement;
+    private Interaction interaction;
+    private Interaction onCollide;
+    private int x, y;
+    private int width, height;
+    private String name;
+    private boolean isInteracting = false;
+    private Inventory inventory = new Inventory();
     /**
      * dd
      * direction is the current direction movement state
@@ -57,6 +51,7 @@ public class Entity extends Observable implements Serializable {
     public boolean hasTag(String tag) {
         return tags.contains(tag);
     }
+
     /**
      * Can only interact if there is a SceneObject
      * in front of the entity
@@ -166,7 +161,7 @@ public class Entity extends Observable implements Serializable {
     }
 
     public void setDirection(Direction direction) {
-        if (direction != Direction.NONE) {
+        if (!direction.equals(Direction.NONE)) {
             lastDirection = direction;
         }
         this.direction = direction;
@@ -175,6 +170,10 @@ public class Entity extends Observable implements Serializable {
 
     public int getSpeed() {
         return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
     public Direction getLastDirection() {
@@ -241,12 +240,12 @@ public class Entity extends Observable implements Serializable {
         setChanged();
     }
 
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
-    }
-
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 
     public Interaction getOnCollide() {
@@ -289,7 +288,7 @@ public class Entity extends Observable implements Serializable {
     }
 
     public boolean isWalking() {
-        return direction != Direction.NONE && movement != null ;
+        return direction != Direction.NONE && movement != null;
     }
 
     public void think(String content) {
@@ -303,9 +302,5 @@ public class Entity extends Observable implements Serializable {
 
     public void setNextInteraction(Dialogue nextInteraction) {
         this.nextInteraction = nextInteraction;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
     }
 }

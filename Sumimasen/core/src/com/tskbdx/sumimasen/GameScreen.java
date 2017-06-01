@@ -7,22 +7,22 @@ import com.tskbdx.sumimasen.scenes.IntroScene;
 import com.tskbdx.sumimasen.scenes.Scene;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
+import com.tskbdx.sumimasen.scenes.view.ui.UserInterface;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 
-/**
+/*
  * Created by Sydpy on 4/27/17.
  */
 public class GameScreen implements Screen {
 
-    private final String SAVE_DIR = "";
-
-    private final Sumimasen game;
-
     private static Player player = new Player();
-
     private static Scene currentScene;
+    private final String SAVE_DIR = "";
+    private final Sumimasen game;
+    private final UserInterface userInterface;
+
 
     public GameScreen(final Sumimasen game) {
         this(game, false);
@@ -30,7 +30,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(final Sumimasen game, boolean loadFromSave) {
         this.game = game;
-        Gdx.gl20.glClearColor(0,0,0,1);
+        Gdx.gl20.glClearColor(0, 0, 0, 1);
 
         if (loadFromSave) {
             loadFromSave();
@@ -39,6 +39,17 @@ public class GameScreen implements Screen {
             currentScene = new IntroScene();
             currentScene.init();
         }
+
+        userInterface = new UserInterface(currentScene, GameScreen.getPlayer());
+        userInterface.init();
+    }
+
+    public static Player getPlayer() {
+        return player;
+    }
+
+    public static Scene getCurrentScene() {
+        return currentScene;
     }
 
     @Override
@@ -55,6 +66,9 @@ public class GameScreen implements Screen {
         game.getBatch().begin();
         currentScene.render(game.getBatch());
         game.getBatch().end();
+
+        userInterface.act(delta);
+        userInterface.draw();
 
         if (currentScene.isFinished()) {
             Scene nextScene = currentScene.getNextScene();
@@ -108,6 +122,7 @@ public class GameScreen implements Screen {
             System.err.println("Error while saving current game state");
             e.printStackTrace();
         }
+        userInterface.dispose();
     }
 
     private void loadFromSave() {
@@ -115,16 +130,16 @@ public class GameScreen implements Screen {
         try {
 
             System.out.println("Deserializing current scene");
-            FileInputStream fin1                = new FileInputStream(SAVE_DIR + "scene.save");
-            ObjectInputStream in1               = new ObjectInputStream(fin1);
-            Class<? extends Scene> sceneClass   = (Class<? extends Scene>) in1.readObject();
+            FileInputStream fin1 = new FileInputStream(SAVE_DIR + "scene.save");
+            ObjectInputStream in1 = new ObjectInputStream(fin1);
+            Class<? extends Scene> sceneClass = (Class<? extends Scene>) in1.readObject();
             in1.close();
             fin1.close();
 
             System.out.println("Deserializing player");
-            FileInputStream fin2    = new FileInputStream(SAVE_DIR + "player.save");
-            ObjectInputStream in2   = new ObjectInputStream(fin2);
-            Entity player           = (Entity) in2.readObject();
+            FileInputStream fin2 = new FileInputStream(SAVE_DIR + "player.save");
+            ObjectInputStream in2 = new ObjectInputStream(fin2);
+            Entity player = (Entity) in2.readObject();
             in2.close();
             fin2.close();
 
@@ -151,13 +166,5 @@ public class GameScreen implements Screen {
             System.out.println("Error while loading previously saved state");
             e.printStackTrace();
         }
-    }
-
-    public static Player getPlayer() {
-        return player;
-    }
-
-    public static Scene getCurrentScene() {
-        return currentScene;
     }
 }

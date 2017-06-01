@@ -38,6 +38,7 @@ public abstract class Interaction implements Serializable {
         this.passive = passive;
 
         activeDirection = active.getLastDirection();
+        System.out.println(activeDirection + " -> " + Direction.getOpposite(passive.getLastDirection()));
         // change target direction to face the passive
         active.setDirection(Direction.getOpposite(passive.getLastDirection()));
         active.notifyObservers();
@@ -67,6 +68,9 @@ public abstract class Interaction implements Serializable {
 
         active.setDirection(activeDirection);
         active.notifyObservers();
+        System.out.println("Finally " +
+                activeDirection);
+
 
         Story.getInstance().update(this, active, passive);
     }

@@ -5,10 +5,12 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.inputprocessors.GameCommands;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.story.Story;
 import com.tskbdx.sumimasen.scenes.view.SmoothCamera;
+import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 
 import java.util.HashMap;
@@ -27,7 +29,6 @@ public abstract class Scene {
     private World world;
     private WorldRenderer worldRenderer;
     private SmoothCamera camera;
-    private InputProcessor inputProcessor;
 
     // to prevent extra loads
     private Map<String, TiledMap> loadedMaps = new HashMap<>();
@@ -40,9 +41,6 @@ public abstract class Scene {
         camera.setToOrtho(false, 800, 480);
         camera.zoom = 1.f / SCALE_FACTOR;
 
-        inputProcessor = new GameCommands();
-        Gdx.input.setInputProcessor(inputProcessor);
-
         world = new World();
         worldRenderer = new WorldRenderer(world, camera);
     }
@@ -50,9 +48,19 @@ public abstract class Scene {
     public abstract void init();
 
 
-    public abstract void update(float dt);
+    public void update(float dt) {
+        Tween.updateAll(dt);
 
-    public abstract void render(Batch batch);
+        getCamera().translate(
+                GameScreen.getPlayer().getX()*8 - getCamera().position.x,
+                GameScreen.getPlayer().getY()*8 - getCamera().position.y);
+        getCamera().update();
+    }
+
+    public void render(Batch batch) {
+        batch.setProjectionMatrix(getCamera().combined);
+        getWorldRenderer().render();
+    }
 
     public abstract boolean isFinished();
 
@@ -70,10 +78,6 @@ public abstract class Scene {
 
     public final SmoothCamera getCamera() {
         return camera;
-    }
-
-    public final InputProcessor getInputProcessor() {
-        return inputProcessor;
     }
 
     public final List<TiledMapUtils.MapObjectMapping> getMapObjectMappings() {
