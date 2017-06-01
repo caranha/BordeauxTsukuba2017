@@ -7,7 +7,7 @@
     </exchange>
     <exchange id="2" text="What happened ?">
     	<answers>
-    		<answer idea="Say the truth" text="I spent to much time at home. It won't happen again."
+    		<answer idea="Say the truth" text="I spent too much time at home. It won't happen again."
     			nextExchange="3"/>
     		<answer idea="Lie" text="The bus was late" nextExchange="4"/>
     	</answers>

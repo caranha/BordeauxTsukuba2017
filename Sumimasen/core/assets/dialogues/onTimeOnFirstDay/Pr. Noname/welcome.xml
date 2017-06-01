@@ -5,13 +5,13 @@
             <answer idea="No" text="Did I ask for a coffee ?" nextExchange="2"/>
         </answers>
     </exchange>
-    <exchange id="2" text="Anyway you are wearing cool clothes">
+    <exchange id="2" text="Cool clothes">
         <answers>
             <answer idea="He is boring and I want to work !" text="What shall I do ?" nextExchange="6"/>
-            <answer idea="He is funny, let's joke" text="Not really, I should have put something under ..." nextExchange="7"/>
+            <answer idea="That's true" text="I know !" nextExchange="7"/>
         </answers>
     </exchange>
-    <exchange id="6" text="Today you have to take care of this machine over there." 
+    <exchange id="6" text="Today you have to take care of this machine over there. You have to push the right button as a test." 
         nextDialogue="default.xml">
     	<answers>
     		<answer idea="Sure" text="Sure" nextExchange="222"/>
