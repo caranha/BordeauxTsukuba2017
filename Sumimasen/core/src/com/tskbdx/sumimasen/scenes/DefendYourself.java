@@ -43,7 +43,7 @@ public class DefendYourself extends Scene {
     @Override
     public Scene getNextScene() {
         Entity player = GameScreen.getPlayer();
-        return player.hasTag("isFired") ? new FiredOnFirstDay() : new GoGetBackup();
+        return player.hasTag("fired") ? new FiredOnFirstDay() : new GoGetBackup();
     }
 
     @Override

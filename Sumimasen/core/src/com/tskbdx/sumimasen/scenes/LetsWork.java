@@ -1,5 +1,6 @@
 package com.tskbdx.sumimasen.scenes;
 
+import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
@@ -20,7 +21,8 @@ public class LetsWork extends Scene {
 
     @Override
     public boolean isFinished() {
-        return false;
+        Entity player = GameScreen.getPlayer();
+        return player.hasInteractedWith("Machine");
     }
 
     @Override
