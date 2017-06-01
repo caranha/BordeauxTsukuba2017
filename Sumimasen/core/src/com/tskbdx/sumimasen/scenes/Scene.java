@@ -11,7 +11,9 @@ import com.tskbdx.sumimasen.scenes.story.Story;
 import com.tskbdx.sumimasen.scenes.view.SmoothCamera;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Sydpy on 4/27/17.
@@ -19,15 +21,11 @@ import java.util.List;
 public abstract class Scene {
 
     public final static float SCALE_FACTOR = 4.f;
-
+    protected final Story story = Story.getInstance();
     protected String currentMap = "map";
     protected String spawn = "player_home";
-
     private World world;
     private WorldRenderer worldRenderer;
-
-    protected final Story story = Story.getInstance();
-
     private SmoothCamera camera;
     private InputProcessor inputProcessor;
 
@@ -44,8 +42,6 @@ public abstract class Scene {
 
         world = new World();
         worldRenderer = new WorldRenderer(world, camera);
-
-        story.setScene(this);
     }
 
     public abstract void init();
@@ -83,9 +79,8 @@ public abstract class Scene {
 
     public void loadMap(String map, String spawn) {
 
-        if (map != null) {
 
-            System.out.println("Loading map : " + map + " at " + spawn);
+        if (map != null) {
 
             this.currentMap = map;
             this.spawn = spawn;
@@ -103,8 +98,6 @@ public abstract class Scene {
     public void loadMap(String map, int playerX, int playerY) {
         if (map != null) {
 
-            System.out.println("Loading map : " + map + " at " + spawn);
-
             this.currentMap = map;
             this.spawn = spawn;
 
@@ -114,7 +107,7 @@ public abstract class Scene {
 
             world.load(tiledMap, mapObjectDescriptors, spawn);
             worldRenderer.load(tiledMap, mapObjectDescriptors);
-
         }
     }
 }
+

@@ -8,9 +8,7 @@ import com.tskbdx.sumimasen.scenes.story.Story;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
+import java.util.*;
 
 /**
  * Created by Sydpy on 4/28/17.
@@ -34,7 +32,7 @@ public class Entity extends Observable implements Serializable {
     /**
      * Message
      */
-    private Message message = new Message(this);
+    private final Message message = new Message(this);
     /**
      * dd
      * direction is the current direction movement state
@@ -47,9 +45,18 @@ public class Entity extends Observable implements Serializable {
     private int speed = 8;
     private Dialogue nextInteraction;
 
+    private Set<String> tags = new HashSet<>();
+
     public Entity() {
     }
 
+    public void addTag(String tag) {
+        tags.add(tag);
+    }
+
+    public boolean hasTag(String tag) {
+        return tags.contains(tag);
+    }
     /**
      * Can only interact if there is a SceneObject
      * in front of the entity
@@ -60,9 +67,6 @@ public class Entity extends Observable implements Serializable {
             if (neighbour != null) {
 
                 if (neighbour.isInteractable()) {
-                    // change target direction to face this
-                    neighbour.setDirection(Direction.getOpposite(getLastDirection()));
-                    neighbour.notifyObservers();
                     neighbour.getInteraction().start(neighbour, this);
                 }
 
@@ -114,7 +118,6 @@ public class Entity extends Observable implements Serializable {
         this.y = y;
 
         if (world != null) world.moveEntity(this, prevX, prevY);
-
         setChanged();
     }
 
@@ -196,7 +199,7 @@ public class Entity extends Observable implements Serializable {
         message.setContent(content);
         message.setTimeToAnswer(timeToAnswer);
         message.setTimeToUnderstand(
-                Math.min(Utility.getWordCount(content) * 1.3f, 4.2f));
+                Math.min(Utility.getWordCount(content) * .44f, 3.2f));
         message.setReceiver(receiver);
         message.notifyObservers();
         setChanged();
@@ -300,5 +303,9 @@ public class Entity extends Observable implements Serializable {
 
     public void setNextInteraction(Dialogue nextInteraction) {
         this.nextInteraction = nextInteraction;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }

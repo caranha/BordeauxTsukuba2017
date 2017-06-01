@@ -144,10 +144,7 @@ public class World extends Observable implements Serializable {
             entity.setHeight(mapping.height);
 
             entity.setOnCollide(mapping.onCollide);
-
         }
-
-        System.out.println(entity.getName());
 
         entity.setWorld(this);
         entity.moveTo(mapping.x, mapping.y);
@@ -185,6 +182,9 @@ public class World extends Observable implements Serializable {
                 entitiesMap[i][j] = entity;
             }
         }
+
+        setChanged();
+        notifyObservers();
     }
 
     private void setVoid(int i, int j) {
@@ -214,7 +214,7 @@ public class World extends Observable implements Serializable {
     public Entity getEntity(int x, int y) {
         try {
             return entitiesMap[x][y];
-        } catch(ArrayIndexOutOfBoundsException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             return null;
         }
     }
@@ -270,6 +270,12 @@ public class World extends Observable implements Serializable {
 
     public final boolean isEntityInCurrentMap(Entity entity) {
         return entitiesInCurrentMap.contains(entity.getName());
+    }
+
+    public void addEntity(String name, Entity entity) {
+        entitiesByName.put(name, entity);
+        entity.setName(name);
+        setChanged();
     }
 
     public List<Entity> getEntities() {

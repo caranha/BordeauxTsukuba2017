@@ -4,6 +4,7 @@ package com.tskbdx.sumimasen.scenes.model.entities.interactions;
  * Created by viet khang on 08/05/2017.
  */
 
+import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 import com.tskbdx.sumimasen.scenes.story.Story;
@@ -26,14 +27,20 @@ public abstract class Interaction implements Serializable {
     // so we store it
     private Movement activeMovement;
     private Movement passiveMovement;
+    private Direction activeDirection;
 
     Interaction() {}
 
     public void start(Entity active, Entity passive) {
 
-        System.out.println("starting with " + active.getName() + " " + passive.getName());
+        this.active = active;
         this.active = active;
         this.passive = passive;
+
+        activeDirection = active.getLastDirection();
+        // change target direction to face the passive
+        active.setDirection(Direction.getOpposite(passive.getLastDirection()));
+        active.notifyObservers();
 
         active.setInteracting(true);
         passive.setInteracting(true);
@@ -57,6 +64,9 @@ public abstract class Interaction implements Serializable {
 
         active.setMovement(activeMovement);
         passive.setMovement(passiveMovement);
+
+        active.setDirection(activeDirection);
+        active.notifyObservers();
 
         Story.getInstance().update(this, active, passive);
     }

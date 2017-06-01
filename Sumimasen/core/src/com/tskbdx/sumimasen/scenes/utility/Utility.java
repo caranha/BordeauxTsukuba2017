@@ -102,4 +102,10 @@ abstract public class Utility {
             return 0;
         return trim.split("\\s+").length;
     }
+
+    public static void repeat(Runnable runnable, int iterationCount) {
+        for (int j = 0 ; j != iterationCount ; ++j) {
+            runnable.run();
+        }
+    }
 }

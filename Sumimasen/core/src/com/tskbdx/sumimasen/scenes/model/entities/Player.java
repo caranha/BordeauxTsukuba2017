@@ -4,15 +4,21 @@ import com.tskbdx.sumimasen.scenes.model.entities.movements.Walk;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /*Z
  * Created by Sydpy on 4/27/17.
  */
 public class Player extends Entity {
 
-    private List<String> tags = new ArrayList<>();
     private boolean canTalkAlone = true;
+
+    @Override
+    public void moveTo(int x, int y) {
+        super.moveTo(x, y);
+    }
 
     public Player() {
         super();
@@ -22,10 +28,6 @@ public class Player extends Entity {
         setHeight(1);
     }
 
-    public void addTag(String tag) {
-        assert !tags.contains(tag) : "Player already has tag : " + tag;
-        tags.add(tag);
-    }
 
     /**
      * Can only interact if there is a SceneObject
