@@ -7,7 +7,6 @@ package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
-import com.tskbdx.sumimasen.scenes.story.Story;
 
 import java.io.Serializable;
 

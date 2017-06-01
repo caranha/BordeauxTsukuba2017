@@ -5,11 +5,14 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.tskbdx.sumimasen.GameScreen;
-import com.tskbdx.sumimasen.scenes.model.entities.interactions.*;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.ChangeMap;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Sydpy on 5/24/17.
@@ -17,8 +20,9 @@ import java.util.List;
 public class TiledMapUtils {
 
     public static final int TILE_SIZE = 8;
+    public static Map<String, MapObjectDescriptor> allDescriptorsByName = new HashMap<>();
 
-    public static class MapObjectMapping implements Serializable {
+    public static class MapObjectDescriptor implements Serializable {
 
         public String name;
         public int x;
@@ -26,32 +30,21 @@ public class TiledMapUtils {
         public int width;
         public int height;
 
-        public Interaction defaultInteraction;
         public Interaction onCollide;
 
         public String standingSpritesheet;
         public String walkingSpritesheet;
 
-        MapObjectMapping() {}
+        MapObjectDescriptor() {}
 
-        MapObjectMapping(MapObject mapObject) {
+        MapObjectDescriptor(MapObject mapObject) {
 
             name    = mapObject.getName();
-            x       = (int) Math.floor(mapObject.getProperties().get("x", Float.class) / TILE_SIZE);
-            y       = (int) Math.floor(mapObject.getProperties().get("y", Float.class) / TILE_SIZE);
-            width   = (int) Math.floor(mapObject.getProperties().get("width", Float.class) / TILE_SIZE);
-            height  = (int) Math.floor(mapObject.getProperties().get("height", Float.class) / TILE_SIZE);
 
-
-            String defaultInteractionName  = mapObject.getProperties().get("defaultInteraction", String.class);
-            if ("dialogue".equals(defaultInteractionName)) {
-                String dialogueName        = mapObject.getProperties().get("dialogueName", String.class);
-                defaultInteraction = new Dialogue(dialogueName);
-            } else if ("getPickedUp".equals(defaultInteractionName)) {
-                defaultInteraction = new GetPickedUp();
-            } else {
-                defaultInteraction = null;
-            }
+            x       = mapObject.getProperties().get("x", Float.class).intValue() / TILE_SIZE;
+            y       = mapObject.getProperties().get("y", Float.class).intValue() / TILE_SIZE;
+            width   = mapObject.getProperties().get("width", Float.class).intValue() / TILE_SIZE;
+            height  = mapObject.getProperties().get("height", Float.class).intValue() / TILE_SIZE;
 
             String onCollideName = mapObject.getProperties().get("onCollide", String.class);
             if ("changeMap".equals(onCollideName)) {
@@ -96,26 +89,66 @@ public class TiledMapUtils {
         }
     }
 
-    public static List<MapObjectMapping> mapObjectMappings(TiledMap tiledMap) {
+    public static List<MapObjectDescriptor> mapObjectMappings(TiledMap tiledMap, boolean withPlayer) {
 
         MapLayer entities = tiledMap.getLayers().get("Entities");
 
-        List<MapObjectMapping> mappings = new ArrayList<>();
+        List<MapObjectDescriptor> mappings = new ArrayList<>();
 
-        MapObjects objects = entities.getObjects();
+        mappings.addAll(buildDescriptors(entities));
 
-        for (MapObject object : objects) {
-            if("entity".equals(object.getProperties().get("type", String.class))) {
-                mappings.add(new MapObjectMapping(object));
-            }
+        if (withPlayer) {
+
+            mappings.add(buildPlayerDescriptor());
         }
 
-        MapObjectMapping playerMapping = new MapObjectMapping();
-        playerMapping.name = GameScreen.getPlayer().getName();
+        return mappings;
+    }
+
+    private static MapObjectDescriptor buildPlayerDescriptor() {
+
+        String playerName = GameScreen.getPlayer().getName();
+
+        if (allDescriptorsByName.containsKey(playerName)) {
+            return allDescriptorsByName.get(playerName);
+        }
+
+        MapObjectDescriptor playerMapping = new MapObjectDescriptor();
+        playerMapping.name = playerName;
         playerMapping.walkingSpritesheet = "player_walking.png";
         playerMapping.standingSpritesheet = "player_standing.png";
 
-        mappings.add(playerMapping);
+        allDescriptorsByName.put(playerMapping.name, playerMapping);
+
+        return playerMapping;
+    }
+
+    private static List<MapObjectDescriptor> buildDescriptors(MapLayer entities) {
+        List<MapObjectDescriptor> mappings = new ArrayList<>();
+        MapObjects objects = entities.getObjects();
+
+        for (MapObject object : objects) {
+            if ("entity".equals(object.getProperties().get("type", String.class))) {
+
+                if (allDescriptorsByName.containsKey(object.getName())) {
+
+                    MapObjectDescriptor mapObjectDescriptor = allDescriptorsByName.get(object.getName());
+                    mapObjectDescriptor.x = object.getProperties().get("x", Float.class).intValue() / TILE_SIZE;
+                    mapObjectDescriptor.y = object.getProperties().get("y", Float.class).intValue() / TILE_SIZE;
+
+                    mappings.add(mapObjectDescriptor);
+
+                } else {
+
+                    MapObjectDescriptor mapObjectDescriptor = new MapObjectDescriptor(object);
+                    mappings.add(mapObjectDescriptor);
+
+                    if (!allDescriptorsByName.containsKey(mapObjectDescriptor.name)) {
+                        allDescriptorsByName.put(mapObjectDescriptor.name, mapObjectDescriptor);
+                    }
+                }
+            }
+        }
 
         return mappings;
     }

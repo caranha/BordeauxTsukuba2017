@@ -16,22 +16,15 @@ import java.util.List;
  */
 public class GoGetBackup extends Scene {
 
-    GoGetBackup() {
-        currentMap = "lab";
-        spawn = "left_entrance";
-    }
-
     @Override
     public void init() {
-        loadMap(currentMap, spawn);
-        getCamera().setTo(GameScreen.getPlayer().getX() * 8.f, GameScreen.getPlayer().getY() * 8.f);
-
-
         Player player = GameScreen.getPlayer();
         World world = getWorld();
 
         if (player.hasTag("late")) {
+            world.removeEntity(world.getEntityByName("late sensor"));
             Entity noname = world.getEntityByName("Pr. Noname");
+            noname.moveTo(13, 4);
             noname.setSpeed(4);
             List<Direction> path = new LinkedList<>();
             Utility.repeat(() -> path.add(Direction.NORTH), 6);
@@ -54,5 +47,20 @@ public class GoGetBackup extends Scene {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    protected String defaultMap() {
+        return "lab";
+    }
+
+    @Override
+    protected String defaultSpawn() {
+        return "left_entrance";
+    }
+
+    @Override
+    protected String description() {
+        return null;
     }
 }

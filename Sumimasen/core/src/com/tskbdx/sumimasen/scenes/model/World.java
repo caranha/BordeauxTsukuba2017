@@ -18,7 +18,6 @@ import java.util.*;
 
 /**
  * World represented in a matrix.
- * Collisionable :
  * - Walls stored as booleans
  * - Entities
  * Else :
@@ -30,22 +29,70 @@ public class World extends Observable implements Serializable {
     private Entity entitiesMap[][];
 
     private Map<String, Entity> entitiesByName = new HashMap<>();
-    private Map<String, Spawn> spawnByName = new HashMap<>();
 
-    private Map<String, Object> backups = new HashMap<>();
+    private List<String> entitiesInCurrentMap = new ArrayList<>();
 
     public World() {
     }
 
-    public void init(TiledMap tiledMap, List<TiledMapUtils.MapObjectMapping> mappings, String playerSpawn) {
-        entitiesByName.clear();
-        spawnByName.clear();
+    public void load(TiledMap tiledMap, List<TiledMapUtils.MapObjectDescriptor> mappings, String playerSpawn) {
 
         TiledMapTileLayer collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Collision");
 
         wallsMap = new boolean[collisionLayer.getWidth()][collisionLayer.getHeight()];
         entitiesMap = new Entity[collisionLayer.getWidth()][collisionLayer.getHeight()];
+        entitiesInCurrentMap.clear();
 
+        buildWalls(collisionLayer);
+        spawnPlayer(tiledMap, playerSpawn);
+        spawnEntities(mappings);
+
+    }
+
+    private void spawnEntities(List<TiledMapUtils.MapObjectDescriptor> mappings) {
+        for (TiledMapUtils.MapObjectDescriptor mapping : mappings) {
+
+            if (mapping.name != null && !mapping.name.equals(GameScreen.getPlayer().getName())) {
+
+                Entity entity = createEntity(mapping);
+                moveEntity(entity, entity.getX(), entity.getY());
+
+                entitiesByName.put(mapping.name, entity);
+                entitiesInCurrentMap.add(mapping.name);
+
+                setChanged();
+                notifyObservers();
+
+            }
+        }
+    }
+
+    private void spawnPlayer(TiledMap tiledMap, String playerSpawn) {
+        MapLayer entities = tiledMap.getLayers().get("Entities");
+        for (MapObject mapObject : entities.getObjects()) {
+            if ("spawn".equals(mapObject.getProperties().get("type", String.class))) {
+
+                Spawn spawn = new Spawn(
+                        mapObject.getName(),
+                        mapObject.getProperties().get("x", Float.class).intValue(),
+                        mapObject.getProperties().get("y", Float.class).intValue());
+
+                if (playerSpawn.equals(spawn.getName())) {
+
+
+                    GameScreen.getPlayer().setWorld(this);
+                    GameScreen.getPlayer().moveTo(spawn.getX() / 8, spawn.getY() / 8);
+                    moveEntity(GameScreen.getPlayer(), GameScreen.getPlayer().getX(), GameScreen.getPlayer().getY());
+
+                    entitiesByName.put(GameScreen.getPlayer().getName(), GameScreen.getPlayer());
+                    entitiesInCurrentMap.add(GameScreen.getPlayer().getName());
+                }
+                break;
+            }
+        }
+    }
+
+    private void buildWalls(TiledMapTileLayer collisionLayer) {
         for (int i = 0; i < collisionLayer.getWidth(); i++) {
             for (int j = 0; j < collisionLayer.getHeight(); j++) {
                 if (collisionLayer.getCell(i, j) != null) {
@@ -57,37 +104,9 @@ public class World extends Observable implements Serializable {
                 entitiesMap[i][j] = null;
             }
         }
-
-        MapLayer entities = tiledMap.getLayers().get("Entities");
-        for (MapObject mapObject : entities.getObjects()) {
-            if ("spawn".equals(mapObject.getProperties().get("type", String.class))) {
-
-                Spawn spawn = new Spawn(
-                        mapObject.getName(),
-                        mapObject.getProperties().get("x", Float.class).intValue(),
-                        mapObject.getProperties().get("y", Float.class).intValue());
-
-                spawnByName.put(spawn.getName(), spawn);
-
-                if (playerSpawn.equals(spawn.getName())) {
-
-                    GameScreen.getPlayer().moveTo(spawn.getX() / 8, spawn.getY() / 8);
-
-                    GameScreen.getPlayer().setWorld(this);
-                    moveEntity(GameScreen.getPlayer(), GameScreen.getPlayer().getX(), GameScreen.getPlayer().getY());
-                    entitiesByName.put(GameScreen.getPlayer().getName(), GameScreen.getPlayer());
-                }
-            }
-        }
-
-        for (TiledMapUtils.MapObjectMapping mapping : mappings) {
-            if (mapping.name != null && !mapping.name.equals(GameScreen.getPlayer().getName()))
-                createEntity(mapping);
-        }
-
     }
 
-    private void createEntity(TiledMapUtils.MapObjectMapping mapping) {
+    private Entity createEntity(TiledMapUtils.MapObjectDescriptor mapping) {
 
         Entity entity = entitiesByName.get(mapping.name);
 
@@ -96,25 +115,26 @@ public class World extends Observable implements Serializable {
 
             entity.setName(mapping.name);
 
-            entity.moveTo(mapping.x, mapping.y);
             entity.setWidth(mapping.width);
             entity.setHeight(mapping.height);
 
             entity.setOnCollide(mapping.onCollide);
-            entity.setInteraction(mapping.defaultInteraction);
-
-            entity.setWorld(this);
-            moveEntity(entity, entity.getX(), entity.getY());
-            entitiesByName.put(mapping.name, entity);
-            setChanged();
-            notifyObservers();
         }
+
+        entity.setWorld(this);
+        entity.moveTo(mapping.x, mapping.y);
+
+        return entity;
+
     }
 
     public void removeEntity(Entity entity) {
         setNone(entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight());
         entity.setWorld(null);
+
         entitiesByName.remove(entity.getName());
+        entitiesInCurrentMap.remove(entity.getName());
+
         setChanged();
         notifyObservers(entity);
     }
@@ -139,7 +159,6 @@ public class World extends Observable implements Serializable {
         }
 
         setChanged();
-        notifyObservers();
     }
 
     private void setVoid(int i, int j) {
@@ -149,7 +168,7 @@ public class World extends Observable implements Serializable {
         }
     }
 
-    public void setWall(int x, int y) {
+    private void setWall(int x, int y) {
         try {
             wallsMap[x][y] = true;
         } catch (ArrayIndexOutOfBoundsException ignored) {
@@ -219,14 +238,34 @@ public class World extends Observable implements Serializable {
         return entitiesByName.get(name);
     }
 
+    public final boolean isEntityInCurrentMap(String entityName) {
+        return entitiesInCurrentMap.contains(entityName);
+    }
+
+    public final boolean isEntityInCurrentMap(Entity entity) {
+        return entitiesInCurrentMap.contains(entity.getName());
+    }
+
     public void addEntity(String name, Entity entity) {
         entitiesByName.put(name, entity);
         entity.setName(name);
         setChanged();
     }
 
-
     public List<Entity> getEntities() {
         return new ArrayList<>(entitiesByName.values());
     }
+
+    public List<Entity> getEntitiesInCurrentMap() {
+
+        List<Entity> entities = new ArrayList<>();
+        for (Map.Entry<String, Entity> entry : entitiesByName.entrySet()) {
+            if (isEntityInCurrentMap(entry.getKey())) {
+                entities.add(entry.getValue());
+            }
+        }
+
+        return entities;
+    }
+
 }

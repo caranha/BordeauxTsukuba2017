@@ -4,11 +4,11 @@ package com.tskbdx.sumimasen.scenes.model.entities;
 import java.io.Serializable;
 import java.util.Observable;
 
-/**
+/*
  * Created by viet khang on 10/05/2017.
  */
 
-public class Message extends Observable implements Serializable {
+public final class Message extends Observable implements Serializable {
     private String content = "";
     private float timeToUnderstand;
     private float timeToAnswer;
@@ -20,15 +20,11 @@ public class Message extends Observable implements Serializable {
         sender = entity;
     }
 
-    public int getLength() {
-        return content.length();
-    }
-
     public final String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    void setContent(String content) {
         this.content = content == null ? "" : content;
         setChanged();
     }
@@ -41,7 +37,7 @@ public class Message extends Observable implements Serializable {
         return receiver;
     }
 
-    public void setReceiver(Entity receiver) {
+    void setReceiver(Entity receiver) {
         this.receiver = receiver;
         setChanged();
     }
@@ -50,7 +46,7 @@ public class Message extends Observable implements Serializable {
         return timeToUnderstand;
     }
 
-    public void setTimeToUnderstand(float timeToUnderstand) {
+    void setTimeToUnderstand(float timeToUnderstand) {
         this.timeToUnderstand = timeToUnderstand;
         setChanged();
     }
@@ -59,17 +55,17 @@ public class Message extends Observable implements Serializable {
         return timeToAnswer;
     }
 
-    public void setTimeToAnswer(float timeToAnswer) {
+    void setTimeToAnswer(float timeToAnswer) {
         this.timeToAnswer = timeToAnswer;
         setChanged();
     }
 
-    public float getTotalDuration() {
+    float getTotalDuration() {
         return timeToAnswer + timeToUnderstand;
     }
 
 
-    public void setImportant(boolean important) {
+    void setImportant(boolean important) {
         this.important = important;
         setChanged();
     }

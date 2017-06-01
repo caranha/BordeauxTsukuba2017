@@ -1,7 +1,5 @@
 package com.tskbdx.sumimasen.scenes;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -12,28 +10,21 @@ import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.ui.UserInterface;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Sydpy on 4/27/17.
  */
 public abstract class Scene {
 
-    public final static float SCALE_FACTOR = 4.f;
-    protected String currentMap = "map";
-    protected String spawn = "player_home";
+    private final static float SCALE_FACTOR = 4.f;
     private World world;
     private WorldRenderer worldRenderer;
     private SmoothCamera camera;
 
-    // to prevent extra loads
-    private Map<String, TiledMap> loadedMaps = new HashMap<>();
+    private List<TiledMapUtils.MapObjectDescriptor> mapObjectDescriptors;
 
-    private List<TiledMapUtils.MapObjectMapping> mapObjectMappings;
-
-    public Scene() {
+    Scene() {
         GameScreen.getPlayer().clearInteracted();
 
         camera = new SmoothCamera(0.5f);
@@ -53,8 +44,8 @@ public abstract class Scene {
         Tween.updateAll(dt);
 
         getCamera().translate(
-                GameScreen.getPlayer().getX()*8 - getCamera().position.x,
-                GameScreen.getPlayer().getY()*8 - getCamera().position.y);
+                GameScreen.getPlayer().getX() * 8 - getCamera().position.x,
+                GameScreen.getPlayer().getY() * 8 - getCamera().position.y);
         getCamera().update();
     }
 
@@ -73,42 +64,51 @@ public abstract class Scene {
         return world;
     }
 
+    public void setWorld(World world) {
+        this.world = world;
+    }
+
     public final WorldRenderer getWorldRenderer() {
         return worldRenderer;
+    }
+
+    public void setWorldRenderer(WorldRenderer worldRenderer) {
+        this.worldRenderer = worldRenderer;
     }
 
     public final SmoothCamera getCamera() {
         return camera;
     }
 
-    public final List<TiledMapUtils.MapObjectMapping> getMapObjectMappings() {
-        return mapObjectMappings;
+    public final List<TiledMapUtils.MapObjectDescriptor> getMapObjectMappings() {
+        return mapObjectDescriptors;
     }
 
-    public void loadMap(String map, String spawn) {
-
-        TiledMap tiledMap;
-
-        if (!loadedMaps.containsKey(map)) {
-            tiledMap = new TmxMapLoader().load("maps/" + map + ".tmx");
-            loadedMaps.put(map, tiledMap);
-        } else {
-            tiledMap = loadedMaps.get(map);
-        }
-
-        mapObjectMappings = TiledMapUtils.mapObjectMappings(tiledMap);
-
-        this.currentMap = map;
-        this.spawn = spawn;
-
-
-        world.init(tiledMap, mapObjectMappings, spawn);
-        worldRenderer.init(tiledMap, mapObjectMappings);
+    final public void loadMap() {
+        TiledMap tiledMap = new TmxMapLoader().load("maps/" + defaultMap() + ".tmx");
+        mapObjectDescriptors = TiledMapUtils.mapObjectMappings(tiledMap, true);
+        world.load(tiledMap, mapObjectDescriptors, defaultSpawn());
+        worldRenderer.load(tiledMap, mapObjectDescriptors);
     }
 
-    public String getName() {
+    final public void loadMap(String map, String spawn) {
+        TiledMap tiledMap = new TmxMapLoader().load("maps/" + map + ".tmx");
+        mapObjectDescriptors = TiledMapUtils.mapObjectMappings(tiledMap, true);
+        world.load(tiledMap, mapObjectDescriptors, spawn);
+        worldRenderer.load(tiledMap, mapObjectDescriptors);
+    }
+
+    final public String getName() {
         String name = getClass().getSimpleName();
         return name.substring(0, 1).toLowerCase() + name.substring(1);
     }
+
+    final public void setCamera(SmoothCamera camera) {
+        this.camera = camera;
+    }
+
+    abstract protected String defaultMap();
+    abstract protected String defaultSpawn();
+    abstract protected String description();
 }
 

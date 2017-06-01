@@ -7,23 +7,15 @@ import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.TriggerThought;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
-import com.tskbdx.sumimasen.scenes.view.entities.SpritesheetUtils;
 
 /*
  * Created by viet khang on 01/06/2017.
  */
 public class LateOnFirstDay extends Scene {
 
-    LateOnFirstDay() {
-        currentMap = "lab";
-        spawn = "left_entrance";
-    }
 
     @Override
     public void init() {
-        loadMap(currentMap, spawn);
-        getCamera().setTo(GameScreen.getPlayer().getX() * 8.f, GameScreen.getPlayer().getY() * 8.f);
-
         World world = getWorld();
 
         Entity sensor = new Entity();
@@ -32,7 +24,6 @@ public class LateOnFirstDay extends Scene {
         sensor.setHeight(1);
         world.addEntity("late sensor", sensor);
         sensor.moveTo(11, 4);
-        world.moveEntity(sensor, sensor.getX(), sensor.getY());
         sensor.setOnCollide(new TriggerThought("!"));
 
         WorldRenderer worldRenderer = getWorldRenderer();
@@ -40,8 +31,6 @@ public class LateOnFirstDay extends Scene {
         EntityRenderer machineSprite = worldRenderer.getRendererByEntity(machine);
         machine.setInteraction(new Dialogue("broken.xml"));
         machine.addTag("broken");
-        machineSprite.setStandingAnimator(
-                SpritesheetUtils.getAnimatorFromSpritesheet("machine_broken.png"));
     }
 
     @Override
@@ -61,7 +50,17 @@ public class LateOnFirstDay extends Scene {
     }
 
     @Override
-    public String getName() {
+    protected String defaultMap() {
+        return "lab";
+    }
+
+    @Override
+    protected String defaultSpawn() {
+        return "left_entrance";
+    }
+
+    @Override
+    protected String description() {
         return null;
     }
 }

@@ -1,6 +1,8 @@
 package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
+import com.badlogic.gdx.Gdx;
 import com.tskbdx.sumimasen.GameScreen;
+import com.tskbdx.sumimasen.scenes.inputprocessors.GameCommands;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
@@ -31,11 +33,13 @@ public class ChangeMap extends Interaction {
         passive.setDirection(Direction.NONE);
 
         passive.notifyObservers(ChangeMap.class);
+        Gdx.input.setInputProcessor(null);
 
         Utility.setTimeout(() -> {
             GameScreen.getCurrentScene().loadMap(mapName, spawnName);
             passive.setMovement(backup);
             passive.notifyObservers();
+            Gdx.input.setInputProcessor(GameCommands.getInstance());
             end();
         }, DELAY);
 

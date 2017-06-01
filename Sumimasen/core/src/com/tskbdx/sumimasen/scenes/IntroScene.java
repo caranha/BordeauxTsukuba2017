@@ -10,16 +10,8 @@ import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
  */
 public class IntroScene extends Scene {
 
-    public IntroScene() {
-        currentMap = "home";
-        spawn = "entrance";
-    }
-
     @Override
     public void init() {
-        loadMap(currentMap, spawn);
-        getCamera().setTo(GameScreen.getPlayer().getX() * 8.f, GameScreen.getPlayer().getY() * 8.f);
-
         World world = getWorld();
         Entity cat = world.getEntityByName("Cat"),
                 coffee = world.getEntityByName("Coffee Machine");
@@ -45,6 +37,21 @@ public class IntroScene extends Scene {
 
     @Override
     public void dispose() {
+    }
+
+    @Override
+    protected String defaultMap() {
+        return "home";
+    }
+
+    @Override
+    protected String defaultSpawn() {
+        return "entrance";
+    }
+
+    @Override
+    protected String description() {
+        return null;
     }
 
 

@@ -1,6 +1,5 @@
 package com.tskbdx.sumimasen;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -34,17 +33,12 @@ public class GameScreen implements Screen {
         this.game = game;
         Gdx.gl20.glClearColor(0, 0, 0, 1);
 
-        if (loadFromSave) {
-            loadFromSave();
-            currentScene.init();
-        } else {
-            currentScene = new IntroScene();
-            currentScene.init();
-        }
-
+        currentScene = loadFromSave ? getSceneFromSave() : new IntroScene();
         UserInterface.init(currentScene, GameScreen.getPlayer());
-        userInterface = UserInterface.getInstance();
+        currentScene.loadMap();
+        currentScene.init();
 
+        userInterface = UserInterface.getInstance();
         Gdx.input.setInputProcessor(GameCommands.getInstance());
     }
 
@@ -78,6 +72,9 @@ public class GameScreen implements Screen {
             Scene nextScene = currentScene.getNextScene();
 
             if (nextScene != null) {
+                nextScene.setWorld(currentScene.getWorld());
+                nextScene.setWorldRenderer(currentScene.getWorldRenderer());
+                nextScene.setCamera(currentScene.getCamera());
                 currentScene = nextScene;
                 currentScene.init();
             }
@@ -129,10 +126,8 @@ public class GameScreen implements Screen {
         userInterface.dispose();
     }
 
-    private void loadFromSave() {
-
+    private Scene   getSceneFromSave() {
         try {
-
             System.out.println("Deserializing current scene");
             FileInputStream fin1 = new FileInputStream(SAVE_DIR + "scene.save");
             ObjectInputStream in1 = new ObjectInputStream(fin1);
@@ -156,19 +151,15 @@ public class GameScreen implements Screen {
             GameScreen.player.setMovement(player.getMovement());
             GameScreen.player.setInteraction(player.getInteraction());
 
-
-            this.currentScene = sceneClass.getConstructor().newInstance();
-            this.currentScene.init();
-
+            return sceneClass.getConstructor().newInstance();
         } catch (IOException |
                 ClassNotFoundException |
                 NoSuchMethodException |
                 IllegalAccessException |
                 InvocationTargetException |
                 InstantiationException e) {
-
-            System.out.println("Error while loading previously saved state");
             e.printStackTrace();
+            throw new IllegalStateException("Error while loading previously saved state");
         }
     }
 }

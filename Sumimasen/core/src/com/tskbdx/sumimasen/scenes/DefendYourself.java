@@ -18,22 +18,12 @@ import java.util.List;
  */
 public class DefendYourself extends Scene {
 
-    DefendYourself() {
-        currentMap = "lab";
-        spawn = "left_entrance";
-    }
-
     @Override
     public void init() {
-        loadMap(currentMap, spawn); // for the moment
-        getCamera().setTo(GameScreen.getPlayer().getX() * 8.f,
-                GameScreen.getPlayer().getY() * 8.f);
-
         World world = getWorld();
         Entity noname = world.getEntityByName("Pr. Noname");
         Entity player = GameScreen.getPlayer();
-        player.setMovement(null);
-        player.setInteracting(true);
+        player.setDirection(Direction.NONE);
         Gdx.input.setInputProcessor(null);
 
         List<Direction> path = new LinkedList<>();
@@ -41,7 +31,6 @@ public class DefendYourself extends Scene {
         Utility.repeat(() -> path.add(Direction.SOUTH), 6);
 
         new Path(() -> {
-            player.setMovement(new Walk());
             new Dialogue("playerLate.xml").start(noname, player);
         }, path.toArray(new Direction[path.size()])).move(noname);
     }
@@ -60,5 +49,20 @@ public class DefendYourself extends Scene {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    protected String defaultMap() {
+        return "lab";
+    }
+
+    @Override
+    protected String defaultSpawn() {
+        return "left_entrance";
+    }
+
+    @Override
+    protected String description() {
+        return null;
     }
 }

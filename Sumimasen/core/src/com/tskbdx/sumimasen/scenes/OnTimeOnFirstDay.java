@@ -23,4 +23,19 @@ public class OnTimeOnFirstDay extends Scene {
     public void dispose() {
 
     }
+
+    @Override
+    protected String defaultMap() {
+        return "lab";
+    }
+
+    @Override
+    protected String defaultSpawn() {
+        return "left_entrance";
+    }
+
+    @Override
+    protected String description() {
+        return null;
+    }
 }
