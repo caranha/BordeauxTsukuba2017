@@ -110,13 +110,21 @@ public class World extends Observable implements Serializable {
         for (MapObject mapObject : entities.getObjects()) {
             if ("spawn".equals(mapObject.getProperties().get("type", String.class))) {
 
-                Spawn spawn = new Spawn(
-                        mapObject.getName(),
-                        mapObject.getProperties().get("x", Float.class).intValue(),
-                        mapObject.getProperties().get("y", Float.class).intValue());
+                /*
+                 * This fix change map bug
+                 * Before it took the first object of type "spawn"
+                 * and broke the loop.
+                 * The functional bug was going to the lab and going out.
+                 * (spawn.getName() was "player_home" while spawnName was "lab_left"
+                 */
+                String spawnName = mapObject.getName();
 
-                if (playerSpawn.equals(spawn.getName())) {
+                if (spawnName.equals(playerSpawn)) {
 
+                    Spawn spawn = new Spawn(
+                            mapObject.getName(),
+                            mapObject.getProperties().get("x", Float.class).intValue(),
+                            mapObject.getProperties().get("y", Float.class).intValue());
 
                     GameScreen.getPlayer().setWorld(this);
                     GameScreen.getPlayer().moveTo(spawn.getX() / TiledMapUtils.TILE_SIZE, spawn.getY() / TiledMapUtils.TILE_SIZE);
@@ -124,8 +132,9 @@ public class World extends Observable implements Serializable {
 
                     entitiesByName.put(GameScreen.getPlayer().getName(), GameScreen.getPlayer());
                     entitiesInCurrentMap.add(GameScreen.getPlayer().getName());
+
+                    break;
                 }
-                break;
             }
         }
     }

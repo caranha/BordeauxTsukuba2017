@@ -10,7 +10,9 @@ import com.tskbdx.sumimasen.scenes.view.Tween;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 import com.tskbdx.sumimasen.scenes.view.ui.UserInterface;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Sydpy on 4/27/17.
@@ -18,10 +20,10 @@ import java.util.List;
 public abstract class Scene {
 
     private final static float SCALE_FACTOR = 4.f;
+    private static Map<String, TiledMap> loadedMaps = new HashMap<>();
     private World world;
     private WorldRenderer worldRenderer;
     private SmoothCamera camera;
-
     private List<TiledMapUtils.EntityDescriptor> entityDescriptors;
     private List<TiledMapUtils.SensorDescriptor> sensorDescriptors;
 
@@ -97,16 +99,29 @@ public abstract class Scene {
         return entityDescriptors;
     }
 
+    /**
+     * This method is to call first before calling init()
+     * It loads the scene with the player, according to
+     * the default map and the default spawn
+     */
     public void loadMap() {
-        loadMap(defaultMap(), defaultSpawn());
+        loadMap(defaultMap(), defaultSpawn(), true);
     }
 
-    public void loadMap(String map, String spawn) {
-        TiledMap tiledMap = new TmxMapLoader().load("maps/" + map + ".tmx");
+    /**
+     * This method is to call to change map
+     */
+    public void loadMap(String map, String spawn, boolean withPlayer) {
 
-        System.out.println("loading " + map + " " + spawn);
+        TiledMap tiledMap;
+        if (loadedMaps.containsKey(map)) {
+            tiledMap = loadedMaps.get(map);
+        } else {
+            tiledMap = new TmxMapLoader().load("maps/" + map + ".tmx");
+            loadedMaps.put(map, tiledMap);
+        }
 
-        entityDescriptors = TiledMapUtils.entityDescriptors(tiledMap, true);
+        entityDescriptors = TiledMapUtils.entityDescriptors(tiledMap, withPlayer);
         sensorDescriptors = TiledMapUtils.sensorDescriptors(tiledMap);
 
         world.load(tiledMap, entityDescriptors, sensorDescriptors, spawn);

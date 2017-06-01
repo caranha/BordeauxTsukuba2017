@@ -36,7 +36,7 @@ public class ChangeMap extends Interaction {
         Gdx.input.setInputProcessor(null);
 
         Utility.setTimeout(() -> {
-            GameScreen.getCurrentScene().loadMap(mapName, spawnName);
+            GameScreen.getCurrentScene().loadMap(mapName, spawnName, true);
             passive.setMovement(backup);
             passive.notifyObservers();
             Gdx.input.setInputProcessor(GameCommands.getInstance());
