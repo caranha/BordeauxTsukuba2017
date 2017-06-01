@@ -127,7 +127,7 @@ public class Dialogue extends Interaction {
             e.printStackTrace();
         }
 
-        
+
     }
 
     private void buildExchanges(Element docEle) {
