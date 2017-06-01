@@ -1,0 +1,32 @@
+<dialogue>
+    <exchange id="1" text="How is it going on with the machine ?">
+        <answers>
+            <answer idea="Ask about it" text="Fine, what is its purpose ?" nextExchange="2"/>
+            <answer idea="I don't want to debauch late, let's work" text="Good, I'm on it !" nextExchange="3"/>
+        </answers>
+    </exchange>
+    <exchange id="2" text="It is a machine that makes things disappear.">
+        <answers>
+            <answer idea="Wow ! How ?" text="How does it work ?" nextExchange="4"/>
+            <answer idea="Exciting, let's take care of it then" text="Cool ! I'm ont it !" nextExchange="3"/>
+        </answers>
+    </exchange>
+    <exchange id="3" text="Great.">
+        <answers>
+        </answers>
+    </exchange>
+
+    <exchange id="4" text="It manipulates a substance called 'Semi Mass-N', a very unstable molecular mixture">
+        <answers>
+            <answer idea="Why me" text="It looks complicated, why have you assigned such responsability to me ?" nextExchange="5"/>
+            <answer idea="Let's work" text="Okay thank you for the intel, I will take care of it" nextExchange="3"/>
+        </answers>
+    </exchange>
+
+    <exchange id="5" text="I'm getting old and I read your cover letter. You are the chosen one.">
+        <answers>
+            <answer idea="Okay let's work" text="I have to work now." nextExchange="3"/>
+            <answer idea="Thanks him and go work" text="Thank you for you confidence, I will take care of it then" nextExchange="3"/>
+        </answers>
+    </exchange>
+</dialogue>

@@ -1,0 +1,7 @@
+<dialogue>
+    <exchange id="1" text="Okay let's go !" triggerWonder="1">
+        <answers>
+        	
+        </answers>
+    </exchange>
+</dialogue>
