@@ -42,10 +42,10 @@ class ScriptLateOnFirstDay {
             WorldRenderer worldRenderer = scene.getWorldRenderer();
             Entity machine = world.getEntityByName("Machine");
             EntityRenderer machineSprite = worldRenderer.getRendererByEntity(machine);
+            machine.setInteraction(new Dialogue("broken.xml"));
             machine.addTag("broken");
             machineSprite.setStandingAnimator(
                     SpritesheetUtils.getAnimatorFromSpritesheet("machine_broken.png"));
-
         }
 
         @Override
@@ -74,6 +74,7 @@ class ScriptLateOnFirstDay {
 
             new Path(() -> {
                 player.setMovement(playerMovement);
+                player.setDirection(Direction.NONEa);
                 new Dialogue("playerLate.xml").start(noname, player);
             }, path.toArray(new Direction[path.size()])).move(noname);
         }
