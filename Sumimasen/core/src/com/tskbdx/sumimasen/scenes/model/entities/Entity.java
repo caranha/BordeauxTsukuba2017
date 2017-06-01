@@ -67,9 +67,6 @@ public class Entity extends Observable implements Serializable {
             if (neighbour != null) {
 
                 if (neighbour.isInteractable()) {
-                    // change target direction to face this
-                    neighbour.setDirection(Direction.getOpposite(getLastDirection()));
-                    neighbour.notifyObservers();
                     neighbour.getInteraction().start(neighbour, this);
                 }
 

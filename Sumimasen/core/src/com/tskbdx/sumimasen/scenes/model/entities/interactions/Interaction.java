@@ -38,6 +38,9 @@ public abstract class Interaction implements Serializable {
         this.passive = passive;
 
         activeDirection = active.getLastDirection();
+        // change target direction to face the passive
+        active.setDirection(Direction.getOpposite(passive.getLastDirection()));
+        active.notifyObservers();
 
         active.setInteracting(true);
         passive.setInteracting(true);
