@@ -27,6 +27,7 @@ public abstract class Interaction implements Serializable {
     private Movement activeMovement;
     private Movement passiveMovement;
     private Direction activeDirection;
+    private Runnable onFinished;
 
     Interaction() {
     }
@@ -72,6 +73,10 @@ public abstract class Interaction implements Serializable {
 
         active.addInteracted(passive.getName());
         passive.addInteracted(active.getName());
+
+        if (onFinished != null) {
+            onFinished.run();
+        }
     }
 
     final Entity getActive() {
@@ -80,5 +85,9 @@ public abstract class Interaction implements Serializable {
 
     final Entity getPassive() {
         return passive;
+    }
+
+    public void setOnFinished(Runnable onFinished) {
+        this.onFinished = onFinished;
     }
 }

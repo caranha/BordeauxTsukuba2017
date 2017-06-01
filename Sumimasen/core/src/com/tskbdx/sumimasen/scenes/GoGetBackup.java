@@ -7,6 +7,7 @@ import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Player;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Path;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
@@ -37,7 +38,15 @@ public class GoGetBackup extends Scene {
         } else {
             Gdx.input.setInputProcessor(null);
             new Path(() -> {
-                noname.setInteraction(new Dialogue("brokenMachine.xml"));
+                Interaction defaultDialogue = new Dialogue("default.xml");
+                Interaction dialogue = new Dialogue("brokenMachine.xml");
+                dialogue.setOnFinished(() ->
+                        new Path(() -> {
+                            noname.setDirection(Direction.SOUTH);
+                            noname.notifyObservers();
+                            noname.setInteraction(defaultDialogue);
+                        }, Direction.WEST, Direction.WEST).move(noname));
+                noname.setInteraction(dialogue);
                 player.setDirection(Direction.WEST);
                 noname.getInteraction().start(noname, player);
             }, Direction.EAST, Direction.EAST).move(noname);
@@ -46,12 +55,13 @@ public class GoGetBackup extends Scene {
 
     @Override
     public boolean isFinished() {
-        return false;
+        Entity player = GameScreen.getPlayer();
+        return player.hasInteractedWith("Pr. Noname");
     }
 
     @Override
     public Scene getNextScene() {
-        return null;
+        return new Restaurant();
     }
 
     @Override

@@ -1,12 +1,25 @@
 <dialogue>
     <exchange id="1" text="What have you done ?">
         <answers>
-            <answer idea="Give him food." text="Here you are my friend !" nextExchange="2" important="1">
-            	<callback methodName="addTag">
-            		<arg type="string" value="late" />
-            	</callback>
-            </answer>
-            <answer idea="Ignore it." text="" nextExchange="3"/>
+            <answer idea="???" text="I don't know, I don't understand !" nextExchange="2" important="1"
+            	/>
+            <answer idea="Argue" text="You said to push the right button so I pushed the right one !" nextExchange="2" important="1"/>
         </answers>
+    </exchange>
+    <exchange id="2" text="You did wrong. The machine is broken now.">
+        <answers>
+            <answer idea="Feel guilty" text="What can I do to repair ?" nextExchange="3"
+            	/>
+            <answer idea="Charge the machine" text="I didn't do anything, it's the machine's fault" nextExchange="3" important="1"/>
+        </answers>
+    </exchange>
+    <exchange id="3" text="It's okay there is a backup at Bakutsu Noodle Corp. Can you take it for me ?">
+        <answers>
+            <answer idea="This is our project" text="Sure !" nextExchange="4" important="1"
+            	/>
+            <answer idea="Mm I feel hungry but okay..." text="Ok !" nextExchange="4" important="1"/>
+        </answers>
+    </exchange>
+    <exchange id="4" text="Once you have the backup, come back here.">
     </exchange>
 </dialogue>
