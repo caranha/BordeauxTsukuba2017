@@ -40,7 +40,7 @@ class ScriptDefendYourself {
         @Override
         public State nextState(Event event) {
             if (event.is(Dialogue.class, "Pr. Noname")) {
-                return new ScriptWorkToBreakMachine.Setup();
+                return new ScriptGoGetBackup.Setup();
             }
             return null;
         }
