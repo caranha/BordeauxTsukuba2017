@@ -1,5 +1,6 @@
 package com.tskbdx.sumimasen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -40,8 +41,8 @@ public class GameScreen implements Screen {
             currentScene.init();
         }
 
-        userInterface = new UserInterface(currentScene, GameScreen.getPlayer());
-        userInterface.init();
+        UserInterface.init(currentScene, GameScreen.getPlayer());
+        userInterface = UserInterface.getInstance();
     }
 
     public static Player getPlayer() {

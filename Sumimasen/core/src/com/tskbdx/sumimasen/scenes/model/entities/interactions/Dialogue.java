@@ -1,6 +1,8 @@
 package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
+import com.badlogic.gdx.Gdx;
 import com.tskbdx.sumimasen.GameScreen;
+import com.tskbdx.sumimasen.scenes.inputprocessors.GameCommands;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Message;
 import com.tskbdx.sumimasen.scenes.story.Story;
@@ -41,12 +43,23 @@ public class Dialogue extends Interaction {
     public void start(Entity active, Entity passive) {
         super.start(active, passive);
 
+        Gdx.input.setInputProcessor(GameCommands.getInstance());
+
         buildDialogue(FOLDER +
                 Story.getSceneName() +
                 '/' + active.getName() + '/' + xmlFile); // by convention
         currentExchange = exchanges.get(1);
 
         printCurrentState();
+    }
+
+    @Override
+    public void end() {
+        super.end();
+        Interaction nextInteraction = getActive().getNextInteraction();
+        getActive().setInteraction(nextInteraction != null ? nextInteraction : this);
+
+        Gdx.input.setInputProcessor(GameCommands.getInstance());
     }
 
     public void pickAnswer(int index) { // passive entity answers
@@ -73,13 +86,6 @@ public class Dialogue extends Interaction {
         } catch (IndexOutOfBoundsException ignored) {
 
         }
-    }
-
-    @Override
-    public void end() {
-        super.end();
-        Interaction nextInteraction = getActive().getNextInteraction();
-        getActive().setInteraction(nextInteraction != null ? nextInteraction : this);
     }
 
     private void printCurrentState() { // active entity talks
@@ -121,7 +127,7 @@ public class Dialogue extends Interaction {
             e.printStackTrace();
         }
 
-
+        
     }
 
     private void buildExchanges(Element docEle) {

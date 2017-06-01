@@ -51,13 +51,11 @@ final class AnswersSelector extends Group implements Observer {
         Dialogue dialogue = arg instanceof Dialogue ? (Dialogue) arg : null;
         if (entity.isInteracting() && dialogue != null) {
             setAnswersButtons(dialogue);
-            Gdx.input.setInputProcessor(userInterface);
         } else {
             for (Actor actor : getChildren()) {
                 actor.setVisible(false);
             }
             getChildren().clear();
-            Gdx.input.setInputProcessor(new GameCommands());
         }
     }
 

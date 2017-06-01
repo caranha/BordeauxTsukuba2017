@@ -41,7 +41,7 @@ final public class GameCommands extends InputAdapter {
         initKeyUp();
     }
 
-    public GameCommands getInstance() {
+    public static GameCommands getInstance() {
         if (instance == null) {
             instance = new GameCommands();
         }

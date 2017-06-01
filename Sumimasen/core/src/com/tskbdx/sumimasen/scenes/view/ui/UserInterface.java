@@ -40,6 +40,10 @@ final public class UserInterface extends Stage implements Disposable, Observer {
         scene.getWorld().addObserver(instance);
     }
 
+    public static UserInterface getInstance() {
+        return instance;
+    }
+
     @Override
     public void act(float dt) {
         try {
