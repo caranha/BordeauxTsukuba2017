@@ -1,5 +1,6 @@
 package com.tskbdx.sumimasen.scenes.story;
 
+import com.badlogic.gdx.Gdx;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.Scene;
 import com.tskbdx.sumimasen.scenes.model.World;
@@ -53,6 +54,7 @@ class ScriptLateOnFirstDay {
             Entity player = GameScreen.getPlayer();
             Movement playerMovement = player.getMovement();
             player.setMovement(null);
+            player.setInteracting(true);
 
             List<Direction> path = new LinkedList<>();
             Utility.repeat(() -> path.add(Direction.WEST), 7);
