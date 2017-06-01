@@ -25,7 +25,6 @@ class ScriptLateOnFirstDay {
             sensor.setHeight(1);
             world.addEntity("late sensor", sensor);
             world.moveEntity(sensor, sensor.getX(), sensor.getY());
-            sensor.setOnCollide(new TriggerThought("!"));
 
             WorldRenderer worldRenderer = scene.getWorldRenderer();
             Entity machine = world.getEntityByName("Machine");

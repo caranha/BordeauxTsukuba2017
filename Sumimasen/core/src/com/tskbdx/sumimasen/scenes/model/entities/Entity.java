@@ -4,7 +4,6 @@ import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
-import com.tskbdx.sumimasen.scenes.story.Story;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
 import java.io.Serializable;
@@ -19,7 +18,6 @@ public class Entity extends Observable implements Serializable {
 
     private Movement movement;
     private Interaction interaction;
-    private Interaction onCollide;
 
     private int x, y;
     private int width, height;
@@ -111,13 +109,20 @@ public class Entity extends Observable implements Serializable {
 
     public void moveTo(int x, int y) {
 
+        if (world == null) return;
+
         int prevX = this.x;
         int prevY = this.y;
 
-        this.x = x;
-        this.y = y;
+        if (x < world.getWidth() && x >= 0)
+            this.x = x;
 
-        if (world != null) world.moveEntity(this, prevX, prevY);
+        if (y < world.getHeight() && y >= 0)
+            this.y = y;
+
+        if (prevX == this.x && prevY == this.y) return;
+
+        world.moveEntity(this, prevX, prevY);
         setChanged();
     }
 
@@ -249,38 +254,13 @@ public class Entity extends Observable implements Serializable {
         return inventory;
     }
 
-    public Interaction getOnCollide() {
-        return onCollide;
-    }
-
-    public void setOnCollide(Interaction onCollide) {
-        this.onCollide = onCollide;
-        setChanged();
-    }
-
     public void move(Direction direction) {
         setDirection(direction);
 
         if (movement != null) {
 
             movement.move(this);
-            if (world != null) {
-
-                List<Entity> entitiesAround = world.getEntitiesAround(this);
-
-                if (!entitiesAround.isEmpty()) {
-
-                    for (Entity entity : entitiesAround) {
-                        if (entity != this && entity.getOnCollide() != null) {
-                            entity.getOnCollide().start(entity, this);
-                        }
-                    }
-
-                }
-            }
         }
-
-
     }
 
     public boolean has(String object) {

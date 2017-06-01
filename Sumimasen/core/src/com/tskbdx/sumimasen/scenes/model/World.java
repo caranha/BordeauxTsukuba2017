@@ -7,6 +7,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.TiledMapUtils;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
+import com.tskbdx.sumimasen.scenes.model.entities.Sensor;
 import com.tskbdx.sumimasen.scenes.model.entities.Spawn;
 
 import java.io.Serializable;
@@ -28,52 +29,93 @@ public class World extends Observable implements Serializable {
 
     private boolean wallsMap[][];
     private Entity entitiesMap[][];
+    private Sensor sensorsMap[][];
 
     private Map<String, Entity> entitiesByName = new HashMap<>();
+    private List<Sensor> sensors = new ArrayList<>();
 
     private List<String> entitiesInCurrentMap = new ArrayList<>();
+
+    private int width, height;
 
     public World() {
     }
 
-    public void load(TiledMap tiledMap, List<TiledMapUtils.MapObjectDescriptor> mappings, String playerSpawn) {
+    public void load(TiledMap tiledMap,
+                     List<TiledMapUtils.EntityDescriptor> entityDescriptors,
+                     List<TiledMapUtils.SensorDescriptor> sensorDescriptors,
+                     String playerSpawn) {
 
         TiledMapTileLayer collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Collision");
 
-        wallsMap = new boolean[collisionLayer.getWidth()][collisionLayer.getHeight()];
+        width   = collisionLayer.getWidth();
+        height  = collisionLayer.getHeight();
+
+        wallsMap    = new boolean[collisionLayer.getWidth()][collisionLayer.getHeight()];
         entitiesMap = new Entity[collisionLayer.getWidth()][collisionLayer.getHeight()];
+        sensorsMap  = new Sensor[collisionLayer.getWidth()][collisionLayer.getHeight()];
         entitiesInCurrentMap.clear();
 
         buildWalls(collisionLayer);
         spawnPlayer(tiledMap, playerSpawn);
-        spawnEntities(mappings);
+        spawnEntities(entityDescriptors);
 
+        buildSensors(sensorDescriptors);
     }
 
-    public void load(TiledMap tiledMap, List<TiledMapUtils.MapObjectDescriptor> mappings, int playerX, int playerY) {
+    public void load(TiledMap tiledMap,
+                     List<TiledMapUtils.EntityDescriptor> entityDescriptors,
+                     List<TiledMapUtils.SensorDescriptor> sensorDescriptors,
+                     int playerX, int playerY) {
 
         TiledMapTileLayer collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Collision");
 
-        wallsMap = new boolean[collisionLayer.getWidth()][collisionLayer.getHeight()];
+        wallsMap    = new boolean[collisionLayer.getWidth()][collisionLayer.getHeight()];
         entitiesMap = new Entity[collisionLayer.getWidth()][collisionLayer.getHeight()];
+        sensorsMap  = new Sensor[collisionLayer.getWidth()][collisionLayer.getHeight()];
         entitiesInCurrentMap.clear();
 
         buildWalls(collisionLayer);
         spawnPlayer(playerX, playerY);
-        spawnEntities(mappings);
+        spawnEntities(entityDescriptors);
+
+        buildSensors(sensorDescriptors);
 
     }
 
-    private void spawnEntities(List<TiledMapUtils.MapObjectDescriptor> mappings) {
-        for (TiledMapUtils.MapObjectDescriptor mapping : mappings) {
+    private void buildSensors(List<TiledMapUtils.SensorDescriptor> sensorDescriptors) {
+        for (TiledMapUtils.SensorDescriptor sensorDescriptor : sensorDescriptors) {
 
-            if (mapping.name != null && !mapping.name.equals(GameScreen.getPlayer().getName())) {
+            Sensor sensor = new Sensor();
 
-                Entity entity = createEntity(mapping);
+            sensor.setName(sensorDescriptor.name);
+            sensor.setX(sensorDescriptor.x);
+            sensor.setY(sensorDescriptor.y);
+            sensor.setWidth(sensorDescriptor.width);
+            sensor.setHeight(sensorDescriptor.height);
+
+            sensor.setOnCollide(sensorDescriptor.onCollide);
+
+            sensors.add(sensor);
+
+            for (int i = 0; i < sensor.getWidth(); i++) {
+                for (int j = 0; j < sensor.getHeight(); j++) {
+                    sensorsMap[sensor.getX() + i][sensor.getY() + j] = sensor;
+                }
+            }
+        }
+    }
+
+    private void spawnEntities(List<TiledMapUtils.EntityDescriptor> entityDescriptors) {
+        for (TiledMapUtils.EntityDescriptor entityDescriptor : entityDescriptors) {
+
+            if (entityDescriptor.name != null && !entityDescriptor.name.equals(GameScreen.getPlayer().getName())) {
+
+                Entity entity = createEntity(entityDescriptor);
                 moveEntity(entity, entity.getX(), entity.getY());
 
-                entitiesByName.put(mapping.name, entity);
-                entitiesInCurrentMap.add(mapping.name);
+                entitiesByName.put(entityDescriptor.name, entity);
+                entitiesInCurrentMap.add(entityDescriptor.name);
 
                 setChanged();
                 notifyObservers();
@@ -131,7 +173,7 @@ public class World extends Observable implements Serializable {
         }
     }
 
-    private Entity createEntity(TiledMapUtils.MapObjectDescriptor mapping) {
+    private Entity createEntity(TiledMapUtils.EntityDescriptor mapping) {
 
         Entity entity = entitiesByName.get(mapping.name);
 
@@ -142,8 +184,6 @@ public class World extends Observable implements Serializable {
 
             entity.setWidth(mapping.width);
             entity.setHeight(mapping.height);
-
-            entity.setOnCollide(mapping.onCollide);
         }
 
         entity.setWorld(this);
@@ -183,6 +223,13 @@ public class World extends Observable implements Serializable {
             }
         }
 
+        List<Sensor> sensors = getSensors(entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight());
+        if (!sensors.isEmpty()) {
+            Sensor sensor = sensors.get(0);
+
+            sensor.getOnCollide().start(entity, entity);
+        }
+
         setChanged();
         notifyObservers();
     }
@@ -204,7 +251,10 @@ public class World extends Observable implements Serializable {
     public boolean isWall(int x, int y, int width, int height) {
         for (int i = x; i < x + width; i++) {
             for (int j = y; j < y + height; j++) {
-                if (wallsMap[i][j]) return true;
+                try {
+
+                    if (wallsMap[i][j]) return true;
+                } catch (ArrayIndexOutOfBoundsException ignored) {}
             }
         }
 
@@ -219,6 +269,14 @@ public class World extends Observable implements Serializable {
         }
     }
 
+    public Sensor getSensor(int x, int y) {
+        try {
+            return sensorsMap[x][y];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+
     public List<Entity> getEntities(int x, int y, int width, int height) {
 
         List<Entity> colliding = new ArrayList<>();
@@ -226,37 +284,37 @@ public class World extends Observable implements Serializable {
         for (int i = x; i < x + width; i++) {
             for (int j = y; j < y + height; j++) {
 
-                Entity entity = entitiesMap[i][j];
+                try {
 
-                if (entity != null && !colliding.contains(entity)) {
-                    colliding.add(entity);
-                }
+                    Entity entity = entitiesMap[i][j];
+
+                    if (entity != null && !colliding.contains(entity)) {
+                        colliding.add(entity);
+                    }
+
+                } catch (ArrayIndexOutOfBoundsException ignored) {}
             }
         }
 
         return colliding;
     }
 
-    public List<Entity> getEntitiesAround(Entity entity) {
+    public List<Sensor> getSensors(int x, int y, int width, int height) {
 
-        List<Entity> entities = new ArrayList<>();
+        List<Sensor> colliding = new ArrayList<>();
 
-        for (int i = entity.getX(); i < entity.getX() + entity.getWidth(); i++) {
-            Entity e;
-            e = getEntity(i, entity.getY() - 1);
-            if (e != null && !entities.contains(e)) entities.add(e);
-            e = getEntity(i, entity.getY() + entity.getHeight());
-            if (e != null && !entities.contains(e)) entities.add(e);
+        for (int i = x; i < x + width; i++) {
+            for (int j = y; j < y + height; j++) {
+
+                Sensor sensor = sensorsMap[i][j];
+
+                if (sensor != null && !colliding.contains(sensor)) {
+                    colliding.add(sensor);
+                }
+            }
         }
 
-        for (int i = entity.getY(); i < entity.getY() + entity.getHeight(); i++) {
-            Entity e;
-            e = getEntity(entity.getX() - 1, i);
-            if (e != null && !entities.contains(e)) entities.add(e);
-            e = getEntity(entity.getX() + entity.getWidth(), i);
-            if (e != null && !entities.contains(e)) entities.add(e);
-        }
-        return entities;
+        return colliding;
     }
 
     public final Entity getEntityByName(String name) {
@@ -294,4 +352,11 @@ public class World extends Observable implements Serializable {
         return entities;
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

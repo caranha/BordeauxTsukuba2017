@@ -39,8 +39,13 @@ public abstract class Interaction implements Serializable {
 
         activeDirection = active.getLastDirection();
         // change target direction to face the passive
-        active.setDirection(Direction.getOpposite(passive.getLastDirection()));
-        active.notifyObservers();
+        if (active != passive) {
+            active.setDirection(Direction.getOpposite(passive.getLastDirection()));
+            active.notifyObservers();
+        } else {
+            active.setDirection(Direction.NONE);
+            active.notifyObservers();
+        }
 
         active.setInteracting(true);
         passive.setInteracting(true);
@@ -65,7 +70,10 @@ public abstract class Interaction implements Serializable {
         active.setMovement(activeMovement);
         passive.setMovement(passiveMovement);
 
-        active.setDirection(activeDirection);
+        if (active != passive) {
+            active.setDirection(activeDirection);
+        }
+
         active.notifyObservers();
 
         Story.getInstance().update(this, active, passive);

@@ -11,9 +11,7 @@ import com.tskbdx.sumimasen.scenes.story.Story;
 import com.tskbdx.sumimasen.scenes.view.SmoothCamera;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Sydpy on 4/27/17.
@@ -29,7 +27,8 @@ public abstract class Scene {
     private SmoothCamera camera;
     private InputProcessor inputProcessor;
 
-    private List<TiledMapUtils.MapObjectDescriptor> mapObjectDescriptors;
+    private List<TiledMapUtils.EntityDescriptor> entityDescriptors;
+    private List<TiledMapUtils.SensorDescriptor> sensorDescriptors;
 
     public Scene() {
 
@@ -73,8 +72,8 @@ public abstract class Scene {
         return inputProcessor;
     }
 
-    public final List<TiledMapUtils.MapObjectDescriptor> getMapObjectDescriptors() {
-        return mapObjectDescriptors;
+    public final List<TiledMapUtils.EntityDescriptor> getEntityDescriptors() {
+        return entityDescriptors;
     }
 
     public void loadMap(String map, String spawn) {
@@ -87,10 +86,11 @@ public abstract class Scene {
 
             TiledMap tiledMap = new TmxMapLoader().load("maps/" + map + ".tmx");
 
-            mapObjectDescriptors = TiledMapUtils.mapObjectMappings(tiledMap, spawn != null);
+            entityDescriptors = TiledMapUtils.entityDescriptors(tiledMap, spawn != null);
+            sensorDescriptors = TiledMapUtils.sensorDescriptors(tiledMap);
 
-            world.load(tiledMap, mapObjectDescriptors, spawn);
-            worldRenderer.load(tiledMap, mapObjectDescriptors);
+            world.load(tiledMap, entityDescriptors, sensorDescriptors, spawn);
+            worldRenderer.load(tiledMap, entityDescriptors);
 
         }
     }
@@ -99,14 +99,14 @@ public abstract class Scene {
         if (map != null) {
 
             this.currentMap = map;
-            this.spawn = spawn;
 
             TiledMap tiledMap = new TmxMapLoader().load("maps/" + map + ".tmx");
 
-            mapObjectDescriptors = TiledMapUtils.mapObjectMappings(tiledMap, true);
+            entityDescriptors = TiledMapUtils.entityDescriptors(tiledMap, true);
+            sensorDescriptors = TiledMapUtils.sensorDescriptors(tiledMap);
 
-            world.load(tiledMap, mapObjectDescriptors, spawn);
-            worldRenderer.load(tiledMap, mapObjectDescriptors);
+            world.load(tiledMap, entityDescriptors, sensorDescriptors, playerX, playerY);
+            worldRenderer.load(tiledMap, entityDescriptors);
         }
     }
 }

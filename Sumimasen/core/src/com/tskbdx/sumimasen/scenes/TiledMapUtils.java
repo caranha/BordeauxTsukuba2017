@@ -20,9 +20,9 @@ import java.util.Map;
 public class TiledMapUtils {
 
     public static final int TILE_SIZE = 8;
-    public static Map<String, MapObjectDescriptor> allDescriptorsByName = new HashMap<>();
+    public static Map<String, EntityDescriptor> allDescriptorsByName = new HashMap<>();
 
-    public static class MapObjectDescriptor implements Serializable {
+    public static class EntityDescriptor implements Serializable {
 
         public String name;
         public int x;
@@ -30,14 +30,12 @@ public class TiledMapUtils {
         public int width;
         public int height;
 
-        public Interaction onCollide;
-
         public String standingSpritesheet;
         public String walkingSpritesheet;
 
-        MapObjectDescriptor() {}
+        EntityDescriptor() {}
 
-        MapObjectDescriptor(MapObject mapObject) {
+        EntityDescriptor(MapObject mapObject) {
 
             name    = mapObject.getName();
 
@@ -45,16 +43,6 @@ public class TiledMapUtils {
             y       = mapObject.getProperties().get("y", Float.class).intValue() / TILE_SIZE;
             width   = mapObject.getProperties().get("width", Float.class).intValue() / TILE_SIZE;
             height  = mapObject.getProperties().get("height", Float.class).intValue() / TILE_SIZE;
-
-            String onCollideName = mapObject.getProperties().get("onCollide", String.class);
-            if ("changeMap".equals(onCollideName)) {
-
-                String toMap = mapObject.getProperties().get("toMap", String.class);
-                String toSpawn = mapObject.getProperties().get("toSpawn", String.class);
-                onCollide = new ChangeMap(toMap, toSpawn);
-            } else {
-                onCollide = null;
-            }
 
             String imageFile           = mapObject.getProperties().get("imageFile", String.class);
             String walkingSpritesheet  = mapObject.getProperties().get("walkingSpritesheet", String.class);
@@ -89,11 +77,58 @@ public class TiledMapUtils {
         }
     }
 
-    public static List<MapObjectDescriptor> mapObjectMappings(TiledMap tiledMap, boolean withPlayer) {
+    public static class SensorDescriptor {
+
+        public String name;
+        public int x;
+        public int y;
+        public int width;
+        public int height;
+
+        public Interaction onCollide;
+
+        public String imageFile;
+
+        public SensorDescriptor(MapObject mapObject) {
+            name = mapObject.getName();
+
+            x       = mapObject.getProperties().get("x", Float.class).intValue() / TILE_SIZE;
+            y       = mapObject.getProperties().get("y", Float.class).intValue() / TILE_SIZE;
+            width   = mapObject.getProperties().get("width", Float.class).intValue() / TILE_SIZE;
+            height  = mapObject.getProperties().get("height", Float.class).intValue() / TILE_SIZE;
+
+            imageFile           = mapObject.getProperties().get("imageFile", String.class);
+
+            String onCollideName = mapObject.getProperties().get("onCollide", String.class);
+
+            if ("changeMap".equals(onCollideName)) {
+
+                String toMap    = mapObject.getProperties().get("toMap", String.class);
+                String toSpawn  = mapObject.getProperties().get("toSpawn", String.class);
+
+                onCollide = new ChangeMap(toMap, toSpawn);
+            }
+        }
+    }
+
+    public static List<SensorDescriptor> sensorDescriptors(TiledMap tiledMap) {
+
+        List<SensorDescriptor> sensorDescriptors = new ArrayList<>();
+
+        MapLayer sensors = tiledMap.getLayers().get("Sensors");
+
+        for (MapObject mapObject : sensors.getObjects()) {
+            sensorDescriptors.add(new SensorDescriptor(mapObject));
+        }
+
+        return sensorDescriptors;
+    }
+
+    public static List<EntityDescriptor> entityDescriptors(TiledMap tiledMap, boolean withPlayer) {
 
         MapLayer entities = tiledMap.getLayers().get("Entities");
 
-        List<MapObjectDescriptor> mappings = new ArrayList<>();
+        List<EntityDescriptor> mappings = new ArrayList<>();
 
         mappings.addAll(buildDescriptors(entities));
 
@@ -105,7 +140,7 @@ public class TiledMapUtils {
         return mappings;
     }
 
-    private static MapObjectDescriptor buildPlayerDescriptor() {
+    private static EntityDescriptor buildPlayerDescriptor() {
 
         String playerName = GameScreen.getPlayer().getName();
 
@@ -113,7 +148,7 @@ public class TiledMapUtils {
             return allDescriptorsByName.get(playerName);
         }
 
-        MapObjectDescriptor playerMapping = new MapObjectDescriptor();
+        EntityDescriptor playerMapping = new EntityDescriptor();
         playerMapping.name = playerName;
         playerMapping.walkingSpritesheet = "player_walking.png";
         playerMapping.standingSpritesheet = "player_standing.png";
@@ -123,8 +158,8 @@ public class TiledMapUtils {
         return playerMapping;
     }
 
-    private static List<MapObjectDescriptor> buildDescriptors(MapLayer entities) {
-        List<MapObjectDescriptor> mappings = new ArrayList<>();
+    private static List<EntityDescriptor> buildDescriptors(MapLayer entities) {
+        List<EntityDescriptor> mappings = new ArrayList<>();
         MapObjects objects = entities.getObjects();
 
         for (MapObject object : objects) {
@@ -132,19 +167,19 @@ public class TiledMapUtils {
 
                 if (allDescriptorsByName.containsKey(object.getName())) {
 
-                    MapObjectDescriptor mapObjectDescriptor = allDescriptorsByName.get(object.getName());
-                    mapObjectDescriptor.x = object.getProperties().get("x", Float.class).intValue() / TILE_SIZE;
-                    mapObjectDescriptor.y = object.getProperties().get("y", Float.class).intValue() / TILE_SIZE;
+                    EntityDescriptor entityDescriptor = allDescriptorsByName.get(object.getName());
+                    entityDescriptor.x = object.getProperties().get("x", Float.class).intValue() / TILE_SIZE;
+                    entityDescriptor.y = object.getProperties().get("y", Float.class).intValue() / TILE_SIZE;
 
-                    mappings.add(mapObjectDescriptor);
+                    mappings.add(entityDescriptor);
 
                 } else {
 
-                    MapObjectDescriptor mapObjectDescriptor = new MapObjectDescriptor(object);
-                    mappings.add(mapObjectDescriptor);
+                    EntityDescriptor entityDescriptor = new EntityDescriptor(object);
+                    mappings.add(entityDescriptor);
 
-                    if (!allDescriptorsByName.containsKey(mapObjectDescriptor.name)) {
-                        allDescriptorsByName.put(mapObjectDescriptor.name, mapObjectDescriptor);
+                    if (!allDescriptorsByName.containsKey(entityDescriptor.name)) {
+                        allDescriptorsByName.put(entityDescriptor.name, entityDescriptor);
                     }
                 }
             }

@@ -27,7 +27,7 @@ public class EntityRenderer implements Observer {
     public static int TILE_SIZE = 8;
 
     private Entity entity;
-    private TiledMapUtils.MapObjectDescriptor descriptor;
+    private TiledMapUtils.EntityDescriptor descriptor;
     private PositionSyncer positionSyncer;
 
     private Rectangle rectangle = new Rectangle();
@@ -36,7 +36,7 @@ public class EntityRenderer implements Observer {
 
     private boolean walkingAnimation = false;
 
-    public EntityRenderer(Entity entity, TiledMapUtils.MapObjectDescriptor descriptor) {
+    public EntityRenderer(Entity entity, TiledMapUtils.EntityDescriptor descriptor) {
         this.entity = entity;
         this.descriptor = descriptor;
 

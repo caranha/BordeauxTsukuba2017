@@ -13,9 +13,6 @@ import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.view.effects.Effect;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 import com.tskbdx.sumimasen.scenes.view.entities.EntityRendererDrawOrderer;
-import com.tskbdx.sumimasen.scenes.view.entities.SpritesheetUtils;
-import com.tskbdx.sumimasen.scenes.view.entities.animator.Animator;
-import com.tskbdx.sumimasen.scenes.view.entities.animator.DirectionSpriteSheetAnimator;
 
 import java.util.*;
 
@@ -40,16 +37,16 @@ public class WorldRenderer implements Observer {
         this.camera = camera;
     }
 
-    public void load(TiledMap tiledMap, List<TiledMapUtils.MapObjectDescriptor> mappings) {
+    public void load(TiledMap tiledMap, List<TiledMapUtils.EntityDescriptor> mappings) {
 
         rendererByEntity.clear();
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, batch);
 
         tiledMap.getLayers().get("Collision").setVisible(false);
 
-        for (TiledMapUtils.MapObjectDescriptor mapObjectDescriptor : mappings) {
+        for (TiledMapUtils.EntityDescriptor entityDescriptor : mappings) {
 
-            buildEntityRendererFromDescriptor(mapObjectDescriptor);
+            buildEntityRendererFromDescriptor(entityDescriptor);
 
         }
 
@@ -129,7 +126,7 @@ public class WorldRenderer implements Observer {
 
     }
 
-    private void buildEntityRendererFromDescriptor(TiledMapUtils.MapObjectDescriptor mo) {
+    private void buildEntityRendererFromDescriptor(TiledMapUtils.EntityDescriptor mo) {
 
         Entity entity = world.getEntityByName(mo.name);
 
