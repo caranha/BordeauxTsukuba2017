@@ -22,7 +22,7 @@ final public class UserInterface extends Stage implements Disposable, Observer {
     private final Group textButtons;
     private final InventoryRenderer inventoryRenderer;
 
-    private final Scene scene;
+    private Scene scene;
 
     private UserInterface(Scene scene, Entity entity) {
         this.scene = scene;
@@ -32,6 +32,14 @@ final public class UserInterface extends Stage implements Disposable, Observer {
                 new MessageRenderer(entity.getMessage(), scene.getCamera()));
 
         scene.getWorld().addObserver(this);
+    }
+
+    public static void setScene(Scene scene) {
+        if (getInstance() != null) {
+            UserInterface userInterface = getInstance();
+            userInterface.scene = scene;
+            userInterface.scene.getWorld().addObserver(userInterface);
+        }
     }
 
     public static void init(Scene scene, Entity entity) {

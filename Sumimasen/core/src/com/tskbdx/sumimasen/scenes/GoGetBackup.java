@@ -15,10 +15,17 @@ import java.util.List;
  * Created by viet khang on 01/06/2017.
  */
 public class GoGetBackup extends Scene {
-    @Override
-    public void init() {
+
+    GoGetBackup() {
         currentMap = "lab";
         spawn = "left_entrance";
+    }
+
+    @Override
+    public void init() {
+        loadMap(currentMap, spawn);
+        getCamera().setTo(GameScreen.getPlayer().getX() * 8.f, GameScreen.getPlayer().getY() * 8.f);
+
 
         Player player = GameScreen.getPlayer();
         World world = getWorld();
@@ -26,7 +33,6 @@ public class GoGetBackup extends Scene {
         if (player.hasTag("late")) {
             Entity noname = world.getEntityByName("Pr. Noname");
             noname.setSpeed(4);
-            world.removeEntity(world.getEntityByName("late sensor"));
             List<Direction> path = new LinkedList<>();
             Utility.repeat(() -> path.add(Direction.NORTH), 6);
             Utility.repeat(() -> path.add(Direction.EAST), 7);

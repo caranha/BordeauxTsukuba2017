@@ -43,7 +43,7 @@ public abstract class Scene {
         world = new World();
         worldRenderer = new WorldRenderer(world, camera);
 
-        UserInterface.init(this, GameScreen.getPlayer());
+        UserInterface.setScene(this);
     }
 
     public abstract void init();
