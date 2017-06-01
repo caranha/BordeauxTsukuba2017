@@ -1,0 +1,12 @@
+<dialogue>
+    <exchange id="1" text="What have you done ?">
+        <answers>
+            <answer idea="Give him food." text="Here you are my friend !" nextExchange="2" important="1">
+            	<callback methodName="addTag">
+            		<arg type="string" value="late" />
+            	</callback>
+            </answer>
+            <answer idea="Ignore it." text="" nextExchange="3"/>
+        </answers>
+    </exchange>
+</dialogue>

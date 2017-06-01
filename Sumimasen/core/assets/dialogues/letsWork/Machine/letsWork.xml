@@ -4,8 +4,8 @@
         	<answer idea="Let's the push the left button. It's the right one" nextExchange="2"/>
         	<answer idea="He said the right button" nextExchange="2"/>
         </answers>
-    </exchange>
-    <exchange id="2">
+</exchange>
+    <exchange id="2" nextDialogue="broken.xml">
     	<answers>
     	</answers>
     </exchange>

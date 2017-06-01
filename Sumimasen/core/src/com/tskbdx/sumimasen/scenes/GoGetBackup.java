@@ -1,5 +1,6 @@
 package com.tskbdx.sumimasen.scenes;
 
+import com.badlogic.gdx.Gdx;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
@@ -34,6 +35,12 @@ public class GoGetBackup extends Scene {
             Utility.repeat(() -> path.add(Direction.EAST), 7);
             new Path(() -> noname.setDirection(Direction.SOUTH),
                     path.toArray(new Direction[path.size()])).move(noname);
+        } else {
+            Gdx.input.setInputProcessor(null);
+            new Path(() -> {
+                noname.setInteraction(new Dialogue("brokenMachine.xml"));
+                noname.getInteraction().start(player, noname);
+            }, Direction.WEST, Direction.WEST);
         }
     }
 
