@@ -3,6 +3,7 @@ package com.tskbdx.sumimasen.scenes;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
+import com.tskbdx.sumimasen.scenes.model.entities.Sensor;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.TriggerThought;
 import com.tskbdx.sumimasen.scenes.view.WorldRenderer;
@@ -18,17 +19,19 @@ public class LateOnFirstDay extends Scene {
     public void init() {
         World world = getWorld();
 
-        Entity sensor = new Entity();
-        sensor.setWorld(world);
+        Sensor sensor = new Sensor();
+        sensor.setName("late sensor");
         sensor.setWidth(4);
         sensor.setHeight(1);
-        world.addEntity("late sensor", sensor);
-        sensor.moveTo(11, 4);
+        sensor.setX(11);
+        sensor.setY(4);
         sensor.setOnCollide(new TriggerThought("!"));
+        world.addSensor(sensor);
 
         WorldRenderer worldRenderer = getWorldRenderer();
         Entity machine = world.getEntityByName("Machine");
         EntityRenderer machineSprite = worldRenderer.getRendererByEntity(machine);
+        // TO DO change machine sprite to broken
         machine.setInteraction(new Dialogue("broken.xml"));
         machine.addTag("broken");
     }
@@ -60,7 +63,7 @@ public class LateOnFirstDay extends Scene {
     }
 
     @Override
-    protected String description() {
-        return null;
+    public String description() {
+        return "I'm late !";
     }
 }

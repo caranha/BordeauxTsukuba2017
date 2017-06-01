@@ -28,16 +28,18 @@ public abstract class Interaction implements Serializable {
     private Movement passiveMovement;
     private Direction activeDirection;
 
-    Interaction() {}
+    Interaction() {
+    }
 
     public void start(Entity active, Entity passive) {
-        this.active = active;
         this.active = active;
         this.passive = passive;
 
         activeDirection = active.getLastDirection();
         // change target direction to face the passive
-        active.setDirection(Direction.getOpposite(passive.getLastDirection()));
+        active.setDirection(
+                Direction.getOpposite(passive.getLastDirection()));
+
         active.notifyObservers();
 
         active.setInteracting(true);
@@ -70,11 +72,11 @@ public abstract class Interaction implements Serializable {
         passive.addInteracted(active.getName());
     }
 
-    public final Entity getActive() {
+    final Entity getActive() {
         return active;
     }
 
-    public final Entity getPassive() {
+    final Entity getPassive() {
         return passive;
     }
 }

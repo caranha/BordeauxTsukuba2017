@@ -146,7 +146,6 @@ public class GameScreen implements Screen {
             GameScreen.player.setWidth(player.getWidth());
             GameScreen.player.setName(player.getName());
             GameScreen.player.setDirection(player.getDirection());
-            GameScreen.player.setOnCollide(player.getOnCollide());
             GameScreen.player.setInventory(player.getInventory());
             GameScreen.player.setMovement(player.getMovement());
             GameScreen.player.setInteraction(player.getInteraction());

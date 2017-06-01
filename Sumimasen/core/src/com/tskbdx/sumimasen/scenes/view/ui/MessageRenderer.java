@@ -13,14 +13,17 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.tskbdx.sumimasen.Sumimasen;
+import com.tskbdx.sumimasen.scenes.TiledMapUtils;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Message;
 import com.tskbdx.sumimasen.scenes.view.Tween;
-import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * When a entity talk, display a chat bubble
@@ -128,7 +131,7 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
     }
 
     private void initScreenPosition(float x, float y) {
-        startingPosition = new Vector2(x * EntityRenderer.TILE_SIZE, y * EntityRenderer.TILE_SIZE);
+        startingPosition = new Vector2(x * TiledMapUtils.TILE_SIZE, y * TiledMapUtils.TILE_SIZE);
         onScreenPosition = toScreenPosition(startingPosition.x, startingPosition.y);
         onScreenPosition.x -= targetWidth / 2;
     }

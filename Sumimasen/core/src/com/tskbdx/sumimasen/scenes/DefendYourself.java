@@ -61,7 +61,7 @@ public class DefendYourself extends Scene {
     }
 
     @Override
-    protected String description() {
-        return null;
+    public String description() {
+        return "I have to defend myself not to be fired.";
     }
 }

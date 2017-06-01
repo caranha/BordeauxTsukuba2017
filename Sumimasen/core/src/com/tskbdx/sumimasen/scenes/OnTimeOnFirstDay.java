@@ -43,7 +43,7 @@ public class OnTimeOnFirstDay extends Scene {
     }
 
     @Override
-    protected String description() {
-        return null;
+    public String description() {
+        return "I'm on time !";
     }
 }

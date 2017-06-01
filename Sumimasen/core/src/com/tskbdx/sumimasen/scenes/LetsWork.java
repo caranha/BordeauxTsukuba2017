@@ -44,7 +44,7 @@ public class LetsWork extends Scene {
     }
 
     @Override
-    protected String description() {
-        return null;
+    public String description() {
+        return "It's my first day, I must not do any mistake.";
     }
 }

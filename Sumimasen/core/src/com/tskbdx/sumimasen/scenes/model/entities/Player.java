@@ -1,5 +1,6 @@
 package com.tskbdx.sumimasen.scenes.model.entities;
 
+import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Walk;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
@@ -32,7 +33,7 @@ public class Player extends Entity {
     @Override
     public boolean tryInteract() {
         if (!super.tryInteract() && canTalkAlone) {
-            think("I don't want to be late...");
+            think(GameScreen.getCurrentScene().description());
             canTalkAlone = false;
             Utility.setTimeout(() -> canTalkAlone = true, getMessage().getTotalDuration());
             return true;

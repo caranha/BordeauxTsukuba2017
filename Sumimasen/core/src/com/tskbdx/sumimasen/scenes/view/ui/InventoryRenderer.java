@@ -25,7 +25,6 @@ import java.util.*;
  */
 final class InventoryRenderer implements Observer, Disposable {
 
-    private static final String FOLDER = "images/";
     private final Map<Entity, Slot> textures = new HashMap<>();
     private final List<Slot> slots = new ArrayList<>();
     private final List<Entity> viewInventory;
@@ -53,19 +52,18 @@ final class InventoryRenderer implements Observer, Disposable {
             difference = getDifference(modelInventory, viewInventory);
             for (Entity object : difference) {
 
-                TiledMapUtils.MapObjectDescriptor mapObjectDescriptor = null;
-                for (TiledMapUtils.MapObjectDescriptor mapping:
-                        scene.getMapObjectMappings()) {
+                TiledMapUtils.EntityDescriptor entityDescriptor = null;
+                for (TiledMapUtils.EntityDescriptor mapping: scene.getEntityDescriptors()) {
                    if (mapping.name.equals(object.getName())) {
-                       mapObjectDescriptor = mapping;
+                       entityDescriptor = mapping;
                        break;
                    }
                 }
 
-                if (mapObjectDescriptor != null) {
+                if (entityDescriptor != null) {
 
-                    Animator animator = SpritesheetUtils.getAnimatorFromSpritesheet(mapObjectDescriptor.standingSpritesheet);
-                    if ( animator == null) SpritesheetUtils.getAnimatorFromSpritesheet(mapObjectDescriptor.standingSpritesheet);
+                    Animator animator = SpritesheetUtils.getAnimatorFromSpritesheet(entityDescriptor.standingSpritesheet);
+                    if ( animator == null) SpritesheetUtils.getAnimatorFromSpritesheet(entityDescriptor.standingSpritesheet);
 
                     Slot slot = new Slot(animator, slots.size());
                     textures.put(object, slot);

@@ -27,6 +27,7 @@ public class IntroScene extends Scene {
                 player.hasInteractedWith("To lab from right...");
     }
 
+
     @Override
     public Scene getNextScene() {
         Entity player = GameScreen.getPlayer();
@@ -50,8 +51,8 @@ public class IntroScene extends Scene {
     }
 
     @Override
-    protected String description() {
-        return null;
+    public String description() {
+        return "I don't want to be late";
     }
 
 

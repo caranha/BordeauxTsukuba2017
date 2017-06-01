@@ -27,7 +27,7 @@ public class GoGetBackup extends Scene {
         noname.setInteraction(new Dialogue("default.xml"));
 
         if (player.hasTag("late")) {
-            world.removeEntity(world.getEntityByName("late sensor"));
+            world.removeSensor(world.getSensorByName("late sensor"));
             noname.moveTo(13, 4);
             noname.setSpeed(4);
             List<Direction> path = new LinkedList<>();
@@ -64,7 +64,7 @@ public class GoGetBackup extends Scene {
     }
 
     @Override
-    protected String description() {
-        return null;
+    public String description() {
+        return "I have to get that back up, let's go !";
     }
 }

@@ -22,9 +22,13 @@ public abstract class Scene {
     private WorldRenderer worldRenderer;
     private SmoothCamera camera;
 
-    private List<TiledMapUtils.MapObjectDescriptor> mapObjectDescriptors;
+    private List<TiledMapUtils.EntityDescriptor> entityDescriptors;
+    private List<TiledMapUtils.SensorDescriptor> sensorDescriptors;
 
-    Scene() {
+    protected Scene() {
+        System.out.println("-> " + getName());
+        System.out.println(description() + "\n");
+
         GameScreen.getPlayer().clearInteracted();
 
         camera = new SmoothCamera(0.5f);
@@ -80,22 +84,8 @@ public abstract class Scene {
         return camera;
     }
 
-    public final List<TiledMapUtils.MapObjectDescriptor> getMapObjectMappings() {
-        return mapObjectDescriptors;
-    }
-
-    final public void loadMap() {
-        TiledMap tiledMap = new TmxMapLoader().load("maps/" + defaultMap() + ".tmx");
-        mapObjectDescriptors = TiledMapUtils.mapObjectMappings(tiledMap, true);
-        world.load(tiledMap, mapObjectDescriptors, defaultSpawn());
-        worldRenderer.load(tiledMap, mapObjectDescriptors);
-    }
-
-    final public void loadMap(String map, String spawn) {
-        TiledMap tiledMap = new TmxMapLoader().load("maps/" + map + ".tmx");
-        mapObjectDescriptors = TiledMapUtils.mapObjectMappings(tiledMap, true);
-        world.load(tiledMap, mapObjectDescriptors, spawn);
-        worldRenderer.load(tiledMap, mapObjectDescriptors);
+    final public void setCamera(SmoothCamera camera) {
+        this.camera = camera;
     }
 
     final public String getName() {
@@ -103,12 +93,28 @@ public abstract class Scene {
         return name.substring(0, 1).toLowerCase() + name.substring(1);
     }
 
-    final public void setCamera(SmoothCamera camera) {
-        this.camera = camera;
+    public final List<TiledMapUtils.EntityDescriptor> getEntityDescriptors() {
+        return entityDescriptors;
+    }
+
+    public void loadMap() {
+        loadMap(defaultMap(), defaultSpawn());
+    }
+
+    public void loadMap(String map, String spawn) {
+        TiledMap tiledMap = new TmxMapLoader().load("maps/" + map + ".tmx");
+
+        entityDescriptors = TiledMapUtils.entityDescriptors(tiledMap, spawn != null);
+        sensorDescriptors = TiledMapUtils.sensorDescriptors(tiledMap);
+
+        world.load(tiledMap, entityDescriptors, sensorDescriptors, spawn);
+        worldRenderer.load(tiledMap, entityDescriptors, sensorDescriptors);
     }
 
     abstract protected String defaultMap();
+
     abstract protected String defaultSpawn();
-    abstract protected String description();
+
+    public abstract String description();
 }
 
