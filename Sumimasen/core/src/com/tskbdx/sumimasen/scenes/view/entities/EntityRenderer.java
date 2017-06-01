@@ -24,8 +24,6 @@ import java.util.Observer;
  */
 public class EntityRenderer implements Observer {
 
-    public static int TILE_SIZE = 8;
-
     private Entity entity;
     private TiledMapUtils.EntityDescriptor descriptor;
     private PositionSyncer positionSyncer;
@@ -40,9 +38,9 @@ public class EntityRenderer implements Observer {
         this.entity = entity;
         this.descriptor = descriptor;
 
-        rectangle.x = entity.getX() * TILE_SIZE;
-        rectangle.y = entity.getY() * TILE_SIZE;
-        rectangle.width = entity.getWidth() * TILE_SIZE;
+        rectangle.x = entity.getX() * TiledMapUtils.TILE_SIZE;
+        rectangle.y = entity.getY() * TiledMapUtils.TILE_SIZE;
+        rectangle.width = entity.getWidth() * TiledMapUtils.TILE_SIZE;
 
         entity.addObserver(this);
     }
@@ -69,7 +67,7 @@ public class EntityRenderer implements Observer {
         }
 
         if (!positionSynced()) {
-            Vector2 target = new Vector2(entity.getX() * TILE_SIZE, entity.getY() * TILE_SIZE);
+            Vector2 target = new Vector2(entity.getX() * TiledMapUtils.TILE_SIZE, entity.getY() * TiledMapUtils.TILE_SIZE);
             int speed = entity.getSpeed();
             positionSyncer = new InterpolationPositionSyncer(rectangle, target, 1.f / speed);
             positionSyncer.start();
@@ -112,8 +110,8 @@ public class EntityRenderer implements Observer {
     }
 
     private boolean positionSynced() {
-        return rectangle.x == entity.getX() * TILE_SIZE
-                && rectangle.y == entity.getY() * TILE_SIZE;
+        return rectangle.x == entity.getX() * TiledMapUtils.TILE_SIZE
+                && rectangle.y == entity.getY() * TiledMapUtils.TILE_SIZE;
     }
 
     private boolean isMoving() {

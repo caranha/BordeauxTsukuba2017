@@ -1,9 +1,9 @@
 package com.tskbdx.sumimasen.scenes.view.ui;
 
 import com.badlogic.gdx.math.Interpolation;
+import com.tskbdx.sumimasen.scenes.TiledMapUtils;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.view.Tween;
-import com.tskbdx.sumimasen.scenes.view.entities.EntityRenderer;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -40,8 +40,8 @@ final class OffsetEntity implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        float offsetX = (entity.getX() - startX) * EntityRenderer.TILE_SIZE;
-        float offsetY = (entity.getY() - startY) * EntityRenderer.TILE_SIZE;
+        float offsetX = (entity.getX() - startX) * TiledMapUtils.TILE_SIZE;
+        float offsetY = (entity.getY() - startY) * TiledMapUtils.TILE_SIZE;
         tweenX.playWith(tweenX.getInterpolation(), offsetX, duration);
         tweenY.playWith(tweenY.getInterpolation(), offsetY, duration);
     }

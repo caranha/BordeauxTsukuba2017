@@ -32,7 +32,7 @@ public class World extends Observable implements Serializable {
     private Sensor sensorsMap[][];
 
     private Map<String, Entity> entitiesByName = new HashMap<>();
-    private List<Sensor> sensors = new ArrayList<>();
+    private Map<String, Sensor> sensorsByName = new HashMap<>();
 
     private List<String> entitiesInCurrentMap = new ArrayList<>();
 
@@ -96,7 +96,7 @@ public class World extends Observable implements Serializable {
 
             sensor.setOnCollide(sensorDescriptor.onCollide);
 
-            sensors.add(sensor);
+            sensorsByName.put(sensor.getName(), sensor);
 
             for (int i = 0; i < sensor.getWidth(); i++) {
                 for (int j = 0; j < sensor.getHeight(); j++) {
@@ -138,7 +138,7 @@ public class World extends Observable implements Serializable {
 
 
                     GameScreen.getPlayer().setWorld(this);
-                    GameScreen.getPlayer().moveTo(spawn.getX() / 8, spawn.getY() / 8);
+                    GameScreen.getPlayer().moveTo(spawn.getX() / TiledMapUtils.TILE_SIZE, spawn.getY() / TiledMapUtils.TILE_SIZE);
                     moveEntity(GameScreen.getPlayer(), GameScreen.getPlayer().getX(), GameScreen.getPlayer().getY());
 
                     entitiesByName.put(GameScreen.getPlayer().getName(), GameScreen.getPlayer());
@@ -358,5 +358,9 @@ public class World extends Observable implements Serializable {
 
     public int getHeight() {
         return height;
+    }
+
+    public Sensor getSensorByName(String name) {
+        return sensorsByName.get(name);
     }
 }

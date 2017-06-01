@@ -28,7 +28,7 @@ public class IntroScene extends Scene {
         userInterface.init();
 
         story.setScene(this);
-        getCamera().setTo(GameScreen.getPlayer().getX() * 8.f, GameScreen.getPlayer().getY() * 8.f);
+        getCamera().setTo(GameScreen.getPlayer().getX() * TiledMapUtils.TILE_SIZE, GameScreen.getPlayer().getY() * TiledMapUtils.TILE_SIZE);
     }
 
     @Override
@@ -37,8 +37,8 @@ public class IntroScene extends Scene {
         Tween.updateAll(dt);
 
         getCamera().translate(
-                GameScreen.getPlayer().getX()*8 - getCamera().position.x,
-                GameScreen.getPlayer().getY()*8 - getCamera().position.y);
+                GameScreen.getPlayer().getX()*TiledMapUtils.TILE_SIZE - getCamera().position.x,
+                GameScreen.getPlayer().getY()*TiledMapUtils.TILE_SIZE - getCamera().position.y);
         getCamera().update();
 
         userInterface.act(dt);

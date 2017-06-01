@@ -90,7 +90,7 @@ public abstract class Scene {
             sensorDescriptors = TiledMapUtils.sensorDescriptors(tiledMap);
 
             world.load(tiledMap, entityDescriptors, sensorDescriptors, spawn);
-            worldRenderer.load(tiledMap, entityDescriptors);
+            worldRenderer.load(tiledMap, entityDescriptors, sensorDescriptors);
 
         }
     }
@@ -106,7 +106,7 @@ public abstract class Scene {
             sensorDescriptors = TiledMapUtils.sensorDescriptors(tiledMap);
 
             world.load(tiledMap, entityDescriptors, sensorDescriptors, playerX, playerY);
-            worldRenderer.load(tiledMap, entityDescriptors);
+            worldRenderer.load(tiledMap, entityDescriptors, sensorDescriptors);
         }
     }
 }
