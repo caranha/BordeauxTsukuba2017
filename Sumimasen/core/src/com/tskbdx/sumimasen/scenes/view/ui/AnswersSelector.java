@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.tskbdx.sumimasen.Sumimasen;
+import com.tskbdx.sumimasen.scenes.inputprocessors.GameCommands;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue.DialogueAnswer;
@@ -35,12 +36,14 @@ final class AnswersSelector extends Group implements Observer {
     private final Skin skin = Sumimasen.getAssetManager().get(
             "skin/skin/cloud-form-ui.json",
             Skin.class);
+    private final UserInterface userInterface;
 
     AnswersSelector(Entity entity, UserInterface userInterface) {
         this.entity = entity;
         entity.addObserver(this);
 
         userInterface.addActor(this);
+        this.userInterface = userInterface;
     }
 
     @Override
@@ -49,9 +52,9 @@ final class AnswersSelector extends Group implements Observer {
         if (entity.isInteracting() && dialogue != null) {
             setAnswersButtons(dialogue);
         } else {
-            getChildren().forEach(actor -> {
+            for (Actor actor : getChildren()) {
                 actor.setVisible(false);
-            });
+            }
             getChildren().clear();
         }
     }

@@ -1,10 +1,12 @@
 package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
+import com.badlogic.gdx.Gdx;
 import com.tskbdx.sumimasen.GameScreen;
+import com.tskbdx.sumimasen.scenes.inputprocessors.GameCommands;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Message;
-import com.tskbdx.sumimasen.scenes.story.Story;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
+import com.tskbdx.sumimasen.scenes.view.ui.UserInterface;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -41,23 +43,34 @@ public class Dialogue extends Interaction {
     public void start(Entity active, Entity passive) {
         super.start(active, passive);
 
+        Gdx.input.setInputProcessor(UserInterface.getInstance());
+
         buildDialogue(FOLDER +
-                Story.getSceneName() +
+                GameScreen.getCurrentScene().getName() +
                 '/' + active.getName() + '/' + xmlFile); // by convention
         currentExchange = exchanges.get(1);
 
         printCurrentState();
     }
 
+    @Override
+    public void end() {
+        super.end();
+        Interaction nextInteraction = getActive().getNextInteraction();
+        getActive().setInteraction(nextInteraction != null ? nextInteraction : this);
+
+        Gdx.input.setInputProcessor(GameCommands.getInstance());
+    }
+
     public void pickAnswer(int index) { // passive entity answers
         try {
             DialogueAnswer dialogueAnswer = currentExchange.getAnswers().get(index);
             dialogueAnswer.processCallbacks();
-            getPassive().setMessage(dialogueAnswer.getText(), 1.f, getActive());
+            getPassive().setMessage(dialogueAnswer.getText(), 1.f, getActive(),  dialogueAnswer.isImportant);
             Message answer = getPassive().getMessage();
 
             // when passive talk, active stop
-            getActive().setMessage("", 0.f, getPassive());
+            getActive().setMessage("", 0.f, getPassive(), dialogueAnswer.isImportant);
 
             if (dialogueAnswer.getNextExchange() != null) {
                 currentExchange = exchanges.get(dialogueAnswer.getNextExchange());
@@ -75,13 +88,6 @@ public class Dialogue extends Interaction {
         }
     }
 
-    @Override
-    public void end() {
-        super.end();
-        Interaction nextInteraction = getActive().getNextInteraction();
-        getActive().setInteraction(nextInteraction != null ? nextInteraction : this);
-    }
-
     private void printCurrentState() { // active entity talks
         if (!currentExchange.nextDialogue.equals("")) {
             getActive().setNextInteraction(new Dialogue(currentExchange.nextDialogue));
@@ -90,7 +96,7 @@ public class Dialogue extends Interaction {
         if (currentExchange.triggerWonder) {
             getPassive().think(currentExchange.getText());
         } else {
-            getActive().setMessage(currentExchange.getText(), 0.f, getPassive());
+            getActive().setMessage(currentExchange.getText(), 0.f, getPassive(),  currentExchange.isImportant);
         }
         List<DialogueAnswer> answers = currentExchange.getAnswers();
 
@@ -101,7 +107,7 @@ public class Dialogue extends Interaction {
             }, getActive().getMessage().getTimeToUnderstand());
         } else {
             if (!currentExchange.triggerWonder) {
-                getActive().setMessage(currentExchange.getText(), 2.f, getPassive());
+                getActive().setMessage(currentExchange.getText(), 2.f, getPassive(),  currentExchange.isImportant);
             }
             end();
         }
@@ -140,6 +146,11 @@ public class Dialogue extends Interaction {
                 try {
                     Integer triggerWonder = Integer.valueOf(exchangeNode.getAttribute("triggerWonder"));
                     exchange.setTriggerWonder(triggerWonder != null && triggerWonder.equals(1));
+                } catch (Exception ignored) {
+                }
+                try {
+                    Integer important = Integer.valueOf(exchangeNode.getAttribute("important"));
+                    exchange.setTriggerWonder(important != null && important.equals(1));
                 } catch (Exception ignored) {
                 }
                 exchange.nextDialogue = exchangeNode.getAttribute("nextDialogue");
@@ -191,6 +202,7 @@ public class Dialogue extends Interaction {
         Integer nextExchange;
         String idea;
         private NodeList callbacks;
+        boolean isImportant = false;
 
         public String getIdea() {
             return idea;
@@ -285,6 +297,7 @@ public class Dialogue extends Interaction {
         private List<DialogueAnswer> answers = new ArrayList<>();
         private boolean triggerWonder = false;
         private String nextDialogue = "";
+        boolean isImportant = false;
 
 
         public String getText() {

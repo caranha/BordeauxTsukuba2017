@@ -15,24 +15,41 @@ import java.util.*;
 /**
  * UserInterface
  */
-public class UserInterface extends Stage implements Disposable, Observer {
+final public class UserInterface extends Stage implements Disposable, Observer {
 
+    private static UserInterface instance;
     private final Map<Entity, MessageRenderer> messageRendererByEntity = new HashMap<>();
     private final Group textButtons;
     private final InventoryRenderer inventoryRenderer;
 
-    private final Scene scene;
+    private Scene scene;
 
-    public UserInterface(Scene scene, Entity entity) {
-
+    private UserInterface(Scene scene, Entity entity) {
         this.scene = scene;
-
         textButtons = new AnswersSelector(entity, this);
         inventoryRenderer = new InventoryRenderer(entity.getInventory(), scene);
         messageRendererByEntity.put(entity,
                 new MessageRenderer(entity.getMessage(), scene.getCamera()));
 
         scene.getWorld().addObserver(this);
+    }
+
+    public static void setScene(Scene scene) {
+        if (getInstance() != null) {
+            UserInterface userInterface = getInstance();
+            userInterface.scene = scene;
+            userInterface.scene.getWorld().addObserver(userInterface);
+        }
+    }
+
+    public static void init(Scene scene, Entity entity) {
+        instance = new UserInterface(scene, entity);
+
+        scene.getWorld().addObserver(instance);
+    }
+
+    public static UserInterface getInstance() {
+        return instance;
     }
 
     @Override
@@ -66,17 +83,13 @@ public class UserInterface extends Stage implements Disposable, Observer {
         getBatch().end();
     }
 
-    public void init() {
-        scene.getWorld().addObserver(this);
-    }
-
     @Override
     public void update(Observable o, Object arg) {
 
         List<Entity> entities = scene.getWorld().getEntitiesInCurrentMap();
 
         for (Entity e : entities) {
-            if (! messageRendererByEntity.containsKey(e)) {
+            if (!messageRendererByEntity.containsKey(e)) {
                 messageRendererByEntity.put(e, new MessageRenderer(e.getMessage(), scene.getCamera()));
             }
         }

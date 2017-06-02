@@ -72,7 +72,8 @@ final class MessageRenderer implements Observer, Disposable, Serializable {
 
     @Override
     public void dispose() {
-        font.dispose();
+        // to do put font in asset manager
+        // font.dispose();
     }
 
     @Override

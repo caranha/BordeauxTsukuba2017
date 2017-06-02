@@ -6,54 +6,47 @@ import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
 
 /*
- * Created by Sydpy on 4/27/17.
+ * Created by viet khang on 01/06/2017.
  */
-public class IntroScene extends Scene {
-
+public class LetsWork extends Scene {
     @Override
     public void init() {
         World world = getWorld();
-        Entity cat = world.getEntityByName("Cat"),
-                coffee = world.getEntityByName("Coffee Machine");
+        Entity noname = world.getEntityByName("Pr. Noname");
+        Entity machine = world.getEntityByName("Machine");
 
-        cat.setInteraction(new Dialogue("feedOrNot.xml"));
-        coffee.setInteraction(new Dialogue("drinkOrNot.xml"));
+        machine.setInteraction(new Dialogue("letsWork.xml"));
+        noname.setInteraction(new Dialogue("default.xml"));
     }
 
     @Override
     public boolean isFinished() {
         Entity player = GameScreen.getPlayer();
-        return player.hasInteractedWith("To lab from left...") ||
-                player.hasInteractedWith("To lab from right...");
+        return player.hasInteractedWith("Machine");
     }
-
 
     @Override
     public Scene getNextScene() {
-        Entity player = GameScreen.getPlayer();
-        return player.hasTag("late") ?
-                new LateOnFirstDay() :
-                new OnTimeOnFirstDay();
+        return null;
     }
 
     @Override
     public void dispose() {
+
     }
 
     @Override
     protected String defaultMap() {
-        return "home";
+        return "lab";
     }
 
     @Override
     protected String defaultSpawn() {
-        return "entrance";
+        return "left_entrance";
     }
 
     @Override
     public String description() {
-        return "I don't want to be late";
+        return "It's my first day, I must not do any mistake.";
     }
-
-
 }

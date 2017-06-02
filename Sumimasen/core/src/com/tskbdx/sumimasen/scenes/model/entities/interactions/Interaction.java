@@ -7,7 +7,6 @@ package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
-import com.tskbdx.sumimasen.scenes.story.Story;
 
 import java.io.Serializable;
 
@@ -29,23 +28,19 @@ public abstract class Interaction implements Serializable {
     private Movement passiveMovement;
     private Direction activeDirection;
 
-    Interaction() {}
+    Interaction() {
+    }
 
     public void start(Entity active, Entity passive) {
-
-        this.active = active;
         this.active = active;
         this.passive = passive;
 
         activeDirection = active.getLastDirection();
         // change target direction to face the passive
-        if (active != passive) {
-            active.setDirection(Direction.getOpposite(passive.getLastDirection()));
-            active.notifyObservers();
-        } else {
-            active.setDirection(Direction.NONE);
-            active.notifyObservers();
-        }
+        active.setDirection(
+                Direction.getOpposite(passive.getLastDirection()));
+
+        active.notifyObservers();
 
         active.setInteracting(true);
         passive.setInteracting(true);
@@ -70,20 +65,18 @@ public abstract class Interaction implements Serializable {
         active.setMovement(activeMovement);
         passive.setMovement(passiveMovement);
 
-        if (active != passive) {
-            active.setDirection(activeDirection);
-        }
-
+        active.setDirection(activeDirection);
         active.notifyObservers();
 
-        Story.getInstance().update(this, active, passive);
+        active.addInteracted(passive.getName());
+        passive.addInteracted(active.getName());
     }
 
-    public final Entity getActive() {
+    final Entity getActive() {
         return active;
     }
 
-    public final Entity getPassive() {
+    final Entity getPassive() {
         return passive;
     }
 }

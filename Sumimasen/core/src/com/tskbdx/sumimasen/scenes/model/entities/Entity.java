@@ -14,25 +14,19 @@ import java.util.*;
  */
 public class Entity extends Observable implements Serializable {
 
-    private World world;
-
-    private Movement movement;
-    private Interaction interaction;
-
-    private int x, y;
-    private int width, height;
-    private String name;
-
-    private boolean isInteracting = false;
-
-    private Inventory inventory = new Inventory();
-
     /**
      * Message
      */
     private final Message message = new Message(this);
+    private World world;
+    private Movement movement;
+    private Interaction interaction;
+    private int x, y;
+    private int width, height;
+    private String name;
+    private boolean isInteracting = false;
+    private Inventory inventory = new Inventory();
     /**
-     * dd
      * direction is the current direction movement state
      * lastDirection is like the static direction state
      */
@@ -44,6 +38,7 @@ public class Entity extends Observable implements Serializable {
     private Dialogue nextInteraction;
 
     private Set<String> tags = new HashSet<>();
+    private Set<String> interactedEntities = new HashSet<>();
 
     public Entity() {
     }
@@ -55,6 +50,7 @@ public class Entity extends Observable implements Serializable {
     public boolean hasTag(String tag) {
         return tags.contains(tag);
     }
+
     /**
      * Can only interact if there is a SceneObject
      * in front of the entity
@@ -171,7 +167,7 @@ public class Entity extends Observable implements Serializable {
     }
 
     public void setDirection(Direction direction) {
-        if (direction != Direction.NONE) {
+        if (!direction.equals(Direction.NONE)) {
             lastDirection = direction;
         }
         this.direction = direction;
@@ -180,6 +176,10 @@ public class Entity extends Observable implements Serializable {
 
     public int getSpeed() {
         return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
     public Direction getLastDirection() {
@@ -199,7 +199,7 @@ public class Entity extends Observable implements Serializable {
         return message;
     }
 
-    public void setMessage(String content,
+    private void setMessage(String content,
                            float timeToAnswer, Entity receiver) {
         message.setContent(content);
         message.setTimeToAnswer(timeToAnswer);
@@ -246,12 +246,12 @@ public class Entity extends Observable implements Serializable {
         setChanged();
     }
 
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
-    }
-
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 
     public void move(Direction direction) {
@@ -269,7 +269,7 @@ public class Entity extends Observable implements Serializable {
     }
 
     public boolean isWalking() {
-        return direction != Direction.NONE && movement != null ;
+        return direction != Direction.NONE && movement != null;
     }
 
     public void think(String content) {
@@ -285,7 +285,15 @@ public class Entity extends Observable implements Serializable {
         this.nextInteraction = nextInteraction;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
+    public boolean hasInteractedWith(String name) {
+        return interactedEntities.contains(name);
+    }
+
+    public void clearInteracted() {
+        interactedEntities.clear();
+    }
+
+    public void addInteracted(String name) {
+        interactedEntities.add(name);
     }
 }

@@ -19,11 +19,12 @@ import java.util.*;
 
 /**
  * World represented in a matrix.
- * Collisionable :
+ * Object which collides :
  * - Walls stored as booleans
  * - Entities
+ * - Sensors
  * Else :
- * - Empty location are filled by null value.
+ * - Empty locations are filled by null value.
  */
 public class World extends Observable implements Serializable {
 
@@ -48,12 +49,12 @@ public class World extends Observable implements Serializable {
 
         TiledMapTileLayer collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Collision");
 
-        width   = collisionLayer.getWidth();
-        height  = collisionLayer.getHeight();
+        width = collisionLayer.getWidth();
+        height = collisionLayer.getHeight();
 
-        wallsMap    = new boolean[collisionLayer.getWidth()][collisionLayer.getHeight()];
+        wallsMap = new boolean[collisionLayer.getWidth()][collisionLayer.getHeight()];
         entitiesMap = new Entity[collisionLayer.getWidth()][collisionLayer.getHeight()];
-        sensorsMap  = new Sensor[collisionLayer.getWidth()][collisionLayer.getHeight()];
+        sensorsMap = new Sensor[collisionLayer.getWidth()][collisionLayer.getHeight()];
         entitiesInCurrentMap.clear();
 
         buildWalls(collisionLayer);
@@ -132,35 +133,46 @@ public class World extends Observable implements Serializable {
         for (MapObject mapObject : entities.getObjects()) {
             if ("spawn".equals(mapObject.getProperties().get("type", String.class))) {
 
-                Spawn spawn = new Spawn(
-                        mapObject.getName(),
-                        mapObject.getProperties().get("x", Float.class).intValue(),
-                        mapObject.getProperties().get("y", Float.class).intValue());
+                /*
+                 * This fix change map bug
+                 * Before it took the first object of type "spawn"
+                 * and broke the loop.
+                 * The functional bug was going to the lab and going out.
+                 * (spawn.getName() was "player_home" while spawnName was "lab_left"
+                 */
+                String spawnName = mapObject.getName();
 
-                if (playerSpawn.equals(spawn.getName())) {
+                if (spawnName.equals(playerSpawn)) {
 
+                    Spawn spawn = new Spawn(
+                            mapObject.getName(),
+                            mapObject.getProperties().get("x", Float.class).intValue(),
+                            mapObject.getProperties().get("y", Float.class).intValue());
 
-                    GameScreen.getPlayer().setWorld(this);
                     GameScreen.getPlayer().moveTo(spawn.getX() / TiledMapUtils.TILE_SIZE, spawn.getY() / TiledMapUtils.TILE_SIZE);
                     moveEntity(GameScreen.getPlayer(), GameScreen.getPlayer().getX(), GameScreen.getPlayer().getY());
+                    GameScreen.getPlayer().setWorld(this);
 
                     entitiesByName.put(GameScreen.getPlayer().getName(), GameScreen.getPlayer());
                     entitiesInCurrentMap.add(GameScreen.getPlayer().getName());
+
+                    break;
                 }
-                break;
             }
         }
     }
 
     private void spawnPlayer(int playerX, int playerY) {
-        GameScreen.getPlayer().setWorld(this);
-
         GameScreen.getPlayer().moveTo(playerX, playerY);
         moveEntity(GameScreen.getPlayer(), GameScreen.getPlayer().getX(), GameScreen.getPlayer().getY());
+        GameScreen.getPlayer().setWorld(this);
 
         entitiesByName.put(GameScreen.getPlayer().getName(), GameScreen.getPlayer());
         entitiesInCurrentMap.add(GameScreen.getPlayer().getName());
+
     }
+
+
 
     private void buildWalls(TiledMapTileLayer collisionLayer) {
         for (int i = 0; i < collisionLayer.getWidth(); i++) {
@@ -230,7 +242,7 @@ public class World extends Observable implements Serializable {
         if (!sensors.isEmpty()) {
             Sensor sensor = sensors.get(0);
 
-            sensor.getOnCollide().start(entity, entity);
+            sensor.getOnCollide().start(sensor, entity); ////////
         }
 
         setChanged();
@@ -257,7 +269,8 @@ public class World extends Observable implements Serializable {
                 try {
 
                     if (wallsMap[i][j]) return true;
-                } catch (ArrayIndexOutOfBoundsException ignored) {}
+                } catch (ArrayIndexOutOfBoundsException ignored) {
+                }
             }
         }
 
@@ -295,7 +308,8 @@ public class World extends Observable implements Serializable {
                         colliding.add(entity);
                     }
 
-                } catch (ArrayIndexOutOfBoundsException ignored) {}
+                } catch (ArrayIndexOutOfBoundsException ignored) {
+                }
             }
         }
 
@@ -365,5 +379,26 @@ public class World extends Observable implements Serializable {
 
     public Sensor getSensorByName(String name) {
         return sensorsByName.get(name);
+    }
+
+    public void addSensor(Sensor sensor) {
+
+        sensorsByName.put(sensor.getName(), sensor);
+
+        for (int i = 0; i < sensor.getWidth(); i++) {
+            for (int j = 0; j < sensor.getHeight(); j++) {
+                sensorsMap[sensor.getX() + i][sensor.getY() + j] = sensor;
+            }
+        }
+    }
+
+    public void removeSensor(Sensor sensor) {
+        sensorsByName.remove(sensor.getName());
+
+        for (int i = 0; i < sensor.getWidth(); i++) {
+            for (int j = 0; j < sensor.getHeight(); j++) {
+                sensorsMap[sensor.getX() + i][sensor.getY() + j] = null;
+            }
+        }
     }
 }

@@ -14,28 +14,39 @@ import java.util.Map;
 
 /**
  * Map keyboard events to action.
- *
+ * <p>
  * To move :
  * Arrows or Z Q S D
- *
+ * <p>
  * To interact :
  * Space
+ * <p>
+ * Singleton
  */
-public class GameCommands extends InputAdapter {
+final public class GameCommands extends InputAdapter {
 
+    private static GameCommands instance;
     /**
      * Commands identified by an Integer keycode.
      */
     private final Map<Integer, Runnable> keyDownCommands = new HashMap<>();
-    private final Map<Integer,Runnable> keyUpCommands = new HashMap<>();
+    private final Map<Integer, Runnable> keyUpCommands = new HashMap<>();
     private int currentKeycode;
 
     /**
      * Constructor : set association between keycode and commands
      */
-    public GameCommands() {
+    private GameCommands() {
         initKeyDown();
         initKeyUp();
+    }
+
+    public static GameCommands getInstance() {
+        if (instance == null) {
+            instance = new GameCommands();
+        }
+
+        return instance;
     }
 
     private void initKeyUp() {
@@ -73,7 +84,7 @@ public class GameCommands extends InputAdapter {
     @Override
     public boolean keyDown(int keycode) {
         if (execute(keyDownCommands, keycode)) {
-            if(keycode != Input.Keys.SPACE) {
+            if (keycode != Input.Keys.SPACE) {
                 currentKeycode = keycode;
             }
             return true;

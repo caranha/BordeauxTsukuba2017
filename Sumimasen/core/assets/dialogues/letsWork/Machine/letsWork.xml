@@ -1,0 +1,12 @@
+<dialogue>
+    <exchange id="1" text="Okay let's go !" triggerWonder="1">
+        <answers>
+        	<answer idea="Let's the push the left button. It's the right one" nextExchange="2"/>
+        	<answer idea="He said the right button" nextExchange="2"/>
+        </answers>
+    </exchange>
+    <exchange id="2">
+    	<answers>
+    	</answers>
+    </exchange>
+</dialogue>

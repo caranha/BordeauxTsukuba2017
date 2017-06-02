@@ -5,7 +5,12 @@ import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 /**
  * Created by Sydpy on 6/1/17.
  */
-public class Sensor {
+public class Sensor
+        extends Entity  // Interaction needs 2 entities
+    // For example, at the end of the interaction,
+    // the player have to stores the name of the entity he has
+    // interacted with. ( to know if scene state is 'finished' )
+{
 
     private String name;
     private int x, y;

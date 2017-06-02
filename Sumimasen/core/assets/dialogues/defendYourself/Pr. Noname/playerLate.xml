@@ -1,0 +1,72 @@
+<dialogue>
+    <exchange id="1" text="You are late !" important="1">
+        <answers>
+        	<answer idea="I should apologize" text="Sumimasen !" nextExchange="2" important="1"/>
+        	<answer idea="I don't know what to answer..." text="Sumimasen !" nextExchange="2" important="1"/>
+        </answers>
+    </exchange>
+    <exchange id="2" text="What happened ?">
+    	<answers>
+    		<answer idea="Say the truth" text="I spent too much time at home. It won't happen again."
+    			nextExchange="3"/>
+    		<answer idea="Lie" text="The bus was late" nextExchange="4"/>
+    	</answers>
+    </exchange>
+    <exchange id="3" text="Ok ok, you seems well dressed to work at least.">
+    	<answers>
+    		<answer idea="Clear the air" text="This is actually my dressing gown."
+    			nextExchange="5"/>
+    		<answer idea="Let's look like a bootlicker" text="Yes ! I bought it especially for this job." nextExchange="5" important="1"/>
+    	</answers>
+    </exchange>
+    <exchange id="4" text="There is no bus in this city">
+    	<answers>
+    		<answer idea="Keep lying" text="I swear !" nextExchange="2222" important="1">
+                <callback methodName="addTag">
+                    <arg type="string" value="fired" />
+                </callback>
+            </answer>
+    		<answer idea="Shit" text="..." nextExchange="2222">
+                <callback methodName="addTag">
+                    <arg type="string" value="fired" />
+                </callback>
+            </answer>
+    	</answers>
+    </exchange>
+    <exchange id="5" text="It looks comfortable">
+    	<answers>
+    		<answer idea="He is boring and I want to work !" text="What shall I do ?" nextExchange="6"/>
+    		<answer idea="He is funny, let's joke" text="Not really, I should have put something under ..." nextExchange="7"/>
+    	</answers>
+    </exchange>
+    <exchange id="6" text="By your fault the machine is broken ! You have to get the backup at Noodle Company." 
+        nextDialogue="default.xml" important="1">
+    	<answers>
+    		<answer idea="Sure" text="Sure" nextExchange="222"/>
+            <answer idea="What about no ?" text="I'm not your slave dude." nextExchange="2222">
+                <callback methodName="addTag">
+                    <arg type="string" value="fired" />
+                </callback>
+            </answer>
+    	</answers>
+    </exchange>
+    <exchange id="7" text="Anyway, the machine is broken. You have to get the backup at Noodle Company."
+     nextDialogue="default.xml">
+    	<answers>
+    		<answer idea="Sure" text="Sure" nextExchange="222"/>
+    		<answer idea="What about no ?" text="I'm not your slave dude." nextExchange="2222">
+                <callback methodName="addTag">
+                    <arg type="string" value="fired" />
+                </callback>
+            </answer>
+    	</answers>
+    </exchange>
+    <exchange id="222" text="">
+        <answers>
+        </answers>
+    </exchange>
+    <exchange id="2222" text="You are fired !" important="1">
+    	<answers>
+    	</answers>
+    </exchange>
+</dialogue>

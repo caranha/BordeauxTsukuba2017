@@ -25,7 +25,6 @@ import java.util.*;
  */
 final class InventoryRenderer implements Observer, Disposable {
 
-    private static final String FOLDER = "images/";
     private final Map<Entity, Slot> textures = new HashMap<>();
     private final List<Slot> slots = new ArrayList<>();
     private final List<Entity> viewInventory;
