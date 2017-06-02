@@ -98,10 +98,12 @@ public class WorldRenderer implements Observer {
 
                             for (int j = 0; j < floating.getWidth(); j++) {
 
+                                if (i > 0 && floating.getCell(j,i - 1) != null) continue;
+
                                 int i2 = i;
 
                                 TiledMapTileLayer.Cell cell = floating.getCell(j,i2);
-                                while (cell != null) {
+                                while (cell != null && cell.getTile().getTextureRegion() != null) {
                                     batch.draw(cell.getTile().getTextureRegion(), j * TiledMapUtils.TILE_SIZE, i2 * TiledMapUtils.TILE_SIZE);
                                     i2++;
                                     if (i2 >= floating.getHeight()) break;
