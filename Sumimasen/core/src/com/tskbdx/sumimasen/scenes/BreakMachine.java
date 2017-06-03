@@ -26,15 +26,6 @@ public class BreakMachine extends Scene {
         Entity noname = world.getEntityByName("Pr. Noname");
 
         if (player.hasTag("late")) {
-            world.removeSensor(world.getSensorByName("late sensor"));
-            noname.moveTo(13, 4);
-            noname.setSpeed(4);
-            List<Direction> path = new LinkedList<>();
-            Utility.repeat(() -> path.add(Direction.NORTH), 6);
-            Utility.repeat(() -> path.add(Direction.EAST), 7);
-            new Path(() -> noname.setDirection(Direction.SOUTH),
-                    path.toArray(new Direction[path.size()])).move(noname);
-            noname.setInteraction(new Dialogue("default.xml"));
         } else {
             Gdx.input.setInputProcessor(null);
             new Path(() -> {
