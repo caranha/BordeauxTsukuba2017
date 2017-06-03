@@ -24,7 +24,7 @@ public class IntroScene extends Scene {
     public boolean isFinished() {
         Entity player = GameScreen.getPlayer();
         return player.hasInteractedWith("To lab from left...") ||
-                player.hasInteractedWith("To lab fom right ...");
+                player.hasInteractedWith("To lab from right...");
     }
 
 
