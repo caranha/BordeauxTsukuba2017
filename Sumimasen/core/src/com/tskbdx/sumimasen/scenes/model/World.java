@@ -267,9 +267,9 @@ public class World extends Observable implements Serializable {
         for (int i = x; i < x + width; i++) {
             for (int j = y; j < y + height; j++) {
                 try {
-
                     if (wallsMap[i][j]) return true;
                 } catch (ArrayIndexOutOfBoundsException ignored) {
+                    return true;
                 }
             }
         }

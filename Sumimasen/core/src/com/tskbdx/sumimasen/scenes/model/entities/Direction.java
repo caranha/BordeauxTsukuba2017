@@ -26,8 +26,8 @@ public enum Direction {
         opposites.put(NONE, NONE);
     }
 
-    public static Direction getOpposite(Direction direction) {
-        return opposites.get(direction);
+    public Direction getOpposite() {
+        return opposites.get(this);
     }
 
     public boolean isHorizontal() {
