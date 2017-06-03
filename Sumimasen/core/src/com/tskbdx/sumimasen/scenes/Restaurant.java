@@ -3,8 +3,6 @@ package com.tskbdx.sumimasen.scenes;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 /*
  * Created by viet khang on 01/06/2017.
  */

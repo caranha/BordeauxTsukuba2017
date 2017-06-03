@@ -35,7 +35,9 @@ public class Dialogue extends Interaction {
 
     public Dialogue(String xmlFile) {
         super();
-        this.xmlFile = xmlFile;
+        this.xmlFile = FOLDER +
+                GameScreen.getCurrentScene().getName() +
+                '/' + active.getName() + '/' + xmlFile;
     }
 
 
@@ -43,9 +45,7 @@ public class Dialogue extends Interaction {
     protected void run() {
     Gdx.input.setInputProcessor(UserInterface.getInstance());
 
-        buildDialogue(FOLDER +
-                GameScreen.getCurrentScene().getName() +
-                '/' + active.getName() + '/' + xmlFile); // by convention
+        buildDialogue(xmlFile); // by convention
         currentExchange = exchanges.get(1);
 
         printCurrentState();
