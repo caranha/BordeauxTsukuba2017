@@ -6,6 +6,7 @@ import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
+import com.tskbdx.sumimasen.scenes.model.entities.interactions.Interaction;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Path;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
@@ -30,7 +31,21 @@ public class DefendYourself extends Scene {
         Utility.repeat(() -> path.add(Direction.SOUTH), 6);
 
         new Path(() -> {
-            new Dialogue("playerLate.xml").start(noname, player);
+            Interaction interaction =
+                    new Dialogue("playerLate.xml");
+            interaction.setOnFinished(() -> {
+                world.removeSensor(world.getSensorByName("late sensor"));
+                noname.moveTo(13, 4);
+                noname.setSpeed(4);
+                List<Direction> path2 = new LinkedList<>();
+                Utility.repeat(() -> path2.add(Direction.NORTH), 6);
+                Utility.repeat(() -> path2.add(Direction.EAST), 7);
+                new Path(() -> noname.setDirection(Direction.SOUTH),
+                        path2.toArray(new Direction[path2.size()])).move(noname);
+                noname.setInteraction(new Dialogue("default.xml"));
+
+            });
+            interaction.start(noname, player);
         }, path.toArray(new Direction[path.size()])).move(noname);
     }
 
@@ -43,7 +58,7 @@ public class DefendYourself extends Scene {
     @Override
     public Scene getNextScene() {
         Entity player = GameScreen.getPlayer();
-        return player.hasTag("fired") ? new FiredOnFirstDay() : new BreakMachine();
+        return player.hasTag("fired") ? new FiredOnFirstDay() : new GoGetBackup();
     }
 
     @Override

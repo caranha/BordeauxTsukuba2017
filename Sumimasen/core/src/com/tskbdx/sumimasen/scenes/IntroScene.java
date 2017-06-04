@@ -4,6 +4,7 @@ import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.interactions.Dialogue;
+import com.tskbdx.sumimasen.scenes.model.entities.movements.Reach;
 
 /*
  * Created by Sydpy on 4/27/17.

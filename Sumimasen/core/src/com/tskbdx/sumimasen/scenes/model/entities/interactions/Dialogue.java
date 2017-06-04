@@ -31,11 +31,13 @@ public class Dialogue extends Interaction {
     private static final String FOLDER = "dialogues/";
     private Map<Integer, DialogueExchange> exchanges = new HashMap<>();
     private DialogueExchange currentExchange = new DialogueExchange();
-    private String xmlFile;
+    private final String xmlFile;
+    private final String sceneName;
 
     public Dialogue(String xmlFile) {
         super();
         this.xmlFile = xmlFile;
+        this.sceneName = GameScreen.getCurrentScene().getName();
     }
 
 
@@ -43,8 +45,8 @@ public class Dialogue extends Interaction {
     protected void run() {
     Gdx.input.setInputProcessor(UserInterface.getInstance());
 
-        buildDialogue(FOLDER +
-                GameScreen.getCurrentScene().getName() +
+        buildDialogue( FOLDER +
+                sceneName +
                 '/' + active.getName() + '/' + xmlFile); // by convention
         currentExchange = exchanges.get(1);
 

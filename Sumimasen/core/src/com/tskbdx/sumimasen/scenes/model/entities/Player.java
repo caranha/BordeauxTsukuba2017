@@ -28,7 +28,8 @@ public class Player extends Entity {
     @Override
     public boolean tryInteract() {
         if (!super.tryInteract() && canThink) {
-            think(GameScreen.getCurrentScene().description());
+            String description = GameScreen.getCurrentScene().description();
+            think(description != null ? description : "");
             canThink = false;
             Utility.setTimeout(() -> canThink = true, getMessage().getTotalDuration());
             return true;

@@ -42,7 +42,7 @@ public abstract class Interaction implements Serializable {
         activeDirection = active.getLastDirection();
         // change target direction to face the passive
         active.setDirection(
-                Direction.getOpposite(passive.getLastDirection()));
+                passive.getLastDirection().getOpposite());
 
         active.notifyObservers();
 
