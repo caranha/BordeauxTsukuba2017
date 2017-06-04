@@ -6,6 +6,7 @@ package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
+import com.tskbdx.sumimasen.scenes.model.entities.Sensor;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 
 import java.io.Serializable;
@@ -17,12 +18,14 @@ import java.io.Serializable;
  * -> This dynamic behavior should be stored in the active.
  */
 public abstract class Interaction implements Serializable {
-    private Entity active;
-    private Entity passive;
+
+    protected Sensor sensor;
+    protected Entity active;
+    protected Entity passive;
 
     // The idea is :
     // An entity can't move during interaction
-    // He recovers it movement back at the end
+    // He recovers its movement back at the end
     // so we store it
     private Movement activeMovement;
     private Movement passiveMovement;
@@ -57,20 +60,49 @@ public abstract class Interaction implements Serializable {
 
         active.notifyObservers(getClass());
         passive.notifyObservers(getClass());
+
+        run();
     }
 
-    public void end() {
-        active.setInteracting(false);
+    public void start(Sensor sensor, Entity passive){
+
+        this.sensor     = sensor;
+        this.passive    = passive;
+
+        passiveMovement = passive.getMovement();
+        passive.setInteracting(true);
+        passive.setInteraction(this);
+        passive.setMovement(null);
+        passive.notifyObservers(getClass());
+
+
+        run();
+    }
+
+    protected abstract void run();
+
+    protected void end() {
+
+        if (active != null) {
+            active.setInteracting(false);
+
+            active.setMovement(activeMovement);
+
+            active.setDirection(activeDirection);
+            active.notifyObservers();
+
+            active.addInteracted(passive.getName());
+            passive.addInteracted(active.getName());
+
+        }
+
+        if (sensor != null) {
+            passive.addInteracted(sensor.getName());
+        }
+
         passive.setInteracting(false);
-
-        active.setMovement(activeMovement);
         passive.setMovement(passiveMovement);
-
-        active.setDirection(activeDirection);
-        active.notifyObservers();
-
-        active.addInteracted(passive.getName());
-        passive.addInteracted(active.getName());
+        passive.notifyObservers();
 
         if (onFinished != null) {
             onFinished.run();

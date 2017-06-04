@@ -1,7 +1,5 @@
 package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 
-import com.tskbdx.sumimasen.scenes.model.entities.Entity;
-
 /*
  * Created by viet khang on 13/05/2017.
  */
@@ -25,12 +23,12 @@ public class GetPickedUp extends Interaction {
     }
 
     @Override
-    public void start(Entity active, Entity passive) {
-        super.start(active, passive);
+    public void run() {
         getPassive().store(getActive());
         getActive().getWorld().removeEntity(getActive());
         getPassive().notifyObservers(getActive());
         getActive().notifyObservers();
+
         end();
     }
 }

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.inputprocessors.GameCommands;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
-import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.movements.Movement;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 
@@ -24,9 +23,7 @@ public class ChangeMap extends Interaction {
     }
 
     @Override
-    public void start(Entity active, Entity passive) {
-
-        super.start(active, passive);
+    public void run() {
 
         Movement backup = passive.getMovement();
         passive.setMovement(null);

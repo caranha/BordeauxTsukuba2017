@@ -3,7 +3,6 @@ package com.tskbdx.sumimasen.scenes.model.entities.interactions;
 import com.badlogic.gdx.Gdx;
 import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.inputprocessors.GameCommands;
-import com.tskbdx.sumimasen.scenes.model.entities.Entity;
 import com.tskbdx.sumimasen.scenes.model.entities.Message;
 import com.tskbdx.sumimasen.scenes.utility.Utility;
 import com.tskbdx.sumimasen.scenes.view.ui.UserInterface;
@@ -39,11 +38,10 @@ public class Dialogue extends Interaction {
         this.xmlFile = xmlFile;
     }
 
-    @Override
-    public void start(Entity active, Entity passive) {
-        super.start(active, passive);
 
-        Gdx.input.setInputProcessor(UserInterface.getInstance());
+    @Override
+    protected void run() {
+    Gdx.input.setInputProcessor(UserInterface.getInstance());
 
         buildDialogue(FOLDER +
                 GameScreen.getCurrentScene().getName() +
