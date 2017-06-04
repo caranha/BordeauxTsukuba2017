@@ -35,7 +35,7 @@ public abstract class Interaction implements Serializable {
     Interaction() {
     }
 
-    public void start(Entity active, Entity passive) {
+    public final void start(Entity active, Entity passive) {
         this.active = active;
         this.passive = passive;
 
