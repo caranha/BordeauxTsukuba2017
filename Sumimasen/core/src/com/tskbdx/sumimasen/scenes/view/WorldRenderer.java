@@ -113,6 +113,10 @@ public class WorldRenderer implements Observer {
                             }
                         }
 
+                        for (EntityRenderer renderer : renderers) {
+                            renderer.render(batch);
+                        }
+
                     } else {
                         tiledMapRenderer.renderTileLayer((TiledMapTileLayer) layer);
                     }
