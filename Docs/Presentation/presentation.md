@@ -10,13 +10,16 @@ Viet Khang Le Ho - Sylvain Dupouy
 
 # Table of contents
 
-## Imagining a game : 
+### Imagining a game : 
 1. Finding a type of game
 2. Prototyping
-## Developing a game
+### Developing a game
 1. Developing the engine
 2. Outlining the scene
-## What we learned 
+### What we learned
+1. Methodology
+2. Tools
+3. Game design
 
 ---
 <!-- *page_number: false -->
