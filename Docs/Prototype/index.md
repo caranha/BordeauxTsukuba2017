@@ -22,4 +22,5 @@ First you need to install LÖVE on your machine ([their website](https://love2d.
 We invite you to play the game a few times to experience different outcomes. It is important for us to have your feedbacks (good or not) , so don't hesitate to contact us !
 * Sylvain : sylvain.dupouy@etu.u-bordeaux.fr
 * Viet Khang : viet-khang.le-ho@etu.u-bordeaux.fr
+
 (If you are family or friends, you might have other ways to contact us)

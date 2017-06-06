@@ -5,6 +5,7 @@ Repository for the Game Development Short Term Internship Project at University 
 French students from IUT of Bordeaux, France :
 * Viet Khang Le Ho
 * Sylvain Dupouy
+
 Supervising teacher from University of Tsukuba, Japan :
 * Claus Aranha
 
