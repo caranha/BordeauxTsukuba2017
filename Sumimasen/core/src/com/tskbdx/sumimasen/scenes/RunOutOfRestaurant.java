@@ -1,5 +1,6 @@
 package com.tskbdx.sumimasen.scenes;
 
+import com.tskbdx.sumimasen.GameScreen;
 import com.tskbdx.sumimasen.scenes.model.World;
 import com.tskbdx.sumimasen.scenes.model.entities.Direction;
 import com.tskbdx.sumimasen.scenes.model.entities.Entity;
@@ -24,6 +25,7 @@ public class RunOutOfRestaurant extends Scene {
 
     @Override
     public boolean isFinished() {
+        Entity player = GameScreen.getPlayer();
         return false;
     }
 
