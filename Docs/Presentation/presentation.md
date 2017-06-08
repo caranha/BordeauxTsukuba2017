@@ -16,13 +16,69 @@ Viêt Khang Le Ho - Sylvain Dupouy
 1. Developing the engine
 2. Outlining the scene
 ## What we learned 
-1. Timed issues
+1. Methodology
 2. Tools
 3. Game design
 
 ---
 <!-- *page_number: false -->
 # Imagining a game
+
+---
+# Imagining a game
+## Finding a type of game
+
+---
+
+<!-- *footer: Imagining a game - Finding a type of game -->
+### 5 ideas
+* Music game
+* Arcade game
+* Narrative/Interactive game
+* Rogue like
+* RPG
+
+---
+
+<!-- *footer: Imagining a game - Finding a type of game -->
+### Retain only one
+**Narrative/Interactive  game :**
+* Story > Gameplay
+* Story forked at some points
+* Player makes decisions
+* Can be played again to obtain different outcomes
+
+---
+
+<!-- *footer: Imagining a game - Finding a type of game -->
+### Finding the verbs
+* RPG-like controls (move up, down, left, right)
+* Interact with entities
+* Enter a building
+* Choose answer in a dialogue
+
+---
+
+# Imagining a game
+## Prototyping
+
+---
+
+<!-- *footer: Imagining a game - Prototyping -->
+### Choosing the tools
+**Framework :** LÃ–VE 2D (Lua)
+**For the sprites :** Piskel
+**For the map edition :** Tiled
+**For the tileset :** pokemonfangames.deviantart.com
+
+---
+
+<!-- *footer: Imagining a game - Prototyping -->
+### Describing the prototype scene
+
+1. Story description
+2. Events
+3. Dialogues
 
 ---
 <!-- *page_number: false -->
@@ -45,7 +101,7 @@ Viêt Khang Le Ho - Sylvain Dupouy
 # What we learned
 ## 2. Tools
 * LibGDX, a cross platform framwork
-* LÖVE2D, light framework based on _LUA_
+* LÃ–VE2D, light framework based on _LUA_
 * Art instruments : Bfxr, Piskel & Tiled
 
 ---
