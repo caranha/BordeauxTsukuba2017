@@ -9,20 +9,18 @@ Viêt Khang Le Ho - Sylvain Dupouy
 
 # Table of contents
 
-## Imagining a game : 
-1. Finding a type of game
-2. Prototyping
+## Imagining a game  
+
 ## Developing a game
-1. Developing the engine
-2. Outlining the scene
+
+## Demonstration
+
 ## What we learned 
-1. Methodology
-2. Tools
-3. Game design
 
 ---
 <!-- *page_number: false -->
 # Imagining a game
+**3 weeks**
 
 ---
 # Imagining a game
@@ -66,7 +64,7 @@ Viêt Khang Le Ho - Sylvain Dupouy
 
 <!-- *footer: Imagining a game - Prototyping -->
 ### Choosing the tools
-**Framework :** LÃ–VE 2D (Lua)
+**Framework :** LÖVE 2D (Lua)
 **For the sprites :** Piskel
 **For the map edition :** Tiled
 **For the tileset :** pokemonfangames.deviantart.com
@@ -83,15 +81,56 @@ Viêt Khang Le Ho - Sylvain Dupouy
 ---
 <!-- *page_number: false -->
 # Developing a game
+**7 weeks**
+
+---
+# Developing a game
+## Developing the engine
+**5 weeks**
+
+---
+<!-- *footer: Developing a game - Developing the engine -->
+Already existing interactive novel engines :
+* Twine (Javascript)
+* Ren' Py (Python)
+* Interact (.NET) 
+
+---
+<!-- *footer: Developing a game - Developing the engine -->
+### Why develop our own engine ?
+* Specific controls
+* Graphics
+* World (with entities and interactions)
+
+---
+<!-- *footer: Developing a game - Developing the engine -->
+### Our engine : 
+* Tiled map (.tmx)
+* XML dialogue files
+* Asset manager
+* Scene system
+
+---
+# Developing a game
+## Outlining the scenes
+**2 weeks**
+
+---
+<!-- *footer: Developing a game - Outlining the scenes -->
+### Making scenes independent
+* Knows which scene to load next
+* Doesn't care about the previous ones
+---
+<!-- *footer: Developing a game - Outlining the scenes -->
+### Creativity
 
 ---
 <!-- *page_number: false -->
 # What we learned
-
 ---
 <!-- *page_number: false -->
 # What we learned
-## 1. Timed Issues
+## 1. Methodology
 * Avoid work conflics
 * Focus on a goal
 * Measure work progress
@@ -101,7 +140,7 @@ Viêt Khang Le Ho - Sylvain Dupouy
 # What we learned
 ## 2. Tools
 * LibGDX, a cross platform framwork
-* LÃ–VE2D, light framework based on _LUA_
+* LVE2D, light framework based on _LUA_
 * Art instruments : Bfxr, Piskel & Tiled
 
 ---
@@ -114,4 +153,4 @@ Viêt Khang Le Ho - Sylvain Dupouy
 
 ---
 <!-- *page_number: false -->
-# Gunel
+# To conclude
