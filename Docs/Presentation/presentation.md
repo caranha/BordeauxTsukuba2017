@@ -1,7 +1,7 @@
 # Internship Bordeaux - Tsukuba 2017
 ## Game development in Java using LibGDX
 
-Viêt Khang Le Ho - Sylvain Dupouy
+ViÃªt Khang Le Ho - Sylvain Dupouy
 
 ---
 <!-- page_number: true -->
@@ -64,7 +64,7 @@ Viêt Khang Le Ho - Sylvain Dupouy
 
 <!-- *footer: Imagining a game - Prototyping -->
 ### Choosing the tools
-**Framework :** LÖVE 2D (Lua)
+**Framework :** LÃ–VE 2D (Lua)
 **For the sprites :** Piskel
 **For the map edition :** Tiled
 **For the tileset :** pokemonfangames.deviantart.com
@@ -128,29 +128,72 @@ Already existing interactive novel engines :
 <!-- *page_number: false -->
 # What we learned
 ---
+
 <!-- *page_number: false -->
 # What we learned
-## 1. Methodology
+## Methodology
+
+---
+
+### Issues
 * Avoid work conflics
 * Focus on a goal
 * Measure work progress
 
 ---
+
+### Branches
+
+* Parallel developments
+* Safe experimentations
+* Clean up before merging
+
+---
+
+### Agile software development
+
+* Weekly iteration
+* Efficient face-to-face communication
+* Feedback and adaption
+
+---
+
 <!-- *page_number: false -->
 # What we learned
-## 2. Tools
-* LibGDX, a cross platform framwork
-* LVE2D, light framework based on _LUA_
-* Art instruments : Bfxr, Piskel & Tiled
+## Tools
+
+---
+
+### Game framework
+**LÃ–VE2D** : script language based on LUA
+**LibGDX** : code with Java, deplay everywhere
+
+---
+
+### Artistic instruments
+**Bfxr** : 8-bit sounds generator
+**Piskel** : animated sprite editor
+**Tiled** : tiled map editor
 
 ---
 <!-- *page_number: false -->
 # What we learned
-## 3. Game Design
-* Minimum Viable Product
+## Game Design
+
+---
+### Mimimum Viable Product
+* Get feedback early
+* Reduce wasted engineering hours
+* Get a playful product as soon as possible
+
+---
+
+### Narrative game good practices
 * Setup -> Obstacles -> Goal
 * "Don't punish the player"
+* Seperate data and rendering
 
 ---
 <!-- *page_number: false -->
 # To conclude
+
