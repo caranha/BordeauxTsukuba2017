@@ -1,0 +1,24 @@
+<dialogue>
+	<exchange id="1" text="Welcome, you have no money">
+		<answers>
+			<answer idea="Steal food and escape" text="Oh look at there !" nextExchange="2">
+            	<callback methodName="addTag">
+            		<arg type="string" value="stealFood" />
+            	</callback>
+			</answer>
+			<answer idea="Propose a compromise" text="We can make an affair..." nextExchange="3">
+            	<callback methodName="addTag">
+            		<arg type="string" value="compromiseToEat" />
+            	</callback>
+			</answer>
+		</answers>
+	</exchange>
+	<exchange id="2" text="If I catch you, you'll go to prison !">
+		<answers>
+		</answers>  
+	</exchange>
+	<exchange id="3">
+		<answers>
+		</answers>
+	</exchange>
+</dialogue>

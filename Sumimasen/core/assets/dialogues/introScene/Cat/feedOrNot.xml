@@ -1,0 +1,20 @@
+<dialogue>
+    <exchange id="1" text="My cats seems starving" triggerWonder="1">
+        <answers>
+            <answer idea="Give him food." text="Here you are my friend !" nextExchange="2" important="1">
+            	<callback methodName="addTag">
+            		<arg type="string" value="late" />
+            	</callback>
+            </answer>
+            <answer idea="Ignore it." text="" nextExchange="3"/>
+        </answers>
+    </exchange>
+    <exchange id="2" text="Meowww !" nextDialogue="happy.xml" important="1">
+    	<answers>
+    	</answers>
+    </exchange>
+    <exchange id="3" text="">
+    	<answers>
+    	</answers>
+    </exchange>
+</dialogue>

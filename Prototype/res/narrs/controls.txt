@@ -1,4 +1,4 @@
-[ Move the player with the arrows ]
+[ Move the player with the 'wasd' or 'zqsd' keys (depending on your keyboard layout) ]
 [ Press 'space' to interact with objects or characters ]
 [ Now the story begins ]
 It's your first day of work today.

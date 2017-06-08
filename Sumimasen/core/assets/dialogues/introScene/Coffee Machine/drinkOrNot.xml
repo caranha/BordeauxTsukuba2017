@@ -1,0 +1,20 @@
+<dialogue>
+    <exchange id="1" text="Do I have time for coffee ?" triggerWonder="1">
+        <answers>
+            <answer idea="Yes, coffee is mandatory !" text="Feels good." nextExchange="2" important="1">
+            	<callback methodName="addTag">
+            		<arg type="string" value="late" />
+            	</callback>
+            </answer>
+            <answer idea="No, maybe later at the lab ..." text="" nextExchange="3"/>
+        </answers>
+    </exchange>
+    <exchange id="2" nextDialogue="alreadydrank.xml">
+    	<answers>
+    	</answers>
+    </exchange>
+    <exchange id="3">
+    	<answers>
+    	</answers>
+    </exchange>
+</dialogue>

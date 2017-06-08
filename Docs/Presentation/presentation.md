@@ -20,8 +20,8 @@ Viet Khang Le Ho - Sylvain Dupouy
 1. Methodology
 2. Tools
 3. Game design
----
 
+---
 <!-- *page_number: false -->
 # Imagining a game
 ---
@@ -66,7 +66,7 @@ Viet Khang Le Ho - Sylvain Dupouy
 
 <!-- *footer: Imagining a game - Prototyping -->
 ### Choosing the tools
-**Framework :** LÖVE 2D (Lua)
+**Framework :** LÃ–VE 2D (Lua)
 **For the sprites :** Piskel
 **For the map edition :** Tiled
 **For the tileset :** pokemonfangames.deviantart.com
@@ -85,10 +85,33 @@ Viet Khang Le Ho - Sylvain Dupouy
 <!-- *page_number: false -->
 # Developing a game
 
+
+
+
 ---
 <!-- *page_number: false -->
 # What we learned
 
+---
+<!-- *footer: What we learned -->
+## Timed Issues
+* Avoid work conflicts
+* Focus on a goal
+* Measure work progress
+
+---
+<!-- *footer: What we learned -->
+## Tools
+* LibGDX, a Java game framework
+* LÖVE2D, light game framework for _LUA_
+* Art instruments : Bfxr, Piskel & Tiled
+
+---
+<!-- *footer: What we learned -->
+## Game Design
+* MV - product
+* Character design
+* "Don't punish the player"
 ---
 <!-- *page_number: false -->
 # To conclude
