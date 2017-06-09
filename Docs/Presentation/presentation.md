@@ -1,7 +1,7 @@
 # Internship Bordeaux - Tsukuba 2017
 ## Game development in Java using LibGDX
 
-ViÃªt Khang Le Ho - Sylvain Dupouy
+Viêt Khang Le Ho - Sylvain Dupouy
 
 ---
 <!-- page_number: true -->
@@ -165,7 +165,7 @@ Already existing interactive novel engines :
 ---
 
 ### Game framework
-**LÃ–VE2D** : script language based on LUA
+**LÖVE2D** : script language based on LUA
 **LibGDX** : code with Java, deplay everywhere
 
 ---
@@ -188,7 +188,7 @@ Already existing interactive novel engines :
 
 ---
 
-### Narrative game good practices
+### Game design/development
 * Setup -> Obstacles -> Goal
 * "Don't punish the player"
 * Seperate data and rendering
