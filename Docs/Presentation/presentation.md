@@ -39,7 +39,7 @@ Viêt Khang Le Ho - Sylvain Dupouy
 ---
 
 <!-- *footer: Imagining a game - Finding a type of game -->
-### Retain only one
+### The one we picked :
 **Narrative/Interactive  game :**
 * Story > Gameplay
 * Story forked at some points
@@ -63,8 +63,8 @@ Viêt Khang Le Ho - Sylvain Dupouy
 ---
 
 <!-- *footer: Imagining a game - Prototyping -->
-### Choosing the tools
-**Framework :** LÃ–VE 2D (Lua)
+### The tools
+**Framework :** LÖVE 2D (Lua)
 **For the sprites :** Piskel
 **For the map edition :** Tiled
 **For the tileset :** pokemonfangames.deviantart.com
@@ -72,7 +72,7 @@ Viêt Khang Le Ho - Sylvain Dupouy
 ---
 
 <!-- *footer: Imagining a game - Prototyping -->
-### Describing the prototype scene
+### The prototype scene
 
 1. Story description
 2. Events
@@ -123,7 +123,9 @@ Already existing interactive novel engines :
 ---
 <!-- *footer: Developing a game - Outlining the scenes -->
 ### Creativity
-
+---
+<!-- *page_number: false -->
+# Demonstration
 ---
 <!-- *page_number: false -->
 # What we learned
@@ -136,7 +138,7 @@ Already existing interactive novel engines :
 ---
 
 ### Issues
-* Avoid work conflics
+* Avoid work conflicts
 * Focus on a goal
 * Measure work progress
 
@@ -165,8 +167,8 @@ Already existing interactive novel engines :
 ---
 
 ### Game framework
-**LÖVE2D** : script language based on LUA
-**LibGDX** : code with Java, deplay everywhere
+**LÖVE2D** : Lua framework for 2D games
+**LibGDX** : Java framework for games
 
 ---
 
@@ -181,7 +183,7 @@ Already existing interactive novel engines :
 ## Game Design
 
 ---
-### Mimimum Viable Product
+### Minimum Viable Product
 * Get feedback early
 * Reduce wasted engineering hours
 * Get a playful product as soon as possible
