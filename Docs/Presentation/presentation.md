@@ -9,26 +9,26 @@ Viêt Khang Le Ho - Sylvain Dupouy
 
 # Table of contents
 
-## Imagining a game  
-
-## Developing a game
-
-## Demonstration
-
-## What we learned 
+1. Imagining a game  
+2. Developing a game
+3. Demonstration
+4. What we learned 
 
 ---
 <!-- *page_number: false -->
+
 # Imagining a game
 **3 weeks**
 
 ---
+
 # Imagining a game
 ## Finding a type of game
 
 ---
 
 <!-- *footer: Imagining a game - Finding a type of game -->
+
 ### 5 ideas
 * Music game
 * Arcade game
@@ -39,6 +39,7 @@ Viêt Khang Le Ho - Sylvain Dupouy
 ---
 
 <!-- *footer: Imagining a game - Finding a type of game -->
+
 ### The one we picked :
 **Narrative/Interactive  game :**
 * Story > Gameplay
@@ -60,9 +61,13 @@ Viêt Khang Le Ho - Sylvain Dupouy
 # Imagining a game
 ## Prototyping
 
----
+<img src="images/prototype_0.png" width="250"/>
+<img src="images/prototype_1.png" width="250"/>
+<img src="images/prototype_2.png" width="250"/>
 
+---
 <!-- *footer: Imagining a game - Prototyping -->
+
 ### The tools
 **Framework :** LÖVE 2D (Lua)
 **For the sprites :** Piskel
@@ -70,7 +75,6 @@ Viêt Khang Le Ho - Sylvain Dupouy
 **For the tileset :** pokemonfangames.deviantart.com
 
 ---
-
 <!-- *footer: Imagining a game - Prototyping -->
 ### The prototype scene
 
@@ -79,17 +83,20 @@ Viêt Khang Le Ho - Sylvain Dupouy
 3. Dialogues
 
 ---
+
 <!-- *page_number: false -->
 # Developing a game
 **7 weeks**
 
 ---
+
 # Developing a game
 ## Developing the engine
 **5 weeks**
 
 ---
 <!-- *footer: Developing a game - Developing the engine -->
+
 Already existing interactive novel engines :
 * Twine (Javascript)
 * Ren' Py (Python)
@@ -97,6 +104,7 @@ Already existing interactive novel engines :
 
 ---
 <!-- *footer: Developing a game - Developing the engine -->
+
 ### Why develop our own engine ?
 * Specific controls
 * Graphics
@@ -104,6 +112,7 @@ Already existing interactive novel engines :
 
 ---
 <!-- *footer: Developing a game - Developing the engine -->
+
 ### Our engine : 
 * Tiled map (.tmx)
 * XML dialogue files
@@ -111,27 +120,38 @@ Already existing interactive novel engines :
 * Scene system
 
 ---
+
 # Developing a game
 ## Outlining the scenes
 **2 weeks**
 
 ---
 <!-- *footer: Developing a game - Outlining the scenes -->
+
 ### Making scenes independent
 * Knows which scene to load next
 * Doesn't care about the previous ones
+
+<img src="images/scene-tree.png" width="400" />
+
 ---
 <!-- *footer: Developing a game - Outlining the scenes -->
-### Creativity
----
-<!-- *page_number: false -->
-# Demonstration
----
-<!-- *page_number: false -->
-# What we learned
----
 
+### Creativity
+
+---
 <!-- *page_number: false -->
+
+# Demonstration
+
+---
+<!-- *page_number: false -->
+
+# What we learned
+
+---
+<!-- *page_number: false -->
+
 # What we learned
 ## Methodology
 
@@ -159,43 +179,32 @@ Already existing interactive novel engines :
 * Feedback and adaption
 
 ---
-
 <!-- *page_number: false -->
+
 # What we learned
 ## Tools
 
----
-
 ### Game framework
-**LÖVE2D** : Lua framework for 2D games
-**LibGDX** : Java framework for games
+* **LÖVE2D** : Lua framework for 2D games
+* **LibGDX** : Java framework for games
 
----
-
-### Artistic instruments
-**Bfxr** : 8-bit sounds generator
-**Piskel** : animated sprite editor
-**Tiled** : tiled map editor
+### Assets
+* **Bfxr** : 8-bit sounds generator
+* **Piskel** : animated sprite editor
+* **Tiled** : tiled map editor
 
 ---
 <!-- *page_number: false -->
+
 # What we learned
 ## Game Design
 
----
-### Minimum Viable Product
-* Get feedback early
-* Reduce wasted engineering hours
-* Get a playful product as soon as possible
-
----
-
-### Game design/development
+* Minimum Viable Product
+* Prototyping
 * Setup -> Obstacles -> Goal
 * "Don't punish the player"
-* Seperate data and rendering
 
 ---
 <!-- *page_number: false -->
-# To conclude
 
+# To conclude
