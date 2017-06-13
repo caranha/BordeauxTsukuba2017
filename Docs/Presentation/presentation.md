@@ -1,7 +1,7 @@
 # Internship Bordeaux - Tsukuba 2017
 ## Game development in Java using LibGDX
 
-Viêt Khang Le Ho - Sylvain Dupouy
+ViÃªt Khang Le Ho - Sylvain Dupouy
 
 ---
 <!-- page_number: true -->
@@ -20,6 +20,8 @@ Viêt Khang Le Ho - Sylvain Dupouy
 # Imagining a game
 **3 weeks**
 
+<center><img src="images/player.png"/></center>
+
 ---
 
 # Imagining a game
@@ -30,11 +32,11 @@ Viêt Khang Le Ho - Sylvain Dupouy
 <!-- *footer: Imagining a game - Finding a type of game -->
 
 ### 5 ideas
-* Music game
-* Arcade game
-* Narrative/Interactive game
-* Rogue like
-* RPG
+* Music game :musical_note:
+* Arcade game :joystick:
+* Narrative/Interactive game :book:
+* Rogue like :old_key:
+* RPG :crossed_swords:
 
 ---
 
@@ -61,15 +63,23 @@ Viêt Khang Le Ho - Sylvain Dupouy
 # Imagining a game
 ## Prototyping
 
-<img src="images/prototype_0.png" width="250"/>
-<img src="images/prototype_1.png" width="250"/>
-<img src="images/prototype_2.png" width="250"/>
+---
+<center><img src="images/prototype_0.png" width="700"/></center>
+
+---
+<center><img src="images/prototype_1.png" width="700"/>
+</center>
+
+---
+
+<center><img src="images/prototype_2.png" width="700"/>
+</center>
 
 ---
 <!-- *footer: Imagining a game - Prototyping -->
 
 ### The tools
-**Framework :** LÖVE 2D (Lua)
+**Framework :** LÃ–VE 2D (Lua)
 **For the sprites :** Piskel
 **For the map edition :** Tiled
 **For the tileset :** pokemonfangames.deviantart.com
@@ -87,6 +97,8 @@ Viêt Khang Le Ho - Sylvain Dupouy
 <!-- *page_number: false -->
 # Developing a game
 **7 weeks**
+
+<center><img src="images/cat.png"/></center>
 
 ---
 
@@ -132,7 +144,7 @@ Already existing interactive novel engines :
 * Knows which scene to load next
 * Doesn't care about the previous ones
 
-<img src="images/scene-tree.png" width="400" />
+<center><img src="images/scene-tree.png" width="400" /></center>
 
 ---
 <!-- *footer: Developing a game - Outlining the scenes -->
@@ -148,6 +160,8 @@ Already existing interactive novel engines :
 <!-- *page_number: false -->
 
 # What we learned
+
+<center><img src="images/noname.png"/></center>
 
 ---
 <!-- *page_number: false -->
@@ -185,13 +199,13 @@ Already existing interactive novel engines :
 ## Tools
 
 ### Game framework
-* **LÖVE2D** : Lua framework for 2D games
-* **LibGDX** : Java framework for games
+* **LÃ–VE2D** : Lua framework for 2D games <img src="images/love2d.png" height="48px"/>
+* **LibGDX** : Java framework for games <img src="images/libgdx.png" height="48px"/>
 
 ### Assets
-* **Bfxr** : 8-bit sounds generator
-* **Piskel** : animated sprite editor
-* **Tiled** : tiled map editor
+* **Bfxr** : 8-bit sounds generator <img src="images/bfxr.png" height="48px"/>
+* **Piskel** : animated sprite editor <img src="images/piskel.png" height="48px"/>
+* **Tiled** : tiled map editor <img src="images/tiled.png" height="48px"/>
 
 ---
 <!-- *page_number: false -->
@@ -207,4 +221,5 @@ Already existing interactive novel engines :
 ---
 <!-- *page_number: false -->
 
-# To conclude
+# To conclude 
+<center><img src="images/noname.png"/></center>
