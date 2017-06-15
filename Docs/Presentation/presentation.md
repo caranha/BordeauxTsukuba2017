@@ -1,7 +1,7 @@
 # Internship Bordeaux - Tsukuba 2017
 ## Game development in Java using LibGDX
 
-ViÃªt Khang Le Ho - Sylvain Dupouy
+Viêt Khang Le Ho - Sylvain Dupouy
 
 ---
 <!-- page_number: true -->
@@ -20,7 +20,7 @@ ViÃªt Khang Le Ho - Sylvain Dupouy
 # Imagining a game
 **3 weeks**
 
-<center><img src="images/player.png"/></center>
+<center><img src="images/player.png"  width="40%" /></center>
 
 ---
 
@@ -64,22 +64,22 @@ ViÃªt Khang Le Ho - Sylvain Dupouy
 ## Prototyping
 
 ---
-<center><img src="images/prototype_0.png" width="700"/></center>
+<center><img src="images/prototype_0.png" width="90%" /></center>
 
 ---
-<center><img src="images/prototype_1.png" width="700"/>
+<center><img src="images/prototype_1.png" width="90%" />
 </center>
 
 ---
 
-<center><img src="images/prototype_2.png" width="700"/>
+<center><img src="images/prototype_2.png" width="90%"/>
 </center>
 
 ---
 <!-- *footer: Imagining a game - Prototyping -->
 
 ### The tools
-**Framework :** LÃ–VE 2D (Lua)
+**Framework :** LÖVE 2D (Lua)
 **For the sprites :** Piskel
 **For the map edition :** Tiled
 **For the tileset :** pokemonfangames.deviantart.com
@@ -98,7 +98,7 @@ ViÃªt Khang Le Ho - Sylvain Dupouy
 # Developing a game
 **7 weeks**
 
-<center><img src="images/cat.png"/></center>
+<center><img src="images/cat.png" width="40%" /></center>
 
 ---
 
@@ -140,11 +140,11 @@ Already existing interactive novel engines :
 ---
 <!-- *footer: Developing a game - Outlining the scenes -->
 
-### Making scenes independent
-* Knows which scene to load next
-* Doesn't care about the previous ones
+### What is a scene ?
+* Setup -> Obstacle -> Goal
+* Independent
 
-<center><img src="images/scene-tree.png" width="400" /></center>
+<center><img src="images/scene-tree.png" width="50%" /></center>
 
 ---
 <!-- *footer: Developing a game - Outlining the scenes -->
@@ -155,6 +155,7 @@ Already existing interactive novel engines :
 <!-- *page_number: false -->
 
 # Demonstration
+<center><img src="images/demo-scenes.png" width="90%" /></center>
 
 ---
 <!-- *page_number: false -->
@@ -199,7 +200,7 @@ Already existing interactive novel engines :
 ## Tools
 
 ### Game framework
-* **LÃ–VE2D** : Lua framework for 2D games <img src="images/love2d.png" height="48px"/>
+* **LÖVE2D** : Lua framework for 2D games <img src="images/love2d.png" height="48px"/>
 * **LibGDX** : Java framework for games <img src="images/libgdx.png" height="48px"/>
 
 ### Assets
@@ -215,11 +216,10 @@ Already existing interactive novel engines :
 
 * Minimum Viable Product
 * Prototyping
-* Setup -> Obstacles -> Goal
 * "Don't punish the player"
 
 ---
 <!-- *page_number: false -->
 
 # To conclude 
-<center><img src="images/noname.png"/></center>
+<center><img src="images/player.png" width="30%" /><img src="images/cat.png" width="30%" /><img src="images/noname.png" width="30%" /></center>
